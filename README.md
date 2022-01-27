@@ -1,2 +1,1 @@
-# nblog
-a blog framework using notion api
+This is a starter template for [Learn Next.js](https://nextjs.org/learn).
