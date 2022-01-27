@@ -1,3 +1,1 @@
-module.exports = {
-  assetPrefix: '/nblog',
-};
+module.exports = { target: 'serverless' }
