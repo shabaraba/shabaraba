@@ -33,7 +33,7 @@ jobs:
 
       - run: cd src && yarn install --frozen-lockfile
       - run: cd src && yarn build
-      - run: cd src && yarn export
+      # - run: cd src && yarn export
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
