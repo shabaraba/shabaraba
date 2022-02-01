@@ -1,3 +1,4 @@
+import { Container, Box, List, ListItem, ListIcon } from '@chakra-ui/react'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from './layout.module.css'
@@ -15,7 +16,11 @@ export default function Layout({
   home?: boolean
 }) {
   return (
-    <div className={styles.container}>
+    <Container
+      p = {10}
+      maxW = 'container.xl'
+      bg = 'gray.50'
+    >
       <Head>
         <link rel="icon" href="/favicon.ico" />
         <meta
@@ -74,6 +79,6 @@ export default function Layout({
           </Link>
         </div>
       )}
-    </div>
+    </Container>
   )
 }
