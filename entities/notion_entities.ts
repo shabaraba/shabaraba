@@ -7,14 +7,14 @@ export interface NotionPostHead {
   createdAt: string;
   updatedAt?: string;
 
-　[prop: string]: any;
+  [prop: string]: any;
 }
 
 export interface NotionTag {
   id: number;
   color: string;
   name: string;
-　[prop: string]: any;
+  [prop: string]: any;
 }
 
 export interface NotionIcon {
