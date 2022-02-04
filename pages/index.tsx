@@ -6,20 +6,7 @@ import Link from 'next/link'
 import PostList from '../components/posts/PostList'
 import { GetStaticProps } from 'next'
 
-// export default function Home({
-//   allPostsData
-// }: {
-//   allPostsData: {
-//     date: string
-//     title: string
-//     id: string
-//   }[]
-// }) {
 export default function Home(){
-  const onClick = async () => {
-    // return await test();
-  }
-
   return (
     <Layout home>
       <Head>
@@ -33,7 +20,6 @@ export default function Home(){
         </p>
       </section>
       <PostList />
-      <Button onClick={onClick}>test</Button>
     </Layout>
   )
 }
