@@ -13,8 +13,10 @@ const Component = {
 }
 
 export default function Block({entity}: {entity: any}) {
+  console.log("rending block...")
   console.log(entity)
   const BlockComponent = Component[entity.type]
+  console.log(BlockComponent)
   return <BlockComponent entity={ entity } />
 }
 
