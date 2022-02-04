@@ -18,6 +18,20 @@ export async function getSortedPostsData() {
   } catch (err) {
     console.log(err)
   }
+}
+
+export async function getPostDetail(id: string) {
+  try {
+    console.log("get post detail data")
+    const post = await axios.get('/api/notion/post_detail')
+    console.log(post)
+    // const postList = await fetch('/api/notion/posts')
+    // return JSON.stringify(postList)
+    return post.data
+  } catch (err) {
+    console.log(err)
+  }
+}
 
 //   // Get file names under /posts
 //   const fileNames = fs.readdirSync(postsDirectory)
@@ -46,7 +60,6 @@ export async function getSortedPostsData() {
 //       return -1
 //     }
 //   })
-}
 
 // export function getAllPostIds() {
 //   const fileNames = fs.readdirSync(postsDirectory)

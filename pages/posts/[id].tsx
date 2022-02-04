@@ -1,44 +1,45 @@
-import Layout from '../../components/layout'
-// import { getAllPostIds, getPostData } from '../../lib/posts'
-import Head from 'next/head'
-import Date from '../../components/date'
-import utilStyles from '../../styles/utils.module.css'
-import { GetStaticProps, GetStaticPaths } from 'next'
+import { Center, Spinner } from '@chakra-ui/react'
+import Layout from '../../components/layout';
+import Block from '../../components/posts/Block';
+import axios from 'axios';
+import useSWR from 'swr';
+import { useRouter } from 'next/router';
+import Head from 'next/head';
+import { test } from '../../lib/notions';
+import {v4 as uuidv4} from 'uuid';
 
-// export default function Post({
-//   postData
-// }: {
-//   postData: {
-//     title: string
-//     date: string
-//     contentHtml: string
-//   }
+import * as NotionBlock from '../../entities/notion/blocks';
+
 export default function Post() {
+  const router = useRouter();
+
+	const { data, error } = useSWR(
+    '/api/notion/posts/' + router.query.id,
+    url => axios.get(url).then((res) => {
+      return test(res.data);
+    })
+  )
+
+	if (error)return <div>failed to load</div>
+	if (!data)return (
+      <Center h='100vh'>
+        <Spinner />
+      </Center>
+    )
+
   return (
     <Layout>
       <Head>
-        <title>text</title>
+        <title>{router.query.id}</title>
       </Head>
       <article>
-        <h1 className={utilStyles.headingXl}>test</h1>
+        {data.map((block: NotionBlock.Block) =>
+          <Block
+            key = {uuidv4()}
+            entity={block} />
+        )}
       </article>
     </Layout>
   )
 }
 
-// export const getStaticPaths: GetStaticPaths = async () => {
-//   // const paths = getAllPostIds()
-//   return {
-//     // paths,
-//     fallback: false
-//   }
-// }
-
-// export const getStaticProps: GetStaticProps = async ({ params }) => {
-//   // const postData = await getPostData(params.id as string)
-//   return {
-//     props: {
-//       postData
-//     }
-//   }
-// }
