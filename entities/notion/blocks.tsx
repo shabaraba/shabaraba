@@ -1,11 +1,8 @@
 import * as NotionBlockInterfaces from '../../interfaces/NotionApiResponses';
 
 export abstract class Block {
+  public type: string;
   constructor() {}
-
-  get type() {
-    return this.constructor.name;
-  }
 }
 
 export class Text {
@@ -27,6 +24,8 @@ export class Paragraph extends Block {
 
   constructor(resp: NotionBlockInterfaces.IParagraphBlock) {
     super();
+    this.type = "Paragraph";
+
     this.texts = [];
     resp.paragraph.text.map( (text) => {
       this.texts.push( new Text(text) )
@@ -39,6 +38,8 @@ export class Heading1 extends Block {
 
   constructor(resp: NotionBlockInterfaces.IHeading1Block) {
     super();
+    this.type = "Heading1";
+
     this.texts = [];
     resp.heading_1.text.map( (text) => {
       this.texts.push( new Text(text) )
@@ -51,6 +52,8 @@ export class Heading2 extends Block {
 
   constructor(resp: NotionBlockInterfaces.IHeading2Block) {
     super();
+    this.type = "Heading2";
+
     this.texts = [];
     resp.heading_2.text.map( (text) => {
       this.texts.push( new Text(text) )
@@ -63,6 +66,8 @@ export class Heading3 extends Block {
 
   constructor(resp: NotionBlockInterfaces.IHeading3Block) {
     super();
+    this.type = "Heading3";
+
     this.texts = [];
     resp.heading_3.text.map( (text) => {
       this.texts.push( new Text(text) )
@@ -77,6 +82,8 @@ export class Code extends Block {
 
   constructor(resp: NotionBlockInterfaces.ICodeBlock) {
     super();
+    this.type = "Code";
+
     this.texts = [];
     resp.code.text.map( (text: NotionBlockInterfaces.IText) => {
       this.texts.push( new Text(text) )
@@ -94,6 +101,8 @@ export class Image extends Block {
 
   constructor(resp: NotionBlockInterfaces.IImageBlock) {
     super();
+    this.type = "Image";
+
     const fileType = resp.image.type;
     this.url = resp.image[fileType].url;
   }
@@ -105,6 +114,8 @@ export class Callout extends Block {
 
   constructor(resp: NotionBlockInterfaces.ICalloutBlock) {
     super();
+    this.type = "Callout";
+
     this.texts = [];
     resp.callout.text.map( (text: NotionBlockInterfaces.IText) => {
       this.texts.push( new Text(text) )
