@@ -19,6 +19,7 @@ const getList = async () => {
   const notion = new Client({
     auth: process.env.NOTION_TOKEN,
   });
+  console.log(process.env.NOTION_TOKEN);
   console.log(process.env.NOTION_BLOG_DATABASE)
 
   const response: QueryDatabaseResponse = await notion.databases.query({

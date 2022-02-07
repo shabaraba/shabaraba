@@ -95,7 +95,7 @@ export function PostSummary({postHead}: {postHead: NotionPostHead}) {
     >
       <BlogTags tags={['Engineering', 'Product']} />
       <Heading marginTop="1">
-        <NextLink href="/posts/[id]" as={'/posts/' + (postHead.id ?? postHead.id)} passHref>
+        <NextLink href="/posts/[id]" as={'/posts/' + (postHead.slug)} passHref>
           <LinkOverlay>
             {postHead.title}
           </LinkOverlay>
