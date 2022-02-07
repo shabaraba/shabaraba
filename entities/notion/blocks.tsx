@@ -3,6 +3,9 @@ import * as NotionBlockInterfaces from '../../interfaces/NotionApiResponses';
 export abstract class Block {
   public type: string;
   constructor() {}
+
+  // minifyするとクラス名が変わるので、クラス名からブロックの種別を
+  // 判断させるのは無理
 }
 
 export class Text {
