@@ -1,9 +1,4 @@
-import { Center, Spinner } from '@chakra-ui/react'
-import { useState, useEffect } from 'react'
-import axios from 'axios'
-import useSWR from 'swr'
 import { Container, Heading } from '@chakra-ui/react'
-import { getSortedPostsData } from '../../lib/posts'
 import PostListItem from './PostListItem'
 
 import type {
