@@ -1,8 +1,5 @@
-import { Center, Spinner } from '@chakra-ui/react'
 import Layout from '../../components/layout';
 import Block from '../../components/posts/Block';
-import axios from 'axios';
-import useSWR from 'swr';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import {v4 as uuidv4} from 'uuid';
@@ -10,7 +7,7 @@ import {v4 as uuidv4} from 'uuid';
 import * as NotionBlock from '../../entities/notion/blocks';
 
 import Notion from '../../lib/notions'
-import { GetStaticProps, InferGetStaticPropsType, GetStaticPaths } from 'next'
+import { InferGetStaticPropsType, GetStaticPaths } from 'next'
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
@@ -18,20 +15,7 @@ export default function Post({postBlockJson}: Props) {
   const router = useRouter();
 
   const postBlockList = Notion.createBlockList(postBlockJson);
-	// const { data, error } = useSWR(
-    // '/api/notion/posts/' + router.query.id,
-    // url => axios.get(url).then((res) => {
-      // return test(res.data);
-    // })
-  // )
-
-	// if (error)return <div>failed to load</div>
-	// if (!data)return (
-      // <Center h='100vh'>
-        // <Spinner />
-      // </Center>
-    // )
-console.log(postBlockList)
+  // console.log(postBlockList)
 
   return (
     <Layout>
@@ -69,17 +53,17 @@ export const getStaticPaths: GetStaticPaths = async () => {
 // server側で呼ばれる
 export const getStaticProps = async ({params}) => {
   const slug = params.id;
-  console.log("START-------[id]");
-  console.log(params);
-  console.log(slug);
+  // console.log("START-------[id]");
+  // console.log(params);
+  // console.log(slug);
   const token: string = process.env.NOTION_TOKEN;
   const databaseId: string = process.env.NOTION_BLOG_DATABASE;
   const notion: Notion = new Notion(token, databaseId);
   const postId: string = await notion.getPostIdBySlug(slug);
-  console.log(postId);
+  // console.log(postId);
   const postBlockList = await notion.getPostBlockListById(postId);
-  console.log(postBlockList);
-  console.log("END---------[id]");
+  // console.log(postBlockList);
+  // console.log("END---------[id]");
   return {
     props: {
       postBlockJson: postBlockList,

@@ -1,11 +1,10 @@
-import { Button, Box, List, ListItem, ListIcon } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
 import Head from 'next/head'
 import Layout, { siteTitle } from '../components/layout'
 import utilStyles from '../styles/utils.module.css'
-import Link from 'next/link'
 import PostList from '../components/posts/PostList'
 import Notion from '../lib/notions'
-import { GetStaticProps, InferGetStaticPropsType, GetStaticPaths } from 'next'
+import { InferGetStaticPropsType } from 'next'
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
@@ -36,9 +35,9 @@ export const getStaticProps = async () => {
   const notion = new Notion(token, databaseId);
   const allPostsData = await notion.getPostList();
 
-  console.log("START---------getStaticProps---------------")
-  console.log(allPostsData)
-  console.log("END-----------getStaticProps---------------")
+  // console.log("START---------getStaticProps---------------")
+  // console.log(allPostsData)
+  // console.log("END-----------getStaticProps---------------")
   return {
     props: {
       allPostsData: allPostsData,
