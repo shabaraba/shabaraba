@@ -1,7 +1,5 @@
 import * as Blocks from './blocks'
 
-// 文字列のままカスタムタグに指定するとhtmlタグとして読まれてしまう
-// そのため文字列とコンポーネントを紐付ける層が必要
 const Component = {
   Paragraph: Blocks.Paragraph,
   Heading1: Blocks.Heading1,
@@ -13,10 +11,7 @@ const Component = {
 }
 
 export default function Block({entity}: {entity: any}) {
-  console.log("rending block...")
-  console.log(entity)
   const BlockComponent = Component[entity.type]
-  console.log(BlockComponent)
   return <BlockComponent entity={ entity } />
 }
 
