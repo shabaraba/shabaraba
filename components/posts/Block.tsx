@@ -11,6 +11,7 @@ const Component = {
 }
 
 export default function Block({entity}: {entity: any}) {
+  // console.log(entity)
   const BlockComponent = Component[entity.type]
   return <BlockComponent entity={ entity } />
 }

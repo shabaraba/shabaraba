@@ -42,28 +42,45 @@ export default class Notion {
             "direction":"descending"
         }
       ]
-    });
-    const postList: NotionPostHead[] = response.results.map((item: any) => {
-      let properties = item.properties;
-      let title: string = properties.Name.title[0]?.plain_text;
-      let tags: NotionTag[] = properties.Tags.multi_select;
-      let slug: string|null = properties.Slug.rich_text[0]?.plain_text ?? null;
-      // if (slug === null) {
-      //   slug = item.id;
-      // }
-      let icon: NotionIcon = item.icon;
-      return {
-        id: item.id,
-        title: title,
-        tags: tags,
-        slug: slug,
-        icon: icon,
-        createdAt: properties.Created?.created_time,
-        updatedAt: properties.Updated?.last_edited_time,
-      }
-    });
+    })
 
-    return postList;
+    const postList: NotionPostHead[] = response.results.map((item: any) => {
+      return this._convertPageResponseToNotionPostHead(item)
+    })
+
+    return postList
+  }
+
+  private _convertPageResponseToNotionPostHead(response: any): NotionPostHead {
+    const properties = response.properties
+    const title: string = properties.Name.title[0]?.plain_text
+    const tags: NotionTag[] = properties.Tags.multi_select
+    const slug: string|null = properties.Slug.rich_text[0]?.plain_text ?? null
+    const icon: NotionIcon = response.icon
+
+    return {
+      id: response.id,
+      title: title,
+      tags: tags,
+      slug: slug,
+      icon: icon,
+      createdAt: properties.Created?.created_time,
+      updatedAt: properties.Updated?.last_edited_time,
+    }
+  }
+
+  public async getTitleBlock(id: string): Promise<NotionPostHead> {
+    const response: any = await this._notion.pages.retrieve({
+      page_id: id
+    });
+    return this._convertPageResponseToNotionPostHead(response)
+  }
+
+  public async getPostById(id: string): Promise<[NotionPostHead, any]> {
+    const response: any = await this._notion.pages.retrieve({
+      page_id: id
+    });
+    return [this._convertPageResponseToNotionPostHead(response), response]
   }
 
   public async getPostBlockListById(id: string) {
@@ -73,7 +90,7 @@ export default class Notion {
     return response;
   }
 
-  public async getPostIdBySlug(slug: string) {
+  public async getPostIdBySlug(slug: string): Promise<string> {
     const response: QueryDatabaseResponse = await this._notion.databases.query({
       database_id: this._databaseId,
       filter: {
@@ -87,7 +104,6 @@ export default class Notion {
         }]
       }
     });
-    console.log(response)
     return response.results[0]?.id;
   }
 
@@ -130,5 +146,22 @@ export default class Notion {
     })
     return blocks;
   }
+
+  static convertPageResponseToNotionHeading1Block(response: any): NotionBlock.Heading1 {
+    let heading1: NotionBlockInterfaces.IHeading1Block = {
+      object: 'block',
+      id: response.id,
+      created_time: response.created_time,
+      last_edited_time: response.last_edited_time,
+      has_children: false,
+      archived: response.archived,
+      type: "heading_1",
+      heading_1: {
+        text: response.properties.Name.title,
+      }
+    }
+    return new NotionBlock.Heading1(heading1);
+  }
+
 }
 

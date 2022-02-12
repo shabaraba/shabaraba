@@ -64,12 +64,12 @@ export interface IParagraph {
 export interface IHeading1Block extends IBlock { heading_1: IHeading }
 export interface IHeading2Block extends IBlock { heading_2: IHeading }
 export interface IHeading3Block extends IBlock { heading_3: IHeading }
-export interface IHeading extends IBlock {
+export interface IHeading {
   text: IText[],
 }
 
 export interface ICalloutBlock extends IBlock { callout: ICallout }
-export interface ICallout extends IBlock {
+export interface ICallout {
   text: IText[];
   icon: IFileFile | IExternalFile | IEmoji;
   children: IBlock[];
