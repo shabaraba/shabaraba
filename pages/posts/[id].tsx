@@ -1,6 +1,7 @@
-import { Divider } from '@chakra-ui/react'
+import { Box, Divider } from '@chakra-ui/react'
 import Layout from '../../components/layout';
 import Block from '../../components/posts/Block';
+import Date from '../../components/date'
 import Head from 'next/head';
 import {v4 as uuidv4} from 'uuid';
 
@@ -23,7 +24,12 @@ export default function Post({post, pageJson, postBlockJson}: Props) {
         <title>{post.title}</title>
       </Head>
       <article>
-        <Block entity={titleBlock} />
+        <Box>
+          <Block entity={titleBlock} />
+          <Box textAlign={['right']}>
+            <Date dateString={post.updatedAt}/>
+          </Box>
+        </Box>
         <Divider />
         {postBlockList.map((block: NotionBlock.Block) =>
           <Block
@@ -65,7 +71,7 @@ export const getStaticProps = async ({params}) => {
   // console.log(postId);
   const [post, pageJson]: [NotionPostHead, any] = await notion.getPostById(postId);
   const postBlockList = await notion.getPostBlockListById(postId);
-  // console.log(postBlockList);
+  console.log(postBlockList);
   // console.log("END---------[id]");
 
   return {

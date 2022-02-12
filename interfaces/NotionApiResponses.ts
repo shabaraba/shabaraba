@@ -69,10 +69,8 @@ export interface IHeading {
 }
 
 export interface ICalloutBlock extends IBlock { callout: ICallout }
-export interface ICallout {
-  text: IText[];
+export interface ICallout extends IParagraph {
   icon: IFileFile | IExternalFile | IEmoji;
-  children: IBlock[];
 }
 
 export interface IFileBlock extends IBlock { file: IFileFile | IExternalFile }
