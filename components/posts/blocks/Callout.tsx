@@ -1,9 +1,16 @@
-import { HStack, Text, Code } from '@chakra-ui/react'
-import type { Paragraph as ParagraphEntity, } from '../../../entities/notion/blocks';
+import { Box, HStack, Text } from '@chakra-ui/react'
+import type { Callout as CalloutEntity } from '../../../entities/notion/blocks';
+import { Paragraph } from './Paragraph'
 
-export function Callout({entity}: {entity: ParagraphEntity}) {
+export function Callout({entity}: {entity: CalloutEntity}) {
   return (
-    <HStack>
+    <HStack
+      backgroundColor='gray.50'
+    >
+      <Box>
+        <Text>{entity.icon}</Text>
+      </Box>
+        <Paragraph entity={entity} />
     </HStack>
   )
 }
