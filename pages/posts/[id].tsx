@@ -71,14 +71,14 @@ export const getStaticProps = async ({params}) => {
   // console.log(postId);
   const [post, pageJson]: [NotionPostHead, any] = await notion.getPostById(postId);
   const postBlockList = await notion.getPostBlockListById(postId);
-  console.log(postBlockList);
+  // TODO:linkがあればOGPを取得してbookmarkブロックに入れる
   // console.log("END---------[id]");
 
   return {
     props: {
       post: post,
       pageJson: pageJson,
-      postBlockJson: postBlockList,
+      postBlockJson: postBlockList.serialize(),
     },
     revalidate: 1 * 60
   }
