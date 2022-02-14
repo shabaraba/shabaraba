@@ -83,11 +83,11 @@ export default class Notion {
     return [this._convertPageResponseToNotionPostHead(response), response]
   }
 
-  public async getPostBlockListById(id: string) {
+  public async getPostBlockListById(id: string): Promise<NotionBlockInterfaces.IRetrieveBlockChildrenResponse> {
     const response: ListBlockChildrenResponse = await this._notion.blocks.children.list({
       block_id: id
     });
-    return response;
+    return Notion.createInterfaceList(response);
   }
 
   public async getPostIdBySlug(slug: string): Promise<string> {
@@ -107,42 +107,10 @@ export default class Notion {
     return response.results[0]?.id;
   }
 
-  static createBlockList(response: ListBlockChildrenResponse) {
-    let blocks: Array<NotionBlock.Block> = [];
-    response.results.map((item: any) => {
-      let itemType = item.type;
-      switch (itemType) {
-        case 'paragraph':
-          let paragraph: NotionBlockInterfaces.IParagraphBlock = item;
-          blocks.push(new NotionBlock.Paragraph(paragraph));
-          break;
-        case 'heading_1':
-          let heading1: NotionBlockInterfaces.IHeading1Block = item;
-          blocks.push(new NotionBlock.Heading1(heading1));
-          break;
-        case 'heading_2':
-          let heading2: NotionBlockInterfaces.IHeading2Block = item;
-          blocks.push(new NotionBlock.Heading2(heading2));
-          break;
-        case 'heading_3':
-          let heading3: NotionBlockInterfaces.IHeading3Block = item;
-          blocks.push(new NotionBlock.Heading3(heading3));
-          break;
-        case 'callout':
-          let callout: NotionBlockInterfaces.ICalloutBlock = item;
-          blocks.push(new NotionBlock.Callout(callout));
-          break;
-        case 'code':
-          let code: NotionBlockInterfaces.ICodeBlock = item;
-          blocks.push(new NotionBlock.Code(code));
-          break;
-        case 'image':
-          let image: NotionBlockInterfaces.IImageBlock = item;
-          blocks.push(new NotionBlock.Image(image));
-          break;
-        default:
-          break;
-      }
+  static createInterfaceList(response: ListBlockChildrenResponse): NotionBlockInterfaces.IRetrieveBlockChildrenResponse {
+    let blocks: NotionBlockInterfaces.IRetrieveBlockChildrenResponse = {object: "list", results: []};
+    response.results.map((item: NotionBlockInterfaces.BlockType) => {
+      blocks.results.push(item)
     })
     return blocks;
   }

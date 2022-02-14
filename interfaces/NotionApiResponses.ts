@@ -1,21 +1,20 @@
-export interface IBlock {
+export type IBlock = {
     object: 'block';
     id: string;
     created_time: string;
     last_edited_time: string;
     has_children: boolean;
     archived: boolean;
-    type: "paragraph" | "heading_1" | "heading_2" | "heading_3" | "bulleted_list_item" | "numbered_list_item" | "to_do" | "toggle" | "child_page" | "child_database" | "embed" | "image" | "video" | "file" | "pdf" | "bookmark" | "callout" | "quote" | "equation" | "divider" | "table_of_contents" | "column" | "column_list" | "link_preview" | "synced_block" | "template" | "link_to_page" | "table" | "table_row" | "unsupported";
 }
 
-export interface IRichText {
+export type IRichText = {
   plain_text: string;
   href: string;
   annotations: Annotations;
   type: "text" | "mention" | "equation";
 }
 
-export interface Annotations {
+export type Annotations = {
   bold: boolean;
   italic: boolean;
   strikethrough: boolean;
@@ -44,7 +43,7 @@ export interface Annotations {
   ;
 }
 
-export interface IText extends IRichText {
+export type IText = IRichText & {
   text: {
     content?: string;
     link?: string;
@@ -52,64 +51,86 @@ export interface IText extends IRichText {
 }
 
 // TODO
-export interface IMention extends IRichText { }
-export interface IEquation extends IRichText { }
+export type IMention = IRichText
+export type IEquation = IRichText & { type: "equation" }
 
-export interface IParagraphBlock extends IBlock { paragraph: IParagraph }
-export interface IParagraph {
+export type IParagraphBlock = IBlock & { type: "paragraph", paragraph: IParagraph }
+export type IParagraph = {
   text: IText[],
   children: IBlock[],
 }
 
-export interface IHeading1Block extends IBlock { heading_1: IHeading }
-export interface IHeading2Block extends IBlock { heading_2: IHeading }
-export interface IHeading3Block extends IBlock { heading_3: IHeading }
-export interface IHeading {
+export type IHeading1Block = IBlock & { type: "heading_1", heading_1: IHeading }
+export type IHeading2Block = IBlock & { type: "heading_2", heading_2: IHeading }
+export type IHeading3Block = IBlock & { type: "heading_3", heading_3: IHeading }
+export type IHeading = {
   text: IText[],
 }
 
-export interface ICalloutBlock extends IBlock { callout: ICallout }
-export interface ICallout extends IParagraph {
+export type ICalloutBlock = IBlock & { type: "callout", callout: ICallout }
+export type ICallout = IParagraph & {
   icon: IFileFile | IExternalFile | IEmoji;
 }
 
-export interface IFileBlock extends IBlock { file: IFileFile | IExternalFile }
-export interface IFileObject {
+export type IFileBlock = IBlock & { type: "file", file: IFileFile | IExternalFile }
+export type IFileObject = {
   type: "file" | "external";
 }
-export interface IFileFile extends IFileObject { file: IFile }
-export interface IFile {
+export type IFileFile = IFileObject & { file: IFile }
+export type IFile = {
   url: string;
   expiry_time: string;
 }
-export interface IExternalFile extends IFileObject { external: IExternal }
-export interface IExternal {
+export type IExternalFile = IFileObject & { external: IExternal }
+export type IExternal = {
   url: string;
 }
 
-export interface IEmoji {
+export type IEmoji = {
   emoji: string;
 }
 
-export interface ICodeBlock extends IBlock { code: ICode }
-export interface ICode {
+export type ICodeBlock = IBlock & { type: "code", code: ICode }
+export type ICode = {
   text: IText[];
   caption?: IText[];
   language?: "abap" | "arduino" | "bash" | "basic" | "c" | "clojure" | "coffeescript" | "c++" | "c#" | "css" | "dart" | "diff" | "docker" | "elixir" | "elm" | "erlang" | "flow" | "fortran" | "f#" | "gherkin" | "glsl" | "go" | "graphql" | "groovy" | "haskell" | "html" | "java" | "javascript" | "json" | "julia" | "kotlin" | "latex" | "less" | "lisp" | "livescript" | "lua" | "makefile" | "markdown" | "markup" | "matlab" | "mermaid" | "nix" | "objective-c" | "ocaml" | "pascal" | "perl" | "php" | "plain text" | "powershell" | "prolog" | "protobuf" | "python" | "r" | "reason" | "ruby" | "rust" | "sass" | "scala" | "scheme" | "scss" | "shell" | "sql" | "swift" | "typescript" | "vb.net" | "verilog" | "vhdl" | "visual basic" | "webassembly" | "xml" | "yaml" |  "java/c/c++/c#";
 }
 
-export interface IImageBlock extends IBlock { image: IFileFile | IExternalFile }
+export type IImageBlock = IBlock & { type: "image", image: IFileFile | IExternalFile }
 
-export interface IRetrieveBlockChildrenResponse {
-  object: "list";
-  results: Array<
+export type IBulletedListItemBlock = IBlock & { type: "bulleted_list_item", bulleted_list_item: IParagraph}
+export type INumberedListItemBlock = IBlock & { type: "numbered_list_item", numbered_list_item: IParagraph}
+export type IQuoteBlock = IBlock & { type: "quote", quote: IParagraph}
+
+export type IBookmarkBlock = IBlock & { type: "bookmark", bookmark: IBookmark}
+export type IBookmark = {
+  url: string
+  caption?: IText[]
+  ogp?: IOgp // 取得時は存在しない、後から取得する
+
+}
+export type IOgp = {
+  pageTitle?: string
+  siteTitle?: string
+  imageUrl?: string
+}
+
+export type BlockType =
     IParagraphBlock |
     IHeading1Block |
     IHeading2Block |
     IHeading3Block |
+    ICodeBlock |
     ICalloutBlock |
     IFileBlock |
     IImageBlock |
-    ICodeBlock
-  >;
+    IBulletedListItemBlock |
+    INumberedListItemBlock |
+    IQuoteBlock |
+    IBookmarkBlock
+export type IRetrieveBlockChildrenResponse = {
+  object: "list";
+  results: Array<BlockType>;
 }
+

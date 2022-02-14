@@ -14,7 +14,7 @@ import { InferGetStaticPropsType, GetStaticPaths } from 'next'
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 export default function Post({post, pageJson, postBlockJson}: Props) {
-  const postBlockList = Notion.createBlockList(postBlockJson)
+  const postBlockList = NotionBlock.BlockList.deserialize(postBlockJson)
   const titleBlock: NotionBlock.Heading1 = Notion.convertPageResponseToNotionHeading1Block(pageJson)
   // console.log(postBlockList)
 
@@ -31,7 +31,7 @@ export default function Post({post, pageJson, postBlockJson}: Props) {
           </Box>
         </Box>
         <Divider />
-        {postBlockList.map((block: NotionBlock.Block) =>
+        {postBlockList.data.map((block: NotionBlock.Block) =>
           <Block
             key = {uuidv4()}
             entity={block} />
@@ -78,7 +78,7 @@ export const getStaticProps = async ({params}) => {
     props: {
       post: post,
       pageJson: pageJson,
-      postBlockJson: postBlockList.serialize(),
+      postBlockJson: postBlockList,
     },
     revalidate: 1 * 60
   }
