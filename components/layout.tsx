@@ -17,8 +17,8 @@ export default function Layout({
 }) {
   return (
     <Container
-      p = {10}
-      maxW = 'container.xl'
+      p = {50}
+      maxW = 'container.lg'
       bg = 'gray.50'
     >
       <Head>
