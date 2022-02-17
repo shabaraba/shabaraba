@@ -57,7 +57,7 @@ export type IEquation = IRichText & { type: "equation" }
 export type IParagraphBlock = IBlock & { type: "paragraph", paragraph: IParagraph }
 export type IParagraph = {
   text: IText[],
-  children: IBlock[],
+  children: IRetrieveBlockChildrenResponse
 }
 
 export type IHeading1Block = IBlock & { type: "heading_1", heading_1: IHeading }
@@ -111,9 +111,11 @@ export type IBookmark = {
 
 }
 export type IOgp = {
-  pageTitle?: string
   siteTitle?: string
-  imageUrl?: string
+  pageTitle?: string
+  pageDescription?: string
+  siteUrl?: string
+  thumbnailUrl?: string
 }
 
 export type BlockType =
@@ -131,6 +133,6 @@ export type BlockType =
     IBookmarkBlock
 export type IRetrieveBlockChildrenResponse = {
   object: "list";
-  results: Array<BlockType>;
+  results: BlockType[];
 }
 

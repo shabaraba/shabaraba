@@ -10,6 +10,9 @@ import type {
   NotionIcon,
 } from '../entities/notion_entities';
 
+import axios from 'axios'
+import { JSDOM } from "jsdom"
+
 import * as NotionBlock from '../entities/notion/blocks';
 import * as NotionBlockInterfaces from '../interfaces/NotionApiResponses';
 
@@ -87,7 +90,14 @@ export default class Notion {
     const response: ListBlockChildrenResponse = await this._notion.blocks.children.list({
       block_id: id
     });
-    return Notion.createInterfaceList(response);
+    let blocks: NotionBlockInterfaces.IRetrieveBlockChildrenResponse = Notion.createInterfaceList(response);
+
+    for(let block of blocks.results) {
+      if (block.has_children === true) {
+        block[block.type].children = await this.getPostBlockListById(block.id)
+      }
+    }
+    return blocks
   }
 
   public async getPostIdBySlug(slug: string): Promise<string> {
@@ -112,7 +122,7 @@ export default class Notion {
     response.results.map((item: NotionBlockInterfaces.BlockType) => {
       blocks.results.push(item)
     })
-    return blocks;
+    return blocks
   }
 
   static convertPageResponseToNotionHeading1Block(response: any): NotionBlock.Heading1 {
@@ -128,8 +138,50 @@ export default class Notion {
         text: response.properties.Name.title,
       }
     }
-    return new NotionBlock.Heading1(heading1);
+    return new NotionBlock.Heading1(heading1)
   }
 
+  static async setOGPToBookmarkBlocks(blockList: NotionBlockInterfaces.IRetrieveBlockChildrenResponse)
+  : Promise<NotionBlockInterfaces.IRetrieveBlockChildrenResponse> {
+
+    const blocks: NotionBlockInterfaces.IRetrieveBlockChildrenResponse = {object: "list", results: []};
+    for (let item of blockList.results) {
+      if (item.has_children === true) { 
+        item[item.type].children = await this.setOGPToBookmarkBlocks(item[item.type].children)
+      }
+      if (item.type === 'bookmark') {
+        let ogp:NotionBlockInterfaces.IOgp = await Notion.getOGP(item.bookmark.url)
+        item.bookmark.ogp = ogp
+      }
+      blocks.results.push(item)
+    }
+    return blocks
+  }
+
+  static async getOGP(url: string): Promise<NotionBlockInterfaces.IOgp> {
+    const response = await axios.get(url)
+    const data = response.data
+    // console.log(data)
+    const dom = new JSDOM(data)
+    const metaList = dom.window.document.getElementsByTagName("meta");
+    let ogp:NotionBlockInterfaces.IOgp = {siteUrl: url}
+    Array.from(metaList).map((meta: HTMLMetaElement) => {
+      let name = meta.getAttribute("name")
+      if (typeof name == "string") {
+          if (name.match("site_name")) ogp.siteTitle = meta.getAttribute("content")
+          if (name.match("title")) ogp.pageTitle = meta.getAttribute("content")
+          if (name.match("description")) ogp.pageDescription = meta.getAttribute("content")
+          if (name.match("image")) ogp.thumbnailUrl = meta.getAttribute("content")
+      }
+      let property = meta.getAttribute("property"); // OGPが設定されるのはpropertyなのでこちらが優先
+      if (typeof property == "string") {
+          if (property === "og:site_name") ogp.siteTitle = meta.getAttribute("content")
+          if (property === "og:title") ogp.pageTitle = meta.getAttribute("content")
+          if (property === "og:description") ogp.pageDescription = meta.getAttribute("content")
+          if (property === "og:image") ogp.thumbnailUrl = meta.getAttribute("content")
+      }
+    })
+    return ogp
+  }
 }
 

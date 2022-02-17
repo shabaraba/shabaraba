@@ -2,6 +2,7 @@ import React from "react"
 import { Text, Code } from '@chakra-ui/react'
 import type { Paragraph as ParagraphEntity, } from '../../../entities/notion/blocks';
 
+import {v4 as uuidv4} from 'uuid';
 import _ from 'lodash'
 
 type Props = {
@@ -42,11 +43,10 @@ export function Paragraph({entity}: {entity: ParagraphEntity}) {
   const RichText = ({text}: any) => {
     if (text.content == null) return <br />
 
+
     let content = text.content ?? ''
-    console.log(content)
     const color = text.annotations.color + '.500'
     const backgroundColor = (text.annotations.color + '.500').split('_background').length > 1 ? (text.annotations.color + '.500').split('_background')[0] : null
-    console.log(text)
     return (
       <Bold
         enable={text.annotations.bold}
@@ -86,8 +86,6 @@ export function Paragraph({entity}: {entity: ParagraphEntity}) {
     let lineEntities = []
     entity.texts.forEach(text => {
       let eachLine = text.content.split('\n')
-      console.log('test---------------------------')
-      console.log(eachLine)
       eachLine.forEach(line => {
         let lineEntity = _.cloneDeep(text)
         lineEntity.content = line
@@ -103,7 +101,7 @@ export function Paragraph({entity}: {entity: ParagraphEntity}) {
 
   return (
     <Text>
-      {getLineEntities(entity).map(text => <RichText text={text} /> )}
+      {getLineEntities(entity).map(text => <RichText key={uuidv4()} text={text} /> )}
     </Text>
   )
 }

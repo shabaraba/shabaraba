@@ -14,8 +14,10 @@ import { InferGetStaticPropsType, GetStaticPaths } from 'next'
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 export default function Post({post, pageJson, postBlockJson}: Props) {
-  const postBlockList = NotionBlock.BlockList.deserialize(postBlockJson)
-  const titleBlock: NotionBlock.Heading1 = Notion.convertPageResponseToNotionHeading1Block(pageJson)
+  const postBlockList = NotionBlock.BlockList.deserialize(postBlockJson.results)
+  // console.log("---------------------------------------------[object]");
+  // console.log(JSON.stringify(postBlockList, null, " "))
+  // const titleBlock: NotionBlock.Heading1 = Notion.convertPageResponseToNotionHeading1Block(pageJson)
   // console.log(postBlockList)
 
   return (
@@ -25,7 +27,6 @@ export default function Post({post, pageJson, postBlockJson}: Props) {
       </Head>
       <article>
         <Box>
-          <Block entity={titleBlock} />
           <Box textAlign={['right']}>
             <Date dateString={post.updatedAt}/>
           </Box>
@@ -71,14 +72,16 @@ export const getStaticProps = async ({params}) => {
   // console.log(postId);
   const [post, pageJson]: [NotionPostHead, any] = await notion.getPostById(postId);
   const postBlockList = await notion.getPostBlockListById(postId);
-  // TODO:linkがあればOGPを取得してbookmarkブロックに入れる
+  const postBlockListWithOGP = await Notion.setOGPToBookmarkBlocks(postBlockList)
+  // console.log("---------------------------------------------[id]");
+  // console.log(JSON.stringify(postBlockListWithOGP, null, " "))
   // console.log("END---------[id]");
 
   return {
     props: {
       post: post,
       pageJson: pageJson,
-      postBlockJson: postBlockList,
+      postBlockJson: postBlockListWithOGP,
     },
     revalidate: 1 * 60
   }
