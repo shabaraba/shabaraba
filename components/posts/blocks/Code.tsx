@@ -12,7 +12,7 @@ export function Code({entity}: {entity: CodeEntity}) {
       <SyntaxHighlighter
         language={entity.language}
         style={atomOneDark}
-        wrapLongLines={true}
+        wrapLongLines={false}
         showLineNumbers={true}
         customStyle={{
           borderRadius: 10,
