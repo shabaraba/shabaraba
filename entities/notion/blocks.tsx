@@ -19,12 +19,12 @@ export class BlockList {
     return JSON.stringify(this.data)
   }
 
-  static deserialize(input: NotionBlockInterfaces.BlockType[]): BlockList {
+  static deserialize(input: NotionBlockInterfaces.BlockType[], nest: number = 0): BlockList {
     let isInBulletedList: boolean = false
     let isInNumberedList: boolean = false
 
-    let bulletedList = new BulletedList("id")
-    let numberedList = new NumberedList("id")
+    let bulletedList = new BulletedList("id", nest)
+    let numberedList = new NumberedList("id", nest)
 
     let blocks: BlockList = new BlockList()
     input.map((item: NotionBlockInterfaces.BlockType) => {
@@ -32,12 +32,12 @@ export class BlockList {
       if (isInBulletedList && item.type != 'bulleted_list_item') {
         isInBulletedList = false
         blocks.append(bulletedList)
-        bulletedList = new BulletedList("id")
+        bulletedList = new BulletedList("id", nest)
       }
       if (isInNumberedList && item.type != 'numbered_list_item') {
         isInNumberedList = false
         blocks.append(numberedList)
-        numberedList = new NumberedList("id")
+        numberedList = new NumberedList("id", nest)
       }
 
       switch (item.type) {
@@ -67,15 +67,17 @@ export class BlockList {
           break;
         case 'bulleted_list_item':
           isInBulletedList = true
-          // console.log(item.bulleted_list_item.text[0].plain_text)
-          bulletedList.appendItem(new BulletedListItem(item as NotionBlockInterfaces.IBulletedListItemBlock))
+          bulletedList.appendItem(new BulletedListItem(item as NotionBlockInterfaces.IBulletedListItemBlock, nest))
           break;
         case 'numbered_list_item':
           isInNumberedList = true
-          numberedList.appendItem(new NumberedListItem(item as NotionBlockInterfaces.INumberedListItemBlock))
+          numberedList.appendItem(new NumberedListItem(item as NotionBlockInterfaces.INumberedListItemBlock, nest))
           break;
         case 'quote':
           blocks.append(new Quote(item as NotionBlockInterfaces.IQuoteBlock));
+          break;
+        case 'embed':
+          blocks.append(new Embed(item as NotionBlockInterfaces.IEmbedBlock));
           break;
         // case 'table':
           // break;
@@ -97,10 +99,12 @@ export class BlockList {
 }
 
 export abstract class Block {
-  public id: string;
-  public type: string;
-  constructor(id: string) {
+  public id: string
+  public type: string
+  public nest: number = 0
+  constructor(id: string, nest?: number) {
     this.id = id
+    this.nest = nest ?? 0
   }
 
   // minifyするとクラス名が変わるので、クラス名からブロックの種別を
@@ -125,8 +129,8 @@ export class Paragraph extends Block {
   public texts: Text[]
   public children: Block[]
 
-  constructor(resp: NotionBlockInterfaces.IParagraphBlock) {
-    super(resp.id)
+  constructor(resp: NotionBlockInterfaces.IParagraphBlock, nest?: number) {
+    super(resp.id, nest)
     this.type = "Paragraph"
 
     this.texts = []
@@ -135,12 +139,8 @@ export class Paragraph extends Block {
     })
     this.children = []
     if (resp.paragraph.children?.results?.length > 0) {
-      console.log("---------nest in-----------")
-      console.log(JSON.stringify(resp.paragraph.children, null, ' '))
-      const childBlockList = BlockList.deserialize(resp.paragraph.children.results)
+      const childBlockList = BlockList.deserialize(resp.paragraph.children.results, this.nest + 1)
       this.children = childBlockList.data
-      // console.log(JSON.stringify(childBlockList, null, ' '))
-      console.log("---------nest out-----------")
     }
   }
 }
@@ -275,8 +275,8 @@ export class Quote extends Paragraph {
 export class List extends Block {
   public listItem: ListItem[] = []
 
-  constructor(id: string) {
-    super(id)
+  constructor(id: string, nest: number) {
+    super(id, nest)
   }
 
   public appendItem(item: ListItem) {
@@ -285,20 +285,20 @@ export class List extends Block {
 }
 
 export class ListItem extends Paragraph {
-  constructor(resp: NotionBlockInterfaces.IParagraphBlock) {
-    super(resp)
+  constructor(resp: NotionBlockInterfaces.IParagraphBlock, nest?: number) {
+    super(resp, nest)
   }
 }
 
 export class BulletedList extends List {
-  constructor(id: string) {
-    super(id);
+  constructor(id: string, nest: number) {
+    super(id, nest);
     this.type = "BulletedList";
   }
 }
 
 export class BulletedListItem extends ListItem {
-  constructor(resp: NotionBlockInterfaces.IBulletedListItemBlock) {
+  constructor(resp: NotionBlockInterfaces.IBulletedListItemBlock, nest?: number) {
     const paragraph: NotionBlockInterfaces.IParagraphBlock = {
       object: 'block',
       id: resp.id,
@@ -312,23 +312,20 @@ export class BulletedListItem extends ListItem {
         children: resp.bulleted_list_item.children,
       }
     }
-    // console.log("----------------------------------")
-    super(paragraph);
+    super(paragraph, nest);
     this.type = "BulletedListItem";
-    // console.log(paragraph)
-    // console.log(JSON.stringify(this, null, " "))
   }
 }
 
 export class NumberedList extends List {
-  constructor(id: string) {
-    super(id);
+  constructor(id: string, nest: number) {
+    super(id, nest);
     this.type = "NumberedList";
   }
 }
 
 export class NumberedListItem extends Paragraph {
-  constructor(resp: NotionBlockInterfaces.INumberedListItemBlock) {
+  constructor(resp: NotionBlockInterfaces.INumberedListItemBlock, nest?: number) {
     const paragraph: NotionBlockInterfaces.IParagraphBlock = {
       object: 'block',
       id: resp.id,
@@ -342,7 +339,7 @@ export class NumberedListItem extends Paragraph {
         children: resp.numbered_list_item.children,
       }
     }
-    super(paragraph);
+    super(paragraph, nest);
     this.type = "NumberedListItem";
   }
 }
@@ -363,5 +360,18 @@ export class Bookmark extends Block {
     this.pageDescription = resp.bookmark.ogp.pageDescription
     this.thumbnailUrl = resp.bookmark.ogp.thumbnailUrl
   }
-
 }
+export class Embed extends Block {
+  public url: string
+
+  constructor(resp: NotionBlockInterfaces.IEmbedBlock) {
+    super(resp.id)
+    this.type = "Embed";
+    this.url = resp.embed.url
+  }
+
+  public isTweet() {
+    return this.url.match('twitter')
+  }
+}
+

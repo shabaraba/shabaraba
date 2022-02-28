@@ -118,6 +118,11 @@ export type IOgp = {
   thumbnailUrl?: string
 }
 
+export type IEmbedBlock = IBlock & {type: "embed", embed: IEmbed}
+export type IEmbed = {
+  url: string
+}
+
 export type BlockType =
     IParagraphBlock |
     IHeading1Block |
@@ -130,7 +135,9 @@ export type BlockType =
     IBulletedListItemBlock |
     INumberedListItemBlock |
     IQuoteBlock |
-    IBookmarkBlock
+    IBookmarkBlock |
+    IEmbedBlock
+
 export type IRetrieveBlockChildrenResponse = {
   object: "list";
   results: BlockType[];

@@ -9,6 +9,7 @@ import { BulletedList, BulletedListItem } from './BulletedList'
 import { NumberedList, NumberedListItem } from './NumberedList'
 import { Quote } from './Quote'
 import { Bookmark } from './Bookmark'
+import { Embed } from './Embed'
 
 export default {
   Paragraph: Paragraph,
@@ -24,5 +25,6 @@ export default {
   NumberedListItem: NumberedListItem,
   Quote: Quote,
   Bookmark: Bookmark,
+  Embed: Embed,
 }
 

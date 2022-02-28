@@ -1,107 +1,136 @@
 import React from "react"
-import { Text, Code } from '@chakra-ui/react'
+import { Text, Code, Link, HStack } from '@chakra-ui/react'
+import { ExternalLinkIcon } from '@chakra-ui/icons'
 import type { Paragraph as ParagraphEntity, } from '../../../entities/notion/blocks';
 
 import {v4 as uuidv4} from 'uuid';
 import _ from 'lodash'
 
 type Props = {
-  enable: boolean,
+  apply?: boolean,
   color: string,
   backgroundColor: string,
+  url?: string,
   children?: React.ReactNode
 }
 
 export function Paragraph({entity}: {entity: ParagraphEntity}) {
   if (entity.texts.length === 0) return <br />
 
-  const Bold: React.VFC<Props> = ({enable, color, backgroundColor, children}: Props) => {
-    if (enable) return <Text as='strong' fontWeight='bold' color={color} backgroundColor={backgroundColor} >{children}</Text>
+  const LinkText: React.VFC<Props> = ({color, backgroundColor, url, children}: Props) => {
+    if (url != null) return <Link href={url} color={color} background={backgroundColor} isExternal>{children}<ExternalLinkIcon mx='2px' /></Link>
     return <>{children}</>
   }
 
-  const Italic: React.VFC<Props> = ({enable, color, backgroundColor, children}: Props) => {
-    if (enable) return <Text as='i' color={color} backgroundColor={backgroundColor} >{children}</Text>
+  const Bold: React.VFC<Props> = ({apply, color, backgroundColor, children}: Props) => {
+    if (apply) return <Text as='strong' fontWeight='bold' color={color} background={backgroundColor} >{children}</Text>
     return <>{children}</>
   }
 
-  const Underline: React.VFC<Props> = ({enable, color, backgroundColor, children}: Props) => {
-    if (enable) return <Text as='u' color={color} backgroundColor={backgroundColor} >{children}</Text>
+  const Italic: React.VFC<Props> = ({apply, color, backgroundColor, children}: Props) => {
+    if (apply) return <Text as='i' color={color} background={backgroundColor} >{children}</Text>
     return <>{children}</>
   }
 
-  const Strikethrough: React.VFC<Props> = ({enable, color, backgroundColor, children}: Props) => {
-    if (enable) return <Text as='s' color={color} backgroundColor={backgroundColor} >{children}</Text>
+  const Underline: React.VFC<Props> = ({apply, color, backgroundColor, children}: Props) => {
+    if (apply) return <Text as='u' color={color} background={backgroundColor} >{children}</Text>
     return <>{children}</>
   }
 
-  const CodeText: React.VFC<Props> = ({enable, color, backgroundColor, children}: Props) => {
-    if (enable) return <Code color={color} backgroundColor={backgroundColor} >{children}</Code>
+  const Strikethrough: React.VFC<Props> = ({apply, color, backgroundColor, children}: Props) => {
+    if (apply) return <Text as='s' color={color} background={backgroundColor} >{children}</Text>
+    return <>{children}</>
+  }
+
+  const CodeText: React.VFC<Props> = ({apply, color, backgroundColor, children}: Props) => {
+    if (apply) return <Code color={color} background={backgroundColor} >{children}</Code>
     return <>{children}</>
   }
 
   const RichText = ({text}: any) => {
     if (text.content == null) return <br />
 
-
     let content = text.content ?? ''
-    const color = text.annotations.color + '.500'
-    const backgroundColor = (text.annotations.color + '.500').split('_background').length > 1 ? (text.annotations.color + '.500').split('_background')[0] : null
+    let color = null
+    let backgroundColor = null
+    if (text.annotations.color.match('_background')) backgroundColor = text.annotations.color.split('_background')[0] + '.500'
+    else color = text.annotations.color + '.500'
+    // console.log("color: " + color + ", background: " + backgroundColor)
     return (
-      <Bold
-        enable={text.annotations.bold}
+      <Text
+        as='span'
         color={color}
         backgroundColor={backgroundColor}
       >
-        <Italic 
-          enable={text.annotations.italic}
+        <LinkText
           color={color}
           backgroundColor={backgroundColor}
+          url={text.href}
         >
-          <Underline 
-            enable={text.annotations.underline}
+          <Bold
+            apply={text.annotations.bold}
             color={color}
             backgroundColor={backgroundColor}
           >
-            <Strikethrough 
-              enable={text.annotations.strikethrough}
+            <Italic 
+              apply={text.annotations.italic}
               color={color}
               backgroundColor={backgroundColor}
             >
-              <CodeText 
-                enable={text.annotations.code}
+              <Underline 
+                apply={text.annotations.underline}
                 color={color}
                 backgroundColor={backgroundColor}
               >
-                {content}
-              </CodeText>
-            </Strikethrough>
-          </Underline>
-        </Italic>
-      </Bold>
+                <Strikethrough 
+                  apply={text.annotations.strikethrough}
+                  color={color}
+                  backgroundColor={backgroundColor}
+                >
+                  <CodeText 
+                    apply={text.annotations.code}
+                    color={color}
+                    backgroundColor={backgroundColor}
+                  >
+                    {content}
+                  </CodeText>
+                </Strikethrough>
+              </Underline>
+            </Italic>
+          </Bold>
+        </LinkText>
+      </Text>
     )
   }
   
   const getLineEntities = (entity: ParagraphEntity) => {
     let lineEntities = []
+    let wordEntities = []
     entity.texts.forEach(text => {
       let eachLine = text.content.split('\n')
-      eachLine.forEach(line => {
-        let lineEntity = _.cloneDeep(text)
-        lineEntity.content = line
-        lineEntities.push(lineEntity)
-        let endLineEntity = _.cloneDeep(text)
-        endLineEntity.content = null
-        lineEntities.push(endLineEntity)
+      eachLine.forEach((line, index) => {
+        // 各行ごとのword block
+        let wordEntity = _.cloneDeep(text)
+        wordEntity.content = line
+        wordEntities.push(wordEntity)
+        if (eachLine.length - 1 != index) {
+          lineEntities.push(wordEntities)
+          wordEntities = []
+        }
       })
-      lineEntities.pop()
     })
+    lineEntities.push(wordEntities)
     return lineEntities
   }
 
+  const lineEntities = getLineEntities(entity)
+  // console.log(JSON.stringify(lineEntities, null, ' '))
+
   return (
     <Text>
-      {getLineEntities(entity).map(text => <RichText key={uuidv4()} text={text} /> )}
+      {lineEntities.map((line:any) =>
+          <span key={uuidv4()}>{line.map((word:any) => <RichText key={uuidv4()} text={word} /> )} <br /></span>
+      )}
     </Text>
   )
 }
