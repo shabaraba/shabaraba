@@ -1,17 +1,8 @@
-import * as Blocks from './blocks'
-
-const Component = {
-  Paragraph: Blocks.Paragraph,
-  Heading1: Blocks.Heading1,
-  Heading2: Blocks.Heading2,
-  Heading3: Blocks.Heading3,
-  Code: Blocks.Code,
-  Callout: Blocks.Callout,
-  Image: Blocks.Image,
-}
+import BlockComponents from './blocks'
 
 export default function Block({entity}: {entity: any}) {
-  const BlockComponent = Component[entity.type]
+  // console.log(entity)
+  const BlockComponent = BlockComponents[entity.type]
   return <BlockComponent entity={ entity } />
 }
 
