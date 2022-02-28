@@ -3,7 +3,7 @@ import Head from 'next/head'
 import Layout, { siteTitle } from '../components/layout'
 import utilStyles from '../styles/utils.module.css'
 import PostList from '../components/posts/PostList'
-import Notion from '../lib/notions'
+import Notion from '../lib/backend/notions'
 import { InferGetStaticPropsType } from 'next'
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;

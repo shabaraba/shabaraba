@@ -10,30 +10,16 @@ interface CalloutMap{
 }
 
 export function Callout({entity}: {entity: CalloutEntity}) {
-  // console.log(entity)
-  const calloutMaps: CalloutMap[] = [
-    {
-      icon: '⚠',
-      name: 'WarningTwoIcon',
-      color: 'yellow.500'
-    },
-    {
-      icon: '💡',
-      name: 'WarningTwoIcon',
-      color: 'yellow.500'
-    },
-  ]
-
   return (
     <Grid
       mt={5}
       mb={5}
       p={2}
       borderRadius={10}
-      filter='drop-shadow(10px 10px 10px rgba(0,0,0,0.4))'
+      filter='drop-shadow(3px 3px 10px rgba(0,0,0,0.2))'
       backgroundColor = 'red.100'
       templateColumns='repeat(10, 1fr)'
-      gap={4}
+      gap={2}
     >
       <GridItem
         colSpan={1}
@@ -43,6 +29,8 @@ export function Callout({entity}: {entity: CalloutEntity}) {
       >
         <Text
           fontSize={36}
+          color='yellow.500'
+          fontWeight='bold'
         >
           {entity.icon}
         </Text>
@@ -51,9 +39,7 @@ export function Callout({entity}: {entity: CalloutEntity}) {
       <GridItem
         colStart={2}
         colEnd={11}
-        boxShadow='inner'
         p={2}
-        // filter='drop-shadow(-10px -10px 10px rgba(0,0,0,0.4))'
       >
         <Paragraph entity={entity} />
       </GridItem>

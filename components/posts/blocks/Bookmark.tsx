@@ -1,8 +1,6 @@
 import React from "react"
 import { LinkBox, LinkOverlay, Grid, GridItem, Text, Image } from '@chakra-ui/react'
-import NextLink from 'next/link'
 import type { Bookmark as BookmarkEntity } from '../../../entities/notion/blocks';
-import { Paragraph } from './Paragraph'
 
 export function Bookmark({entity}: {entity: BookmarkEntity}) {
   return (

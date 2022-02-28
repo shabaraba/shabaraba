@@ -1,4 +1,5 @@
 import { Client } from "@notionhq/client"
+
 import type {
   QueryDatabaseResponse,
   ListBlockChildrenResponse,
@@ -8,13 +9,13 @@ import type {
   NotionPostHead,
   NotionTag,
   NotionIcon,
-} from '../entities/notion_entities';
+} from '../../entities/notion_entities';
 
 import axios from 'axios'
 import { JSDOM } from "jsdom"
 
-import * as NotionBlock from '../entities/notion/blocks';
-import * as NotionBlockInterfaces from '../interfaces/NotionApiResponses';
+import * as NotionBlock from '../../entities/notion/blocks';
+import * as NotionBlockInterfaces from '../../interfaces/NotionApiResponses';
 
 export default class Notion {
   private _notion: Client;
@@ -84,6 +85,16 @@ export default class Notion {
       page_id: id
     });
     return [this._convertPageResponseToNotionPostHead(response), response]
+  }
+
+  public async getBlockById(id: string): Promise<NotionBlockInterfaces.BlockType> {
+    const response: any = await this._notion.blocks.retrieve({
+      block_id: id
+    });
+
+    const result: NotionBlockInterfaces.BlockType = response
+
+    return result
   }
 
   public async getPostBlockListById(id: string): Promise<NotionBlockInterfaces.IRetrieveBlockChildrenResponse> {
@@ -161,27 +172,25 @@ export default class Notion {
   static async getOGP(url: string): Promise<NotionBlockInterfaces.IOgp> {
     const response = await axios.get(url)
     const data = response.data
-    // console.log(data)
     const dom = new JSDOM(data)
     const metaList = dom.window.document.getElementsByTagName("meta");
     let ogp:NotionBlockInterfaces.IOgp = {siteUrl: url}
     Array.from(metaList).map((meta: HTMLMetaElement) => {
       let name = meta.getAttribute("name")
       if (typeof name == "string") {
-          if (name.match("site_name")) ogp.siteTitle = meta.getAttribute("content")
-          if (name.match("title")) ogp.pageTitle = meta.getAttribute("content")
-          if (name.match("description")) ogp.pageDescription = meta.getAttribute("content")
-          if (name.match("image")) ogp.thumbnailUrl = meta.getAttribute("content")
+        if (name.match("site_name")) ogp.siteTitle = meta.getAttribute("content")
+        if (name.match("title")) ogp.pageTitle = meta.getAttribute("content")
+        if (name.match("description")) ogp.pageDescription = meta.getAttribute("content")
+        if (name.match("image")) ogp.thumbnailUrl = meta.getAttribute("content")
       }
       let property = meta.getAttribute("property"); // OGPが設定されるのはpropertyなのでこちらが優先
-      if (typeof property == "string") {
-          if (property === "og:site_name") ogp.siteTitle = meta.getAttribute("content")
-          if (property === "og:title") ogp.pageTitle = meta.getAttribute("content")
-          if (property === "og:description") ogp.pageDescription = meta.getAttribute("content")
-          if (property === "og:image") ogp.thumbnailUrl = meta.getAttribute("content")
-      }
+      if (property === "og:site_name") ogp.siteTitle = meta.getAttribute("content")
+      if (property === "og:title") ogp.pageTitle = meta.getAttribute("content")
+      if (property === "og:description") ogp.pageDescription = meta.getAttribute("content")
+      if (property === "og:image") ogp.thumbnailUrl = meta.getAttribute("content")
     })
     return ogp
   }
 }
+
 
