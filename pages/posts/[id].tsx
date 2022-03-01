@@ -1,11 +1,12 @@
-import { Box, Grid, GridItem, Divider } from '@chakra-ui/react'
-import Layout from '../../components/layout';
-import Block from '../../components/posts/Block';
+import { Box, Grid, GridItem, Wrap, WrapItem } from '@chakra-ui/react'
+import Layout from '../../components/layout'
+import Block from '../../components/posts/Block'
 import Date from '../../components/date'
-import Head from 'next/head';
-import {v4 as uuidv4} from 'uuid';
+import Head from 'next/head'
+import {v4 as uuidv4} from 'uuid'
 
-import * as NotionBlock from '../../entities/notion/blocks';
+import * as NotionBlock from '../../entities/notion/blocks'
+import Tag from '../../components/posts/Tag'
 import { NotionPostHead } from '../../entities/notion_entities'
 
 import FrontendNotion from '../../lib/frontend/notions'
@@ -25,6 +26,13 @@ const LeftSideArea = ({post, titleBlock}: {post: NotionPostHead, titleBlock: Not
           <Box textAlign={['right']}>
             <Date dateString={post.updatedAt}/>
           </Box>
+          <Wrap>
+            {post.tags.map((tag) => (
+              <WrapItem>
+                <Tag entity={tag} />
+              </WrapItem>
+            ))}
+          </Wrap>
         </Sticky>
       </Box>
     </Box>
@@ -111,6 +119,7 @@ export const getStaticProps = async ({params}) => {
   const postId: string = await notion.getPostIdBySlug(slug);
   // console.log(postId);
   const [post, pageJson]: [NotionPostHead, any] = await notion.getPostById(postId);
+  // console.log(JSON.stringify(post))
   const postBlockList = await notion.getPostBlockListById(postId);
   const postBlockListWithOGP = await BackendNotion.setOGPToBookmarkBlocks(postBlockList)
   // console.log("---------------------------------------------[id]");
