@@ -1,4 +1,5 @@
 import { Box, Grid, GridItem, Wrap, WrapItem } from '@chakra-ui/react'
+import { useMediaQuery } from '@chakra-ui/react'
 import Layout from '../../components/layout'
 import Block from '../../components/posts/Block'
 import Date from '../../components/date'
@@ -58,6 +59,7 @@ const MainArea = ({post, postBlockList, titleBlock}: {post: NotionPostHead, post
 }
 
 export default function Post({post, pageJson, postBlockJson}: Props) {
+  const [isTwoColumns] = useMediaQuery('(min-width: 1024px)')
  
   const postBlockList = NotionBlock.BlockList.deserialize(postBlockJson.results)
   const titleBlock: NotionBlock.Heading1 = FrontendNotion.convertPageResponseToNotionHeading1Block(pageJson)
@@ -68,24 +70,34 @@ export default function Post({post, pageJson, postBlockJson}: Props) {
       <Head>
         <title>{post.title}</title>
       </Head>
-      <Grid
-        // templateRows='repeat(2, 1fr)'
-        templateColumns='repeat(12, 1fr)'
-        gap={4}
-        w='100%'
-      >
-        <GridItem
-          colSpan={3}
-        >
-          <LeftSideArea post={postHead} titleBlock={titleBlock}/>
-        </GridItem>
-        <GridItem
-          colSpan={9}
-          p={5}
-        >
-          <MainArea post={postHead} postBlockList={postBlockList} titleBlock={titleBlock}/>
-        </GridItem>
-      </Grid>
+      {isTwoColumns?
+        (
+          <Grid
+            templateColumns='repeat(12, 1fr)'
+            gap={4}
+            w='100%'
+          >
+            <GridItem
+              colSpan={3}
+            >
+              <LeftSideArea post={postHead} titleBlock={titleBlock}/>
+            </GridItem>
+            <GridItem
+              colSpan={9}
+              p={5}
+            >
+              <MainArea post={postHead} postBlockList={postBlockList} titleBlock={titleBlock}/>
+            </GridItem>
+          </Grid>
+        )
+        :
+        (
+          <>
+            <LeftSideArea post={postHead} titleBlock={titleBlock}/>
+            <MainArea post={postHead} postBlockList={postBlockList} titleBlock={titleBlock}/>
+          </>
+        )
+      }
     </Layout>
   )
 }
