@@ -1,4 +1,4 @@
-import { Box, Divider } from '@chakra-ui/react'
+import { Box, Grid, GridItem, Divider } from '@chakra-ui/react'
 import Layout from '../../components/layout';
 import Block from '../../components/posts/Block';
 import Date from '../../components/date'
@@ -12,31 +12,72 @@ import FrontendNotion from '../../lib/frontend/notions'
 import BackendNotion from '../../lib/backend/notions'
 import { InferGetStaticPropsType, GetStaticPaths } from 'next'
 
+import Sticky from 'react-sticky-el'
+
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
+const LeftSideArea = ({post, titleBlock}: {post: NotionPostHead, titleBlock: NotionBlock.Heading1}) => {
+  return (
+    <Box>
+      <Box>
+        <Sticky>
+          <Block entity={titleBlock}/>
+          <Box textAlign={['right']}>
+            <Date dateString={post.updatedAt}/>
+          </Box>
+        </Sticky>
+      </Box>
+    </Box>
+  )
+}
+
+const RightSideArea = () => {
+  return (
+    <></>
+  )
+}
+
+const MainArea = ({post, postBlockList, titleBlock}: {post: NotionPostHead, postBlockList: NotionBlock.BlockList, titleBlock: NotionBlock.Heading1}) => {
+  return (
+    <Box as='article'>
+      {postBlockList.data.map((block: NotionBlock.Block) =>
+        <Block
+          key = {uuidv4()}
+          entity={block} />
+      )}
+    </Box>
+  )
+}
+
 export default function Post({post, pageJson, postBlockJson}: Props) {
+ 
   const postBlockList = NotionBlock.BlockList.deserialize(postBlockJson.results)
   const titleBlock: NotionBlock.Heading1 = FrontendNotion.convertPageResponseToNotionHeading1Block(pageJson)
+  const postHead: NotionPostHead = post
 
   return (
     <Layout>
       <Head>
         <title>{post.title}</title>
       </Head>
-      <article>
-        <Box>
-          <Block entity={titleBlock}/>
-          <Box textAlign={['right']}>
-            <Date dateString={post.updatedAt}/>
-          </Box>
-        </Box>
-        <Divider />
-        {postBlockList.data.map((block: NotionBlock.Block) =>
-          <Block
-            key = {uuidv4()}
-            entity={block} />
-        )}
-      </article>
+      <Grid
+        // templateRows='repeat(2, 1fr)'
+        templateColumns='repeat(12, 1fr)'
+        gap={4}
+        w='100%'
+      >
+        <GridItem
+          colSpan={3}
+        >
+          <LeftSideArea post={postHead} titleBlock={titleBlock}/>
+        </GridItem>
+        <GridItem
+          colSpan={9}
+          p={5}
+        >
+          <MainArea post={postHead} postBlockList={postBlockList} titleBlock={titleBlock}/>
+        </GridItem>
+      </Grid>
     </Layout>
   )
 }

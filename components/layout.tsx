@@ -18,7 +18,7 @@ export default function Layout({
   return (
     <Container
       p = {50}
-      maxW = 'container.lg'
+      maxW = '100%'
       bg = 'gray.50'
     >
       <Head>
