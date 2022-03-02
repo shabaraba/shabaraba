@@ -5,7 +5,7 @@ import styles from './layout.module.css'
 import utilStyles from '../styles/utils.module.css'
 import Link from 'next/link'
 
-const siteTitle = 'Coffee Break Point'
+export const siteTitle = 'Coffee Break Point'
 export const siteDescription = 'コーヒー休憩にちょうどよい技術よみものを目指して'
 
 export default function Layout({
