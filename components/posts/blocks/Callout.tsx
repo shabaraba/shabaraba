@@ -17,7 +17,8 @@ export function Callout({entity}: {entity: CalloutEntity}) {
       p={2}
       borderRadius={10}
       filter='drop-shadow(3px 3px 10px rgba(0,0,0,0.2))'
-      backgroundColor = 'red.100'
+      backgroundColor = '#CE6857'
+      color='#f7f7f7'
       templateColumns='repeat(10, 1fr)'
       gap={2}
     >

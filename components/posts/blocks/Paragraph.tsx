@@ -43,7 +43,7 @@ export function Paragraph({entity}: {entity: ParagraphEntity}) {
   }
 
   const CodeText: React.VFC<Props> = ({apply, color, backgroundColor, children}: Props) => {
-    if (apply) return <Code color={color} background={backgroundColor} >{children}</Code>
+    if (apply) return <Code colorScheme={'red'} background={backgroundColor} >{children}</Code>
     return <>{children}</>
   }
 

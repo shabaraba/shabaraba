@@ -13,7 +13,7 @@ export function Heading2({entity}: {entity: Heading2Entity}) {
       pl={5}
       borderStyle='solid'
       borderLeftWidth='10px'
-      borderColor='blue.100'
+      borderColor='#CE6857'
     >
       {entity.texts.map(text =>
         <span key={uuidv4()}>{text.content}</span>

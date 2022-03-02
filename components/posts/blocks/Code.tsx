@@ -15,8 +15,9 @@ export function Code({entity}: {entity: CodeEntity}) {
         wrapLongLines={false}
         showLineNumbers={true}
         customStyle={{
-          borderRadius: 10,
+          borderRadius: 5,
           filter: 'drop-shadow(3px 3px 10px rgba(0,0,0,0.2))',
+          fontSize: '14px'
         }}
       >
         {entity.texts.map(text => text.content)}
