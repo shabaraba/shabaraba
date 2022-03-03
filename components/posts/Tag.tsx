@@ -6,19 +6,37 @@ import {
   LinkOverlay
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
-import * as ReactMdIcon from 'react-icons/md'
-import * as ReactSiIcon from 'react-icons/si'
-import * as ReactGrIcon from 'react-icons/gr'
-import * as ReactFaIcon from 'react-icons/fa'
-import * as ReactGiIcon from 'react-icons/gi'
+import dynamic from 'next/dynamic'
 
 import { NotionTag as NotionTagEntity} from '../../entities/notion_entities'
 
 export default function Tag({entity}: {entity: NotionTagEntity}) {
+  let ReactIcon = null
+  switch(entity.iconLabel) {
+    case 'Si':
+      ReactIcon = dynamic(() => import('react-icons/si').then(mod => mod[entity.iconName]))
+      break
+    case 'Gr':
+      ReactIcon = dynamic(() => import('react-icons/gr').then(mod => mod[entity.iconName]))
+      break
+    case 'Fa':
+      ReactIcon = dynamic(() => import('react-icons/fa').then(mod => mod[entity.iconName]))
+      break
+    case 'Gi':
+      ReactIcon = dynamic(() => import('react-icons/gi').then(mod => mod[entity.iconName]))
+      break
+    case 'Md':
+      ReactIcon = dynamic(() => import('react-icons/md').then(mod => mod[entity.iconName]))
+      break
+    default:
+      ReactIcon = dynamic(() => import('react-icons/md').then(mod => mod['MdSettings']))
+      break
+  }
+  console.log(entity.iconName)
   return (
     <LinkBox>
       <NotionTag size='md' key='md' variant='subtle' colorScheme={entity.color}>
-        <TagLeftIcon boxSize='18px' as={getIcon(entity.name)} />
+        <TagLeftIcon boxSize='18px' as={ReactIcon} />
         <TagLabel>
           <NextLink href='#' passHref>
             <LinkOverlay>{entity.name}</LinkOverlay>
@@ -27,19 +45,5 @@ export default function Tag({entity}: {entity: NotionTagEntity}) {
       </NotionTag>
     </LinkBox>
   )
-}
-
-const getIcon = (tagName: string): any => {
-  const iconNameMap = {
-    Nextjs: 'Nextdotjs',
-    個人開発: 'MuscleUp'
-  }
-  const iconName = iconNameMap[tagName] ?? tagName
-  return ReactSiIcon['Si' + iconName]
-    ?? ReactGrIcon['Gr' + iconName]
-    ?? ReactFaIcon['Fa' + iconName]
-    ?? ReactGiIcon['Gi' + iconName]
-    ?? ReactMdIcon['Md' + iconName]
-    ?? ReactMdIcon.MdSettings
 }
 
