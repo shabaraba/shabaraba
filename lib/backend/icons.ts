@@ -1,8 +1,8 @@
-import * as ReactMdIcon from 'react-icons/md'
-import * as ReactSiIcon from 'react-icons/si'
-import * as ReactGrIcon from 'react-icons/gr'
-import * as ReactFaIcon from 'react-icons/fa'
-import * as ReactGiIcon from 'react-icons/gi'
+import * as ReactMdIcon from '@meronex/icons/md'
+import * as ReactSiIcon from '@meronex/icons/si'
+import * as ReactGrIcon from '@meronex/icons/gr'
+import * as ReactFaIcon from '@meronex/icons/fa'
+import * as ReactGiIcon from '@meronex/icons/gi'
 
 import { NotionTag } from '../../entities/notion_entities'
 

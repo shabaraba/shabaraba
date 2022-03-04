@@ -11,25 +11,27 @@ import dynamic from 'next/dynamic'
 import { NotionTag as NotionTagEntity} from '../../entities/notion_entities'
 
 export default function Tag({entity}: {entity: NotionTagEntity}) {
+  // const ReactIcon = dynamic(() => import(`@meronex/icons/${entity.iconLabel.toLowerCase()}/${entity.iconName}`).then(mod => mod[entity.iconName])) ??
+  //   dynamic(() => import('@meronex/icons/md/MdSettings').then(mod => mod.MdSettings))
   let ReactIcon = null
   switch(entity.iconLabel) {
     case 'Si':
-      ReactIcon = dynamic(() => import('react-icons/si').then(mod => mod[entity.iconName]))
+      ReactIcon = dynamic(() => import('@meronex/icons/si').then(mod => mod[entity.iconName]))
       break
     case 'Gr':
-      ReactIcon = dynamic(() => import('react-icons/gr').then(mod => mod[entity.iconName]))
+      ReactIcon = dynamic(() => import('@meronex/icons/gr').then(mod => mod[entity.iconName]))
       break
     case 'Fa':
-      ReactIcon = dynamic(() => import('react-icons/fa').then(mod => mod[entity.iconName]))
+      ReactIcon = dynamic(() => import('@meronex/icons/fa').then(mod => mod[entity.iconName]))
       break
     case 'Gi':
-      ReactIcon = dynamic(() => import('react-icons/gi').then(mod => mod[entity.iconName]))
+      ReactIcon = dynamic(() => import('@meronex/icons/gi').then(mod => mod[entity.iconName]))
       break
     case 'Md':
-      ReactIcon = dynamic(() => import('react-icons/md').then(mod => mod[entity.iconName]))
+      ReactIcon = dynamic(() => import('@meronex/icons/md').then(mod => mod[entity.iconName]))
       break
     default:
-      ReactIcon = dynamic(() => import('react-icons/md').then(mod => mod['MdSettings']))
+      ReactIcon = dynamic(() => import('@meronex/icons/md').then(mod => mod['MdSettings']))
       break
   }
   console.log(entity.iconName)
