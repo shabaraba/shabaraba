@@ -14,6 +14,8 @@ export interface NotionTag {
   id: number;
   color: string;
   name: string;
+  iconLabel?: string
+  iconName?: any
   [prop: string]: any;
 }
 

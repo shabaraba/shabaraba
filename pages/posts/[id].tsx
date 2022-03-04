@@ -1,6 +1,6 @@
 import { Icon, Box, Grid, GridItem, Wrap, WrapItem } from '@chakra-ui/react'
 import { useMediaQuery } from '@chakra-ui/react'
-import * as ReactMdIcon from 'react-icons/md'
+import {MdCreate, MdUpdate, MdArrowRightAlt } from 'react-icons/md'
 import Layout from '../../components/layout'
 import Block from '../../components/posts/Block'
 import Date from '../../components/date'
@@ -13,6 +13,7 @@ import { NotionPostHead } from '../../entities/notion_entities'
 
 import FrontendNotion from '../../lib/frontend/notions'
 import BackendNotion from '../../lib/backend/notions'
+import { getTagIcon } from '../../lib/backend/icons'
 
 import BackButton from '../../components/common/BackButton'
 import useLocation from '../../components/hooks/useLocation'
@@ -33,7 +34,7 @@ import {
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-const PostTitle = ({post, titleBlock}: {post: NotionPostHead, titleBlock: NotionBlock.Heading1}) => {
+const PostTitle = ({tags, post, titleBlock}: {tags: any[], post: NotionPostHead, titleBlock: NotionBlock.Heading1}) => {
   const url = useLocation()
   console.log(url.href)
 
@@ -41,7 +42,7 @@ const PostTitle = ({post, titleBlock}: {post: NotionPostHead, titleBlock: Notion
     <>
       <Block entity={titleBlock}/>
       <Wrap>
-        {post.tags.map((tag) => (
+        {tags.map((tag) => (
           <WrapItem key={uuidv4()}>
             <Tag entity={tag} />
           </WrapItem>
@@ -50,14 +51,14 @@ const PostTitle = ({post, titleBlock}: {post: NotionPostHead, titleBlock: Notion
       <Box fontSize='sm' textAlign={['right']}>
         <Wrap justify='right'>
           <WrapItem>
-            <Icon as={ReactMdIcon.MdCreate} />
+            <Icon as={MdCreate} />
             <Date dateString={post.createdAt}/>
           </WrapItem>
           <WrapItem>
-            <Icon as={ReactMdIcon.MdArrowRightAlt} />
+            <Icon as={MdArrowRightAlt} />
           </WrapItem>
           <WrapItem>
-            <Icon as={ReactMdIcon.MdUpdate} />
+            <Icon as={MdUpdate} />
             <Date dateString={post.updatedAt}/>
           </WrapItem>
         </Wrap>
@@ -88,16 +89,16 @@ const PostTitle = ({post, titleBlock}: {post: NotionPostHead, titleBlock: Notion
   )
 }
 
-const LeftSideArea = ({post, titleBlock, isSideColumn}: {post: NotionPostHead, titleBlock: NotionBlock.Heading1, isSideColumn: boolean}) => {
+const LeftSideArea = ({tags, post, titleBlock, isSideColumn}: {tags: any[], post: NotionPostHead, titleBlock: NotionBlock.Heading1, isSideColumn: boolean}) => {
 
   return (
     <Box>
       {isSideColumn ? (
         <Sticky>
-          <PostTitle post={post} titleBlock={titleBlock} />
+          <PostTitle tags={tags} post={post} titleBlock={titleBlock} />
         </Sticky>
         ) : (
-          <PostTitle post={post} titleBlock={titleBlock} />
+          <PostTitle tags={tags} post={post} titleBlock={titleBlock} />
         )
       }
     </Box>
@@ -122,15 +123,16 @@ const MainArea = ({post, postBlockList, titleBlock}: {post: NotionPostHead, post
   )
 }
 
-export default function Post({post, pageJson, postBlockJson}: Props) {
+export default function Post({tags, post, pageJson, postBlockJson}: Props) {
   const [isTwoColumns] = useMediaQuery('(min-width: 1024px)')
   console.log("isTwoColumns: " + isTwoColumns)
+  console.log("tags: " + JSON.stringify(tags))
  
   const postBlockList = NotionBlock.BlockList.deserialize(postBlockJson.results)
   const titleBlock: NotionBlock.Heading1 = FrontendNotion.convertPageResponseToNotionHeading1Block(pageJson)
   const postHead: NotionPostHead = post
 
-  const TwoColumnLayout = ({postHead, postBlockList, titleBlock}: {postHead: NotionPostHead, postBlockList: NotionBlock.BlockList, titleBlock: NotionBlock.Heading1}) => {
+  const TwoColumnLayout = ({tags, postHead, postBlockList, titleBlock}: {tags: any[], postHead: NotionPostHead, postBlockList: NotionBlock.BlockList, titleBlock: NotionBlock.Heading1}) => {
     return (
       <Grid
         templateColumns='repeat(12, 1fr)'
@@ -140,7 +142,7 @@ export default function Post({post, pageJson, postBlockJson}: Props) {
         <GridItem
           colSpan={3}
         >
-          <LeftSideArea post={postHead} titleBlock={titleBlock} isSideColumn={true}/>
+          <LeftSideArea tags={tags} post={postHead} titleBlock={titleBlock} isSideColumn={true}/>
         </GridItem>
         <GridItem
           colSpan={7}
@@ -152,10 +154,10 @@ export default function Post({post, pageJson, postBlockJson}: Props) {
     )
   }
 
-  const OneColumnLayout = ({postHead, postBlockList, titleBlock}: {postHead: NotionPostHead, postBlockList: NotionBlock.BlockList, titleBlock: NotionBlock.Heading1}) => {
+  const OneColumnLayout = ({tags, postHead, postBlockList, titleBlock}: {tags: any[], postHead: NotionPostHead, postBlockList: NotionBlock.BlockList, titleBlock: NotionBlock.Heading1}) => {
     return (
       <>
-        <LeftSideArea post={postHead} titleBlock={titleBlock} isSideColumn={false}/>
+        <LeftSideArea tags={tags} post={postHead} titleBlock={titleBlock} isSideColumn={false}/>
         <MainArea post={postHead} postBlockList={postBlockList} titleBlock={titleBlock}/>
       </>
     )
@@ -167,9 +169,9 @@ export default function Post({post, pageJson, postBlockJson}: Props) {
         <title>{post.title}</title>
       </Head>
       {isTwoColumns ?
-        <TwoColumnLayout postHead={postHead} postBlockList={postBlockList} titleBlock={titleBlock} />
+        <TwoColumnLayout tags={tags} postHead={postHead} postBlockList={postBlockList} titleBlock={titleBlock} />
         :
-        <OneColumnLayout postHead={postHead} postBlockList={postBlockList} titleBlock={titleBlock} />
+        <OneColumnLayout tags={tags} postHead={postHead} postBlockList={postBlockList} titleBlock={titleBlock} />
       }
     </Layout>
   )
@@ -195,24 +197,22 @@ export const getStaticPaths: GetStaticPaths = async () => {
 // server側で呼ばれる
 export const getStaticProps = async ({params}) => {
   const slug = params.id;
-  // console.log("START-------[id]");
-  // console.log(params);
-  // console.log(slug);
   const token: string = process.env.NOTION_TOKEN;
   const databaseId: string = process.env.NOTION_BLOG_DATABASE;
   const notion: BackendNotion = new BackendNotion(token, databaseId);
   const postId: string = await notion.getPostIdBySlug(slug);
-  // console.log(postId);
+
   const [post, pageJson]: [NotionPostHead, any] = await notion.getPostById(postId);
-  // console.log(JSON.stringify(post))
+
+  const tagsWithIcon = post.tags.map((tag) => getTagIcon(tag))
+  console.log("withIcon: " + JSON.stringify(tagsWithIcon))
+
   const postBlockList = await notion.getPostBlockListById(postId);
   const postBlockListWithOGP = await BackendNotion.setOGPToBookmarkBlocks(postBlockList)
-  // console.log("---------------------------------------------[id]");
-  // console.log(JSON.stringify(postBlockListWithOGP, null, " "))
-  // console.log("END---------[id]");
 
   return {
     props: {
+      tags: tagsWithIcon,
       post: post,
       pageJson: pageJson,
       postBlockJson: postBlockListWithOGP,
