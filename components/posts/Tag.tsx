@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import {
   Tag as NotionTag,
   TagLabel,
@@ -11,34 +12,28 @@ import dynamic from 'next/dynamic'
 import { NotionTag as NotionTagEntity} from '../../entities/notion_entities'
 
 export default function Tag({entity}: {entity: NotionTagEntity}) {
-  // const ReactIcon = dynamic(() => import(`@meronex/icons/${entity.iconLabel.toLowerCase()}/${entity.iconName}`).then(mod => mod[entity.iconName])) ??
-  //   dynamic(() => import('@meronex/icons/md/MdSettings').then(mod => mod.MdSettings))
-  let ReactIcon = null
-  switch(entity.iconLabel) {
-    case 'Si':
-      ReactIcon = dynamic(() => import('@meronex/icons/si').then(mod => mod[entity.iconName]))
-      break
-    case 'Gr':
-      ReactIcon = dynamic(() => import('@meronex/icons/gr').then(mod => mod[entity.iconName]))
-      break
-    case 'Fa':
-      ReactIcon = dynamic(() => import('@meronex/icons/fa').then(mod => mod[entity.iconName]))
-      break
-    case 'Gi':
-      ReactIcon = dynamic(() => import('@meronex/icons/gi').then(mod => mod[entity.iconName]))
-      break
-    case 'Md':
-      ReactIcon = dynamic(() => import('@meronex/icons/md').then(mod => mod[entity.iconName]))
-      break
-    default:
-      ReactIcon = dynamic(() => import('@meronex/icons/md').then(mod => mod['MdSettings']))
-      break
-  }
-  console.log(entity.iconName)
+  // const [icon, setIcon] = useState(null)
+  // useEffect(() => {
+  //   if (!icon) getReactIcon(entity)
+  // }, [])
+
+  // const getReactIcon = async(entity: NotionTagEntity): Promise<any> => {
+  //   // dynamic importで読み込むライブラリを文字列変数で指定する場合、
+  //   // 直接import()内に`test/${val}`のような文字列を入れられない
+  //   // 一度変数を定義し、その変数のみ展開するような記載でないと受け付けてくれない
+  //   const saffix: string = entity.iconLabel.toLowerCase()
+  //   const importPath: string = `@meronex/icons/${saffix}/${entity.iconName}`
+  //   // setIcon(dynamic(() => import(importPath), {ssr: false}))
+  //   setIcon(import(importPath))
+
+  //   // 下記の書き方だとライブラリすべてを読み込んでしまう
+  //   // result = dynamic(() => import('react-icons/gr').then(mod => mod[entity.iconName]))
+  // }
+
+  // console.log(JSON.stringify(icon))
   return (
     <LinkBox>
       <NotionTag size='md' key='md' variant='subtle' colorScheme={entity.color}>
-        <TagLeftIcon boxSize='18px' as={ReactIcon} />
         <TagLabel>
           <NextLink href='#' passHref>
             <LinkOverlay>{entity.name}</LinkOverlay>
@@ -47,5 +42,17 @@ export default function Tag({entity}: {entity: NotionTagEntity}) {
       </NotionTag>
     </LinkBox>
   )
+  // return (
+  //   <LinkBox>
+  //     <NotionTag size='md' key='md' variant='subtle' colorScheme={entity.color}>
+  //       <TagLeftIcon boxSize='18px' as={icon} />
+  //       <TagLabel>
+  //         <NextLink href='#' passHref>
+  //           <LinkOverlay>{entity.name}</LinkOverlay>
+  //         </NextLink>
+  //       </TagLabel>
+  //     </NotionTag>
+  //   </LinkBox>
+  // )
 }
 

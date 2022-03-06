@@ -8,7 +8,6 @@ import type {
 export default function PostList({data}: any){
   return (
    <Container maxW={'7xl'} p="12">
-      <Heading as="h1">Stories by Chakra Templates</Heading>
       {data.map((postHead: NotionPostHead) =>
         <PostListItem
           key={postHead.id}

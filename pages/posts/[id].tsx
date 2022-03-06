@@ -1,5 +1,5 @@
 import { Icon, Box, Grid, GridItem, Wrap, WrapItem } from '@chakra-ui/react'
-import { useMediaQuery } from '@chakra-ui/react'
+import { useBreakpointValue } from '@chakra-ui/react'
 import {MdCreate, MdUpdate, MdArrowRightAlt } from 'react-icons/md'
 import Layout from '../../components/layout'
 import Block from '../../components/posts/Block'
@@ -92,7 +92,7 @@ const PostTitle = ({tags, post, titleBlock}: {tags: any[], post: NotionPostHead,
 const LeftSideArea = ({tags, post, titleBlock, isSideColumn}: {tags: any[], post: NotionPostHead, titleBlock: NotionBlock.Heading1, isSideColumn: boolean}) => {
 
   return (
-    <Box>
+    <>
       {isSideColumn ? (
         <Sticky>
           <PostTitle tags={tags} post={post} titleBlock={titleBlock} />
@@ -101,7 +101,7 @@ const LeftSideArea = ({tags, post, titleBlock, isSideColumn}: {tags: any[], post
           <PostTitle tags={tags} post={post} titleBlock={titleBlock} />
         )
       }
-    </Box>
+    </>
   )
 }
 
@@ -123,8 +123,39 @@ const MainArea = ({post, postBlockList, titleBlock}: {post: NotionPostHead, post
   )
 }
 
+const TwoColumnLayout = ({tags, postHead, postBlockList, titleBlock}: {tags: any[], postHead: NotionPostHead, postBlockList: NotionBlock.BlockList, titleBlock: NotionBlock.Heading1}) => {
+  return (
+    <Grid
+      templateColumns='repeat(12, 1fr)'
+      gap={4}
+      w='100%'
+    >
+      <GridItem
+        colSpan={3}
+      >
+        <LeftSideArea tags={tags} post={postHead} titleBlock={titleBlock} isSideColumn={true}/>
+      </GridItem>
+      <GridItem
+        colSpan={7}
+        p={5}
+      >
+        <MainArea post={postHead} postBlockList={postBlockList} titleBlock={titleBlock}/>
+      </GridItem>
+    </Grid>
+  )
+}
+
+const OneColumnLayout = ({tags, postHead, postBlockList, titleBlock}: {tags: any[], postHead: NotionPostHead, postBlockList: NotionBlock.BlockList, titleBlock: NotionBlock.Heading1}) => {
+  return (
+    <>
+      <LeftSideArea tags={tags} post={postHead} titleBlock={titleBlock} isSideColumn={false}/>
+      <MainArea post={postHead} postBlockList={postBlockList} titleBlock={titleBlock}/>
+    </>
+  )
+}
+
 export default function Post({tags, post, pageJson, postBlockJson}: Props) {
-  const [isTwoColumns] = useMediaQuery('(min-width: 1024px)')
+  const isTwoColumns = useBreakpointValue({ lg: true })
   console.log("isTwoColumns: " + isTwoColumns)
   console.log("tags: " + JSON.stringify(tags))
  
@@ -132,47 +163,18 @@ export default function Post({tags, post, pageJson, postBlockJson}: Props) {
   const titleBlock: NotionBlock.Heading1 = FrontendNotion.convertPageResponseToNotionHeading1Block(pageJson)
   const postHead: NotionPostHead = post
 
-  const TwoColumnLayout = ({tags, postHead, postBlockList, titleBlock}: {tags: any[], postHead: NotionPostHead, postBlockList: NotionBlock.BlockList, titleBlock: NotionBlock.Heading1}) => {
-    return (
-      <Grid
-        templateColumns='repeat(12, 1fr)'
-        gap={4}
-        w='100%'
-      >
-        <GridItem
-          colSpan={3}
-        >
-          <LeftSideArea tags={tags} post={postHead} titleBlock={titleBlock} isSideColumn={true}/>
-        </GridItem>
-        <GridItem
-          colSpan={7}
-          p={5}
-        >
-          <MainArea post={postHead} postBlockList={postBlockList} titleBlock={titleBlock}/>
-        </GridItem>
-      </Grid>
-    )
-  }
-
-  const OneColumnLayout = ({tags, postHead, postBlockList, titleBlock}: {tags: any[], postHead: NotionPostHead, postBlockList: NotionBlock.BlockList, titleBlock: NotionBlock.Heading1}) => {
-    return (
-      <>
-        <LeftSideArea tags={tags} post={postHead} titleBlock={titleBlock} isSideColumn={false}/>
-        <MainArea post={postHead} postBlockList={postBlockList} titleBlock={titleBlock}/>
-      </>
-    )
-  }
-
   return (
     <Layout>
       <Head>
         <title>{post.title}</title>
       </Head>
-      {isTwoColumns ?
-        <TwoColumnLayout tags={tags} postHead={postHead} postBlockList={postBlockList} titleBlock={titleBlock} />
-        :
-        <OneColumnLayout tags={tags} postHead={postHead} postBlockList={postBlockList} titleBlock={titleBlock} />
-      }
+      <article>
+        {isTwoColumns ?
+          <TwoColumnLayout tags={tags} postHead={postHead} postBlockList={postBlockList} titleBlock={titleBlock} />
+          :
+          <OneColumnLayout tags={tags} postHead={postHead} postBlockList={postBlockList} titleBlock={titleBlock} />
+        }
+      </article>
     </Layout>
   )
 }
@@ -205,6 +207,7 @@ export const getStaticProps = async ({params}) => {
   const [post, pageJson]: [NotionPostHead, any] = await notion.getPostById(postId);
 
   const tagsWithIcon = post.tags.map((tag) => getTagIcon(tag))
+  // const tagsWithIcon = post.tags
   console.log("withIcon: " + JSON.stringify(tagsWithIcon))
 
   const postBlockList = await notion.getPostBlockListById(postId);

@@ -1,8 +1,6 @@
-import { Container, Image as ChakraImage, Box, List, ListItem, ListIcon } from '@chakra-ui/react'
+import { Container, Text, Link as ChakraLink } from '@chakra-ui/react'
 import Head from 'next/head'
-import Image from 'next/image'
 import styles from './layout.module.css'
-import utilStyles from '../styles/utils.module.css'
 import Link from 'next/link'
 
 export const siteTitle = 'Coffee Break Point'
@@ -41,29 +39,33 @@ export default function Layout({
           )}.png?theme=light&md=0&fontSize=75px&images=https%3A%2F%2Fassets.zeit.co%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnextjs-black-logo.svg`}
         />
 
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin={'crossOrigin'} />
+        <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet" />
       </Head>
-      <header 
-        className={styles.header}
-        style={{background: '#e8cfc1'}}
+      <header
+        style={{
+          background: '#e8cfc1'
+        }}
       >
-        {home ? (
-          <>
-            <h1 className={utilStyles.heading2Xl}>{siteTitle}</h1>
-          </>
-        ) : (
-          <>
-            <Link href="/">
-              <a className={utilStyles.colorInherit}>
-                <ChakraImage
-                  h='100'
-                  objectFit='cover'
-                  src="/images/CoffeeBreakPoint.png"
-                  alt={siteTitle}
-                />
-              </a>
-            </Link>
-          </>
-        )}
+        <Link href="/">
+          <ChakraLink
+            fontSize='4xl'
+            position='relative'
+            display='inline-block'
+            textDecoration='none'
+            style={{
+              fontFamily: "'Caveat', cursive",
+              transform: "rotate(-5deg)"
+            }}
+            _hover={{
+              textDecoration: 'underline',
+              transition: 'transform .3s',
+            }}
+          >
+            {siteTitle}
+          </ChakraLink>
+        </Link>
       </header>
       <Container
         pr={50}
