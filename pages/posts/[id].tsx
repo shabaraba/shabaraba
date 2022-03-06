@@ -13,9 +13,8 @@ import { NotionPostHead } from '../../entities/notion_entities'
 
 import FrontendNotion from '../../lib/frontend/notions'
 import BackendNotion from '../../lib/backend/notions'
-import { getTagIcon } from '../../lib/backend/icons'
+// import { getTagIcon } from '../../lib/backend/icons'
 
-import BackButton from '../../components/common/BackButton'
 import useLocation from '../../components/hooks/useLocation'
 
 import { InferGetStaticPropsType, GetStaticPaths } from 'next'
@@ -206,8 +205,8 @@ export const getStaticProps = async ({params}) => {
 
   const [post, pageJson]: [NotionPostHead, any] = await notion.getPostById(postId);
 
-  const tagsWithIcon = post.tags.map((tag) => getTagIcon(tag))
-  // const tagsWithIcon = post.tags
+  // const tagsWithIcon = post.tags.map((tag) => getTagIcon(tag))
+  const tagsWithIcon = post.tags
   console.log("withIcon: " + JSON.stringify(tagsWithIcon))
 
   const postBlockList = await notion.getPostBlockListById(postId);
