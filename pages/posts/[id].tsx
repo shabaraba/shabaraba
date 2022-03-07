@@ -1,5 +1,4 @@
-import { Icon, Box, Grid, GridItem, Wrap, WrapItem } from '@chakra-ui/react'
-import { useBreakpointValue } from '@chakra-ui/react'
+import { useBreakpointValue, SlideFade, Icon, Box, Grid, GridItem, Wrap, WrapItem, Spinner } from '@chakra-ui/react'
 import {MdCreate, MdUpdate, MdArrowRightAlt } from 'react-icons/md'
 import Layout from '../../components/layout'
 import Block from '../../components/posts/Block'
@@ -154,7 +153,7 @@ const OneColumnLayout = ({tags, postHead, postBlockList, titleBlock}: {tags: any
 }
 
 export default function Post({tags, post, pageJson, postBlockJson}: Props) {
-  const isTwoColumns = useBreakpointValue({ lg: true })
+  const isTwoColumns = useBreakpointValue({ lg: true }, 'lg')
   console.log("isTwoColumns: " + isTwoColumns)
   console.log("tags: " + JSON.stringify(tags))
  
@@ -163,17 +162,19 @@ export default function Post({tags, post, pageJson, postBlockJson}: Props) {
   const postHead: NotionPostHead = post
 
   return (
-    <Layout>
+    <Layout >
       <Head>
         <title>{post.title}</title>
       </Head>
-      <article>
-        {isTwoColumns ?
-          <TwoColumnLayout tags={tags} postHead={postHead} postBlockList={postBlockList} titleBlock={titleBlock} />
-          :
-          <OneColumnLayout tags={tags} postHead={postHead} postBlockList={postBlockList} titleBlock={titleBlock} />
-        }
-      </article>
+      <SlideFade in={true} offsetY='20px'>
+        <article>
+          {isTwoColumns ?
+            <TwoColumnLayout tags={tags} postHead={postHead} postBlockList={postBlockList} titleBlock={titleBlock} />
+            :
+            <OneColumnLayout tags={tags} postHead={postHead} postBlockList={postBlockList} titleBlock={titleBlock} />
+          }
+        </article>
+      </SlideFade>
     </Layout>
   )
 }
