@@ -68,21 +68,21 @@ export type IHeading = {
 }
 
 export type ICalloutBlock = IBlock & { type: "callout", callout: ICallout }
+export type IIcon = IFileFile | IExternalFile | IEmoji
 export type ICallout = IParagraph & {
-  icon: IFileFile | IExternalFile | IEmoji;
+  icon: IIcon
 }
 
 export type IFileBlock = IBlock & { type: "file", file: IFileFile | IExternalFile }
-export type IFileObject = {
-  type: "file" | "external";
-}
-export type IFileFile = IFileObject & { file: IFile }
+export type IFileFile = { file: IFile }
 export type IFile = {
-  url: string;
-  expiry_time: string;
+  type: "file"
+  url: string
+  expiry_time: string
 }
-export type IExternalFile = IFileObject & { external: IExternal }
+export type IExternalFile = { external: IExternal }
 export type IExternal = {
+  type: "external"
   url: string;
 }
 

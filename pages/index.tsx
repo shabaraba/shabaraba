@@ -1,4 +1,4 @@
-import { Text } from '@chakra-ui/react'
+import { useBreakpointValue } from '@chakra-ui/react'
 import Head from 'next/head'
 import Layout, { siteTitle } from '../components/layout'
 import utilStyles from '../styles/utils.module.css'
@@ -9,6 +9,7 @@ import { InferGetStaticPropsType } from 'next'
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 export default function Home({allPostsData}: Props){
+  const breakPoint = useBreakpointValue({ lg: 'desktop', sm: 'mobile' }, 'lg')
   return (
     <Layout home>
       <Head>
@@ -16,6 +17,7 @@ export default function Home({allPostsData}: Props){
       </Head>
       <PostList
         data = {allPostsData}
+        breakPoint = {breakPoint}
       />
     </Layout>
   )

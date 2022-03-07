@@ -1,17 +1,16 @@
 import { Container, Heading } from '@chakra-ui/react'
 import PostListItem from './PostListItem'
 
-import type {
-  NotionPostHead,
-} from '../../entities/notion_entities';
+import type { IPageHead } from '../../interfaces/NotionPageApiResponses'
 
-export default function PostList({data}: any){
+export default function PostList({data, breakPoint}: {data: IPageHead[], breakPoint: string}){
   return (
-   <Container maxW={'7xl'} p="12">
-      {data.map((postHead: NotionPostHead) =>
+   <Container maxW={'5xl'} p="12">
+      {data.map((postHead: IPageHead) =>
         <PostListItem
           key={postHead.id}
-          post = {postHead}
+          postHead = {postHead}
+          breakPoint = {breakPoint}
         />
       )}
     </Container>

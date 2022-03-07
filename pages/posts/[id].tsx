@@ -8,7 +8,7 @@ import {v4 as uuidv4} from 'uuid'
 
 import * as NotionBlock from '../../entities/notion/blocks'
 import Tag from '../../components/posts/Tag'
-import { NotionPostHead } from '../../entities/notion_entities'
+import * as NotionPageType from '../../interfaces/NotionPageApiResponses';
 
 import FrontendNotion from '../../lib/frontend/notions'
 import BackendNotion from '../../lib/backend/notions'
@@ -32,7 +32,7 @@ import {
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-const PostTitle = ({tags, post, titleBlock}: {tags: any[], post: NotionPostHead, titleBlock: NotionBlock.Heading1}) => {
+const PostTitle = ({tags, post, titleBlock}: {tags: any[], post: NotionPageType.IPageHead, titleBlock: NotionBlock.Heading1}) => {
   const url = useLocation()
   console.log(url.href)
 
@@ -87,7 +87,7 @@ const PostTitle = ({tags, post, titleBlock}: {tags: any[], post: NotionPostHead,
   )
 }
 
-const LeftSideArea = ({tags, post, titleBlock, isSideColumn}: {tags: any[], post: NotionPostHead, titleBlock: NotionBlock.Heading1, isSideColumn: boolean}) => {
+const LeftSideArea = ({tags, post, titleBlock, isSideColumn}: {tags: any[], post: NotionPageType.IPageHead, titleBlock: NotionBlock.Heading1, isSideColumn: boolean}) => {
 
   return (
     <>
@@ -109,7 +109,7 @@ const RightSideArea = () => {
   )
 }
 
-const MainArea = ({post, postBlockList, titleBlock}: {post: NotionPostHead, postBlockList: NotionBlock.BlockList, titleBlock: NotionBlock.Heading1}) => {
+const MainArea = ({post, postBlockList, titleBlock}: {post: NotionPageType.IPageHead, postBlockList: NotionBlock.BlockList, titleBlock: NotionBlock.Heading1}) => {
   return (
     <Box as='article'>
       {postBlockList.data.map((block: NotionBlock.Block) =>
@@ -121,7 +121,7 @@ const MainArea = ({post, postBlockList, titleBlock}: {post: NotionPostHead, post
   )
 }
 
-const TwoColumnLayout = ({tags, postHead, postBlockList, titleBlock}: {tags: any[], postHead: NotionPostHead, postBlockList: NotionBlock.BlockList, titleBlock: NotionBlock.Heading1}) => {
+const TwoColumnLayout = ({tags, postHead, postBlockList, titleBlock}: {tags: any[], postHead: NotionPageType.IPageHead, postBlockList: NotionBlock.BlockList, titleBlock: NotionBlock.Heading1}) => {
   return (
     <Grid
       templateColumns='repeat(12, 1fr)'
@@ -143,7 +143,7 @@ const TwoColumnLayout = ({tags, postHead, postBlockList, titleBlock}: {tags: any
   )
 }
 
-const OneColumnLayout = ({tags, postHead, postBlockList, titleBlock}: {tags: any[], postHead: NotionPostHead, postBlockList: NotionBlock.BlockList, titleBlock: NotionBlock.Heading1}) => {
+const OneColumnLayout = ({tags, postHead, postBlockList, titleBlock}: {tags: any[], postHead: NotionPageType.IPageHead, postBlockList: NotionBlock.BlockList, titleBlock: NotionBlock.Heading1}) => {
   return (
     <>
       <LeftSideArea tags={tags} post={postHead} titleBlock={titleBlock} isSideColumn={false}/>
@@ -154,12 +154,12 @@ const OneColumnLayout = ({tags, postHead, postBlockList, titleBlock}: {tags: any
 
 export default function Post({tags, post, pageJson, postBlockJson}: Props) {
   const isTwoColumns = useBreakpointValue({ lg: true }, 'lg')
-  console.log("isTwoColumns: " + isTwoColumns)
-  console.log("tags: " + JSON.stringify(tags))
+  // console.log("isTwoColumns: " + isTwoColumns)
+  // console.log("tags: " + JSON.stringify(tags))
  
   const postBlockList = NotionBlock.BlockList.deserialize(postBlockJson.results)
   const titleBlock: NotionBlock.Heading1 = FrontendNotion.convertPageResponseToNotionHeading1Block(pageJson)
-  const postHead: NotionPostHead = post
+  const postHead: NotionPageType.IPageHead = post
 
   return (
     <Layout >
@@ -204,7 +204,7 @@ export const getStaticProps = async ({params}) => {
   const notion: BackendNotion = new BackendNotion(token, databaseId);
   const postId: string = await notion.getPostIdBySlug(slug);
 
-  const [post, pageJson]: [NotionPostHead, any] = await notion.getPostById(postId);
+  const [post, pageJson]: [NotionPageType.IPageHead, any] = await notion.getPostById(postId);
 
   // const tagsWithIcon = post.tags.map((tag) => getTagIcon(tag))
   const tagsWithIcon = post.tags
