@@ -29,6 +29,8 @@ export function Image({entity}: {entity: ImageEntity}) {
   )
 
   const fetchedImageEntity: ImageEntity = new ImageEntity(fetchedBlockImage)
+  const caption = (fetchedImageEntity.captions?.length > 0) ? fetchedImageEntity.captions[0].content : ''
+
   return (
     <Center
       filter='drop-shadow(3px 3px 3px rgba(0,0,0,0.2))'
@@ -38,9 +40,8 @@ export function Image({entity}: {entity: ImageEntity}) {
         height={600}
         width={800}
         loading='lazy'
-        alt="newImage"
+        alt={caption}
         objectFit="contain"
-        // fallback={<SkeletonImage />}
       />
     </Center>
   )
