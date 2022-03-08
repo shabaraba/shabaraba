@@ -97,7 +97,7 @@ export type ICode = {
   language?: "abap" | "arduino" | "bash" | "basic" | "c" | "clojure" | "coffeescript" | "c++" | "c#" | "css" | "dart" | "diff" | "docker" | "elixir" | "elm" | "erlang" | "flow" | "fortran" | "f#" | "gherkin" | "glsl" | "go" | "graphql" | "groovy" | "haskell" | "html" | "java" | "javascript" | "json" | "julia" | "kotlin" | "latex" | "less" | "lisp" | "livescript" | "lua" | "makefile" | "markdown" | "markup" | "matlab" | "mermaid" | "nix" | "objective-c" | "ocaml" | "pascal" | "perl" | "php" | "plain text" | "powershell" | "prolog" | "protobuf" | "python" | "r" | "reason" | "ruby" | "rust" | "sass" | "scala" | "scheme" | "scss" | "shell" | "sql" | "swift" | "typescript" | "vb.net" | "verilog" | "vhdl" | "visual basic" | "webassembly" | "xml" | "yaml" |  "java/c/c++/c#";
 }
 
-export type IImageBlock = IBlock & { type: "image", image: IFileFile | IExternalFile }
+export type IImageBlock = IBlock & { type: "image", image: IFile| IExternal}
 
 export type IBulletedListItemBlock = IBlock & { type: "bulleted_list_item", bulleted_list_item: IParagraph}
 export type INumberedListItemBlock = IBlock & { type: "numbered_list_item", numbered_list_item: IParagraph}
