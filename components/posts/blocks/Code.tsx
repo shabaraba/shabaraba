@@ -1,7 +1,6 @@
 // import SyntaxHighlighter from "react-syntax-highlighter";
-import { CopyBlock, CodeBlock, dracula } from "react-code-blocks";
+import { CopyBlock, dracula } from "react-code-blocks";
 import { Box } from '@chakra-ui/react'
-import { atomOneDark } from "react-syntax-highlighter/dist/cjs/styles/hljs";
 import type { Code as CodeEntity, } from '../../../entities/notion/blocks';
 
 export function Code({entity}: {entity: CodeEntity}) {
@@ -22,6 +21,7 @@ export function Code({entity}: {entity: CodeEntity}) {
         theme={dracula}
         codeBlock
         customStyle={{
+          borderRadius: 5,
           width: '100%',
           maxWidth: '70vw',
           overflow: 'auto'
