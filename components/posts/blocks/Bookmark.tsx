@@ -20,7 +20,7 @@ export function Bookmark({entity}: {entity: BookmarkEntity}) {
         gap={4}
       >
         <GridItem
-          colSpan={{md: 2}}
+          colSpan={{md: 3}}
           display="flex"
           justifyContent='center'
           alignItems='center'
@@ -31,7 +31,7 @@ export function Bookmark({entity}: {entity: BookmarkEntity}) {
         </GridItem>
 
         <GridItem
-          colStart={{md: 3}}
+          colStart={{md: 4}}
           colEnd={{md: 11}}
           p={2}
         >

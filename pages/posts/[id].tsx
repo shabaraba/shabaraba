@@ -1,5 +1,6 @@
 import { useBreakpointValue, SlideFade, Icon, Box, Grid, GridItem, Wrap, WrapItem, Spinner } from '@chakra-ui/react'
 import {MdCreate, MdUpdate, MdArrowRightAlt } from 'react-icons/md'
+import AuthorBox from '../../components/common/AuthorBox'
 import Layout from '../../components/layout'
 import Block from '../../components/posts/Block'
 import Date from '../../components/date'
@@ -18,7 +19,6 @@ import useLocation from '../../components/hooks/useLocation'
 
 import { InferGetStaticPropsType, GetStaticPaths } from 'next'
 
-import Sticky from 'react-sticky-el'
 import {
   TwitterIcon,
   TwitterShareButton,
@@ -91,14 +91,7 @@ const LeftSideArea = ({tags, post, titleBlock, isSideColumn}: {tags: any[], post
 
   return (
     <>
-      {isSideColumn ? (
-        <Sticky>
-          <PostTitle tags={tags} post={post} titleBlock={titleBlock} />
-        </Sticky>
-        ) : (
-          <PostTitle tags={tags} post={post} titleBlock={titleBlock} />
-        )
-      }
+      <PostTitle tags={tags} post={post} titleBlock={titleBlock} />
     </>
   )
 }
@@ -121,60 +114,28 @@ const MainArea = ({post, postBlockList, titleBlock}: {post: NotionPageType.IPage
   )
 }
 
-const TwoColumnLayout = ({tags, postHead, postBlockList, titleBlock}: {tags: any[], postHead: NotionPageType.IPageHead, postBlockList: NotionBlock.BlockList, titleBlock: NotionBlock.Heading1}) => {
-  return (
-    <Grid
-      templateColumns='repeat(12, 1fr)'
-      gap={4}
-      w='100%'
-    >
-      <GridItem
-        colSpan={3}
-      >
-        <LeftSideArea tags={tags} post={postHead} titleBlock={titleBlock} isSideColumn={true}/>
-      </GridItem>
-      <GridItem
-        colSpan={7}
-        p={5}
-      >
-        <MainArea post={postHead} postBlockList={postBlockList} titleBlock={titleBlock}/>
-      </GridItem>
-    </Grid>
-  )
-}
-
-const OneColumnLayout = ({tags, postHead, postBlockList, titleBlock}: {tags: any[], postHead: NotionPageType.IPageHead, postBlockList: NotionBlock.BlockList, titleBlock: NotionBlock.Heading1}) => {
-  return (
-    <>
-      <LeftSideArea tags={tags} post={postHead} titleBlock={titleBlock} isSideColumn={false}/>
-      <MainArea post={postHead} postBlockList={postBlockList} titleBlock={titleBlock}/>
-    </>
-  )
-}
-
 export default function Post({tags, post, pageJson, postBlockJson}: Props) {
-  const isTwoColumns = useBreakpointValue({ lg: true }, 'lg')
-  // console.log("isTwoColumns: " + isTwoColumns)
-  // console.log("tags: " + JSON.stringify(tags))
- 
   const postBlockList = NotionBlock.BlockList.deserialize(postBlockJson.results)
   const titleBlock: NotionBlock.Heading1 = FrontendNotion.convertPageResponseToNotionHeading1Block(pageJson)
   const postHead: NotionPageType.IPageHead = post
 
   return (
-    <Layout >
+    <Layout
+      leftside={
+        <SlideFade in={true} offsetY='20px'>
+          <LeftSideArea tags={tags} post={postHead} titleBlock={titleBlock} isSideColumn={true}/>
+        </SlideFade>
+      }
+    >
       <Head>
         <title>{post.title}</title>
       </Head>
       <SlideFade in={true} offsetY='20px'>
         <article>
-          {isTwoColumns ?
-            <TwoColumnLayout tags={tags} postHead={postHead} postBlockList={postBlockList} titleBlock={titleBlock} />
-            :
-            <OneColumnLayout tags={tags} postHead={postHead} postBlockList={postBlockList} titleBlock={titleBlock} />
-          }
+          <MainArea post={postHead} postBlockList={postBlockList} titleBlock={titleBlock}/>
         </article>
       </SlideFade>
+      <AuthorBox />
     </Layout>
   )
 }
@@ -208,10 +169,12 @@ export const getStaticProps = async ({params}) => {
 
   // const tagsWithIcon = post.tags.map((tag) => getTagIcon(tag))
   const tagsWithIcon = post.tags
-  console.log("withIcon: " + JSON.stringify(tagsWithIcon))
+  // console.log("withIcon: " + JSON.stringify(tagsWithIcon))
 
   const postBlockList = await notion.getPostBlockListById(postId);
   const postBlockListWithOGP = await BackendNotion.setOGPToBookmarkBlocks(postBlockList)
+
+  // console.log(JSON.stringify(postBlockListWithOGP, null, " "))
 
   return {
     props: {

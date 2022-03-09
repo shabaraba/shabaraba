@@ -1,7 +1,8 @@
-import { useBreakpointValue } from '@chakra-ui/react'
+import React from 'react'
+import AuthorBox from '../components/common/AuthorBox'
+import { useBreakpointValue, Text, Container, Box, VStack, Icon, Image, Link, Skeleton, Tooltip } from '@chakra-ui/react'
 import Head from 'next/head'
 import Layout, { siteTitle } from '../components/layout'
-import utilStyles from '../styles/utils.module.css'
 import PostList from '../components/posts/PostList'
 import Notion from '../lib/backend/notions'
 import { InferGetStaticPropsType } from 'next'
@@ -11,7 +12,9 @@ type Props = InferGetStaticPropsType<typeof getStaticProps>;
 export default function Home({allPostsData}: Props){
   const breakPoint = useBreakpointValue({ lg: 'desktop', sm: 'mobile' }, 'lg')
   return (
-    <Layout home>
+    <Layout home
+      leftside={<AuthorBox />}
+    >
       <Head>
         <title>{siteTitle}</title>
       </Head>
