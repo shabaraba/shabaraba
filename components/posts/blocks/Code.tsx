@@ -5,8 +5,7 @@ import type { Code as CodeEntity, } from '../../../entities/notion/blocks';
 
 export function Code({entity}: {entity: CodeEntity}) {
   const text = entity.texts.reduce((prev, cur) => {
-    if (prev === '') return cur.content
-    return prev + '\n' + cur.content
+    return prev === '' ? cur.content : prev + cur.content
   }, '')
   return (
     <Box
