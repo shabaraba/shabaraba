@@ -8,8 +8,6 @@ import {v4 as uuidv4} from 'uuid'
 import type { IPageHead, IPageTag, IPageCover } from '../../interfaces/NotionPageApiResponses'
 
 export default function PostListItem({postHead, breakPoint}: {postHead: IPageHead, breakPoint: string}) {
-  console.log(JSON.stringify(postHead))
-  console.log(postHead.cover)
   const coverImageUrl: string | null = postHead.cover?.file?.url ?? postHead.cover?.external?.url ?? null
   const iconText: string | null = postHead.icon?.emoji
 

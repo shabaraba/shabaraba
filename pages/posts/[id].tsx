@@ -34,7 +34,7 @@ type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 const PostTitle = ({tags, post, titleBlock}: {tags: any[], post: NotionPageType.IPageHead, titleBlock: NotionBlock.Heading1}) => {
   const url = useLocation()
-  console.log(url.href)
+  // console.log(url.href)
 
   return (
     <>
