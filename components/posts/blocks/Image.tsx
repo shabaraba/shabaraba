@@ -1,16 +1,9 @@
-import { useState } from 'react'
 import NextjsImage from 'next/image'
-import { Center, Skeleton } from '@chakra-ui/react'
+import { Center, Skeleton, Stack } from '@chakra-ui/react'
 import useSWRImmutable from 'swr/immutable'
 import axios from 'axios'
 
 import { Image as ImageEntity, } from '../../../entities/notion/blocks';
-
-const SkeletonImage = () => {
-  return (
-    <Skeleton h={300}/>
-  )
-}
 
 export function Image({entity}: {entity: ImageEntity}) {
   const fetcher = async (url:string) => {
@@ -22,11 +15,7 @@ export function Image({entity}: {entity: ImageEntity}) {
 
   const { data: fetchedBlockImage } = useSWRImmutable(`/api/notion/blocks/${entity.id}`, fetcher)
 
-  if (!fetchedBlockImage) return (
-    <Center filter='drop-shadow(3px 3px 3px rgba(0,0,0,0.2))' >
-      <SkeletonImage />
-    </Center>
-  )
+  if (!fetchedBlockImage) return <Skeleton height={400} />
 
   const fetchedImageEntity: ImageEntity = new ImageEntity(fetchedBlockImage)
   const caption = (fetchedImageEntity.captions?.length > 0) ? fetchedImageEntity.captions[0].content : ''

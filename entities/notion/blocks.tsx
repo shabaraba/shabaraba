@@ -219,7 +219,7 @@ export class Image extends Block {
     const fileType = resp.image.type;
     this.url = resp.image[fileType].url;
     this.captions = [];
-    resp.caption?.map( (caption: NotionBlockInterfaces.IText) => {
+    resp.image.caption?.map( (caption: NotionBlockInterfaces.IText) => {
       this.captions.push( new Text(caption) )
     });
   }

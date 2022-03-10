@@ -78,11 +78,13 @@ export type IFileFile = { file: IFile }
 export type IFile = {
   type: "file"
   url: string
+  caption?: IText[]
   expiry_time: string
 }
 export type IExternalFile = { external: IExternal }
 export type IExternal = {
   type: "external"
+  caption?: IText[]
   url: string;
 }
 
@@ -99,7 +101,6 @@ export type ICode = {
 
 export type IImageBlock = IBlock & {
   type: "image"
-  caption?: IText[]
   image: IFile | IExternal
 }
 
