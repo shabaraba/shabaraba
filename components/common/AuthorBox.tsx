@@ -1,8 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import useSWRImmutable from 'swr/immutable'
-import {Skeleton, Container, Box, Image, VStack, Tooltip, Icon, Text} from '@chakra-ui/react'
-import Link from 'next/link'
+import {Link, Skeleton, Container, Box, Image, VStack, Tooltip, Icon, Text} from '@chakra-ui/react'
 import {SiGithub, SiTwitter, SiQiita} from 'react-icons/si'
 
 export default () => {
@@ -32,6 +31,7 @@ export default () => {
           boxSize='150px'
           alt='shabaraba'
           src={avatarUrl}
+          filter='drop-shadow(3px 3px 3px rgba(0,0,0,0.2))'
         />
         <VStack
           align='center'
@@ -40,17 +40,17 @@ export default () => {
         >
           <Tooltip hasArrow label='Github' placement='right-start'>
             <Link href="https://github.com/shabaraba">
-              <Icon as={SiGithub} w={iconSize} h={iconSize}/>
+              <Icon as={SiGithub} w={iconSize} h={iconSize} filter='drop-shadow(3px 3px 3px rgba(0,0,0,0.2))' />
             </Link>
           </Tooltip>
           <Tooltip hasArrow label='Twitter' placement='right-start'>
             <Link href="https://twitter.com/shaba_raba">
-              <Icon as={SiTwitter} w={iconSize} h={iconSize}/>
+              <Icon as={SiTwitter} w={iconSize} h={iconSize} filter='drop-shadow(3px 3px 3px rgba(0,0,0,0.2))' />
             </Link>
           </Tooltip>
           <Tooltip hasArrow label='Qiita' placement='right-start'>
             <Link href="https://qiita.com/shabaraba">
-              <Icon as={SiQiita} w={iconSize} h={iconSize}/>
+              <Icon as={SiQiita} w={iconSize} h={iconSize} filter='drop-shadow(3px 3px 3px rgba(0,0,0,0.2))' />
             </Link>
           </Tooltip>
         </VStack>
@@ -65,6 +65,8 @@ export default () => {
           ロボット好きのPHPエンジニア<br />
           自分でイジれるおもちゃを欲しがち<br />
           時間がなく3年ほど中断している工作機械自作の完成が夢<br />
+          <br />
+          休憩の傍らななめ読みできそうな技術ブログを目指す<br />
         </Text>
       </Box>
 
