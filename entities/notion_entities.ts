@@ -1,13 +1,14 @@
 export interface NotionPostHead {
-  id: string;
-  title: string;
-  tags?: NotionTag[];
-  icon?: NotionIcon;
-  slug?: string;
-  createdAt: string;
-  updatedAt?: string;
+  id: string
+  title: string
+  tags?: NotionTag[]
+  icon?: NotionIcon
+  cover?: string
+  slug?: string
+  createdAt: string
+  updatedAt?: string
 
-  [prop: string]: any;
+  [prop: string]: any
 }
 
 export interface NotionTag {

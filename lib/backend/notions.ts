@@ -5,17 +5,12 @@ import type {
   ListBlockChildrenResponse,
 } from '@notionhq/client/build/src/api-endpoints.d'
 
-import type {
-  NotionPostHead,
-  NotionTag,
-  NotionIcon,
-} from '../../entities/notion_entities';
-
 import axios from 'axios'
 import { JSDOM } from "jsdom"
 
 import * as NotionBlock from '../../entities/notion/blocks';
 import * as NotionBlockInterfaces from '../../interfaces/NotionApiResponses';
+import * as NotionPageType from '../../interfaces/NotionPageApiResponses';
 
 export default class Notion {
   private _notion: Client;
@@ -31,7 +26,7 @@ export default class Notion {
     });
   }
 
-  public async getPostList() {
+  public async getPostList(): Promise<NotionPageType.IPageHead[]> {
     const response: QueryDatabaseResponse = await this._notion.databases.query({
       database_id: this._databaseId,
       filter: {
@@ -47,20 +42,22 @@ export default class Notion {
         }
       ]
     })
+    console.log(JSON.stringify(response, null, ' '))
 
-    const postList: NotionPostHead[] = response.results.map((item: any) => {
+    const postList: NotionPageType.IPageHead[] = response.results.map((item: any) => {
       return this._convertPageResponseToNotionPostHead(item)
     })
 
     return postList
   }
 
-  private _convertPageResponseToNotionPostHead(response: any): NotionPostHead {
+  private _convertPageResponseToNotionPostHead(response: any): NotionPageType.IPageHead {
     const properties = response.properties
     const title: string = properties.Name.title[0]?.plain_text
-    const tags: NotionTag[] = properties.Tags.multi_select
+    const tags: NotionPageType.IPageTag[] = properties.Tags.multi_select
     const slug: string|null = properties.Slug.rich_text[0]?.plain_text ?? null
-    const icon: NotionIcon = response.icon
+    const icon: NotionPageType.IPageIcon = response.icon
+    const cover: NotionPageType.IPageCover = response.cover
 
     return {
       id: response.id,
@@ -68,19 +65,20 @@ export default class Notion {
       tags: tags,
       slug: slug,
       icon: icon,
+      cover: cover,
       createdAt: properties.Created?.created_time,
       updatedAt: properties.Updated?.last_edited_time,
     }
   }
 
-  public async getTitleBlock(id: string): Promise<NotionPostHead> {
+  public async getTitleBlock(id: string): Promise<NotionPageType.IPageHead> {
     const response: any = await this._notion.pages.retrieve({
       page_id: id
     });
     return this._convertPageResponseToNotionPostHead(response)
   }
 
-  public async getPostById(id: string): Promise<[NotionPostHead, any]> {
+  public async getPostById(id: string): Promise<[NotionPageType.IPageHead, any]> {
     const response: any = await this._notion.pages.retrieve({
       page_id: id
     });

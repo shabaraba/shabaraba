@@ -209,7 +209,8 @@ export class Code extends Block {
 }
 
 export class Image extends Block {
-  public url: string;
+  public captions: Text[]
+  public url: string
 
   constructor(resp: NotionBlockInterfaces.IImageBlock) {
     super(resp.id);
@@ -217,6 +218,10 @@ export class Image extends Block {
 
     const fileType = resp.image.type;
     this.url = resp.image[fileType].url;
+    this.captions = [];
+    resp.caption?.map( (caption: NotionBlockInterfaces.IText) => {
+      this.captions.push( new Text(caption) )
+    });
   }
 }
 

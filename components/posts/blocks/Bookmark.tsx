@@ -16,11 +16,11 @@ export function Bookmark({entity}: {entity: BookmarkEntity}) {
           transition: 'all .3s'
         }}
         backgroundColor = 'gray.50'
-        templateColumns='repeat(10, 1fr)'
+        templateColumns={{sm: '1fr', md: 'repeat(10, 1fr)', }}
         gap={4}
       >
         <GridItem
-          colSpan={2}
+          colSpan={{md: 3}}
           display="flex"
           justifyContent='center'
           alignItems='center'
@@ -31,8 +31,8 @@ export function Bookmark({entity}: {entity: BookmarkEntity}) {
         </GridItem>
 
         <GridItem
-          colStart={3}
-          colEnd={11}
+          colStart={{md: 4}}
+          colEnd={{md: 11}}
           p={2}
         >
           <LinkOverlay href={entity.siteUrl} fontSize='lg'>{entity.pageTitle} | {entity.siteTitle}</LinkOverlay>

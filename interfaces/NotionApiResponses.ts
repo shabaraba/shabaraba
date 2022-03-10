@@ -68,21 +68,21 @@ export type IHeading = {
 }
 
 export type ICalloutBlock = IBlock & { type: "callout", callout: ICallout }
+export type IIcon = IFileFile | IExternalFile | IEmoji
 export type ICallout = IParagraph & {
-  icon: IFileFile | IExternalFile | IEmoji;
+  icon: IIcon
 }
 
 export type IFileBlock = IBlock & { type: "file", file: IFileFile | IExternalFile }
-export type IFileObject = {
-  type: "file" | "external";
-}
-export type IFileFile = IFileObject & { file: IFile }
+export type IFileFile = { file: IFile }
 export type IFile = {
-  url: string;
-  expiry_time: string;
+  type: "file"
+  url: string
+  expiry_time: string
 }
-export type IExternalFile = IFileObject & { external: IExternal }
+export type IExternalFile = { external: IExternal }
 export type IExternal = {
+  type: "external"
   url: string;
 }
 
@@ -97,7 +97,11 @@ export type ICode = {
   language?: "abap" | "arduino" | "bash" | "basic" | "c" | "clojure" | "coffeescript" | "c++" | "c#" | "css" | "dart" | "diff" | "docker" | "elixir" | "elm" | "erlang" | "flow" | "fortran" | "f#" | "gherkin" | "glsl" | "go" | "graphql" | "groovy" | "haskell" | "html" | "java" | "javascript" | "json" | "julia" | "kotlin" | "latex" | "less" | "lisp" | "livescript" | "lua" | "makefile" | "markdown" | "markup" | "matlab" | "mermaid" | "nix" | "objective-c" | "ocaml" | "pascal" | "perl" | "php" | "plain text" | "powershell" | "prolog" | "protobuf" | "python" | "r" | "reason" | "ruby" | "rust" | "sass" | "scala" | "scheme" | "scss" | "shell" | "sql" | "swift" | "typescript" | "vb.net" | "verilog" | "vhdl" | "visual basic" | "webassembly" | "xml" | "yaml" |  "java/c/c++/c#";
 }
 
-export type IImageBlock = IBlock & { type: "image", image: IFileFile | IExternalFile }
+export type IImageBlock = IBlock & {
+  type: "image"
+  caption?: IText[]
+  image: IFile | IExternal
+}
 
 export type IBulletedListItemBlock = IBlock & { type: "bulleted_list_item", bulleted_list_item: IParagraph}
 export type INumberedListItemBlock = IBlock & { type: "numbered_list_item", numbered_list_item: IParagraph}
