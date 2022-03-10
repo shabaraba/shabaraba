@@ -1,6 +1,6 @@
 import React from 'react'
 import { useBreakpointValue, Container, HStack, Text, Icon, Grid, GridItem, Link as ChakraLink } from '@chakra-ui/react'
-import {SiNotion} from 'react-icons/si'
+import {SiNotion, SiNetlify, SiNextdotjs} from 'react-icons/si'
 import Sticky from 'react-sticky-el'
 import Head from 'next/head'
 import styles from './layout.module.css'
@@ -129,9 +129,10 @@ const Footer = () => {
         align='center'
         justify='center'
       >
-        <Text as='span'> powered by Notion </Text>
+        <Text as='span'> powered by</Text>
+        <Icon as={SiNextdotjs} />
+        <Icon as={SiNetlify} />
         <Icon as={SiNotion} />
-        <Text as='span'> API </Text>
       </HStack>
     </Container>
   )
