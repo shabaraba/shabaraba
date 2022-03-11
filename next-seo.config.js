@@ -14,4 +14,5 @@ export default {
     site: '@shaba_raba',
     cardType: 'summary',
   },
+  description: siteDescription,
 };
