@@ -1,0 +1,36 @@
+{
+    "version": "https://jsonfeed.org/version/1",
+    "title": "",
+    "feed_url": "/rss/feed.json",
+    "icon": "/public/favicon.ico",
+    "author": {
+        "name": "しゃば",
+        "url": "https://...com"
+    },
+    "items": [
+        {
+            "id": "https://blog.from-garage.com/typography",
+            "content_html": "paragraphbolditalicunderlinedisposecolorbackground colorcodemulti blocks codemul",
+            "url": "https://blog.from-garage.com/typography",
+            "title": "typography",
+            "summary": "paragraphbolditalicunderlinedisposecolorbackground colorcodemulti blocks codemul",
+            "date_modified": "2022-02-11T02:42:00.000Z"
+        },
+        {
+            "id": "https://blog.from-garage.com/build-blog-using-notion-api-1",
+            "content_html": "これまで何度もブログを立ち上げては、10記事くらい書いたあたりで頓挫させてきました。\n三日坊主気質なのも理由にありますが、一番の理由は記事が書きにくいことだった",
+            "url": "https://blog.from-garage.com/build-blog-using-notion-api-1",
+            "title": "notion API + NEXT.js + netlify でブログ立ち上げ ①",
+            "summary": "これまで何度もブログを立ち上げては、10記事くらい書いたあたりで頓挫させてきました。\n三日坊主気質なのも理由にありますが、一番の理由は記事が書きにくいことだった",
+            "date_modified": "2022-01-18T10:09:00.000Z"
+        },
+        {
+            "id": "https://blog.from-garage.com/aws-with-webbeginner",
+            "content_html": "awsを今更ながら触り始めた。EC2とかlambdaとか、名前と何となく何をするものかは知っていたが、どう組み合わせるのかよく分からなかったので、メモがてら。い",
+            "url": "https://blog.from-garage.com/aws-with-webbeginner",
+            "title": "web初心者のAWS覚書",
+            "summary": "awsを今更ながら触り始めた。EC2とかlambdaとか、名前と何となく何をするものかは知っていたが、どう組み合わせるのかよく分からなかったので、メモがてら。い",
+            "date_modified": "2021-07-01T12:49:00.000Z"
+        }
+    ]
+}

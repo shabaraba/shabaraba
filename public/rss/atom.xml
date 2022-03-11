@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id/>
+    <title/>
+    <updated>2022-03-11T16:03:49.716Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <author>
+        <name>しゃば</name>
+        <email>fromgarage.work@gmail.com</email>
+        <uri>https://...com</uri>
+    </author>
+    <link rel="self" href="/rss/atom.xml"/>
+    <logo>/public/favicon.ico</logo>
+    <rights>©from-garage 2022 All rights reserved</rights>
+    <entry>
+        <title type="html"><![CDATA[typography]]></title>
+        <id>https://blog.from-garage.com/typography</id>
+        <link href="https://blog.from-garage.com/typography"/>
+        <updated>2022-02-11T02:42:00.000Z</updated>
+        <summary type="html"><![CDATA[paragraphbolditalicunderlinedisposecolorbackground colorcodemulti blocks codemul]]></summary>
+        <content type="html"><![CDATA[paragraphbolditalicunderlinedisposecolorbackground colorcodemulti blocks codemul]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[notion API + NEXT.js + netlify でブログ立ち上げ ①]]></title>
+        <id>https://blog.from-garage.com/build-blog-using-notion-api-1</id>
+        <link href="https://blog.from-garage.com/build-blog-using-notion-api-1"/>
+        <updated>2022-01-18T10:09:00.000Z</updated>
+        <summary type="html"><![CDATA[これまで何度もブログを立ち上げては、10記事くらい書いたあたりで頓挫させてきました。
+三日坊主気質なのも理由にありますが、一番の理由は記事が書きにくいことだった]]></summary>
+        <content type="html"><![CDATA[これまで何度もブログを立ち上げては、10記事くらい書いたあたりで頓挫させてきました。
+三日坊主気質なのも理由にありますが、一番の理由は記事が書きにくいことだった]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[web初心者のAWS覚書]]></title>
+        <id>https://blog.from-garage.com/aws-with-webbeginner</id>
+        <link href="https://blog.from-garage.com/aws-with-webbeginner"/>
+        <updated>2021-07-01T12:49:00.000Z</updated>
+        <summary type="html"><![CDATA[awsを今更ながら触り始めた。EC2とかlambdaとか、名前と何となく何をするものかは知っていたが、どう組み合わせるのかよく分からなかったので、メモがてら。い]]></summary>
+        <content type="html"><![CDATA[awsを今更ながら触り始めた。EC2とかlambdaとか、名前と何となく何をするものかは知っていたが、どう組み合わせるのかよく分からなかったので、メモがてら。い]]></content>
+    </entry>
+</feed>
