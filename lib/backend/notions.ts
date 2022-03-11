@@ -126,6 +126,29 @@ export default class Notion {
     return response.results[0]?.id;
   }
 
+  /// 冒頭80字を返す。存在しなかったらnullを返す
+  public async getOpeningSentence(blockId: string): Promise<string> {
+    let openingSentence = ''
+
+    const resp = await this._notion.blocks.children.list({
+      block_id: blockId,
+    })
+
+    for (let result of resp.results) {
+      let block = result as NotionBlockInterfaces.BlockType
+      if (block.type === 'paragraph') {
+        block.paragraph.text.forEach((textObject: NotionBlockInterfaces.IText) => {
+          openingSentence += textObject.plain_text
+        })
+      }
+      if (openingSentence.length >= 80) {
+        break
+      }
+    }
+    // console.log( openingSentence.substring(0, 80))
+    return openingSentence.substring(0, 80)
+  }
+
   static createInterfaceList(response: ListBlockChildrenResponse): NotionBlockInterfaces.IRetrieveBlockChildrenResponse {
     let blocks: NotionBlockInterfaces.IRetrieveBlockChildrenResponse = {object: "list", results: []};
     response.results.map((item: NotionBlockInterfaces.BlockType) => {

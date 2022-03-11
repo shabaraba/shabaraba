@@ -26,3 +26,7 @@ yarn-debug.log*
 yarn-error.log*
 
 /.netlify
+
+# site-map
+/public/robots.txt
+/public/sitemap*.xml
