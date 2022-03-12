@@ -15,7 +15,7 @@ export const getServerSideProps = async () => {
 };
 
 async function generateFeedXml() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || '';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://blog.from-garage.com';
   const date = new Date();
   // author の情報を書き換える
   const author = {
@@ -27,8 +27,8 @@ async function generateFeedXml() {
 
   // デフォルトになる feed の情報
   const feed = new Feed({
-    title: process.env.NEXT_PUBLIC_SITE_NAME || '',
-    description: process.env.NEXT_PUBLIC_SITE_DISC,
+    title: process.env.NEXT_PUBLIC_SITE_NAME || 'Coffee-Break-Point',
+    description: process.env.NEXT_PUBLIC_SITE_DISC || 'コーヒー休憩にちょうどよい技術よみものを目指して',
     id: baseUrl,
     link: baseUrl,
     language: 'ja',
