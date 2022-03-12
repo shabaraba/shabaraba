@@ -1,13 +1,20 @@
 import fs from 'fs'
 import { Feed } from 'feed';
 import { siteUrl, siteTitle, siteDescription } from '../../next-seo.config'
+import { GetServerSidePropsContext } from 'next';
 import Notion from '../../lib/backend/notions'
 import { IPageHead } from '../../interfaces/NotionPageApiResponses';
 
 export default () => null;
 
-export const getServerSideProps = async () => {
-  await generateFeedXml(); // フィードのXMLを生成する（後述）
+export const getServerSideProps = async (props: GetServerSidePropsContext) => {
+  const rss = await generateFeedXml(); // フィードのXMLを生成する（後述）
+  console.log(rss)
+
+  props.res.statusCode = 200;
+  props.res.setHeader('Cache-Control', 's-maxage=86400, stale-while-revalidate'); // 24時間キャッシュする
+  props.res.setHeader('Content-Type', 'text/xml');
+  props.res.end(rss);
 
   return {
     props: {},
@@ -23,7 +30,6 @@ async function generateFeedXml() {
     email: 'fromgarage.work@gmail.com',
     link: 'https://...com',
   };
-  console.log('xml')
 
   // デフォルトになる feed の情報
   const feed = new Feed({
@@ -61,10 +67,11 @@ async function generateFeedXml() {
       date: new Date(post.createdAt),
     });
   }
-  console.log(feed, null, ' ')
     // フィード情報を public/rss 配下にディレクトリを作って保存
   fs.mkdirSync('./public/rss', { recursive: true });
   fs.writeFileSync('./public/rss/feed.xml', feed.rss2());
   fs.writeFileSync('./public/rss/atom.xml', feed.atom1());
   fs.writeFileSync('./public/rss/feed.json', feed.json1());
+
+  return feed.rss2()
 }
