@@ -7,14 +7,28 @@ import { IPageHead } from '../../interfaces/NotionPageApiResponses';
 
 export default () => null;
 
-export const getServerSideProps = async (props: GetServerSidePropsContext) => {
+// export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+export const getStaticProps = async () => {
   const rss = await generateFeedXml(); // フィードのXMLを生成する（後述）
-  console.log(rss)
+  // console.log(rss)
+  // console.log(typeof(rss))
+  // console.log(context.res.hasOwnProperty('write'))
+  // console.log(typeof(context.res))
+  // const getMethods = (obj) => {
+  //   let properties = new Set()
+  //   let currentObj = obj
+  //   do {
+  //     Object.getOwnPropertyNames(currentObj).map(item => properties.add(item))
+  //   } while ((currentObj = Object.getPrototypeOf(currentObj)))
+  //   return properties
+  // }
+  // console.log(getMethods(context.res))
 
-  props.res.statusCode = 200;
-  props.res.setHeader('Cache-Control', 's-maxage=86400, stale-while-revalidate'); // 24時間キャッシュする
-  props.res.setHeader('Content-Type', 'text/xml');
-  props.res.end(rss);
+  // context.res.statusCode = 200
+  // context.res.setHeader('Cache-Control', 's-maxage=86400, stale-while-revalidate') // 24時間キャッシュする
+  // context.res.setHeader('Content-Type', 'text/xml')
+  // context.res.write('rss', (error) => {console.log('error')})
+  // context.res.end()
 
   return {
     props: {},
