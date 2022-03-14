@@ -16,6 +16,10 @@ export default {
   },
   additionalLinkTags: [
     {
+      rel: 'icon',
+      href: '/favicon3.ico',
+    },
+    {
       rel: 'alternate',
       type: 'application/rss+xml',
       title: "RSS2.0",
