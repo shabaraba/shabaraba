@@ -1,13 +1,34 @@
 import fs from 'fs'
 import { Feed } from 'feed';
 import { siteUrl, siteTitle, siteDescription } from '../../next-seo.config'
+import { GetServerSidePropsContext } from 'next';
 import Notion from '../../lib/backend/notions'
 import { IPageHead } from '../../interfaces/NotionPageApiResponses';
 
 export default () => null;
 
-export const getServerSideProps = async () => {
-  await generateFeedXml(); // フィードのXMLを生成する（後述）
+// export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+export const getStaticProps = async () => {
+  const rss = await generateFeedXml(); // フィードのXMLを生成する（後述）
+  // console.log(rss)
+  // console.log(typeof(rss))
+  // console.log(context.res.hasOwnProperty('write'))
+  // console.log(typeof(context.res))
+  // const getMethods = (obj) => {
+  //   let properties = new Set()
+  //   let currentObj = obj
+  //   do {
+  //     Object.getOwnPropertyNames(currentObj).map(item => properties.add(item))
+  //   } while ((currentObj = Object.getPrototypeOf(currentObj)))
+  //   return properties
+  // }
+  // console.log(getMethods(context.res))
+
+  // context.res.statusCode = 200
+  // context.res.setHeader('Cache-Control', 's-maxage=86400, stale-while-revalidate') // 24時間キャッシュする
+  // context.res.setHeader('Content-Type', 'text/xml')
+  // context.res.write('rss', (error) => {console.log('error')})
+  // context.res.end()
 
   return {
     props: {},
@@ -15,7 +36,7 @@ export const getServerSideProps = async () => {
 };
 
 async function generateFeedXml() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || '';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://blog.from-garage.com';
   const date = new Date();
   // author の情報を書き換える
   const author = {
@@ -23,12 +44,11 @@ async function generateFeedXml() {
     email: 'fromgarage.work@gmail.com',
     link: 'https://...com',
   };
-  console.log('xml')
 
   // デフォルトになる feed の情報
   const feed = new Feed({
-    title: process.env.NEXT_PUBLIC_SITE_NAME || '',
-    description: process.env.NEXT_PUBLIC_SITE_DISC,
+    title: process.env.NEXT_PUBLIC_SITE_NAME || 'Coffee-Break-Point',
+    description: process.env.NEXT_PUBLIC_SITE_DISC || 'コーヒー休憩にちょうどよい技術よみものを目指して',
     id: baseUrl,
     link: baseUrl,
     language: 'ja',
@@ -61,10 +81,11 @@ async function generateFeedXml() {
       date: new Date(post.createdAt),
     });
   }
-  console.log(feed, null, ' ')
     // フィード情報を public/rss 配下にディレクトリを作って保存
   fs.mkdirSync('./public/rss', { recursive: true });
   fs.writeFileSync('./public/rss/feed.xml', feed.rss2());
   fs.writeFileSync('./public/rss/atom.xml', feed.atom1());
   fs.writeFileSync('./public/rss/feed.json', feed.json1());
+
+  return feed.rss2()
 }
