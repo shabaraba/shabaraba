@@ -8,6 +8,16 @@ export default {
     locale: 'en_IE',
     url: process.env.SITE_URL || siteUrl,
     site_name: siteTitle,
+    title: siteTitle,
+    description: siteDescription,
+    images: [
+      {
+        url: '/favicon3.ico',
+        width: 800,
+        height: 600,
+        alt: 'common ogp image',
+      },
+    ],
   },
   twitter: {
     handle: '@shaba_raba',
