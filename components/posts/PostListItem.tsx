@@ -78,7 +78,7 @@ export default function PostListItem({postHead, breakPoint}: {postHead: IPageHea
             <Wrap justify='right'>
               <WrapItem>
                 <Icon as={MdCreate} />
-                <Date dateString={postHead.createdAt}/>
+                <Date dateString={postHead.publishedAt}/>
               </WrapItem>
               <WrapItem>
                 <Icon as={MdArrowRightAlt} />

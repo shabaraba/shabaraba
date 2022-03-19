@@ -1,5 +1,5 @@
 // import SyntaxHighlighter from "react-syntax-highlighter";
-import { CopyBlock, dracula } from "react-code-blocks";
+import { CodeBlock, dracula } from "react-code-blocks";
 import { Box } from '@chakra-ui/react'
 import type { Code as CodeEntity, } from '../../../entities/notion/blocks';
 
@@ -13,12 +13,11 @@ export function Code({entity}: {entity: CodeEntity}) {
       mb={15}
       fontSize='sm'
     >
-      <CopyBlock
+      <CodeBlock
         text={text}
         language={entity.language}
         showLineNumbers={true}
         theme={dracula}
-        codeBlock
         customStyle={{
           borderRadius: 5,
           width: '100%',

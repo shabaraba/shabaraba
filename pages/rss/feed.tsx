@@ -78,7 +78,7 @@ async function generateFeedXml() {
       link: `${siteUrl}/${post.slug}`,
       description: description,
       content: description,
-      date: new Date(post.createdAt),
+      date: new Date(post.publishedAt),
     });
   }
     // フィード情報を public/rss 配下にディレクトリを作って保存

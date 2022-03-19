@@ -37,7 +37,8 @@ export default class Notion {
       },
       sorts: [
         {
-            "timestamp": "created_time",
+            // "timestamp": "created_time",
+            "property": "Published_Time",
             "direction":"descending"
         }
       ]
@@ -66,7 +67,7 @@ export default class Notion {
       slug: slug,
       icon: icon,
       cover: cover,
-      createdAt: properties.Created?.created_time,
+      publishedAt: properties.Published_Time.date.start,
       updatedAt: properties.Updated?.last_edited_time,
     }
   }

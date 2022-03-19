@@ -7,7 +7,7 @@ export type IPageHead = {
   icon?: IPageIcon
   cover?: IPageCover
   slug?: string
-  createdAt: string
+  publishedAt: string
   updatedAt?: string
 
   [prop: string]: any

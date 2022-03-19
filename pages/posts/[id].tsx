@@ -1,4 +1,4 @@
-import { useBreakpointValue, SlideFade, Icon, Box, Grid, GridItem, Wrap, WrapItem, Spinner } from '@chakra-ui/react'
+import { useBreakpointValue, SlideFade, Icon, Box, Grid, GridItem, Wrap, WrapItem, Divider } from '@chakra-ui/react'
 import {MdCreate, MdUpdate, MdArrowRightAlt } from 'react-icons/md'
 import AuthorBox from '../../components/common/AuthorBox'
 import Layout from '../../components/layout'
@@ -50,7 +50,7 @@ const PostTitle = ({tags, post, titleBlock}: {tags: any[], post: NotionPageType.
         <Wrap justify='right'>
           <WrapItem>
             <Icon as={MdCreate} />
-            <Date dateString={post.createdAt}/>
+            <Date dateString={post.publishedAt}/>
           </WrapItem>
           <WrapItem>
             <Icon as={MdArrowRightAlt} />
@@ -104,12 +104,13 @@ const RightSideArea = () => {
 
 const MainArea = ({post, postBlockList, titleBlock}: {post: NotionPageType.IPageHead, postBlockList: NotionBlock.BlockList, titleBlock: NotionBlock.Heading1}) => {
   return (
-    <Box as='article'>
+    <Box as='article' pl={{lg: '15%', base: '0%'}} pr={{lg: '15%', base: '0%'}}>
       {postBlockList.data.map((block: NotionBlock.Block) =>
         <Block
           key = {uuidv4()}
           entity={block} />
       )}
+      <Divider size="large"/>
     </Box>
   )
 }
