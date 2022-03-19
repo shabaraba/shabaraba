@@ -86,16 +86,18 @@ export default function Layout({
   return (
     <>
       <HeadTag />
-      <Container pr={50} maxW='100%' bg='#FFF5F3'>
+      <Container pr={{lg: 50, base: 10}} pl={{lg:50, base: 10}} maxW='100%' bg='#FFF5F3'>
         <main>
-          <Grid templateColumns={{lg: 'repeat(12, 1fr)', base: '1fr'}} gap={4} w='100%'>
+          <Grid templateColumns={{lg: 'repeat(12, 1fr)', base: '1fr'}} gap={30} w='100%'>
             <GridItem colSpan={{lg: 3, base: 1}} >
               <Sticky disabled={isMobile}>
                 <SiteLogo />
                 {leftside}
               </Sticky>
             </GridItem>
-            <GridItem colSpan={{lg: 8, base: 1}} p={{lg: 5, base: 1}} >
+            <GridItem 
+              colSpan={{lg: 9, base: 1}} 
+            >
               {children}
             </GridItem>
           </Grid>

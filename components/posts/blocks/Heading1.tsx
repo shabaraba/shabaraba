@@ -6,7 +6,7 @@ export function Heading1({entity}: {entity: Heading1Entity}) {
   return (
     <Heading
       as='h1'
-      size='xl'
+      size='lg'
       mt={6}
       mb={6}
     >
