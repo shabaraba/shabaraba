@@ -1,6 +1,7 @@
 ## Notiography
 Notion APIを用いたブログ。  
 取り急ぎ最低限必要な機能 + 個人的に運用できる状態にするが、将来的にフレームワーク化を図る予定。
+自分用のブログ: https://blog.from-garage.com
 
 ## 技術スタック
 Nextjs
