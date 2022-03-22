@@ -74,8 +74,8 @@ async function generateFeedXml() {
     // console.log(description)
     feed.addItem({
       title: post.title,
-      id: `${siteUrl}/${post.slug}`,
-      link: `${siteUrl}/${post.slug}`,
+      id: `${siteUrl}/posts/${post.slug}`,
+      link: `${siteUrl}/posts/${post.slug}`,
       description: description,
       content: description,
       date: new Date(post.publishedAt),
