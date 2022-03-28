@@ -1,47 +1,47 @@
 import React from "react"
-import { LinkBox, LinkOverlay, Grid, GridItem, Text, Image } from '@chakra-ui/react'
+import { LinkBox, LinkOverlay, Box, GridItem, Text, Image } from '@chakra-ui/react'
 import type { Bookmark as BookmarkEntity } from '../../../entities/notion/blocks';
 
 export function Bookmark({entity}: {entity: BookmarkEntity}) {
   return (
-    <LinkBox>
-      <Grid
-        mt={5}
-        mb={5}
-        p={2}
-        borderRadius={10}
-        filter = 'drop-shadow(3px 3px 3px rgba(0,0,0,0.2))'
-        _hover={{
-          filter: 'drop-shadow(10px 10px 10px rgba(0,0,0,0.4))',
-          transition: 'all .3s'
-        }}
-        backgroundColor = 'gray.50'
-        templateColumns={{sm: '1fr', md: 'repeat(10, 1fr)', }}
-        gap={4}
+    <LinkBox
+      marginTop={5}
+      display={{md: "flex"}}
+      borderRadius={10}
+      overflow='hidden'
+      filter = 'drop-shadow(3px 3px 3px rgba(0,0,0,0.2))'
+      _hover={{
+        filter: 'drop-shadow(10px 10px 10px rgba(0,0,0,0.4))',
+        transition: 'all .3s'
+      }}
+      bg='gray.50'
+      height={{md: 150}}
+      width='100%'
+    >
+      <Box 
+        flexShrink={0}
+        width={{base: '100%', md: 200}}
+        height={{base: 200, md: 150}}
+        mr={{base: 'auto', md: 0}}
+        ml={{base: 'auto', md: 0}}
       >
-        <GridItem
-          colSpan={{md: 3}}
-          display="flex"
-          justifyContent='center'
-          alignItems='center'
-        >
-          <Image
-            src={entity.thumbnailUrl}
-            objectFit="cover"
-            height={100}
-          />
-        </GridItem>
-
-        <GridItem
-          colStart={{md: 4}}
-          colEnd={{md: 11}}
-          p={2}
-        >
-          <LinkOverlay href={entity.siteUrl} fontSize='md' overflowWrap='anywhere'>{entity.pageTitle} | {entity.siteTitle}</LinkOverlay>
-          <Text fontSize='smaller' overflowWrap='anywhere' noOfLines={2}>{entity.pageDescription}</Text>
-          <Text fontSize='xs' overflowWrap='anywhere'>{entity.siteUrl}</Text>
-        </GridItem>
-      </Grid>
+        <Image
+          src={entity.thumbnailUrl}
+          width='100%'
+          height='100%'
+          objectFit="cover"
+        />
+      </Box>
+      <Box
+        p={2}
+        mt={{base: 4, md: 0}}
+        ml={{md: 6}}
+        h='100%'
+      >
+        <LinkOverlay href={entity.siteUrl} fontSize='md' overflowWrap='anywhere'>{entity.pageTitle} | {entity.siteTitle}</LinkOverlay>
+        <Text fontSize='smaller' overflowWrap='anywhere' noOfLines={2}>{entity.pageDescription}</Text>
+        <Text fontSize='xs' overflowWrap='anywhere' noOfLines={1}>{entity.siteUrl}</Text>
+      </Box>
     </LinkBox>
   )
 }

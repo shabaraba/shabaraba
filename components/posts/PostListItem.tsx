@@ -14,6 +14,7 @@ export default function PostListItem({postHead, breakPoint}: {postHead: IPageHea
   return(
     <LinkBox as="article"
       marginTop={5}
+      position='relative'
       display={{md: "flex"}}
       borderRadius={10}
       overflow='hidden'
@@ -55,9 +56,10 @@ export default function PostListItem({postHead, breakPoint}: {postHead: IPageHea
         mt={{base: 4, md: 0}}
         ml={{md: 6}}
         h='100%'
+        w='100%'
       >
         <NextLink href="/posts/[id]" as={'/posts/' + (postHead.slug)} passHref>
-          <LinkOverlay fontSize={{md: '20px', sm: '20px', base: '18px'}} overflowWrap='anywhere'>
+          <LinkOverlay fontSize={{md: '18px', sm: '18px', base: '16px'}} overflowWrap='anywhere'>
             {postHead.title}
           </LinkOverlay>
         </NextLink>
@@ -67,23 +69,28 @@ export default function PostListItem({postHead, breakPoint}: {postHead: IPageHea
               <Tag entity={tag} />
             </WrapItem>
           ))}
-          <WrapItem key={uuidv4()} />
         </Wrap>
-        <Box fontSize={{base: '12px', sm: '14px'}} textAlign={['right']}>
-          <Wrap justify='right'>
-            <WrapItem>
-              <Icon as={MdCreate} />
-              <Date dateString={postHead.publishedAt}/>
-            </WrapItem>
-            <WrapItem>
-              <Icon as={MdArrowRightAlt} />
-            </WrapItem>
-            <WrapItem>
-              <Icon as={MdUpdate} />
-              <Date dateString={postHead.updatedAt}/>
-            </WrapItem>
-          </Wrap>
-        </Box>
+      </Box>
+      <Box 
+        fontSize={{base: '12px', sm: '14px'}} 
+        textAlign={['right']}
+        position='absolute'
+        bottom={{md: 2}}
+        right={{md: 2}}
+      >
+        <Wrap justify='right'>
+          <WrapItem>
+            <Icon as={MdCreate} />
+            <Date dateString={postHead.publishedAt}/>
+          </WrapItem>
+          <WrapItem>
+            <Icon as={MdArrowRightAlt} />
+          </WrapItem>
+          <WrapItem>
+            <Icon as={MdUpdate} />
+            <Date dateString={postHead.updatedAt}/>
+          </WrapItem>
+        </Wrap>
       </Box>
     </LinkBox>
   )

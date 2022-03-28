@@ -107,7 +107,7 @@ export default function Layout({
             <GridItem 
               colSpan={{lg: 9, base: 1}} 
             >
-              <Container w='100%'>
+              <Container maxW='container.lg'>
                 {children}
               </Container>
             </GridItem>

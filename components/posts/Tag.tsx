@@ -33,7 +33,7 @@ export default function Tag({entity}: {entity: NotionTagEntity}) {
   // console.log(JSON.stringify(icon))
   return (
     <LinkBox>
-      <NotionTag size='md' key='md' variant='subtle' colorScheme={entity.color}>
+      <NotionTag size='sm' key='md' variant='subtle' colorScheme={entity.color}>
         <TagLabel>
           <NextLink href='#' passHref>
             <LinkOverlay>{entity.name}</LinkOverlay>
