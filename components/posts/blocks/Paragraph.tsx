@@ -18,32 +18,32 @@ export function Paragraph({entity}: {entity: ParagraphEntity}) {
   if (entity.texts.length === 0) return <br />
 
   const LinkText: React.VFC<Props> = ({color, backgroundColor, url, children}: Props) => {
-    if (url != null) return <Link href={url} color={color} background={backgroundColor} isExternal>{children}<ExternalLinkIcon mx='2px' /></Link>
+    if (url != null) return <Link href={url} color={color} background={backgroundColor} overflowWrap='anywhere' isExternal>{children}<ExternalLinkIcon mx='2px' /></Link>
     return <>{children}</>
   }
 
   const Bold: React.VFC<Props> = ({apply, color, backgroundColor, children}: Props) => {
-    if (apply) return <Text as='strong' fontWeight='bold' color={color} background={backgroundColor} >{children}</Text>
+    if (apply) return <Text as='strong' fontWeight='bold' color={color} background={backgroundColor} overflowWrap='anywhere'>{children}</Text>
     return <>{children}</>
   }
 
   const Italic: React.VFC<Props> = ({apply, color, backgroundColor, children}: Props) => {
-    if (apply) return <Text as='i' color={color} background={backgroundColor} >{children}</Text>
+    if (apply) return <Text as='i' color={color} background={backgroundColor} overflowWrap='anywhere'>{children}</Text>
     return <>{children}</>
   }
 
   const Underline: React.VFC<Props> = ({apply, color, backgroundColor, children}: Props) => {
-    if (apply) return <Text as='u' color={color} background={backgroundColor} >{children}</Text>
+    if (apply) return <Text as='u' color={color} background={backgroundColor} overflowWrap='anywhere'>{children}</Text>
     return <>{children}</>
   }
 
   const Strikethrough: React.VFC<Props> = ({apply, color, backgroundColor, children}: Props) => {
-    if (apply) return <Text as='s' color={color} background={backgroundColor} >{children}</Text>
+    if (apply) return <Text as='s' color={color} background={backgroundColor} overflowWrap='anywhere'>{children}</Text>
     return <>{children}</>
   }
 
   const CodeText: React.VFC<Props> = ({apply, color, backgroundColor, children}: Props) => {
-    if (apply) return <Code colorScheme={'red'} background={backgroundColor} >{children}</Code>
+    if (apply) return <Code colorScheme={'red'} background={backgroundColor} display='inline' overflowWrap='anywhere' children={children} />
     return <>{children}</>
   }
 
@@ -61,6 +61,7 @@ export function Paragraph({entity}: {entity: ParagraphEntity}) {
         as='span'
         color={color}
         backgroundColor={backgroundColor}
+        fontSize={{ base: '12px', md: '14px', lg: '16px' }}
       >
         <LinkText
           color={color}
@@ -129,7 +130,7 @@ export function Paragraph({entity}: {entity: ParagraphEntity}) {
   return (
     <Text>
       {lineEntities.map((line:any) =>
-          <span key={uuidv4()}>{line.map((word:any) => <RichText key={uuidv4()} text={word} /> )} <br /></span>
+          <Text as='span' key={uuidv4()}>{line.map((word:any) => <RichText key={uuidv4()} text={word} /> )} <br /></Text>
       )}
     </Text>
   )

@@ -1,5 +1,5 @@
 import React from 'react'
-import { useBreakpointValue, Container, HStack, Text, Icon, Grid, GridItem, Link as ChakraLink } from '@chakra-ui/react'
+import { useBreakpointValue, Container, Box, HStack, Text, Icon, Grid, GridItem, Link as ChakraLink } from '@chakra-ui/react'
 import {SiNotion, SiNetlify, SiNextdotjs} from 'react-icons/si'
 import Sticky from 'react-sticky-el'
 import Head from 'next/head'
@@ -86,19 +86,30 @@ export default function Layout({
   return (
     <>
       <HeadTag />
-      <Container pr={{lg: 50, base: 10}} pl={{lg:50, base: 10}} maxW='100%' bg='#FFF5F3'>
+      <Box maxW='100vw' bg='#FFF5F3'>
         <main>
-          <Grid templateColumns={{lg: 'repeat(12, 1fr)', base: '1fr'}} gap={30} w='100%'>
+          <Grid templateColumns={{lg: 'repeat(12, 1fr)', base: '1fr'}} gap={25} w='100%'>
             <GridItem colSpan={{lg: 3, base: 1}} >
-              <Sticky disabled={isMobile}>
-                <SiteLogo />
-                {leftside}
-              </Sticky>
+              <Container>
+                {!isMobile?
+                  <Sticky disabled={isMobile}>
+                    <SiteLogo />
+                    {leftside}
+                  </Sticky>
+                :
+                  <>
+                    <SiteLogo />
+                    {leftside}
+                  </>
+                }
+              </Container>
             </GridItem>
             <GridItem 
               colSpan={{lg: 9, base: 1}} 
             >
-              {children}
+              <Container w='100%'>
+                {children}
+              </Container>
             </GridItem>
           </Grid>
         </main>
@@ -112,7 +123,7 @@ export default function Layout({
         <Sticky>
           <Footer />
         </Sticky>
-      </Container>
+      </Box>
     </>
   )
 }

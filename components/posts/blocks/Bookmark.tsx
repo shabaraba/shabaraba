@@ -27,6 +27,8 @@ export function Bookmark({entity}: {entity: BookmarkEntity}) {
         >
           <Image
             src={entity.thumbnailUrl}
+            objectFit="cover"
+            height={100}
           />
         </GridItem>
 
@@ -35,9 +37,9 @@ export function Bookmark({entity}: {entity: BookmarkEntity}) {
           colEnd={{md: 11}}
           p={2}
         >
-          <LinkOverlay href={entity.siteUrl} fontSize='lg'>{entity.pageTitle} | {entity.siteTitle}</LinkOverlay>
-          <Text fontSize='smaller'>{entity.pageDescription}</Text>
-          <Text fontSize='xs'>{entity.siteUrl}</Text>
+          <LinkOverlay href={entity.siteUrl} fontSize='md' overflowWrap='anywhere'>{entity.pageTitle} | {entity.siteTitle}</LinkOverlay>
+          <Text fontSize='smaller' overflowWrap='anywhere' noOfLines={2}>{entity.pageDescription}</Text>
+          <Text fontSize='xs' overflowWrap='anywhere'>{entity.siteUrl}</Text>
         </GridItem>
       </Grid>
     </LinkBox>

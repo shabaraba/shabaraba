@@ -18,7 +18,7 @@ export default () => {
   const avatarUrl = fetchedData.avatar_url
   const iconSize = 6
   return (
-    <Container
+    <Box
       p={5}
     >
       <Box
@@ -56,7 +56,7 @@ export default () => {
         </VStack>
       </Box>
       <Box
-        p={5}
+        pt={5}
       >
         <Text fontSize='lg'>
           Author: しゃば
@@ -70,7 +70,7 @@ export default () => {
         </Text>
       </Box>
 
-    </Container>
+    </Box>
   )
 }
 

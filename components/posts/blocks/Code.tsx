@@ -21,7 +21,7 @@ export function Code({entity}: {entity: CodeEntity}) {
         customStyle={{
           borderRadius: 5,
           width: '100%',
-          maxWidth: '70vw',
+          maxWidth: '90vw',
           overflow: 'auto'
         }}
       />
