@@ -1,7 +1,7 @@
-import { Image, LinkBox, LinkOverlay, Wrap, WrapItem, Text, SpaceProps, Icon, Grid, GridItem, Box, Flex } from '@chakra-ui/react'
+import { LinkBox, LinkOverlay, Wrap, WrapItem, Text, SpaceProps, Icon, Grid, GridItem, Box, Flex } from '@chakra-ui/react'
 import {MdCreate, MdUpdate, MdArrowRightAlt } from 'react-icons/md'
 import Date from '../../components/date'
-// import Image from 'next/image'
+import Image from 'next/image'
 import NextLink from 'next/link'
 import Tag from '../../components/posts/Tag'
 import {v4 as uuidv4} from 'uuid'
@@ -33,12 +33,14 @@ export default function PostListItem({postHead, breakPoint}: {postHead: IPageHea
         height={{base: 200, md: 120}}
         mr={{base: 'auto', md: 0}}
         ml={{base: 'auto', md: 0}}
+        display='flex'
+        justifyContent='center'
       >
         {coverImageUrl && (
           <Image
             src={coverImageUrl}
-            width='100%'
-            height='100%'
+            width={300}
+            height={200}
             objectFit="cover"
           />
         )}
