@@ -17,23 +17,6 @@ const HeadTag: React.FC = () => {
         name="description"
         content={siteDescription}
       />
-      <meta
-        property="og:image"
-        content={`https://og-image.vercel.app/${encodeURI(
-          siteDescription
-        )}.png?theme=light&md=0&fontSize=75px&images=https%3A%2F%2Fassets.zeit.co%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnextjs-black-logo.svg`}
-      />
-      <meta name="og:title" content={siteDescription} />
-
-      <meta name="twitter:card" content="summary" />
-      <meta name="twitter:site" content="@shaba_raba" />
-      <meta name="twitter:title" content={siteTitle} />
-      <meta name="twitter:description" content={siteDescription} />
-      <meta name="twitter:image" content={`https://og-image.vercel.app/${encodeURI(
-          siteDescription
-        )}.png?theme=light&md=0&fontSize=75px&images=https%3A%2F%2Fassets.zeit.co%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnextjs-black-logo.svg`}
-      />
-
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin={'crossOrigin'} />
       <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet" />

@@ -1,5 +1,6 @@
 import React from 'react'
 import useSWRImmutable from 'swr/immutable'
+import { NextSeo } from 'next-seo';
 import axios from 'axios'
 import { useBreakpointValue, Text, Container, Box, VStack, Icon, Image, Link, Skeleton, Tooltip } from '@chakra-ui/react'
 import {SiGithub, SiTwitter, SiQiita} from 'react-icons/si'
@@ -17,6 +18,26 @@ export default function Home({allPostsData}: Props){
     <Layout home
       leftside={<Author />}
     >
+      <NextSeo
+        openGraph={{
+          title: 'Coffee Break Point',
+          images: [
+            { 
+              url: 
+                'https://og-image-shabaraba.vercel.app/' + 
+                '.png?' +
+                'md=1&' +
+                'fontSize=100px&' +
+                'q=85&' +
+                'fm=jpg&' +
+                'crop=entropy&' +
+                'cs=srgb&' +
+                'siteTitle=Coffee+Break+Point'
+                // 'bg=https%3A%2F%2Fimages.unsplash.com/photo-1514119412350-e174d90d280e?ixlib=rb-1.2.1'
+            },
+          ],
+        }}
+      />
       <Head>
         <title>{siteTitle}</title>
       </Head>
