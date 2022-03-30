@@ -134,7 +134,7 @@ export default function Post({tags, post, pageJson, postBlockJson}: Props) {
 
       <NextSeo
         openGraph={{
-          title: 'Coffee Break Point',
+          title: post.title,
           images: [
             { 
               url: 
