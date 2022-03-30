@@ -1,4 +1,5 @@
-import { useBreakpointValue, SlideFade, Icon, Box, Grid, GridItem, Wrap, WrapItem, Divider } from '@chakra-ui/react'
+import { SlideFade, Icon, Box, Wrap, WrapItem, Divider } from '@chakra-ui/react'
+import { NextSeo } from 'next-seo';
 import {MdCreate, MdUpdate, MdArrowRightAlt } from 'react-icons/md'
 import AuthorBox from '../../components/common/AuthorBox'
 import Layout from '../../components/layout'
@@ -120,6 +121,8 @@ export default function Post({tags, post, pageJson, postBlockJson}: Props) {
   const titleBlock: NotionBlock.Heading1 = FrontendNotion.convertPageResponseToNotionHeading1Block(pageJson)
   const postHead: NotionPageType.IPageHead = post
 
+  const coverImageUrl: string | null = postHead.cover?.file?.url ?? postHead.cover?.external?.url ?? null
+
   return (
     <Layout
       leftside={
@@ -128,6 +131,27 @@ export default function Post({tags, post, pageJson, postBlockJson}: Props) {
         </SlideFade>
       }
     >
+
+      <NextSeo
+        openGraph={{
+          title: 'Coffee Break Point',
+          images: [
+            { 
+              url: 
+                'https://og-image-shabaraba.vercel.app/' + 
+                post.title + '.png?' +
+                'md=1&' +
+                'fontSize=100px&' +
+                'q=85&' +
+                'fm=jpg&' +
+                'crop=entropy&' +
+                'cs=srgb&' +
+                'siteTitle=Coffee+Break+Point&' +
+                'bg=' + encodeURI(coverImageUrl)
+            },
+          ],
+        }}
+      />
       <Head>
         <title>{post.title}</title>
       </Head>
