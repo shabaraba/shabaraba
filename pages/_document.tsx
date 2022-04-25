@@ -27,6 +27,12 @@ class Document extends NextDocument<Props> {
           `,
             }}
           />
+          {/*google adsense*/}
+          <script 
+            async 
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1788385520787014" 
+            crossOrigin="anonymous"
+          />
         </Head>
         <body>
           <Main />
