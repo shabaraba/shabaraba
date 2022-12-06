@@ -1,6 +1,7 @@
 import '../styles/global.css'
+import Head from 'next/head'
 import React, { useEffect } from 'react'
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import { AppProps } from 'next/app'
 import { TweetLoader } from '../components/TweetLoader'
 import { useRouter } from 'next/router'
@@ -24,8 +25,14 @@ export default function App({ Component, pageProps }: AppProps) {
     }
   }, [router.events])
 
+  const theme = extendTheme({ })
+
   return (
     <>
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content={siteDescription} />
+      </Head>
       <DefaultSeo {...SEO} />
       <ChakraProvider>
         <TweetLoader />

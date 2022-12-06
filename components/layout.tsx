@@ -2,27 +2,9 @@ import React from 'react'
 import { useBreakpointValue, Container, Box, HStack, Text, Icon, Grid, GridItem, Link as ChakraLink } from '@chakra-ui/react'
 import {SiNotion, SiNetlify, SiNextdotjs} from 'react-icons/si'
 import Sticky from 'react-sticky-el'
-import Head from 'next/head'
+import {siteTitle} from '../pages/_document'
 import styles from './layout.module.css'
 import Link from 'next/link'
-
-export const siteTitle = 'Coffee Break Point'
-export const siteDescription = 'コーヒー休憩にちょうどよい技術よみものを目指して'
-
-const HeadTag: React.FC = () => {
-  return (
-    <Head>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <meta
-        name="description"
-        content={siteDescription}
-      />
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin={'crossOrigin'} />
-      <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet" />
-    </Head>
-  )
-}
 
 const SiteLogo: React.FC = () => {
   return (
@@ -68,23 +50,24 @@ export default function Layout({
                     // background: '#e8cfc1'
   return (
     <>
-      <HeadTag />
       <Box maxW='100vw' bg='#FFF5F3'>
         <main>
           <Grid templateColumns={{lg: 'repeat(12, 1fr)', base: '1fr'}} gap={25} w='100%'>
             <GridItem colSpan={{lg: 3, base: 1}} >
               <Container>
-                {!isMobile?
+                {/* {!isMobile?
                   <Sticky disabled={isMobile}>
-                    <SiteLogo />
-                    {leftside}
+                    <>
+                      <SiteLogo />
+                      {leftside}
+                    </>
                   </Sticky>
                 :
                   <>
                     <SiteLogo />
                     {leftside}
                   </>
-                }
+                } */}
               </Container>
             </GridItem>
             <GridItem 
@@ -103,9 +86,9 @@ export default function Layout({
             </Link>
           </div>
         )}
-        <Sticky>
+        {/* <Sticky>
           <Footer />
-        </Sticky>
+        </Sticky> */}
       </Box>
     </>
   )

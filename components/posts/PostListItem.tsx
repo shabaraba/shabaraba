@@ -41,8 +41,7 @@ export default function PostListItem({postHead, breakPoint}: {postHead: IPageHea
             src={coverImageUrl}
             width={300}
             height={200}
-            objectFit="cover"
-          />
+            alt={''}/>
         )}
         {!coverImageUrl && iconText && (
           <Text
@@ -65,13 +64,13 @@ export default function PostListItem({postHead, breakPoint}: {postHead: IPageHea
             {postHead.title}
           </LinkOverlay>
         </NextLink>
-        <Wrap>
+        {/* <Wrap>
           {postHead.tags?.map((tag: IPageTag) => (
             <WrapItem key={uuidv4()}>
               <Tag entity={tag} />
             </WrapItem>
           ))}
-        </Wrap>
+        </Wrap> */}
       </Box>
       <Box 
         fontSize={{base: '12px', sm: '14px'}} 

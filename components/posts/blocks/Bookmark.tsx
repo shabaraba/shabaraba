@@ -29,7 +29,6 @@ export function Bookmark({entity}: {entity: BookmarkEntity}) {
           src={entity.thumbnailUrl}
           width='100%'
           height='100%'
-          objectFit="cover"
         />
       </Box>
       <Box
