@@ -13,25 +13,24 @@ const SiteLogo: React.FC = () => {
         background: '#FFF5F3'
       }}
     >
-      <Link href="/">
-        <ChakraLink
-          pt={3}
-          fontSize='4xl'
-          position='relative'
-          display='inline-block'
-          textDecoration='none'
-          style={{
-            fontFamily: "'Caveat', cursive",
-            transform: "rotate(-5deg)"
-          }}
-          _hover={{
-            textDecoration: 'underline',
-            transition: 'transform .3s',
-          }}
-        >
-          {siteTitle}
-        </ChakraLink>
-      </Link>
+      <ChakraLink
+        as={Link}
+        pt={3}
+        fontSize='4xl'
+        position='relative'
+        display='inline-block'
+        textDecoration='none'
+        style={{
+          fontFamily: "'Caveat', cursive",
+          transform: "rotate(-5deg)"
+        }}
+        _hover={{
+          textDecoration: 'underline',
+          transition: 'transform .3s',
+        }}
+      >
+        {siteTitle}
+      </ChakraLink>
     </header>
   )
 }
@@ -80,10 +79,8 @@ export default function Layout({
           </Grid>
         </main>
         {!home && (
-          <div className={styles.backToHome}>
-            <Link href="/">
-              <a>← Back to home</a>
-            </Link>
+            <div className={styles.backToHome}>
+              <Link href="/"> ← Back to home </Link>
           </div>
         )}
         {/* <Sticky>

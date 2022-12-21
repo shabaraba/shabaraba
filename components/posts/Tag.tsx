@@ -35,9 +35,7 @@ export default function Tag({entity}: {entity: NotionTagEntity}) {
     <LinkBox>
       <NotionTag size='sm' key='md' variant='subtle' colorScheme={entity.color}>
         <TagLabel>
-          <NextLink href='#' passHref>
-            <LinkOverlay>{entity.name}</LinkOverlay>
-          </NextLink>
+          <LinkOverlay as={NextLink} href='#'>{entity.name}</LinkOverlay>
         </TagLabel>
       </NotionTag>
     </LinkBox>

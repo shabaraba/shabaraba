@@ -1,4 +1,4 @@
-import { LinkBox, LinkOverlay, Wrap, WrapItem, Text, SpaceProps, Icon, Grid, GridItem, Box, Flex } from '@chakra-ui/react'
+import { LinkBox, LinkOverlay, Link, Wrap, WrapItem, Text, SpaceProps, Icon, Grid, GridItem, Box, Flex } from '@chakra-ui/react'
 import {MdCreate, MdUpdate, MdArrowRightAlt } from 'react-icons/md'
 import Date from '../../components/date'
 import Image from 'next/image'
@@ -36,13 +36,13 @@ export default function PostListItem({postHead, breakPoint}: {postHead: IPageHea
         display='flex'
         justifyContent='center'
       >
-        {coverImageUrl && (
+        {/* {coverImageUrl && (
           <Image
             src={coverImageUrl}
             width={300}
             height={200}
             alt={''}/>
-        )}
+        )} */}
         {!coverImageUrl && iconText && (
           <Text
             fontSize={72}
@@ -59,18 +59,16 @@ export default function PostListItem({postHead, breakPoint}: {postHead: IPageHea
         h='100%'
         w='100%'
       >
-        <NextLink href="/posts/[id]" as={'/posts/' + (postHead.slug)} passHref>
-          <LinkOverlay fontSize={{md: '18px', sm: '18px', base: '16px'}} overflowWrap='anywhere'>
-            {postHead.title}
-          </LinkOverlay>
-        </NextLink>
-        {/* <Wrap>
+        <LinkOverlay as={NextLink} href={`/posts/${postHead.slug}`} fontSize={{md: '18px', sm: '18px', base: '16px'}} overflowWrap='anywhere'>
+          {postHead.title}
+        </LinkOverlay>
+        <Wrap>
           {postHead.tags?.map((tag: IPageTag) => (
             <WrapItem key={uuidv4()}>
               <Tag entity={tag} />
             </WrapItem>
           ))}
-        </Wrap> */}
+        </Wrap>
       </Box>
       <Box 
         fontSize={{base: '12px', sm: '14px'}} 

@@ -43,7 +43,7 @@ export default class Notion {
         }
       ]
     })
-    console.log(JSON.stringify(response, null, ' '))
+    // console.log(JSON.stringify(response, null, ' '))
 
     const postList: NotionPageType.IPageHead[] = response.results.map((item: any) => {
       return this._convertPageResponseToNotionPostHead(item)

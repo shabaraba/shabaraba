@@ -12,7 +12,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
   const databaseId: string = process.env.NOTION_BLOG_DATABASE;
   const notion: BackendNotion = new BackendNotion(token, databaseId);
   const block: NotionBlockInterfaces.BlockType = await notion.getBlockById(id)
-  console.log('api: ' + JSON.stringify(block))
+  // console.log('api: ' + JSON.stringify(block))
   res.status(200).json(block)
 }
 
