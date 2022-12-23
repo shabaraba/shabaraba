@@ -6,9 +6,9 @@ import {SiGithub, SiTwitter, SiQiita} from 'react-icons/si'
 
 export default () => {
   const fetcher = async (url:string) => {
-    console.log('fetching... -> ' + url)
+
     const result = await axios.get(url)
-    console.log('result... -> ' + JSON.stringify(result))
+
     return result.data
   }
 

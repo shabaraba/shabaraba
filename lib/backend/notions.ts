@@ -43,7 +43,7 @@ export default class Notion {
         }
       ]
     })
-    // console.log(JSON.stringify(response, null, ' '))
+
 
     const postList: NotionPageType.IPageHead[] = response.results.map((item: any) => {
       return this._convertPageResponseToNotionPostHead(item)
@@ -146,7 +146,7 @@ export default class Notion {
         break
       }
     }
-    // console.log( openingSentence.substring(0, 80))
+
     return openingSentence.substring(0, 80)
   }
 

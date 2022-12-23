@@ -10,10 +10,10 @@ export default () => null;
 // export const getServerSideProps = async (context: GetServerSidePropsContext) => {
 export const getStaticProps = async () => {
   const rss = await generateFeedXml(); // フィードのXMLを生成する（後述）
-  // console.log(rss)
-  // console.log(typeof(rss))
-  // console.log(context.res.hasOwnProperty('write'))
-  // console.log(typeof(context.res))
+
+
+
+
   // const getMethods = (obj) => {
   //   let properties = new Set()
   //   let currentObj = obj
@@ -22,12 +22,12 @@ export const getStaticProps = async () => {
   //   } while ((currentObj = Object.getPrototypeOf(currentObj)))
   //   return properties
   // }
-  // console.log(getMethods(context.res))
+
 
   // context.res.statusCode = 200
   // context.res.setHeader('Cache-Control', 's-maxage=86400, stale-while-revalidate') // 24時間キャッシュする
   // context.res.setHeader('Content-Type', 'text/xml')
-  // context.res.write('rss', (error) => {console.log('error')})
+
   // context.res.end()
 
   return {
@@ -71,7 +71,7 @@ async function generateFeedXml() {
   for (let post of allPostsData) {
     let description: string = await notion.getOpeningSentence(post.id)
 
-    // console.log(description)
+
     feed.addItem({
       title: post.title,
       id: `${siteUrl}/posts/${post.slug}`,

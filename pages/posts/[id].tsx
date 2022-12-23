@@ -35,7 +35,7 @@ type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 const PostTitle = ({tags, post, titleBlock}: {tags: any[], post: NotionPageType.IPageHead, titleBlock: NotionBlock.Heading1}) => {
   const url = useLocation()
-  // console.log(url.href)
+
 
   return (
     <>
@@ -194,12 +194,12 @@ export const getStaticProps = async ({params}) => {
 
   // const tagsWithIcon = post.tags.map((tag) => getTagIcon(tag))
   const tagsWithIcon = post.tags
-  // console.log("withIcon: " + JSON.stringify(tagsWithIcon))
+
 
   const postBlockList = await notion.getPostBlockListById(postId);
   const postBlockListWithOGP = await BackendNotion.setOGPToBookmarkBlocks(postBlockList)
 
-  // console.log(JSON.stringify(postBlockListWithOGP, null, " "))
+
 
   return {
     props: {

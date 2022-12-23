@@ -10,7 +10,7 @@ interface CalloutMap{
 }
 
 export function Quote({entity}: {entity: QuoteEntity}) {
-  // console.log(entity)
+
 
   return (
     <Box

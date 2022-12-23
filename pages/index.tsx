@@ -59,9 +59,9 @@ export const getStaticProps = async () => {
   const notion = new Notion(token, databaseId);
   const allPostsData = await notion.getPostList();
 
-  // console.log("START---------getStaticProps---------------")
-  // console.log(allPostsData)
-  // console.log("END-----------getStaticProps---------------")
+
+
+
   return {
     props: {
       allPostsData: allPostsData,

@@ -55,7 +55,7 @@ export function Paragraph({entity}: {entity: ParagraphEntity}) {
     let backgroundColor = null
     if (text.annotations.color.match('_background')) backgroundColor = text.annotations.color.split('_background')[0] + '.500'
     else color = text.annotations.color + '.500'
-    // console.log("color: " + color + ", background: " + backgroundColor)
+
     return (
       <Text
         as='span'
@@ -125,7 +125,7 @@ export function Paragraph({entity}: {entity: ParagraphEntity}) {
   }
 
   const lineEntities = getLineEntities(entity)
-  // console.log(JSON.stringify(lineEntities, null, ' '))
+
 
   return (
     <Text>

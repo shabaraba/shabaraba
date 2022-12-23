@@ -7,9 +7,9 @@ import { Image as ImageEntity, } from '../../../entities/notion/blocks';
 
 export function Image({entity}: {entity: ImageEntity}) {
   const fetcher = async (url:string) => {
-    console.log('fetching... -> ' + url)
+
     const result = await axios.get(url)
-    console.log('result... -> ' + JSON.stringify(result))
+
     return result.data
   }
 
@@ -38,16 +38,16 @@ export function Image({entity}: {entity: ImageEntity}) {
 // export function Image({entity}: {entity: ImageEntity}) {
 //   const [shouldFetch, setShouldFetch] = useState(false)
 //   const fetcher = async (url:string) => {
-//     console.log('fetching... -> ' + url)
+
 //     const result = await axios.get(url)
-//     console.log('result... -> ' + JSON.stringify(result))
+
 //     return result.data
 //   }
 
 //   const { data: fetchedBlockImage } = useSWRImmutable(shouldFetch ? `/api/notion/blocks/${entity.id}` : null, fetcher)
 
 //   if (!fetchedBlockImage) {
-//     console.log('unfetched')
+
 //     return (
 //       <Center
 //         filter='drop-shadow(3px 3px 3px rgba(0,0,0,0.2))'
@@ -65,7 +65,7 @@ export function Image({entity}: {entity: ImageEntity}) {
 //       </Center>
 //     )
 //   } else {
-//     console.log('fetched')
+
 //     const fetchedImageEntity: ImageEntity = new ImageEntity(fetchedBlockImage)
 //     return (
 //       <Center

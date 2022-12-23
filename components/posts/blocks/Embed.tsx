@@ -3,7 +3,7 @@ import { Center } from '@chakra-ui/react'
 import type { Embed as EmbedEntity } from '../../../entities/notion/blocks';
 
 export function Embed({entity}: {entity: EmbedEntity}) {
-  // console.log(JSON.stringify(entity, null, " "))
+
   const containerRef = useRef(null)
   useEffect(()=>{
     (window as any).twttr?.widgets?.load(containerRef.current) // ツイートの埋め込みを実行

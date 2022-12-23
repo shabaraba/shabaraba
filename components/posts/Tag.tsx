@@ -30,7 +30,7 @@ export default function Tag({entity}: {entity: NotionTagEntity}) {
   //   // result = dynamic(() => import('react-icons/gr').then(mod => mod[entity.iconName]))
   // }
 
-  // console.log(JSON.stringify(icon))
+
   return (
     <LinkBox>
       <NotionTag size='sm' key='md' variant='subtle' colorScheme={entity.color}>
