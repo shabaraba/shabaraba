@@ -1,22 +1,22 @@
 import { SlideFade, Icon, Box, Wrap, WrapItem, Divider } from '@chakra-ui/react'
 import { NextSeo } from 'next-seo';
 import {MdCreate, MdUpdate, MdArrowRightAlt } from 'react-icons/md'
-import AuthorBox from '../../components/common/AuthorBox'
-import Layout from '../../components/layout'
-import Block from '../../components/posts/Block'
-import Date from '../../components/date'
+import AuthorBox from '../../userinterface/components/common/AuthorBox'
+import Layout from '../../userinterface/components/layout'
+import Block from '../../userinterface/components/posts/Block'
+import Date from '../../userinterface/components/date'
 import Head from 'next/head'
 import {v4 as uuidv4} from 'uuid'
 
 import * as NotionBlock from '../../entities/notion/blocks'
-import Tag from '../../components/posts/Tag'
+import Tag from '../../userinterface/components/posts/Tag'
 import * as NotionPageType from '../../interfaces/NotionPageApiResponses';
 
-import FrontendNotion from '../../lib/frontend/notions'
-import BackendNotion from '../../lib/backend/notions'
+import Notion from '../../lib/notions'
+import {setOGPToBookmarkBlocks} from '../../lib/backend/ogp';
 // import { getTagIcon } from '../../lib/backend/icons'
 
-import useLocation from '../../components/hooks/useLocation'
+import useLocation from '../../userinterface/components/hooks/useLocation'
 
 import { InferGetStaticPropsType, GetStaticPaths } from 'next'
 
@@ -118,7 +118,7 @@ const MainArea = ({post, postBlockList, titleBlock}: {post: NotionPageType.IPage
 
 export default function Post({tags, post, pageJson, postBlockJson}: Props) {
   const postBlockList = NotionBlock.BlockList.deserialize(postBlockJson.results)
-  const titleBlock: NotionBlock.Heading1 = FrontendNotion.convertPageResponseToNotionHeading1Block(pageJson)
+  const titleBlock: NotionBlock.Heading1 = Notion.convertPageResponseToNotionHeading1Block(pageJson)
   const postHead: NotionPageType.IPageHead = post
 
   const coverImageUrl: string | null = postHead.cover?.file?.url ?? postHead.cover?.external?.url ?? null
@@ -169,7 +169,7 @@ export default function Post({tags, post, pageJson, postBlockJson}: Props) {
 export const getStaticPaths: GetStaticPaths = async () => {
   const token: string = process.env.NOTION_TOKEN;
   const databaseId: string = process.env.NOTION_BLOG_DATABASE;
-  const notion = new BackendNotion(token, databaseId);
+  const notion = new Notion(token, databaseId);
   const allPostsData = await notion.getPostList();
   const pathList = allPostsData.map(post => {
     return {
@@ -187,7 +187,7 @@ export const getStaticProps = async ({params}) => {
   const slug = params.id;
   const token: string = process.env.NOTION_TOKEN;
   const databaseId: string = process.env.NOTION_BLOG_DATABASE;
-  const notion: BackendNotion = new BackendNotion(token, databaseId);
+  const notion: Notion = new Notion(token, databaseId);
   const postId: string = await notion.getPostIdBySlug(slug);
 
   const [post, pageJson]: [NotionPageType.IPageHead, any] = await notion.getPostById(postId);
@@ -197,7 +197,7 @@ export const getStaticProps = async ({params}) => {
 
 
   const postBlockList = await notion.getPostBlockListById(postId);
-  const postBlockListWithOGP = await BackendNotion.setOGPToBookmarkBlocks(postBlockList)
+  const postBlockListWithOGP = await setOGPToBookmarkBlocks(postBlockList)
 
 
 
@@ -208,6 +208,6 @@ export const getStaticProps = async ({params}) => {
       pageJson: pageJson,
       postBlockJson: postBlockListWithOGP,
     },
-    revalidate: 1 * 60
+    // revalidate: 1 * 60
   }
 }

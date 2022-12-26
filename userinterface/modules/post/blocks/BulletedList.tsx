@@ -1,7 +1,7 @@
 import React from "react"
 import { Center, UnorderedList, ListItem, Text } from '@chakra-ui/react'
-import Block from '../Block';
-import type { BulletedList as BulletedListEntity, BulletedListItem as BulletedListItemEntity  } from '../../../entities/notion/blocks';
+import Block from '../../../components/posts/Block';
+import type { BulletedList as BulletedListEntity, BulletedListItem as BulletedListItemEntity  } from '../../../../entities/notion/blocks';
 import { Paragraph } from './Paragraph'
 import {v4 as uuidv4} from 'uuid';
 

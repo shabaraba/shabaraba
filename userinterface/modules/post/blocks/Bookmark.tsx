@@ -1,6 +1,7 @@
 import React from "react"
 import { LinkBox, LinkOverlay, Box, GridItem, Text, Image } from '@chakra-ui/react'
-import type { Bookmark as BookmarkEntity } from '../../../entities/notion/blocks';
+import Thumbnail from "./Bookmark/Thumbnail";
+import type { Bookmark as BookmarkEntity } from '../../../../entities/notion/blocks';
 
 export function Bookmark({entity}: {entity: BookmarkEntity}) {
   return (
@@ -18,19 +19,7 @@ export function Bookmark({entity}: {entity: BookmarkEntity}) {
       height={{md: 150}}
       width='100%'
     >
-      <Box 
-        flexShrink={0}
-        width={{base: '100%', md: 200}}
-        height={{base: 200, md: 150}}
-        mr={{base: 'auto', md: 0}}
-        ml={{base: 'auto', md: 0}}
-      >
-        <Image
-          src={entity.thumbnailUrl}
-          width='100%'
-          height='100%'
-        />
-      </Box>
+      <Thumbnail url={entity.thumbnailUrl} />
       <Box
         p={2}
         mt={{base: 4, md: 0}}

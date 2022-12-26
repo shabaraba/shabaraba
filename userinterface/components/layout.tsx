@@ -2,7 +2,7 @@ import React from 'react'
 import { useBreakpointValue, Container, Box, HStack, Text, Icon, Grid, GridItem, Link as ChakraLink } from '@chakra-ui/react'
 import {SiNotion, SiNetlify, SiNextdotjs} from 'react-icons/si'
 import Sticky from 'react-sticky-el'
-import {siteTitle} from '../pages/_document'
+import {siteTitle} from '../../pages/_document'
 import styles from './layout.module.css'
 import Link from 'next/link'
 

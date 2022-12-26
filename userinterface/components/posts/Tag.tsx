@@ -9,7 +9,7 @@ import {
 import NextLink from 'next/link'
 import dynamic from 'next/dynamic'
 
-import { NotionTag as NotionTagEntity} from '../../entities/notion_entities'
+import { NotionTag as NotionTagEntity} from '../../../entities/notion_entities'
 
 export default function Tag({entity}: {entity: NotionTagEntity}) {
   // const [icon, setIcon] = useState(null)

@@ -1,6 +1,6 @@
 import React from "react"
 import { Center, Grid, GridItem, Text } from '@chakra-ui/react'
-import type { Callout as CalloutEntity } from '../../../entities/notion/blocks';
+import type { Callout as CalloutEntity } from '../../../../entities/notion/blocks';
 import { Paragraph } from './Paragraph'
 
 interface CalloutMap{

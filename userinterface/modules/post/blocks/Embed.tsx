@@ -1,6 +1,6 @@
 import React,{ useRef, useEffect } from 'react'
 import { Center } from '@chakra-ui/react'
-import type { Embed as EmbedEntity } from '../../../entities/notion/blocks';
+import type { Embed as EmbedEntity } from '../../../../entities/notion/blocks';
 
 export function Embed({entity}: {entity: EmbedEntity}) {
 

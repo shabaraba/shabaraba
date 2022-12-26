@@ -1,11 +1,11 @@
 import { LinkBox, LinkOverlay, Link, Wrap, WrapItem, Text, SpaceProps, Icon, Grid, GridItem, Box, Flex } from '@chakra-ui/react'
 import {MdCreate, MdUpdate, MdArrowRightAlt } from 'react-icons/md'
-import Date from '../../components/date'
+import Date from '../date'
 import Image from 'next/image'
 import NextLink from 'next/link'
-import Tag from '../../components/posts/Tag'
+import Tag from './Tag'
 import {v4 as uuidv4} from 'uuid'
-import type { IPageHead, IPageTag, IPageCover } from '../../interfaces/NotionPageApiResponses'
+import type { IPageHead, IPageTag, IPageCover } from '../../../interfaces/NotionPageApiResponses'
 
 export default function PostListItem({postHead, breakPoint}: {postHead: IPageHead, breakPoint: string}) {
   const coverImageUrl: string | null = postHead.cover?.file?.url ?? postHead.cover?.external?.url ?? null
@@ -36,13 +36,13 @@ export default function PostListItem({postHead, breakPoint}: {postHead: IPageHea
         display='flex'
         justifyContent='center'
       >
-        {/* {coverImageUrl && (
+        {coverImageUrl && (
           <Image
             src={coverImageUrl}
             width={300}
             height={200}
             alt={''}/>
-        )} */}
+        )}
         {!coverImageUrl && iconText && (
           <Text
             fontSize={72}

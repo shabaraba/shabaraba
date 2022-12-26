@@ -6,11 +6,11 @@ import { useBreakpointValue, Text, Container, Box, VStack, Icon, Image, Link, Sk
 import {SiGithub, SiTwitter, SiQiita} from 'react-icons/si'
 import Head from 'next/head'
 import { siteTitle } from '../pages/_document'
-import Layout from '../components/layout'
-import PostList from '../components/posts/PostList'
-import Notion from '../lib/backend/notions'
+import Layout from '../userinterface/components/layout'
+import PostList from '../userinterface/components/posts/PostList'
+import Notion from '../lib/notions'
 import { InferGetStaticPropsType } from 'next'
-import AuthorBox from '../components/common/AuthorBox';
+import AuthorBox from '../userinterface/components/common/AuthorBox';
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 

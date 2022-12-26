@@ -2,7 +2,7 @@ import fs from 'fs'
 import { Feed } from 'feed';
 import { siteUrl, siteTitle, siteDescription } from '../../next-seo.config'
 import { GetServerSidePropsContext } from 'next';
-import Notion from '../../lib/backend/notions'
+import Notion from '../../lib/notions'
 import { IPageHead } from '../../interfaces/NotionPageApiResponses';
 
 export default () => null;
@@ -42,7 +42,7 @@ async function generateFeedXml() {
   const author = {
     name: 'しゃば',
     email: 'fromgarage.work@gmail.com',
-    link: 'https://...com',
+    link: 'https://blog.from-garage.com',
   };
 
   // デフォルトになる feed の情報

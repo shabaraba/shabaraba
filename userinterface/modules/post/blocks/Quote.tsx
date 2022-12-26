@@ -1,6 +1,6 @@
 import React from "react"
 import { Box } from '@chakra-ui/react'
-import type { Quote as QuoteEntity } from '../../../entities/notion/blocks';
+import type { Quote as QuoteEntity } from '../../../../entities/notion/blocks';
 import { Paragraph } from './Paragraph'
 
 interface CalloutMap{

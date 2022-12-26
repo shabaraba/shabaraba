@@ -3,7 +3,7 @@ import { Center, Skeleton, Stack } from '@chakra-ui/react'
 import useSWRImmutable from 'swr/immutable'
 import axios from 'axios'
 
-import { Image as ImageEntity, } from '../../../entities/notion/blocks';
+import { Image as ImageEntity, } from '../../../../entities/notion/blocks';
 
 export function Image({entity}: {entity: ImageEntity}) {
   const fetcher = async (url:string) => {

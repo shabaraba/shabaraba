@@ -1,7 +1,7 @@
 // import SyntaxHighlighter from "react-syntax-highlighter";
 import { CodeBlock, dracula } from "react-code-blocks";
 import { Box } from '@chakra-ui/react'
-import type { Code as CodeEntity, } from '../../../entities/notion/blocks';
+import type { Code as CodeEntity, } from '../../../../entities/notion/blocks';
 
 export function Code({entity}: {entity: CodeEntity}) {
   const text = entity.texts.reduce((prev, cur) => {
