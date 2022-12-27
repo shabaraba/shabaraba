@@ -1,17 +1,18 @@
-import { Box, Image } from '@chakra-ui/react'
+import React from 'react';
+import { Box, Image } from '@chakra-ui/react';
 
-type props = {
+type Props = {
   url: string
 };
 
-export default ({url}: props): JSX.Element => {
+export const _Thumbnail: React.FC<Props> =  ({url}: Props) => {
     return (
       <Box 
         flexShrink={0}
         width={{base: '100%', md: 200}}
         height={{base: 200, md: 150}}
-        mr={{base: 'auto', md: 0}}
-        ml={{base: 'auto', md: 0}}
+        mr={{base: 'auto', md: 5}}
+        ml={{base: 'auto', md: 5}}
       >
         <Image
           src={url}
