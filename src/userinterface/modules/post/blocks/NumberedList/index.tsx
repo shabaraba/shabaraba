@@ -2,7 +2,7 @@ import React from "react";
 import { ListItem, OrderedList } from '@chakra-ui/react';
 import type { NumberedList as NumberedListEntity, NumberedListItem as NumberedListItemEntity } from '../../../../../entities/notion/blocks';
 import { v4 as uuidv4 } from 'uuid';
-import Block from "../../../../components/posts/Block";
+import Block from "../Block";
 import { Paragraph } from "../Paragraph";
 
 type Props = { entity: NumberedListEntity };

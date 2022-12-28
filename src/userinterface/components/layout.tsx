@@ -15,6 +15,7 @@ const SiteLogo: React.FC = () => {
     >
       <ChakraLink
         as={Link}
+        href='/'
         pt={3}
         fontSize='4xl'
         position='relative'
@@ -54,7 +55,7 @@ export default function Layout({
           <Grid templateColumns={{lg: 'repeat(12, 1fr)', base: '1fr'}} gap={25} w='100%'>
             <GridItem colSpan={{lg: 3, base: 1}} >
               <Container>
-                {/* {!isMobile?
+                {!isMobile?
                   <Sticky disabled={isMobile}>
                     <>
                       <SiteLogo />
@@ -66,7 +67,7 @@ export default function Layout({
                     <SiteLogo />
                     {leftside}
                   </>
-                } */}
+                }
               </Container>
             </GridItem>
             <GridItem 
@@ -83,9 +84,9 @@ export default function Layout({
               <Link href="/"> ← Back to home </Link>
           </div>
         )}
-        {/* <Sticky>
+        <Sticky>
           <Footer />
-        </Sticky> */}
+        </Sticky>
       </Box>
     </>
   )

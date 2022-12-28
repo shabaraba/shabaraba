@@ -1,6 +1,6 @@
 import fs from 'fs'
 import { Feed } from 'feed';
-import { siteUrl, siteTitle, siteDescription } from '../../next-seo.config'
+import { siteUrl, siteTitle, siteDescription } from '../../../next-seo.config'
 import { GetServerSidePropsContext } from 'next';
 import Notion from '../../lib/notions'
 import { IPageHead } from '../../interfaces/NotionPageApiResponses';

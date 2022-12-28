@@ -1,4 +1,4 @@
-import BlockComponents from '../../modules/post/blocks'
+import BlockComponents from '.'
 
 export default function Block({entity}: {entity: any}) {
 

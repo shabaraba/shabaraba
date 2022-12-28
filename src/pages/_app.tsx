@@ -1,13 +1,13 @@
-import '../styles/global.css'
+import 'styles/global.css'
 import Head from 'next/head'
 import React, { useEffect } from 'react'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import { AppProps } from 'next/app'
 import { TweetLoader } from '../userinterface/components/TweetLoader'
 import { useRouter } from 'next/router'
-import { DefaultSeo, NextSeo } from 'next-seo'
+import { DefaultSeo } from 'next-seo'
 import * as gtag from '../lib/gtag'
-import SEO from '../next-seo.config'
+import SEO from '../../next-seo.config'
 
 export const siteTitle = 'Coffee Break Point'
 export const siteDescription = 'コーヒー休憩にちょうどよい技術よみものを目指して'
@@ -25,7 +25,7 @@ export default function App({ Component, pageProps }: AppProps) {
     }
   }, [router.events])
 
-  const theme = extendTheme({ })
+  const theme = extendTheme({})
 
   return (
     <>

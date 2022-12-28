@@ -3,7 +3,7 @@ import { ListItem, UnorderedList } from '@chakra-ui/react'
 import type { BulletedList as BulletedListEntity, BulletedListItem as BulletedListItemEntity } from '../../../../../entities/notion/blocks';
 import { v4 as uuidv4 } from 'uuid';
 import { Paragraph } from "../Paragraph";
-import Block from "../../../../components/posts/Block";
+import Block from "../Block";
 
 type Props = {
   entity: BulletedListEntity

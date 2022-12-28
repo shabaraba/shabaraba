@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import {FC} from 'react';
 import {
   Tag as NotionTag,
   TagLabel,
@@ -11,7 +11,9 @@ import dynamic from 'next/dynamic'
 
 import { NotionTag as NotionTagEntity} from '../../../entities/notion_entities'
 
-export default function Tag({entity}: {entity: NotionTagEntity}) {
+type Props = {entity: NotionTagEntity};
+
+export const Tag: FC<Props> = ({entity}) => {
   // const [icon, setIcon] = useState(null)
   // useEffect(() => {
   //   if (!icon) getReactIcon(entity)
