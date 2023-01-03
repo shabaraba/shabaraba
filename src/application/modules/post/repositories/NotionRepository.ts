@@ -4,11 +4,12 @@ import type {
   ListBlockChildrenResponse,
 } from '@notionhq/client/build/src/api-endpoints.d'
 
-import * as NotionBlock from '../entities/notion/blocks';
-import * as NotionBlockInterfaces from '../interfaces/NotionApiResponses';
-import * as NotionPageType from '../interfaces/NotionPageApiResponses';
+import * as NotionBlock from '../../../../entities/notion/blocks';
+import * as NotionBlockInterfaces from '../../../../interfaces/NotionApiResponses';
+import * as NotionPageType from '../../../../interfaces/NotionPageApiResponses';
+import { NotionPageResponseDxo } from "./NotionPageResponseDxo";
 
-export default class Notion {
+export default class NotionRepository {
   private _notion: Client;
   private _token: string;;
   private _databaseId: string;
@@ -40,46 +41,25 @@ export default class Notion {
       ]
     })
 
-
     const postList: NotionPageType.IPageHead[] = response.results.map((item: any) => {
-      return this._convertPageResponseToNotionPostHead(item)
+      return NotionPageResponseDxo.convertToNotionPostHead(item)
     })
 
     return postList
-  }
-
-  private _convertPageResponseToNotionPostHead(response: any): NotionPageType.IPageHead {
-    const properties = response.properties
-    const title: string = properties.Name.title[0]?.plain_text
-    const tags: NotionPageType.IPageTag[] = properties.Tags.multi_select
-    const slug: string|null = properties.Slug.rich_text[0]?.plain_text ?? null
-    const icon: NotionPageType.IPageIcon = response.icon
-    const cover: NotionPageType.IPageCover = response.cover
-
-    return {
-      id: response.id,
-      title: title,
-      tags: tags,
-      slug: slug,
-      icon: icon,
-      cover: cover,
-      publishedAt: properties.Published_Time.date.start,
-      updatedAt: properties.Updated?.last_edited_time,
-    }
   }
 
   public async getTitleBlock(id: string): Promise<NotionPageType.IPageHead> {
     const response: any = await this._notion.pages.retrieve({
       page_id: id
     });
-    return this._convertPageResponseToNotionPostHead(response)
+    return NotionPageResponseDxo.convertToNotionPostHead(response)
   }
 
-  public async getPostById(id: string): Promise<[NotionPageType.IPageHead, any]> {
+  public async getPage(id: string): Promise<NotionPageType.IPageHead> {
     const response: any = await this._notion.pages.retrieve({
       page_id: id
     });
-    return [this._convertPageResponseToNotionPostHead(response), response]
+    return NotionPageResponseDxo.convertToNotionPostHead(response)
   }
 
   public async getBlockById(id: string): Promise<NotionBlockInterfaces.BlockType> {
@@ -96,7 +76,7 @@ export default class Notion {
     const response: ListBlockChildrenResponse = await this._notion.blocks.children.list({
       block_id: id
     });
-    let blocks: NotionBlockInterfaces.IRetrieveBlockChildrenResponse = Notion.createInterfaceList(response);
+    let blocks: NotionBlockInterfaces.IRetrieveBlockChildrenResponse = NotionRepository.createInterfaceList(response);
 
     for(let block of blocks.results) {
       if (block.has_children === true) {
@@ -106,7 +86,7 @@ export default class Notion {
     return blocks
   }
 
-  public async getPostIdBySlug(slug: string): Promise<string> {
+  public async getPageIdBySlug(slug: string): Promise<string> {
     const response: QueryDatabaseResponse = await this._notion.databases.query({
       database_id: this._databaseId,
       filter: {

@@ -4,10 +4,10 @@ import Head from 'next/head'
 import { siteTitle } from './_document'
 import Layout from '../userinterface/components/layout'
 import { PostHeadList } from '../userinterface/patterns/PostHeadList'
-import Notion from '../lib/notions'
 import { InferGetStaticPropsType } from 'next'
 import AuthorBox from '../userinterface/components/common/AuthorBox';
 import { Seo } from '../userinterface/components/common/Seo';
+import { PostHeadService } from 'application/modules/post/services/PostHeadService'
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
@@ -29,15 +29,13 @@ export default ({ allPostsData }: Props) => {
 
 // server側で呼ばれる
 export const getStaticProps = async () => {
-  const token: string = process.env.NOTION_TOKEN;
-  const databaseId: string = process.env.NOTION_BLOG_DATABASE;
-  const notion = new Notion(token, databaseId);
-  const allPostsData = await notion.getPostList();
+  const postHeadService = new PostHeadService();
+  const allPostsData = await postHeadService.getList();
 
   return {
     props: {
       allPostsData: allPostsData,
     },
-    revalidate: 1 * 60
+    // revalidate: 1 * 60
   }
 }

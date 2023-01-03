@@ -2,7 +2,7 @@ import fs from 'fs'
 import { Feed } from 'feed';
 import { siteUrl, siteTitle, siteDescription } from '../../../next-seo.config'
 import { GetServerSidePropsContext } from 'next';
-import Notion from '../../lib/notions'
+import NotionRepository from '../../application/modules/post/repositories/NotionRepository'
 import { IPageHead } from '../../interfaces/NotionPageApiResponses';
 
 export default () => null;
@@ -65,7 +65,7 @@ async function generateFeedXml() {
 
   const token: string = process.env.NOTION_TOKEN;
   const databaseId: string = process.env.NOTION_BLOG_DATABASE;
-  const notion: Notion = new Notion(token, databaseId);
+  const notion: NotionRepository = new NotionRepository(token, databaseId);
   const allPostsData: Array<IPageHead> = await notion.getPostList();
 
   for (let post of allPostsData) {

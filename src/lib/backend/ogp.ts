@@ -27,7 +27,6 @@ export const getOGP = async (url: string, id: string): Promise<IOgp> => {
     if (property === "og:description") ogp.pageDescription = meta.getAttribute("content")
     if (property === "og:image") ogp.thumbnailUrl = meta.getAttribute("content")
   })
-  console.log(JSON.stringify(ogp));
   return ogp
 }
 

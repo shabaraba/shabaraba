@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import BackendNotion from '../../../../lib/notions'
+import BackendNotion from '../../../../application/modules/post/repositories/NotionRepository'
 import * as NotionBlockInterfaces from '../../../../interfaces/NotionApiResponses';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
