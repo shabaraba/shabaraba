@@ -1,11 +1,9 @@
-import { BlockList } from 'application/modules/post/objects/entities/blocks';
+import { PostDetailType } from './../types/PostDetailType';
 import { PostDetailDto } from 'application/modules/post/objects/dtos/PostDetailDto';
-import { PostDetailEntity } from 'core/entities/PostDetailEntity';
 
 export class PostDetailDxo {
 
-  public static convertForPages(dto: PostDetailDto): any {
+  public static convertForPages(dto: PostDetailDto): PostDetailType {
     return JSON.parse(JSON.stringify(dto));
-    // return new PostDetailEntity(json.blockList);
   }
 }

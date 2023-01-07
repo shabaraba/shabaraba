@@ -30,7 +30,6 @@ type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 export default ({ tags, postHead, title, postDetail }: Props) => {
   const postHeadEntity:PostHeadEntity = new PostHeadEntity(postHead);
-  const postDetailEntity: PostDetailEntity = new PostDetailEntity(postDetail.blockList);
 
   return (
     <Layout leftside={

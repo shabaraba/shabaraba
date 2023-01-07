@@ -2,7 +2,9 @@ import { PostDetailService } from "application/modules/post/services/PostDetailS
 import { PostHeadService } from "application/modules/post/services/PostHeadService";
 import { TagService } from "application/modules/tag/services/TagService";
 import { PostDetailDxo } from "core/dxo/PostDetailDxo";
-import { PostHeadType, PostHeadDxo } from "core/dxo/PostHeadDxo";
+import { PostHeadDxo } from "core/dxo/PostHeadDxo";
+import { PostDetailType } from "core/types/PostDetailType";
+import { PostHeadType } from "core/types/PostHeadType";
 
 export class ArticlePageUsecase {
   public static async getStaticPaths() {
@@ -22,7 +24,7 @@ export class ArticlePageUsecase {
     const postHeadJson: PostHeadType = PostHeadDxo.convertForPages(postHeadDto);
     const postDetailService = new PostDetailService();
     const postDetailDto = await postDetailService.get(postHeadDto.id);
-    const postDetailEntity = PostDetailDxo.convertForPages(postDetailDto);
+    const postDetailJson: PostDetailType = PostDetailDxo.convertForPages(postDetailDto);
 
     const tagService = new TagService();
     const tags = await tagService.getListByPost(postHeadDto);
@@ -31,7 +33,7 @@ export class ArticlePageUsecase {
       props: {
         tags: tags,
         postHead: postHeadJson,
-        postDetail: postDetailEntity,
+        postDetail: postDetailJson,
         title: postHeadDto.title
       },
       // revalidate: 1 * 60
