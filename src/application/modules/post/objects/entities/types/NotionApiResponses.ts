@@ -1,4 +1,4 @@
-export type IBlock = {
+type _IBlock = {
     object: 'block';
     id: string;
     created_time: string;
@@ -7,7 +7,7 @@ export type IBlock = {
     archived: boolean;
 }
 
-export type IRichText = {
+type _IRichText = {
   plain_text: string;
   href: string;
   annotations: Annotations;
@@ -43,7 +43,7 @@ export type Annotations = {
   ;
 }
 
-export type IText = IRichText & {
+export type IText = _IRichText & {
   text: {
     content?: string;
     link?: string;
@@ -51,65 +51,56 @@ export type IText = IRichText & {
 }
 
 // TODO
-export type IMention = IRichText
-export type IEquation = IRichText & { type: "equation" }
+export type IMention = _IRichText
+export type IEquation = _IRichText & { type: "equation" }
 
-export type IParagraphBlock = IBlock & { type: "paragraph", paragraph: IParagraph }
-export type IParagraph = {
-  text: IText[],
-  children: IRetrieveBlockChildrenResponse
-}
+export type IParagraphBlock = _IBlock & { type: "paragraph", paragraph: _IParagraph }
+type _IParagraph = { text: IText[], children: IRetrieveBlockChildrenResponse }
 
-export type IHeading1Block = IBlock & { type: "heading_1", heading_1: IHeading }
-export type IHeading2Block = IBlock & { type: "heading_2", heading_2: IHeading }
-export type IHeading3Block = IBlock & { type: "heading_3", heading_3: IHeading }
-export type IHeading = {
-  text: IText[],
-}
+export type IHeading1Block = _IBlock & { type: "heading_1", heading_1: _IHeading }
+export type IHeading2Block = _IBlock & { type: "heading_2", heading_2: _IHeading }
+export type IHeading3Block = _IBlock & { type: "heading_3", heading_3: _IHeading }
+type _IHeading = { text: IText[] }
 
-export type ICalloutBlock = IBlock & { type: "callout", callout: ICallout }
-export type IIcon = IFileFile | IExternalFile | IEmoji
-export type ICallout = IParagraph & {
-  icon: IIcon
-}
+export type ICalloutBlock = _IBlock & { type: "callout", callout: _ICallout }
+type _IIcon = IFileFile | IExternalFile | IEmoji
+type _ICallout = _IParagraph & { icon: _IIcon }
 
-export type IFileBlock = IBlock & { type: "file", file: IFileFile | IExternalFile }
-export type IFileFile = { file: IFile }
-export type IFile = {
+export type IFileBlock = _IBlock & { type: "file", file: IFileFile | IExternalFile }
+export type IFileFile = { file: _IFile }
+type _IFile = {
   type: "file"
   url: string
   caption?: IText[]
   expiry_time: string
 }
-export type IExternalFile = { external: IExternal }
-export type IExternal = {
+export type IExternalFile = { external: _IExternal }
+type _IExternal = {
   type: "external"
   caption?: IText[]
   url: string;
 }
 
-export type IEmoji = {
-  emoji: string;
-}
+export type IEmoji = { emoji: string; }
 
-export type ICodeBlock = IBlock & { type: "code", code: ICode }
-export type ICode = {
+export type ICodeBlock = _IBlock & { type: "code", code: _ICode }
+type _ICode = {
   text: IText[];
   caption?: IText[];
   language?: "abap" | "arduino" | "bash" | "basic" | "c" | "clojure" | "coffeescript" | "c++" | "c#" | "css" | "dart" | "diff" | "docker" | "elixir" | "elm" | "erlang" | "flow" | "fortran" | "f#" | "gherkin" | "glsl" | "go" | "graphql" | "groovy" | "haskell" | "html" | "java" | "javascript" | "json" | "julia" | "kotlin" | "latex" | "less" | "lisp" | "livescript" | "lua" | "makefile" | "markdown" | "markup" | "matlab" | "mermaid" | "nix" | "objective-c" | "ocaml" | "pascal" | "perl" | "php" | "plain text" | "powershell" | "prolog" | "protobuf" | "python" | "r" | "reason" | "ruby" | "rust" | "sass" | "scala" | "scheme" | "scss" | "shell" | "sql" | "swift" | "typescript" | "vb.net" | "verilog" | "vhdl" | "visual basic" | "webassembly" | "xml" | "yaml" |  "java/c/c++/c#";
 }
 
-export type IImageBlock = IBlock & {
+export type IImageBlock = _IBlock & {
   type: "image"
-  image: IFile | IExternal
+  image: _IFile | _IExternal
 }
 
-export type IBulletedListItemBlock = IBlock & { type: "bulleted_list_item", bulleted_list_item: IParagraph}
-export type INumberedListItemBlock = IBlock & { type: "numbered_list_item", numbered_list_item: IParagraph}
-export type IQuoteBlock = IBlock & { type: "quote", quote: IParagraph}
+export type IBulletedListItemBlock = _IBlock & { type: "bulleted_list_item", bulleted_list_item: _IParagraph}
+export type INumberedListItemBlock = _IBlock & { type: "numbered_list_item", numbered_list_item: _IParagraph}
+export type IQuoteBlock = _IBlock & { type: "quote", quote: _IParagraph}
 
-export type IBookmarkBlock = IBlock & { type: "bookmark", bookmark: IBookmark}
-export type IBookmark = {
+export type IBookmarkBlock = _IBlock & { type: "bookmark", bookmark: _IBookmark}
+type _IBookmark = {
   url: string
   caption?: IText[]
   ogp?: IOgp // 取得時は存在しない、後から取得する
@@ -123,8 +114,8 @@ export type IOgp = {
   thumbnailUrl?: string
 }
 
-export type IEmbedBlock = IBlock & {type: "embed", embed: IEmbed}
-export type IEmbed = {
+export type IEmbedBlock = _IBlock & {type: "embed", embed: _IEmbed}
+type _IEmbed = {
   url: string
 }
 
