@@ -1,4 +1,4 @@
-import { IPageHead } from "application/modules/post/objects/entities/interfaces/NotionPageApiResponses";
+import { IPageHead } from "application/modules/post/objects/entities/types/NotionPageApiResponses";
 import { PostDetailEntity } from "../objects/entities/PostDetailEntity";
 
 export interface PostLogic {

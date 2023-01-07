@@ -1,4 +1,4 @@
-import { IPageHead } from "application/modules/post/objects/entities/interfaces/NotionPageApiResponses";
+import { IPageHead } from "application/modules/post/objects/entities/types/NotionPageApiResponses";
 import { PostHeadDto } from "../dtos/PostHeadDto";
 
 export class IPageHeadDxo {

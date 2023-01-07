@@ -1,5 +1,5 @@
-import { BlockType, IBookmarkBlock, IBulletedListItemBlock, ICalloutBlock, ICodeBlock, IEmbedBlock, IHeading1Block, IHeading2Block, IHeading3Block, INumberedListItemBlock, IParagraphBlock, IQuoteBlock, IImageBlock, IRetrieveBlockChildrenResponse } from "application/modules/post/objects/entities/interfaces/NotionApiResponses";
-import { IPageHead } from "application/modules/post/objects/entities/interfaces/NotionPageApiResponses";
+import { BlockType, IBookmarkBlock, IBulletedListItemBlock, ICalloutBlock, ICodeBlock, IEmbedBlock, IHeading1Block, IHeading2Block, IHeading3Block, INumberedListItemBlock, IParagraphBlock, IQuoteBlock, IImageBlock, IRetrieveBlockChildrenResponse } from "application/modules/post/objects/entities/types/NotionApiResponses";
+import { IPageHead } from "application/modules/post/objects/entities/types/NotionPageApiResponses";
 import { setOGPToBookmarkBlocks } from "application/modules/post/services/ogp";
 import NotionRepository from "../repositories/NotionRepository";
 import { PostLogic } from "./PostLogic";

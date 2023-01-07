@@ -7,8 +7,8 @@ import type {
 
 import * as NotionBlock from '../objects/entities/blocks';
 import { Heading1 as Heading1Entity} from "../objects/entities/blocks/Heading1";
-import * as NotionBlockInterfaces from '../objects/entities/interfaces/NotionApiResponses';
-import * as NotionPageType from '../objects/entities/interfaces/NotionPageApiResponses';
+import * as NotionBlockInterfaces from '../objects/entities/types/NotionApiResponses';
+import * as NotionPageType from '../objects/entities/types/NotionPageApiResponses';
 import { NotionPageResponseDxo } from "./NotionPageResponseDxo";
 
 export default class NotionRepository extends BaseNotionRepository {

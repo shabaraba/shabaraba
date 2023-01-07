@@ -5,10 +5,10 @@ import { TagList } from '../../../patterns/TagList';
 import { Box } from '@chakra-ui/react';
 import { PublishDate } from '../../../components/PublishDate';
 import { ShareButtonList } from '../../../components/ShareButtonList';
-import { IHeading1Block } from 'application/modules/post/objects/entities/interfaces/NotionApiResponses';
+import { IHeading1Block } from 'application/modules/post/objects/entities/types/NotionApiResponses';
 import { PostHeadEntity } from 'core/entities/PostHeadEntity';
 import { Heading1 as Heading1Entity } from 'application/modules/post/objects/entities/blocks/Heading1';
-import { IPageTag } from 'application/modules/post/objects/entities/interfaces/NotionPageApiResponses';
+import { IPageTag } from 'application/modules/post/objects/entities/types/NotionPageApiResponses';
 
 const createHeading1Entity = (title: string): IHeading1Block => {
   return {

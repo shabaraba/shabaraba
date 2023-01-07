@@ -1,4 +1,4 @@
-import * as NotionBlockInterfaces from './interfaces/NotionApiResponses';
+import * as NotionBlockInterfaces from './types/NotionApiResponses';
 import { Bookmark } from './blocks/Bookmark';
 import { BulletedList, BulletedListItem } from './blocks/BulletedList';
 import { Callout } from './blocks/Callout';

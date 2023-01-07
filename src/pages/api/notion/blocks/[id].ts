@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import BackendNotion from '../../../../application/modules/post/repositories/NotionRepository'
-import * as NotionBlockInterfaces from '../../../../application/modules/post/objects/entities/interfaces/NotionApiResponses';
+import * as NotionBlockInterfaces from '../../../../application/modules/post/objects/entities/types/NotionApiResponses';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method != 'GET') res.status(405)

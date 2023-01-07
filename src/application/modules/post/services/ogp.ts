@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { JSDOM } from "jsdom";
 
-import {IOgp, IRetrieveBlockChildrenResponse} from '../objects/entities/interfaces/NotionApiResponses';
+import {IOgp, IRetrieveBlockChildrenResponse} from '../objects/entities/types/NotionApiResponses';
 
 export const getOGP = async (url: string, id: string): Promise<IOgp> => {
   const response = await axios.get(url)

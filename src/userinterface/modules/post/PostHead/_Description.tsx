@@ -1,7 +1,7 @@
 import { FC } from "react"
 import NextLink from 'next/link'
 import { Box, LinkOverlay } from '@chakra-ui/react'
-import { IPageTag } from "../../../../application/modules/post/objects/entities/interfaces/NotionPageApiResponses";
+import { IPageTag } from "../../../../application/modules/post/objects/entities/types/NotionPageApiResponses";
 import { TagList } from "../../../patterns/TagList";
 
 type Props = {

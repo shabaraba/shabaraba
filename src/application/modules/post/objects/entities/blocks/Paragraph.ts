@@ -1,4 +1,4 @@
-import * as NotionBlockInterfaces from '../interfaces/NotionApiResponses';
+import * as NotionBlockInterfaces from '../types/NotionApiResponses';
 import { BlockList } from '../blocks';
 import { Text } from "./Text";
 import { Block } from "./Block";
