@@ -2,7 +2,7 @@ import { Wrap, WrapItem } from '@chakra-ui/react';
 import React from 'react';
 import { Tag } from '../../modules/tag';
 import { v4 as uuidv4 } from 'uuid'
-import { IPageTag } from '../../../interfaces/NotionPageApiResponses';
+import { IPageTag } from '../../../application/modules/post/objects/entities/interfaces/NotionPageApiResponses';
 
 type Props = { tags: IPageTag[] };
 

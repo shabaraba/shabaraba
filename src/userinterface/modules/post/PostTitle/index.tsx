@@ -1,14 +1,14 @@
 import { FC } from 'react';
-import * as NotionPageType from '../../../../interfaces/NotionPageApiResponses';
-import * as NotionBlock from '../../../../entities/notion/blocks'
 import Block from "../blocks/Block"
 import useLocation from '../../../components/hooks/useLocation';
 import { TagList } from '../../../patterns/TagList';
 import { Box } from '@chakra-ui/react';
 import { PublishDate } from '../../../components/PublishDate';
 import { ShareButtonList } from '../../../components/ShareButtonList';
-import { IHeading1Block } from 'interfaces/NotionApiResponses';
-import { PostHeadService } from 'application/modules/post/services/PostHeadService';
+import { IHeading1Block } from 'application/modules/post/objects/entities/interfaces/NotionApiResponses';
+import { PostHeadEntity } from 'core/entities/PostHeadEntity';
+import { Heading1 as Heading1Entity } from 'application/modules/post/objects/entities/blocks/Heading1';
+import { IPageTag } from 'application/modules/post/objects/entities/interfaces/NotionPageApiResponses';
 
 const createHeading1Entity = (title: string): IHeading1Block => {
   return {
@@ -42,13 +42,13 @@ const createHeading1Entity = (title: string): IHeading1Block => {
   };
 }
 
-type Props = { tags: NotionPageType.IPageTag[], post: NotionPageType.IPageHead, title: string }
+type Props = { tags: IPageTag[], post: PostHeadEntity, title: string }
 
 export const PostTitle: FC<Props> = ({ tags, post, title }) => {
   const url = useLocation()
   // TODO: IxxxBlockはNotion側の関心事なので、component用のentityに作り変えるdxoを作成する
   const heading1Entity: IHeading1Block = createHeading1Entity(title);
-  const heading1Block: NotionBlock.Heading1 = new NotionBlock.Heading1(heading1Entity);
+  const heading1Block: Heading1Entity = new Heading1Entity(heading1Entity);
 
   return (
     <>

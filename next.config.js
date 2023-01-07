@@ -10,7 +10,7 @@ module.exports = withBundleAnalyzer({
           resourceRegExp: /canvas/,
           contextRegExp: /jsdom$/,
         }))
-    }
+    };
     return config
   },
   images: {

@@ -1,6 +1,6 @@
 import React from "react"
 import { Grid, GridItem } from '@chakra-ui/react'
-import { Callout as CalloutEntity } from '../../../../../entities/notion/blocks'
+import { Callout as CalloutEntity } from "../../../../../application/modules/post/objects/entities/blocks/Callout"
 import { _IconComponent as IconComponent } from "./_Icon"
 import { _DescriptionComponent as DescriptionComponent } from "./_Description"
 

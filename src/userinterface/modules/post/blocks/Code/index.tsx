@@ -1,7 +1,7 @@
 // import SyntaxHighlighter from "react-syntax-highlighter";
 import { CodeBlock, ocean } from "react-code-blocks";
 import { Box } from '@chakra-ui/react'
-import type { Code as CodeEntity, } from '../../../../../entities/notion/blocks';
+import { Code as CodeEntity } from "../../../../../application/modules/post/objects/entities/blocks/Code";
 
 type Props = {
   entity: CodeEntity

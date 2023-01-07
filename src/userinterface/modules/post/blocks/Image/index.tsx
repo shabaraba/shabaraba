@@ -3,7 +3,7 @@ import { Center, Skeleton } from '@chakra-ui/react'
 import useSWRImmutable from 'swr/immutable'
 import axios from 'axios'
 
-import { Image as ImageEntity, } from '../../../../../entities/notion/blocks';
+import { Image as ImageEntity } from "../../../../../application/modules/post/objects/entities/blocks/Image";
 
 type Props = { entity: ImageEntity };
 

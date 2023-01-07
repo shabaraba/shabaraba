@@ -1,16 +1,13 @@
 import { LinkBox, Box } from '@chakra-ui/react'
-import type { IPageHead } from '../../../../interfaces/NotionPageApiResponses'
 import { FC } from 'react'
 import { EyeChatch } from './_EyeCatch'
 import { Description } from './_Description'
 import { PublishDate } from '../../../components/PublishDate'
+import { PostHeadEntity } from 'core/entities/PostHeadEntity'
 
-type Props = { postHead: IPageHead };
+type Props = { postHead: PostHeadEntity };
 
 export const PostHead: FC<Props> = ({ postHead }) => {
-  const coverImageUrl: string | null = postHead.cover?.file?.url ?? postHead.cover?.external?.url ?? null
-  const iconText: string | null = postHead.icon?.emoji
-
   const style = {
     marginTop: 5,
     display: { md: "flex" },
@@ -28,7 +25,7 @@ export const PostHead: FC<Props> = ({ postHead }) => {
 
   return (
     <LinkBox as="article" position='relative' {...style}>
-      <EyeChatch eyeCatchUrl={coverImageUrl} iconText={iconText} />
+      <EyeChatch eyeCatchUrl={postHead.coverImageUrl} iconText={postHead.iconText} />
       <Description url={`/posts/${postHead.slug}`} title={postHead.title} tagList={postHead.tags} />
       <Box fontSize={{ base: '12px', sm: '14px' }} textAlign={['right']} position='absolute' bottom={{ md: 2 }} right={{ md: 2 }} >
         <PublishDate publishedAt={postHead.publishedAt} updatedAt={postHead.updatedAt} />

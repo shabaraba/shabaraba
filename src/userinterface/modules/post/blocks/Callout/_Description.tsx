@@ -1,5 +1,5 @@
 import React from "react"
-import type { Callout as CalloutEntity } from '../../../../../entities/notion/blocks';
+import { Callout as CalloutEntity } from "../../../../../application/modules/post/objects/entities/blocks/Callout";
 import { Paragraph } from '../Paragraph'
 
 export type _Props = {

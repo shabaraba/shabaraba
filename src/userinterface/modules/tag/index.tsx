@@ -9,7 +9,7 @@ import {
 import NextLink from 'next/link'
 import dynamic from 'next/dynamic'
 
-import { NotionTag as NotionTagEntity} from '../../../entities/notion_entities'
+import { NotionTag as NotionTagEntity} from '../../../application/modules/post/objects/entities/notion_entities'
 
 type Props = {entity: NotionTagEntity};
 

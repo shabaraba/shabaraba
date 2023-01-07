@@ -1,8 +1,8 @@
-import { PostLogicNotionImpl } from './../logic/PostLogicNotionImpl';
-import { IPageHead } from "interfaces/NotionPageApiResponses";
-import NotionRepository from "../repositories/NotionRepository";
-import { PostLogic } from '../logic/PostLogic';
-import { IHeading1Block } from 'interfaces/NotionApiResponses';
+import { IPageHead } from "application/modules/post/objects/entities/interfaces/NotionPageApiResponses";
+import { PostLogic } from "../logic/PostLogic";
+import { PostLogicNotionImpl } from "../logic/PostLogicNotionImpl";
+import { PostHeadDto } from "../objects/dtos/PostHeadDto";
+import { IPageHeadDxo } from "../objects/dxos/IPageHeadDxo";
 
 export class PostHeadService {
   private _postLogic: PostLogic;
@@ -11,12 +11,16 @@ export class PostHeadService {
     this._postLogic = new PostLogicNotionImpl();
   }
 
-  public async getBySlug(id: string): Promise<IPageHead> {
-    return await this._postLogic.getHeadBySlug(id);
+  public async getBySlug(id: string): Promise<PostHeadDto> {
+    const postHead = await this._postLogic.getHeadBySlug(id);
+    return IPageHeadDxo.convertToDto(postHead);
   }
 
-  public async getList(): Promise<IPageHead[]> {
-    return await this._postLogic.getList();
+  public async getList(): Promise<PostHeadDto[]> {
+    const postHeadList = await this._postLogic.getList();
+    return postHeadList.map((postHead) => {
+      return IPageHeadDxo.convertToDto(postHead);
+    });
   }
 
   public async getPathParams(): Promise<{ params: { id: string } }[]> {

@@ -1,6 +1,6 @@
 import React from "react";
 import { ListItem, OrderedList } from '@chakra-ui/react';
-import type { NumberedList as NumberedListEntity, NumberedListItem as NumberedListItemEntity } from '../../../../../entities/notion/blocks';
+import { NumberedList as NumberedListEntity, NumberedListItem as NumberedListItemEntity } from "../../../../../application/modules/post/objects/entities/blocks/NumberedList";
 import { v4 as uuidv4 } from 'uuid';
 import Block from "../Block";
 import { Paragraph } from "../Paragraph";

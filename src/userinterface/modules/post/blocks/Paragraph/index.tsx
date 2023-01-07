@@ -1,7 +1,8 @@
 import React from "react"
 import { Text, Code, Link } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
-import type { Paragraph as ParagraphEntity, Text as TextEntity } from '../../../../../entities/notion/blocks';
+import { Text as TextEntity } from "../../../../../application/modules/post/objects/entities/blocks/Text";
+import { Paragraph as ParagraphEntity } from "../../../../../application/modules/post/objects/entities/blocks/Paragraph";
 
 import { v4 as uuidv4 } from 'uuid';
 import _ from 'lodash'

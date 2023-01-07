@@ -1,7 +1,7 @@
-import { IRetrieveBlockChildrenResponse } from "interfaces/NotionApiResponses";
-import { IPageHead } from "interfaces/NotionPageApiResponses";
 import { PostLogic } from "../logic/PostLogic";
 import { PostLogicNotionImpl } from "../logic/PostLogicNotionImpl";
+import { PostDetailDto } from "../objects/dtos/PostDetailDto";
+import { PostDetailDxo } from "../objects/dxos/PostDetailDxo";
 
 export class PostDetailService {
   private _postLogic: PostLogic;
@@ -10,7 +10,8 @@ export class PostDetailService {
     this._postLogic = new PostLogicNotionImpl();
   } 
 
-  public async get(id: string): Promise<IRetrieveBlockChildrenResponse> {
-    return await this._postLogic.getDetail(id);
+  public async get(id: string): Promise<PostDetailDto> {
+    const postDetailEntity = await this._postLogic.getDetail(id);
+    return PostDetailDxo.convertToDto(postDetailEntity);
   }
 }

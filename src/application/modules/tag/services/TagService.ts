@@ -1,12 +1,11 @@
-import { IPageHead, IPageTag } from "interfaces/NotionPageApiResponses";
+import { IPageHead, IPageTag } from "application/modules/post/objects/entities/interfaces/NotionPageApiResponses";
 import { TagLogic } from "../logic/TagLogic";
-import { TagLogicNotionImpl } from "../logic/TagLogicNotionImpl";
 
 export class TagService {
   private _tagLogic: TagLogic;
 
   public constructor() {
-    this._tagLogic = new TagLogicNotionImpl();
+    // this._tagLogic = new TagLogicNotionImpl();
   } 
 
   public getListByPost(post: IPageHead): IPageTag[] {

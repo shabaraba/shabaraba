@@ -3,7 +3,7 @@ import { LinkBox, Box } from '@chakra-ui/react'
 import { _Title as Title } from "./_Title";
 import { _Thumbnail as Thumbnail } from "./_Thumbnail";
 import { _Description as Description } from "./_Description";
-import type { Bookmark as BookmarkEntity } from '../../../../../entities/notion/blocks';
+import { Bookmark as BookmarkEntity } from "../../../../../application/modules/post/objects/entities/blocks/Bookmark";
 
 type Props = {
   entity: BookmarkEntity,

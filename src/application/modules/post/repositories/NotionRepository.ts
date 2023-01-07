@@ -1,27 +1,17 @@
-import { Client } from "@notionhq/client"
+import { Container } from '@chakra-ui/react';
+import { BaseNotionRepository } from './../../../../lib/BaseNotionRepository';
 import type {
   QueryDatabaseResponse,
   ListBlockChildrenResponse,
 } from '@notionhq/client/build/src/api-endpoints.d'
 
-import * as NotionBlock from '../../../../entities/notion/blocks';
-import * as NotionBlockInterfaces from '../../../../interfaces/NotionApiResponses';
-import * as NotionPageType from '../../../../interfaces/NotionPageApiResponses';
+import * as NotionBlock from '../objects/entities/blocks';
+import { Heading1 as Heading1Entity} from "../objects/entities/blocks/Heading1";
+import * as NotionBlockInterfaces from '../objects/entities/interfaces/NotionApiResponses';
+import * as NotionPageType from '../objects/entities/interfaces/NotionPageApiResponses';
 import { NotionPageResponseDxo } from "./NotionPageResponseDxo";
 
-export default class NotionRepository {
-  private _notion: Client;
-  private _token: string;;
-  private _databaseId: string;
-
-  constructor(token: string, databaseId: string) {
-    this._token = token;
-    this._databaseId = databaseId;
-
-    this._notion = new Client({
-      auth: this._token
-    });
-  }
+export default class NotionRepository extends BaseNotionRepository {
 
   public async getPostList(): Promise<NotionPageType.IPageHead[]> {
     const response: QueryDatabaseResponse = await this._notion.databases.query({
@@ -134,7 +124,7 @@ export default class NotionRepository {
     return blocks
   }
 
-  static convertPageResponseToNotionHeading1Block(response: any): NotionBlock.Heading1 {
+  static convertPageResponseToNotionHeading1Block(response: any): Heading1Entity {
     let heading1: NotionBlockInterfaces.IHeading1Block = {
       object: 'block',
       id: response.id,
@@ -147,7 +137,7 @@ export default class NotionRepository {
         text: response.properties.Name.title,
       }
     }
-    return new NotionBlock.Heading1(heading1)
+    return new Heading1Entity(heading1);
   }
 }
 

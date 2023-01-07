@@ -1,6 +1,6 @@
 import React from 'react'
 import { Center } from '@chakra-ui/react'
-import type { Embed as EmbedEntity } from '../../../../../entities/notion/blocks';
+import { Embed as EmbedEntity } from "../../../../../application/modules/post/objects/entities/blocks/Embed";
 import useTwitterEmbed from '../../../../components/hooks/useTwitterEmbed';
 
 type Props = {entity: EmbedEntity};

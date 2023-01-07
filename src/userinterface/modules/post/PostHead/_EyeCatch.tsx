@@ -19,7 +19,7 @@ export const EyeChatch: FC<Props> = ({ eyeCatchUrl, iconText }) => {
   }
 
   const _EyeChatch: FC = () => {
-    if (eyeCatchUrl) return <Image src={eyeCatchUrl} width={300} height={200} alt={''} />;
+    if (eyeCatchUrl) return <Image src={eyeCatchUrl} width={300} height={200} alt={''} style={{objectFit: 'cover'}}/>;
     if (iconText) return <Text fontSize={72} fontWeight='bold'> {iconText} </Text>;
     return <></>;
   };

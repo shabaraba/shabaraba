@@ -1,6 +1,6 @@
 import React from "react"
 import { ListItem, UnorderedList } from '@chakra-ui/react'
-import type { BulletedList as BulletedListEntity, BulletedListItem as BulletedListItemEntity } from '../../../../../entities/notion/blocks';
+import { BulletedList as BulletedListEntity, BulletedListItem as BulletedListItemEntity } from "../../../../../application/modules/post/objects/entities/blocks/BulletedList";
 import { v4 as uuidv4 } from 'uuid';
 import { Paragraph } from "../Paragraph";
 import Block from "../Block";

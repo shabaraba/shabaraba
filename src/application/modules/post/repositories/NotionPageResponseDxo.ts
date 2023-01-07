@@ -1,4 +1,4 @@
-import { IPageHead, IPageTag, IPageIcon, IPageCover } from "interfaces/NotionPageApiResponses";
+import { IPageHead, IPageTag, IPageIcon, IPageCover } from "application/modules/post/objects/entities/interfaces/NotionPageApiResponses";
 
 type NotionPageResponseType = {
   properties: {

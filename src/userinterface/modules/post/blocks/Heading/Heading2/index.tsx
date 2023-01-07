@@ -1,6 +1,6 @@
 import { Heading, Text } from '@chakra-ui/react'
 import {v4 as uuidv4} from 'uuid';
-import type { Heading2 as Heading2Entity, } from '../../../../../../entities/notion/blocks';
+import { Heading2 as Heading2Entity } from "../../../../../../application/modules/post/objects/entities/blocks/Heading2";
 
 type Props = {entity: Heading2Entity};
 
