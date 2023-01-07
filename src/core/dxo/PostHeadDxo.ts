@@ -1,15 +1,5 @@
 import { PostHeadDto } from 'application/modules/post/objects/dtos/PostHeadDto';
-
-export type PostHeadType = {
-  id: string;
-  title: string;
-  coverImageUrl: string;
-  iconText: string;
-  tags: string;
-  slug: string;
-  publishedAt: string;
-  updatedAt: string;
-}
+import { PostHeadType } from 'core/types/PostHeadType';
 
 export class PostHeadDxo {
 

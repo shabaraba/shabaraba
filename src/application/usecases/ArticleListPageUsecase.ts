@@ -1,6 +1,7 @@
 import { PostHeadDto } from "application/modules/post/objects/dtos/PostHeadDto";
 import { PostHeadService } from "application/modules/post/services/PostHeadService";
-import { PostHeadType, PostHeadDxo } from "core/dxo/PostHeadDxo";
+import { PostHeadDxo } from "core/dxo/PostHeadDxo";
+import { PostHeadType } from "core/types/PostHeadType";
 
 export class ArticleListPageUsecase {
   public static async getStaticProps() {
