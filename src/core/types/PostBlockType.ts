@@ -68,7 +68,7 @@ type _BookmarkType = {
 
 type _EmbedType = { url: string };
 
-type _BaseBlockType = { type: 'block'; id: string; nest: number; }
+type _BaseBlockType = { id: string; nest: number; }
 
 export type ParagraphBlockType = _BaseBlockType & { type: "paragraph", paragraph: _ParagraphType }
 export type Heading1BlockType = _BaseBlockType & { type: "heading_1", heading_1: _HeadingType }
