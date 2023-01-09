@@ -1,13 +1,13 @@
 // import SyntaxHighlighter from "react-syntax-highlighter";
 import { CodeBlock, ocean } from "react-code-blocks";
 import { Box } from '@chakra-ui/react'
-import { Code as CodeEntity } from "../../../../../application/modules/post/objects/entities/blocks/Code";
+import { Code as CodeEntity } from "../../../../application/modules/post/objects/entities/blocks/Code";
 
 type Props = {
   entity: CodeEntity
 }
 
-export const Code: React.FC<Props> = ({entity}: Props) => {
+export const CodeComponent: React.FC<Props> = ({entity}: Props) => {
   const text = entity.texts.reduce((prev, cur) => {
     return prev === '' ? cur.content : prev + cur.content
   }, '');

@@ -1,10 +1,10 @@
 import React from "react"
 import { Box } from '@chakra-ui/react'
-import { Quote as QuoteEntity } from "../../../../../application/modules/post/objects/entities/blocks/Quote";
-import { Paragraph } from '../Paragraph'
+import { Quote as QuoteEntity } from "../../../../application/modules/post/objects/entities/blocks/Quote";
+import { ParagraphComponent } from '../Paragraph'
 
 type Props = { entity: QuoteEntity };
-export const Quote: React.FC<Props> = ({ entity }: Props) => {
+export const QuoteComponent: React.FC<Props> = ({ entity }: Props) => {
   const style = {
     backgroundColor: 'gray.50',
     borderLeftWidth: 10,
@@ -16,7 +16,7 @@ export const Quote: React.FC<Props> = ({ entity }: Props) => {
   };
   return (
     <Box {...style} >
-      <Paragraph entity={entity} />
+      <ParagraphComponent entity={entity} />
     </Box>
   )
 }

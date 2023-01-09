@@ -1,10 +1,10 @@
 import { Heading, Text } from '@chakra-ui/react'
 import {v4 as uuidv4} from 'uuid';
-import { Heading2 as Heading2Entity } from "../../../../../../application/modules/post/objects/entities/blocks/Heading2";
+import { Heading2 as Heading2Entity } from "../../../../../application/modules/post/objects/entities/blocks/Heading2";
 
 type Props = {entity: Heading2Entity};
 
-export const Heading2: React.FC<Props> = ({entity}: Props) => {
+export const Heading2Component: React.FC<Props> = ({entity}: Props) => {
   const headingStyle = {
       fontSize: {lg: '24px', base: '18px' },
       mt: 5,

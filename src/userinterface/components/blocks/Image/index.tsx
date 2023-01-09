@@ -3,11 +3,11 @@ import { Center, Skeleton } from '@chakra-ui/react'
 import useSWRImmutable from 'swr/immutable'
 import axios from 'axios'
 
-import { Image as ImageEntity } from "../../../../../application/modules/post/objects/entities/blocks/Image";
+import { Image as ImageEntity } from "../../../../application/modules/post/objects/entities/blocks/Image";
 
 type Props = { entity: ImageEntity };
 
-export const Image: React.FC<Props> = ({ entity }: Props) => {
+export const ImageComponent: React.FC<Props> = ({ entity }: Props) => {
   const fetcher = async (url: string) => {
     const result = await axios.get(url)
     return result.data

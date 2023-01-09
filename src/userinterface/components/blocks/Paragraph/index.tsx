@@ -1,14 +1,14 @@
 import React from "react"
 import { Text, Code, Link } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
-import { Text as TextEntity } from "../../../../../application/modules/post/objects/entities/blocks/Text";
-import { Paragraph as ParagraphEntity } from "../../../../../application/modules/post/objects/entities/blocks/Paragraph";
+import { Text as TextEntity } from "../../../../application/modules/post/objects/entities/blocks/Text";
+import { Paragraph as ParagraphEntity } from "../../../../application/modules/post/objects/entities/blocks/Paragraph";
 
 import { v4 as uuidv4 } from 'uuid';
 import _ from 'lodash'
 
 type Props = { entity: ParagraphEntity };
-export const Paragraph: React.FC<Props> = ({ entity }: Props) => {
+export const ParagraphComponent: React.FC<Props> = ({ entity }: Props) => {
   if (entity.texts.length === 0) return <br />
 
   type _Props = {

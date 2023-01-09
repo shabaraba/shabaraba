@@ -1,6 +1,6 @@
 import React from "react"
 import { Grid, GridItem } from '@chakra-ui/react'
-import { Callout as CalloutEntity } from "../../../../../application/modules/post/objects/entities/blocks/Callout"
+import { Callout as CalloutEntity } from "../../../../application/modules/post/objects/entities/blocks/Callout"
 import { _IconComponent as IconComponent } from "./_Icon"
 import { _DescriptionComponent as DescriptionComponent } from "./_Description"
 
@@ -33,7 +33,7 @@ type Props = {
   entity: CalloutEntity
 }
 
-export const Callout: React.FC<Props> = ({entity}: Props) => {
+export const CalloutComponent: React.FC<Props> = ({entity}: Props) => {
   return (
     <Grid {...GridStyle} >
       <GridItem {...GridItemIconStyle} >
