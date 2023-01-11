@@ -11,7 +11,6 @@ export class PostDetailService {
   } 
 
   public async get(id: string): Promise<PostDetailDto> {
-    console.log('get')
     const postDetailEntity = await this._postLogic.getDetail(id);
     return PostDetailDxo.convertToDto(postDetailEntity);
   }
