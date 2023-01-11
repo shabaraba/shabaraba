@@ -108,3 +108,20 @@ export type SomeoneBlockType =
   QuoteBlockType |
   BookmarkBlockType |
   EmbedBlockType
+
+export type SomeoneType =
+  TextType |
+  ParagraphType |
+  HeadingType |
+  CalloutType |
+  FileFileType |
+  ExternalFileType |
+  CodeType |
+  ImageType |
+  BulletedListItemType |
+  NumberedListItemType |
+  BulletedListType |
+  NumberedListType |
+  QuoteType |
+  BookmarkType |
+  EmbedType 

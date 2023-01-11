@@ -12,7 +12,6 @@ type Props = {
 export const BulletedListComponent: React.FC<Props> = ({ entity }: Props) => {
   const unorderedTypeMap = ['disc', 'circle', 'square']
 
-  console.log(entity);
   return (
     <UnorderedList listStyleType={unorderedTypeMap[entity.nest % 3]}>
       {entity.content.listItem.map((item: BulletedListItemBlockType) =>
@@ -27,7 +26,6 @@ type ItemProps = {
 }
 
 export const BulletedListItemComponent: React.FC<ItemProps> = ({entity}: ItemProps) => {
-  console.log(entity)
   const paragraphBlock: ParagraphBlockType = {
     id: entity.id,
     nest: entity.nest,

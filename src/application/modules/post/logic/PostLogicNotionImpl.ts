@@ -3,8 +3,10 @@ import NotionRepository from "../repositories/NotionRepository";
 import { PostLogic } from "./PostLogic";
 import { BlockList } from "application/modules/post/objects/entities/blocks";
 import { PostDetailEntity } from "../objects/entities/PostDetailEntity";
-import { IRetrieveBlockChildrenResponse } from "core/types/NotionApiResponses";
+import { BlockType, IRetrieveBlockChildrenResponse } from "core/types/NotionApiResponses";
 import { IPageHead } from "core/types/NotionPageApiResponses";
+import { Block } from "../objects/entities/blocks/Block";
+import { BlockFactory } from "../objects/factories/BlockFactory";
 
 export class PostLogicNotionImpl implements PostLogic {
   private readonly _repository: NotionRepository;
@@ -33,6 +35,11 @@ export class PostLogicNotionImpl implements PostLogic {
     const respWithOGP: IRetrieveBlockChildrenResponse = await setOGPToBookmarkBlocks(resp);
     const blockList: BlockList = BlockList.deserialize(respWithOGP.results);
     return new PostDetailEntity(blockList);
+  }
+
+  async getBlock(id: string): Promise<Block> {
+    const block: BlockType = await this._repository.getBlockById(id)
+    return BlockFactory.make({target: block});
   }
 
 }

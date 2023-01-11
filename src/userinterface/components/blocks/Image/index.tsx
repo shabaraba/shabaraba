@@ -3,7 +3,7 @@ import { Center, Skeleton } from '@chakra-ui/react'
 import useSWRImmutable from 'swr/immutable'
 import axios from 'axios'
 
-import { ImageBlockType } from 'core/types/PostBlockType';
+import { ImageBlockType, ImageType } from 'core/types/PostBlockType';
 import { IImageBlock } from 'core/types/NotionApiResponses';
 
 type Props = { entity: ImageBlockType };
@@ -18,11 +18,11 @@ export const ImageComponent: React.FC<Props> = ({ entity }: Props) => {
 
   if (!fetchedBlockImage) return <Skeleton height={600} />
 
-  const fetchedImageEntity = fetchedBlockImage as IImageBlock;
-  const caption = (fetchedImageEntity.image.caption?.length > 0) ? fetchedImageEntity.image.caption[0].text.content : ''
+  const fetchedImageEntity = fetchedBlockImage as ImageType;
+  const caption = (fetchedImageEntity.captions?.length > 0) ? fetchedImageEntity.captions[0].content : ''
 
   const imageStyle = {
-    src: fetchedImageEntity.image.url,
+    src: fetchedImageEntity.url,
     height: 600,
     width: 800,
     alt: caption,

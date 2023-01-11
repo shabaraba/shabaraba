@@ -7,5 +7,4 @@ export abstract class Block {
     this.id = id;
     this.nest = nest ?? 0;
   }
-
 }
