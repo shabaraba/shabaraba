@@ -1,5 +1,5 @@
 import { Box, Divider } from "@chakra-ui/react"
-import BlockComponent from "../../../components/blocks/Block"
+import BlockComponent from "../../blocks/Block"
 import { v4 as uuidv4 } from 'uuid'
 import { PostDetailType } from "core/types/PostDetailType"
 import { SomeoneBlockType } from "core/types/PostBlockType"

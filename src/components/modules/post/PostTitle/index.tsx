@@ -3,11 +3,11 @@ import { PostHeadEntity } from 'core/entities/PostHeadEntity';
 import { IPageTag } from 'core/types/NotionPageApiResponses';
 import { Heading1BlockType } from 'core/types/PostBlockType';
 import { FC } from 'react';
-import BlockComponent from 'userinterface/components/blocks/Block';
-import useLocation from 'userinterface/components/hooks/useLocation';
-import { PublishDate } from 'userinterface/components/PublishDate';
-import { ShareButtonList } from 'userinterface/components/ShareButtonList';
-import { TagList } from 'userinterface/patterns/TagList';
+import BlockComponent from 'components/modules/blocks/Block';
+import useLocation from 'components/units/hooks/useLocation';
+import { PublishDate } from 'components/units/PublishDate';
+import { ShareButtonList } from 'components/units/ShareButtonList';
+import { TagList } from 'components/patterns/TagList';
 
 const createHeading1Entity = (title: string): Heading1BlockType => {
   return {

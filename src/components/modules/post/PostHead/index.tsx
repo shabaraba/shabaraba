@@ -2,7 +2,7 @@ import { LinkBox, Box } from '@chakra-ui/react'
 import { FC } from 'react'
 import { EyeChatch } from './_EyeCatch'
 import { Description } from './_Description'
-import { PublishDate } from '../../../components/PublishDate'
+import { PublishDate } from '../../../units/PublishDate'
 import { PostHeadEntity } from 'core/entities/PostHeadEntity'
 
 type Props = { postHead: PostHeadEntity };
