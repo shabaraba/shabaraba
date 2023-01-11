@@ -17,7 +17,7 @@ export class BlockFactory {
   /**
    * List系は呼び出し元で用意してもらい、必要に応じて　appendしてもらう
    */
-  static make({ target, nest = 0 }: { target: BlockType, nest?: number }): Block {
+  static make({ target, nest = 0 }: { target: BlockType, nest?: number }): Block|null {
     switch (target.type) {
       case 'paragraph':
         return (new Paragraph(target as IParagraphBlock));

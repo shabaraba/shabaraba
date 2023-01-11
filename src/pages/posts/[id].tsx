@@ -4,11 +4,11 @@ import { PostHeadEntity } from 'core/entities/PostHeadEntity'
 import { PostDetailType } from 'core/types/PostDetailType'
 import { InferGetStaticPropsType } from 'next'
 import Head from 'next/head'
-import AuthorBox from 'userinterface/components/common/AuthorBox'
-import { Seo } from 'userinterface/components/common/Seo'
-import Layout from 'userinterface/components/layout'
-import { PostDetail } from 'userinterface/modules/post/PostDetail'
-import { PostTitle } from 'userinterface/modules/post/PostTitle'
+import AuthorBox from 'components/units/common/AuthorBox'
+import { Seo } from 'components/units/common/Seo'
+import Layout from 'components/units/layout'
+import { PostDetail } from 'components/modules/post/PostDetail'
+import { PostTitle } from 'components/modules/post/PostTitle'
 
 
 const SideArea = ({ tags, post, title }: { tags: any[], post: PostHeadEntity, title: string }) => {

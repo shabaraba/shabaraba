@@ -1,6 +1,6 @@
 import React from 'react'
 import { Center } from '@chakra-ui/react'
-import useTwitterEmbed from '../../hooks/useTwitterEmbed';
+import useTwitterEmbed from '../../../units/hooks/useTwitterEmbed';
 import { EmbedBlockType } from 'core/types/PostBlockType';
 
 type Props = {entity: EmbedBlockType};

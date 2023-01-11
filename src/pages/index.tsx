@@ -2,10 +2,10 @@ import React from 'react'
 import { useBreakpointValue, Text } from '@chakra-ui/react'
 import Head from 'next/head'
 import { InferGetStaticPropsType } from 'next';
-import AuthorBox from 'userinterface/components/common/AuthorBox';
-import { Seo } from 'userinterface/components/common/Seo';
-import Layout from 'userinterface/components/layout';
-import { PostHeadList } from 'userinterface/patterns/PostHeadList';
+import AuthorBox from 'components/units/common/AuthorBox';
+import { Seo } from 'components/units/common/Seo';
+import Layout from 'components/units/layout';
+import { PostHeadList } from 'components/patterns/PostHeadList';
 import { siteTitle } from './_app';
 import { PostHeadEntity } from '../core/entities/PostHeadEntity';
 import { ArticleListPageUsecase } from 'application/usecases/ArticleListPageUsecase';
