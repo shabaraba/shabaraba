@@ -3,7 +3,6 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 })
 
 module.exports = withBundleAnalyzer({
-  target: 'serverless',
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     if (isServer) {
       config.plugins.push(new webpack.IgnorePlugin(
@@ -11,7 +10,7 @@ module.exports = withBundleAnalyzer({
           resourceRegExp: /canvas/,
           contextRegExp: /jsdom$/,
         }))
-    }
+    };
     return config
   },
   images: {
