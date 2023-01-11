@@ -13,7 +13,7 @@ export default function Document() {
       <Head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin={'crossOrigin'} />
-        <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="Document" />
+        <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet" />
         {/* Global Site Tag (gtag.js) - Google Analytics */}
         <script
           async
