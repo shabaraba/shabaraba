@@ -1,10 +1,9 @@
-import { OneBlockType } from 'core/types/PostBlockType'
+import { SomeoneBlockType } from 'core/types/PostBlockType'
 import BlockComponents from '.'
 
-export default function Block({entity}: {entity: OneBlockType}) {
+export default function BlockComponent({ entity }: { entity: SomeoneBlockType }) {
 
-  const BlockComponent = BlockComponents[entity.type]
-  return <BlockComponent entity={ entity } />
+  const _BlockComponent = BlockComponents[entity.type]
+  console.log(_BlockComponent)
+  return <_BlockComponent entity={entity} />
 }
-
-

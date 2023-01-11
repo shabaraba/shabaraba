@@ -1,14 +1,20 @@
+import { CalloutBlockType, ParagraphBlockType } from "core/types/PostBlockType";
 import React from "react"
-import { Callout as CalloutEntity } from "../../../../application/modules/post/objects/entities/blocks/Callout";
 import { ParagraphComponent } from '../Paragraph'
 
 export type _Props = {
-  entity: CalloutEntity
+  entity: CalloutBlockType
 }
 
 export const _DescriptionComponent: React.FC<_Props> = ({entity}: _Props) => {
+  const paragraphBlock: ParagraphBlockType = {
+    id: entity.id,
+    nest: entity.nest,
+    type: 'Paragraph',
+    content: entity.content
+  };
   return (
-    <ParagraphComponent entity={entity} />
+    <ParagraphComponent entity={paragraphBlock} />
   )
 }
 

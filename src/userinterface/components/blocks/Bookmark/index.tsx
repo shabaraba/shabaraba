@@ -3,14 +3,14 @@ import { LinkBox, Box } from '@chakra-ui/react'
 import { _Title as Title } from "./_Title";
 import { _Thumbnail as Thumbnail } from "./_Thumbnail";
 import { _Description as Description } from "./_Description";
-import { BookmarkBlockType } from "core/types/PostBlockType";
+import { BookmarkBlockType, BookmarkType } from "core/types/PostBlockType";
 
 type Props = {
   entity: BookmarkBlockType,
 }
 
 export const BookmarkComponent: React.FC<Props> = ({ entity }: Props) => {
-  const bookmark = entity.bookmark;
+  const bookmark = entity.content;
   const layout = {
     marginTop: 5,
     display: { md: "flex" },

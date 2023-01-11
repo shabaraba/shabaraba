@@ -1,32 +1,38 @@
 import React from "react";
 import { ListItem, OrderedList } from '@chakra-ui/react';
-import { NumberedList as NumberedListEntity, NumberedListItem as NumberedListItemEntity } from "../../../../application/modules/post/objects/entities/blocks/NumberedList";
 import { v4 as uuidv4 } from 'uuid';
-import Block from "../Block";
+import BlockComponent from "../Block";
 import { ParagraphComponent } from "../Paragraph";
+import { NumberedListBlockType, NumberedListItemBlockType, ParagraphBlockType } from "core/types/PostBlockType";
 
-type Props = { entity: NumberedListEntity };
+type Props = { entity: NumberedListBlockType };
 
 export const NumberedListComponent: React.FC<Props> = ({ entity }: Props) => {
   const orderedTypeMap = ['decimal', 'lower-alpha', 'lower-roman'];
 
   return (
     <OrderedList listStyleType={orderedTypeMap[entity.nest % 3]}>
-      {entity.listItem.map((item: NumberedListItemEntity) =>
+      {entity.content.listItem.map((item: NumberedListItemBlockType) =>
         <NumberedListItemComponent entity={item} key={uuidv4()} />
       )}
     </OrderedList>
   );
 }
 
-type ItemProps = { entity: NumberedListItemEntity };
+type ItemProps = { entity: NumberedListItemBlockType };
 
 export const NumberedListItemComponent: React.FC<ItemProps> = ({ entity }: ItemProps) => {
+  const paragraphBlock: ParagraphBlockType = {
+    id: entity.id,
+    nest: entity.nest,
+    type: 'Paragraph',
+    content: entity.content
+  };
   return (
     <ListItem>
-      <ParagraphComponent entity={entity} />
-      {entity.children?.map((child: any) => {
-        return <Block entity={child} key={uuidv4()} />
+      <ParagraphComponent entity={paragraphBlock} />
+      {entity.content.children?.map((child: any) => {
+        return <BlockComponent entity={child} key={uuidv4()} />
       })}
     </ListItem>
   )

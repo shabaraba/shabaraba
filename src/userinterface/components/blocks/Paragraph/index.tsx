@@ -1,15 +1,14 @@
 import React from "react"
 import { Text, Code, Link } from '@chakra-ui/react'
 import { ExternalLinkIcon } from '@chakra-ui/icons'
-import { Text as TextEntity } from "../../../../application/modules/post/objects/entities/blocks/Text";
-import { Paragraph as ParagraphEntity } from "../../../../application/modules/post/objects/entities/blocks/Paragraph";
 
 import { v4 as uuidv4 } from 'uuid';
 import _ from 'lodash'
+import { ParagraphBlockType, TextType } from "core/types/PostBlockType";
 
-type Props = { entity: ParagraphEntity };
+type Props = { entity: ParagraphBlockType };
 export const ParagraphComponent: React.FC<Props> = ({ entity }: Props) => {
-  if (entity.texts.length === 0) return <br />
+  if (entity.content.texts.length === 0) return <br />
 
   type _Props = {
     apply?: boolean,
@@ -42,6 +41,7 @@ export const ParagraphComponent: React.FC<Props> = ({ entity }: Props) => {
       fontWeight='bold'
       color={color}
       background={backgroundColor}
+      fontSize={fontSize}
       overflowWrap='anywhere'>{children}</Text>
   }
 
@@ -51,6 +51,7 @@ export const ParagraphComponent: React.FC<Props> = ({ entity }: Props) => {
       as='i' 
       color={color} 
       background={backgroundColor} 
+      fontSize={fontSize}
       overflowWrap='anywhere'>{children}</Text>
   }
 
@@ -60,6 +61,7 @@ export const ParagraphComponent: React.FC<Props> = ({ entity }: Props) => {
       as='u' 
       color={color} 
       background={backgroundColor} 
+      fontSize={fontSize}
       overflowWrap='anywhere'>{children}</Text>
   }
 
@@ -69,6 +71,7 @@ export const ParagraphComponent: React.FC<Props> = ({ entity }: Props) => {
       as='s' 
       color={color} 
       background={backgroundColor} 
+      fontSize={fontSize}
       overflowWrap='anywhere'>{children}</Text>
   }
 
@@ -79,10 +82,11 @@ export const ParagraphComponent: React.FC<Props> = ({ entity }: Props) => {
       background={backgroundColor} 
       display='inline' 
       overflowWrap='anywhere' 
+      fontSize={fontSize}
       children={children} />
   }
 
-  const RichText = ({ text }: any) => {
+  const RichText = ({ text }: {text: TextType}) => {
     if (text.content == null) return <br />
 
     let content = text.content ?? ''
@@ -145,15 +149,15 @@ export const ParagraphComponent: React.FC<Props> = ({ entity }: Props) => {
     )
   }
 
-  type _LineEntity = TextEntity[];
-  const _getLineEntities = (entity: ParagraphEntity): _LineEntity[] => {
-    const lineEntities: _LineEntity[] = [];
-    let wordEntities: TextEntity[] = [];
-    entity.texts.forEach((text: TextEntity) => {
+  type _LineType = TextType[];
+  const _getLineEntities = (entity: ParagraphBlockType): _LineType[] => {
+    const lineEntities: _LineType[] = [];
+    let wordEntities: TextType[] = [];
+    entity.content.texts.forEach((text: TextType) => {
       const lineList: string[] = text.content.split('\n');
       lineList.forEach((line: string, index: number) => {
         // 各行ごとのword block
-        let wordEntity: TextEntity = _.cloneDeep(text);
+        let wordEntity: TextType = _.cloneDeep(text);
         wordEntity.content = line;
 
         wordEntities.push(wordEntity);
@@ -167,13 +171,13 @@ export const ParagraphComponent: React.FC<Props> = ({ entity }: Props) => {
     return lineEntities;
   }
 
-  const lineEntities: _LineEntity[] = _getLineEntities(entity)
+  const lineEntities: _LineType[] = _getLineEntities(entity)
 
   return (
     <Text>
-      {lineEntities.map((line: _LineEntity) =>
+      {lineEntities.map((line: _LineType) =>
         <Text as='span' key={uuidv4()}>
-          {line.map((word: TextEntity) => <RichText key={uuidv4()} text={word} />)} 
+          {line.map((word: TextType) => <RichText key={uuidv4()} text={word} />)} 
           <br />
         </Text>
       )}

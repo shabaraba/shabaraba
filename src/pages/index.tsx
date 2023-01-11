@@ -8,8 +8,8 @@ import Layout from 'userinterface/components/layout';
 import { PostHeadList } from 'userinterface/patterns/PostHeadList';
 import { siteTitle } from './_app';
 import { PostHeadEntity } from '../core/entities/PostHeadEntity';
-import { PostHeadType } from 'core/dxo/PostHeadDxo';
 import { ArticleListPageUsecase } from 'application/usecases/ArticleListPageUsecase';
+import { PostHeadType } from 'core/types/PostHeadType';
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 

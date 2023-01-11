@@ -3,9 +3,10 @@ import { Center, Skeleton } from '@chakra-ui/react'
 import useSWRImmutable from 'swr/immutable'
 import axios from 'axios'
 
-import { Image as ImageEntity } from "../../../../application/modules/post/objects/entities/blocks/Image";
+import { ImageBlockType } from 'core/types/PostBlockType';
+import { IImageBlock } from 'core/types/NotionApiResponses';
 
-type Props = { entity: ImageEntity };
+type Props = { entity: ImageBlockType };
 
 export const ImageComponent: React.FC<Props> = ({ entity }: Props) => {
   const fetcher = async (url: string) => {
@@ -15,13 +16,13 @@ export const ImageComponent: React.FC<Props> = ({ entity }: Props) => {
 
   const { data: fetchedBlockImage } = useSWRImmutable(`/api/notion/blocks/${entity.id}`, fetcher)
 
-  if (!fetchedBlockImage) return <Skeleton height={400} />
+  if (!fetchedBlockImage) return <Skeleton height={600} />
 
-  const fetchedImageEntity: ImageEntity = new ImageEntity(fetchedBlockImage)
-  const caption = (fetchedImageEntity.captions?.length > 0) ? fetchedImageEntity.captions[0].content : ''
+  const fetchedImageEntity = fetchedBlockImage as IImageBlock;
+  const caption = (fetchedImageEntity.image.caption?.length > 0) ? fetchedImageEntity.image.caption[0].text.content : ''
 
   const imageStyle = {
-    src: fetchedImageEntity.url,
+    src: fetchedImageEntity.image.url,
     height: 600,
     width: 800,
     alt: caption,

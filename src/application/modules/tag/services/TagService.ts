@@ -1,4 +1,4 @@
-import { IPageHead, IPageTag } from "application/modules/post/objects/entities/types/NotionPageApiResponses";
+import { IPageHead, IPageTag } from "core/types/NotionPageApiResponses";
 import { TagLogic } from "../logic/TagLogic";
 
 export class TagService {

@@ -1,19 +1,12 @@
-import { Container } from '@chakra-ui/react';
-import { BaseNotionRepository } from './../../../../lib/BaseNotionRepository';
-import type {
-  QueryDatabaseResponse,
-  ListBlockChildrenResponse,
-} from '@notionhq/client/build/src/api-endpoints.d'
-
-import * as NotionBlock from '../objects/entities/blocks';
-import { Heading1 as Heading1Entity} from "../objects/entities/blocks/Heading1";
-import * as NotionBlockInterfaces from '../objects/entities/types/NotionApiResponses';
-import * as NotionPageType from '../objects/entities/types/NotionPageApiResponses';
+import { QueryDatabaseResponse, ListBlockChildrenResponse } from "@notionhq/client/build/src/api-endpoints";
+import { BlockType, IRetrieveBlockChildrenResponse, IText } from "core/types/NotionApiResponses";
+import { IPageHead } from "core/types/NotionPageApiResponses";
+import { BaseNotionRepository } from "lib/BaseNotionRepository";
 import { NotionPageResponseDxo } from "./NotionPageResponseDxo";
 
 export default class NotionRepository extends BaseNotionRepository {
 
-  public async getPostList(): Promise<NotionPageType.IPageHead[]> {
+  public async getPostList(): Promise<IPageHead[]> {
     const response: QueryDatabaseResponse = await this._notion.databases.query({
       database_id: this._databaseId,
       filter: {
@@ -31,42 +24,42 @@ export default class NotionRepository extends BaseNotionRepository {
       ]
     })
 
-    const postList: NotionPageType.IPageHead[] = response.results.map((item: any) => {
+    const postList: IPageHead[] = response.results.map((item: any) => {
       return NotionPageResponseDxo.convertToNotionPostHead(item)
     })
 
     return postList
   }
 
-  public async getTitleBlock(id: string): Promise<NotionPageType.IPageHead> {
+  public async getTitleBlock(id: string): Promise<IPageHead> {
     const response: any = await this._notion.pages.retrieve({
       page_id: id
     });
     return NotionPageResponseDxo.convertToNotionPostHead(response)
   }
 
-  public async getPage(id: string): Promise<NotionPageType.IPageHead> {
+  public async getPage(id: string): Promise<IPageHead> {
     const response: any = await this._notion.pages.retrieve({
       page_id: id
     });
     return NotionPageResponseDxo.convertToNotionPostHead(response)
   }
 
-  public async getBlockById(id: string): Promise<NotionBlockInterfaces.BlockType> {
+  public async getBlockById(id: string): Promise<BlockType> {
     const response: any = await this._notion.blocks.retrieve({
       block_id: id
     });
 
-    const result: NotionBlockInterfaces.BlockType = response
+    const result: BlockType = response
 
     return result
   }
 
-  public async getPostBlockListById(id: string): Promise<NotionBlockInterfaces.IRetrieveBlockChildrenResponse> {
+  public async getPostBlockListById(id: string): Promise<IRetrieveBlockChildrenResponse> {
     const response: ListBlockChildrenResponse = await this._notion.blocks.children.list({
       block_id: id
     });
-    let blocks: NotionBlockInterfaces.IRetrieveBlockChildrenResponse = NotionRepository.createInterfaceList(response);
+    let blocks: IRetrieveBlockChildrenResponse = NotionRepository.createInterfaceList(response);
 
     for(let block of blocks.results) {
       if (block.has_children === true) {
@@ -102,9 +95,9 @@ export default class NotionRepository extends BaseNotionRepository {
     })
 
     for (let result of resp.results) {
-      let block = result as NotionBlockInterfaces.BlockType
+      let block = result as BlockType
       if (block.type === 'paragraph') {
-        block.paragraph.text.forEach((textObject: NotionBlockInterfaces.IText) => {
+        block.paragraph.text.forEach((textObject: IText) => {
           openingSentence += textObject.plain_text
         })
       }
@@ -116,28 +109,12 @@ export default class NotionRepository extends BaseNotionRepository {
     return openingSentence.substring(0, 80)
   }
 
-  static createInterfaceList(response: ListBlockChildrenResponse): NotionBlockInterfaces.IRetrieveBlockChildrenResponse {
-    let blocks: NotionBlockInterfaces.IRetrieveBlockChildrenResponse = {object: "list", results: []};
-    response.results.map((item: NotionBlockInterfaces.BlockType) => {
+  static createInterfaceList(response: ListBlockChildrenResponse): IRetrieveBlockChildrenResponse {
+    let blocks: IRetrieveBlockChildrenResponse = {object: "list", results: []};
+    response.results.map((item: BlockType) => {
       blocks.results.push(item)
     })
     return blocks
-  }
-
-  static convertPageResponseToNotionHeading1Block(response: any): Heading1Entity {
-    let heading1: NotionBlockInterfaces.IHeading1Block = {
-      object: 'block',
-      id: response.id,
-      created_time: response.created_time,
-      last_edited_time: response.last_edited_time,
-      has_children: false,
-      archived: response.archived,
-      type: "heading_1",
-      heading_1: {
-        text: response.properties.Name.title,
-      }
-    }
-    return new Heading1Entity(heading1);
   }
 }
 

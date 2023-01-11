@@ -1,9 +1,9 @@
 import React from "react"
 import { Text } from '@chakra-ui/react'
-import { Callout as CalloutEntity } from "../../../../application/modules/post/objects/entities/blocks/Callout";
+import { CalloutType } from "core/types/PostBlockType";
 
 export type _Props = {
-  entity: CalloutEntity
+  entity: CalloutType
 }
 
 export const _IconComponent: React.FC<_Props> = ({entity}: _Props) => {

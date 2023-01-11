@@ -1,20 +1,20 @@
 // import SyntaxHighlighter from "react-syntax-highlighter";
 import { CodeBlock, ocean } from "react-code-blocks";
 import { Box } from '@chakra-ui/react'
-import { Code as CodeEntity } from "../../../../application/modules/post/objects/entities/blocks/Code";
+import { CodeBlockType } from "core/types/PostBlockType";
 
 type Props = {
-  entity: CodeEntity
+  entity: CodeBlockType
 }
 
 export const CodeComponent: React.FC<Props> = ({entity}: Props) => {
-  const text = entity.texts.reduce((prev, cur) => {
+  const text = entity.content.texts.reduce((prev, cur) => {
     return prev === '' ? cur.content : prev + cur.content
   }, '');
 
   const codeBlockStyle = {
     text: text, 
-    language: entity.language, 
+    language: entity.content.language, 
     showLineNumbers: true, 
     theme: ocean, 
     customStyle: { 

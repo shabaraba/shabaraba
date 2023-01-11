@@ -1,15 +1,14 @@
 import { SlideFade } from '@chakra-ui/react'
-import AuthorBox from '../../userinterface/components/common/AuthorBox'
-import Layout from '../../userinterface/components/layout'
-import Head from 'next/head'
-
-import { InferGetStaticPropsType } from 'next'
-import { PostTitle } from '../../userinterface/modules/post/PostTitle';
-import { Seo } from '../../userinterface/components/common/Seo';
-import { PostDetail } from '../../userinterface/modules/post/PostDetail';
-import { PostDetailEntity } from 'core/entities/PostDetailEntity'
-import { PostHeadEntity } from 'core/entities/PostHeadEntity';
 import { ArticlePageUsecase } from 'application/usecases/ArticlePageUsecase'
+import { PostHeadEntity } from 'core/entities/PostHeadEntity'
+import { PostDetailType } from 'core/types/PostDetailType'
+import { InferGetStaticPropsType } from 'next'
+import Head from 'next/head'
+import AuthorBox from 'userinterface/components/common/AuthorBox'
+import { Seo } from 'userinterface/components/common/Seo'
+import Layout from 'userinterface/components/layout'
+import { PostDetail } from 'userinterface/modules/post/PostDetail'
+import { PostTitle } from 'userinterface/modules/post/PostTitle'
 
 
 const SideArea = ({ tags, post, title }: { tags: any[], post: PostHeadEntity, title: string }) => {
@@ -20,7 +19,7 @@ const SideArea = ({ tags, post, title }: { tags: any[], post: PostHeadEntity, ti
   )
 }
 
-const MainArea = ({ postDetail }: { postDetail: PostDetailEntity }) => {
+const MainArea = ({ postDetail }: { postDetail: PostDetailType }) => {
   return (
     <PostDetail postDetail={postDetail} />
   )

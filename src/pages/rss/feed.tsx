@@ -1,9 +1,8 @@
 import fs from 'fs'
 import { Feed } from 'feed';
-import { siteUrl, siteTitle, siteDescription } from '../../../next-seo.config'
-import { GetServerSidePropsContext } from 'next';
+import { siteUrl } from '../../../next-seo.config'
 import NotionRepository from '../../application/modules/post/repositories/NotionRepository'
-import { IPageHead } from '../../application/modules/post/objects/entities/types/NotionPageApiResponses';
+import { IPageHead } from 'core/types/NotionPageApiResponses';
 
 export default () => null;
 

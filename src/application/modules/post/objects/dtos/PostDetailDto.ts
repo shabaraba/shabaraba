@@ -1,9 +1,9 @@
-import { Block } from "../entities/blocks/Block";
+import { BlockDto } from './BlockDto';
 
 export class PostDetailDto {
-  public blockList: Block[];
+  public blockList: BlockDto[];
 
-  constructor(blocks: Block[]) {
+  constructor(blocks: BlockDto[]) {
     this.blockList = blocks;
   }
 }

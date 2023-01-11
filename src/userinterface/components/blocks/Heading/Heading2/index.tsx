@@ -1,8 +1,8 @@
 import { Heading, Text } from '@chakra-ui/react'
+import { Heading2BlockType } from 'core/types/PostBlockType';
 import {v4 as uuidv4} from 'uuid';
-import { Heading2 as Heading2Entity } from "../../../../../application/modules/post/objects/entities/blocks/Heading2";
 
-type Props = {entity: Heading2Entity};
+type Props = {entity: Heading2BlockType};
 
 export const Heading2Component: React.FC<Props> = ({entity}: Props) => {
   const headingStyle = {
@@ -17,7 +17,7 @@ export const Heading2Component: React.FC<Props> = ({entity}: Props) => {
 
   return (
     <Heading key={entity.id}  as={'h2'} overflowWrap={'anywhere'} {...headingStyle}>
-      {entity.texts.map(text =>
+      {entity.content.texts.map(text =>
         <Text as='span' overflowWrap='anywhere' key={uuidv4()}>{text.content}</Text>
       )}
     </Heading>

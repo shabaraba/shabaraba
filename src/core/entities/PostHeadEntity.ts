@@ -1,4 +1,4 @@
-import { PostHeadType } from "core/dxo/PostHeadDxo";
+import { PostHeadType } from "core/types/PostHeadType";
 
 type Props = PostHeadType;
 

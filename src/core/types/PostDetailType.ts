@@ -1,5 +1,5 @@
-import { OneBlockType } from './PostBlockType';
+import { SomeoneBlockType } from './PostBlockType';
 
 export type PostDetailType = {
-  blockList: OneBlockType[]
+  blockList: SomeoneBlockType[]
 }

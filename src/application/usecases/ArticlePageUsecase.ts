@@ -5,6 +5,7 @@ import { PostDetailDxo } from "core/dxo/PostDetailDxo";
 import { PostHeadDxo } from "core/dxo/PostHeadDxo";
 import { PostDetailType } from "core/types/PostDetailType";
 import { PostHeadType } from "core/types/PostHeadType";
+import { StaticProps } from "core/types/PostPageType";
 
 export class ArticlePageUsecase {
   public static async getStaticPaths() {
@@ -16,7 +17,7 @@ export class ArticlePageUsecase {
     }
   }
 
-  public static async getStaticProps({ params }) {
+  public static async getStaticProps({ params }): Promise<StaticProps> {
     const slug = params.id;
 
     const postHeadService = new PostHeadService();
