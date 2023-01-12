@@ -3,10 +3,13 @@ export const siteDescription = 'コーヒー休憩にちょうどよい技術よ
 export const siteUrl = 'https://blog.from-garage.com'
 
 export default {
+  defaultTitle: siteTitle,
+  description: siteDescription,
   openGraph: {
     type: 'website',
     locale: 'en_IE',
     site_name: siteTitle,
+    url: siteUrl,
   },
   twitter: {
     handle: '@shaba_raba',
@@ -32,5 +35,4 @@ export default {
     },
 
   ],
-  description: siteDescription,
 };
