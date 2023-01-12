@@ -12,7 +12,7 @@ export const Seo: FC<Props> = ({ title, coverImageUrl }) => {
   if (coverImageUrl != null && coverImageUrl != undefined) {
     imageUrl += '&bg=' + encodeURI(coverImageUrl);
   }
-  console.log(imageUrl);
+  // console.log(imageUrl);
   return (
     <NextSeo
       openGraph={{
