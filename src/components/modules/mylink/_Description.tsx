@@ -13,7 +13,8 @@ type Props = {
 export const Description: FC<Props> = ({ url, title, tagList=[] }) => {
   const style = {
     p: 2,
-    mt: { base: 4, md: 0 },
+    mt: 'auto',
+    mb: 'auto',
     ml: { md: 6 },
     h: '100%',
     w: '100%',

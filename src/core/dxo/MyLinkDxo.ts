@@ -9,6 +9,7 @@ export class MyLinkDxo {
       title: dto.title,
       tags: dto.tags,
       url: dto.url,
+      ogp: dto.ogp,
     };
   }
 }

@@ -2,11 +2,11 @@ import { LinkBox } from "@chakra-ui/react";
 import { MyLinkEntity } from "core/entities/MyLinkEntity";
 import { FC } from "react";
 import { Description } from "./_Description";
+import { EyeChatch } from "./_EyeCatch";
 
 type Props = { mylink: MyLinkEntity };
 
 export const MyLink: FC<Props> = ({ mylink }) => {
-  console.log(mylink);
   const style = {
     marginTop: 5,
     display: { md: "flex" },
@@ -24,6 +24,7 @@ export const MyLink: FC<Props> = ({ mylink }) => {
 
   return (
     <LinkBox as="article" position='relative' {...style}>
+      <EyeChatch eyeCatchUrl={mylink.ogp} />
       <Description url={mylink.url} title={mylink.title} tagList={mylink.tags} />
     </LinkBox>
   )

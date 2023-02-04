@@ -8,6 +8,7 @@ export class MyLinkDxo {
       title: entity.title,
       url: entity.url,
       tags: entity.tags,
+      ogp: entity.ogp.thumbnailUrl,
     });
   }
 }

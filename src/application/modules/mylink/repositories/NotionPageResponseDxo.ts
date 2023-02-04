@@ -25,13 +25,13 @@ export class NotionPageResponseDxo {
     const tags: IPageTag[] = properties.Tags.multi_select;
     const url: string|null = properties.Url.url ?? null;
 
-    return {
+    return new MyLinkEntity({
       id: response.id,
       title: title,
       tags: tags,
       url: url,
       publishedAt: properties.Published_Time.created_time,
-    }
+    })
   }
 
 }

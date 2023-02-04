@@ -4,4 +4,5 @@ export type MyLinkType = {
   title: string;
   tags: string;
   url: string;
+  ogp: string;
 }

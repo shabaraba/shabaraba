@@ -1,13 +1,12 @@
 import { FC } from "react"
-import Image from 'next/image'
-import { Text, Box } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
+import { Image } from '@chakra-ui/react'
 
 type Props = {
-  eyeCatchUrl?: string;
-  iconText?: string;
+  eyeCatchUrl: string;
 };
 
-export const EyeChatch: FC<Props> = ({ eyeCatchUrl, iconText }) => {
+export const EyeChatch: FC<Props> = ({ eyeCatchUrl }) => {
   const style = {
       flexShrink: 0,
       width: { base: '100%', md: 200 },
@@ -18,15 +17,14 @@ export const EyeChatch: FC<Props> = ({ eyeCatchUrl, iconText }) => {
       justifyContent: 'center',
   }
 
-  const _EyeChatch: FC = () => {
-    if (eyeCatchUrl) return <Image src={eyeCatchUrl} width={300} height={200} alt={''} style={{objectFit: 'cover'}}/>;
-    if (iconText) return <Text fontSize={72} fontWeight='bold'> {iconText} </Text>;
-    return <></>;
-  };
-
   return (
     <Box {...style}>
-      <_EyeChatch />
+      <Image 
+        src={eyeCatchUrl} 
+        alt={''} 
+        objectFit={'contain'}
+        fallbackSrc='https://placehold.jp/30/a1a1a1/ffffff/300x150.png?text=NO IMAGE'
+      />
     </Box>
   )
 }
