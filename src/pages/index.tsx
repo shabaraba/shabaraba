@@ -24,7 +24,7 @@ export default ({ allPostsData }: Props) => {
     >
       <Seo title='Coffee+Break+Point' />
       <Head> <title>{siteTitle}</title> </Head>
-      <Text fontSize='xl' mt={10}>Articles</Text>
+      <Text fontSize='md' mt={10}>日々の気付きやメモはこちらに</Text>
       <PostHeadList data={data} />
     </Layout>
   )

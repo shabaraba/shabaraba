@@ -18,14 +18,10 @@ export default ({ allData }: Props) => {
   );
 
   return (
-    <Layout home leftside={<AuthorBox />}>
+    <Layout mylink leftside={<AuthorBox />}>
       <Seo title="Coffee+Break+Point" />
-      <Head>
-        <title>{siteTitle}</title>
-      </Head>
-      <Text fontSize="xl" mt={10}>
-        MyLink
-      </Text>
+      <Head> <title>{siteTitle}</title> </Head>
+      <Text fontSize="xl" mt={10}> 筆者の興味関心のある外部ページはこちらに </Text>
       <MyLinkList data={data} />
     </Layout>
   );

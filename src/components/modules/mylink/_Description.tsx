@@ -22,7 +22,7 @@ export const Description: FC<Props> = ({ url, title, tagList=[] }) => {
 
   return (
     <Box {...style}>
-      <LinkOverlay as={NextLink} href={url} fontSize={{ md: '18px', sm: '18px', base: '16px' }} overflowWrap='anywhere'>
+      <LinkOverlay as={NextLink} href={url} fontSize={{ md: '18px', sm: '18px', base: '16px' }} overflowWrap='anywhere' isExternal>
         {title}
       </LinkOverlay>
       <TagList tags={tagList} />
