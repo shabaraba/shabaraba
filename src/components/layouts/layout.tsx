@@ -18,6 +18,7 @@ import Sticky from "react-sticky-el";
 import { siteTitle } from "../../pages/_document";
 import styles from "./layout.module.css";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const SiteLogo: React.FC = () => {
   return (
@@ -52,13 +53,9 @@ const SiteLogo: React.FC = () => {
 export default function Layout({
   children,
   leftside,
-  home,
-  mylink,
 }: {
   children: React.ReactNode;
   leftside?: React.ReactNode;
-  home?: boolean;
-  mylink?: boolean;
 }) {
   const isMobile = useBreakpointValue({ lg: false, sm: true, base: true });
   // background: '#e8cfc1'
@@ -84,28 +81,12 @@ export default function Layout({
                 )}
               </Container>
             </GridItem>
+
             <GridItem colSpan={{ lg: 9, base: 1 }}>
-              <Container maxW="container.lg">
-                <Wrap justify={"left"} alignItems={"bottom"}>
-                    <WrapItem> {home ? (
-                      <Text fontSize="xl" borderBottom={home ? "solid" : ""} mt={10}> Articles </Text>
-                    ): (<ChakraLink href="/" fontSize="xl" mt={10}> Articles </ChakraLink>
-                    )} </WrapItem>
-                    <WrapItem> {mylink ? (
-                      <Text fontSize="xl" borderBottom={mylink ? "solid" : ""} mt={10}> MyLinks </Text>
-                    ): (<ChakraLink href="/mylink" fontSize="xl" mt={10}> MyLinks </ChakraLink>
-                    )} </WrapItem>
-                </Wrap>
                 {children}
-              </Container>
             </GridItem>
           </Grid>
         </main>
-        {!home && (
-          <div className={styles.backToHome}>
-            <Link href="/"> ← Back to home </Link>
-          </div>
-        )}
         <Sticky>
           <Footer />
         </Sticky>

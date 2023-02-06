@@ -6,9 +6,9 @@ import { InferGetStaticPropsType } from 'next'
 import Head from 'next/head'
 import AuthorBox from 'components/units/common/AuthorBox'
 import { Seo } from 'components/units/common/Seo'
-import Layout from 'components/units/layout'
 import { PostDetail } from 'components/modules/post/PostDetail'
 import { PostTitle } from 'components/modules/post/PostTitle'
+import DetailLayout from 'components/layouts/DetailLayout'
 
 
 const SideArea = ({ tags, post, title }: { tags: any[], post: PostHeadEntity, title: string }) => {
@@ -31,7 +31,7 @@ export default ({ tags, postHead, title, postDetail }: Props) => {
   const postHeadEntity:PostHeadEntity = new PostHeadEntity(postHead);
 
   return (
-    <Layout leftside={
+    <DetailLayout leftside={
       <SlideFade in={true} offsetY='20px'>
         <SideArea tags={tags} post={postHeadEntity} title={title} />
       </SlideFade>
@@ -42,7 +42,7 @@ export default ({ tags, postHead, title, postDetail }: Props) => {
         <MainArea postDetail={postDetail} />
       </SlideFade>
       <AuthorBox />
-    </Layout>
+    </DetailLayout>
   )
 }
 
