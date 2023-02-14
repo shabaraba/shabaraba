@@ -1,1 +1,2 @@
-https://from-garage.com/* https://blog.from-garage.com/:splat 301!
+https://blog.from-garage.com/* https://blog.shaba.dev/:splat 301!
+https://shaba.com/* https://blog.shaba.dev/:splat 302!
