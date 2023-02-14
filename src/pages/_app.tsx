@@ -11,7 +11,7 @@ import SEO from '../../next-seo.config'
 
 export const siteTitle = 'Coffee Break Point'
 export const siteDescription = 'コーヒー休憩にちょうどよい技術よみものを目指して'
-export const siteUrl = 'https://blog.from-garage.com'
+export const siteUrl = 'https://blog.shaba.dev'
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
