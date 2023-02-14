@@ -35,13 +35,13 @@ export const getStaticProps = async () => {
 };
 
 async function generateFeedXml() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://blog.from-garage.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://blog.shaba.dev';
   const date = new Date();
   // author の情報を書き換える
   const author = {
     name: 'しゃば',
     email: 'fromgarage.work@gmail.com',
-    link: 'https://blog.from-garage.com',
+    link: 'https://blog.shaba.dev',
   };
 
   // デフォルトになる feed の情報
