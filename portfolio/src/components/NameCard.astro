@@ -1,0 +1,141 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import {SiJavascript,SiTypescript,SiPhp,SiPython,SiJava} from 'react-icons/si'
+import {FiTwitter,FiGithub} from 'react-icons/fi'
+
+interface Props {
+	project: CollectionEntry<'work'>;
+}
+
+const { data, slug } = Astro.props.project;
+---
+
+<div class="card">
+	<div class="img-wrapper">
+		<img src="https://github.com/shabaraba.png" alt={data.img_alt || ''} class="abator" loading="lazy" decoding="async" />
+	</div>
+	<div class="one-topic">
+		<span class="name">Shaba</span>
+	</div>
+	<div class="one-topic">
+		<span class="category">
+			<span class="material-symbols-outlined"> work </span>
+			<span>Job</span>
+		</span>
+		<img src="/assets/logo_cybozu_Horizon_A.png" class="company-logo"/>
+	</div>
+	<div class="one-topic">
+		<span class="category">
+			<span class="material-symbols-outlined"> work_history </span>
+			<span>Side Job</span>
+		</span>
+		<div>-</div>
+	</div>
+	<div class="one-topic">
+		<span class="category">
+			<span class="material-symbols-outlined"> military_tech </span>
+			<span>Skills</span>
+		</span>
+		<span class="icons"> <SiPhp/> <SiJavascript/> <SiTypescript/> <SiJava/> <SiPython/> </span>
+	</div>
+	<div class="one-topic">
+		<span class="category">
+			<span class="material-symbols-outlined"> handshake </span>
+			<span>Contact</span>
+		</span>
+		<span class="icons"> <FiTwitter/> <FiGithub/></span>
+	</div>
+</div>
+
+<style>
+	.card {
+		display: grid;
+		grid-template: 1fr 1fr 1fr 1fr 1fr / auto 1fr;
+		column-gap: 150px;
+		padding: 50px 100px;
+		background: var(--gradient-subtle);
+		border: 1px solid var(--gray-800);
+		border-radius: 0.75rem;
+		overflow: hidden;
+		box-shadow: var(--shadow-sm);
+		text-decoration: none;
+		font-family: var(--font-brand);
+		font-size: var(--text-sm);
+		font-weight: 500;
+		transition: box-shadow var(--theme-transition);
+	}
+
+	.card:hover {
+		box-shadow: var(--shadow-md);
+	}
+
+	.one-topic {
+		display: inline-flex;
+		justify-content: space-between;
+		align-items: center;
+		column-gap: 20px;
+		height: 30px;
+	}
+
+	.category {
+		display: inline-flex;
+		justify-content: start;
+		align-items: center;
+		column-gap: 5px;
+	}
+	
+	.icons {
+		font-size: 24px;
+	}
+
+	.company-logo {
+		height: 100%;
+		width: 100px;
+		object-fit: contain;
+	}
+
+	.img-wrapper {
+		grid-area: 1 / 1 / 6 / 2;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		width: 100%;
+		height: 100%;
+	}
+
+	.abator {
+		border-radius: 1rem;
+		width: 200px;
+	}
+
+	.name {
+		font-size: var(--text-3xl);
+	}
+
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		border-radius: 1rem;
+	}
+
+	.title {
+		z-index: 1;
+		margin: 0.5rem;
+		padding: 0.5rem 1rem;
+		background: var(--gray-999);
+		color: var(--gray-200);
+		border-radius: 0.375rem;
+	}
+
+	@media (min-width: 50em) {
+		.card {
+			height: 22rem;
+			border-radius: 1.5rem;
+		}
+
+		.title {
+			border-radius: 0.9375rem;
+		}
+	}
+</style>
