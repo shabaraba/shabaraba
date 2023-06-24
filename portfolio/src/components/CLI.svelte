@@ -42,6 +42,7 @@ Date:   Mon Mar 27 11:01:01 2023 +0900
 
   function handleInput(event) {
     input = event.target.value;
+    //...
   }
 
   function executeCommand(input) {
@@ -136,6 +137,10 @@ Date:   Mon Mar 27 11:01:01 2023 +0900
 </script>
 
 <div class="terminal" on:mouseenter={focusCommandLine}>
+  <div class="output-line">WELCOME to shaba's portfolio!</div>
+  <div class="output-line">Here is emulated a terminal.</div>
+  <div class="output-line">Input commands such as "ls" to show my profiles.</div>
+  <div class="output-line">ENJOY!!!</div>
   {#each history as line}
     <div class="output-line">
       <span class="directories">{directories.join("/")}</span>
