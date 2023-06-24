@@ -10,6 +10,7 @@
     "川崎重工業株式会社",
     "株式会社スマレジ",
     "サイボウズ株式会社",
+    "株式会社coco",
   ];
   const commits = [
     {
@@ -62,7 +63,7 @@ Date:   Mon Mar 27 11:01:01 2023 +0900
         output = execGitCommand(args);
         break;
       case "ls":
-        output += ".md\n";
+        output += "profile.md\n";
         output += "file2.md\n";
         output += "file3.md\n";
         break;
