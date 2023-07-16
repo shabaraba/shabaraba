@@ -1,5 +1,10 @@
 <script>
   import { onMount } from "svelte";
+  import helpCommand from "../features/commands/help";
+  import gitCommand from "../features/commands/git";
+  import lsCommand from "../features/commands/ls";
+  import clearCommand from "../features/commands/clear";
+  import cdCommand from "../features/commands/cd";
   let commandLine;
   let input = "";
   let history = [];
@@ -52,21 +57,11 @@ Date:   Mon Mar 27 11:01:01 2023 +0900
     switch (command) {
       case "h":
       case "help":
-        output += "Commands:\n";
-        output += "  help - List available commands\n";
-        output += "  cd <dir> - Change directory\n";
-        output += "  ls - List files in current directory\n";
-        output += "  clear - Clear console\n";
-        output += "  echo <text> - Print text\n";
-        break;
+        return helpCommand()
       case "git":
-        output = execGitCommand(args);
-        break;
+        return gitCommand(args);
       case "ls":
-        output += "profile.md\n";
-        output += "file2.md\n";
-        output += "file3.md\n";
-        break;
+        return lsCommand();
       case "clear":
         history = [];
         output = "";
@@ -82,28 +77,6 @@ Date:   Mon Mar 27 11:01:01 2023 +0900
         break;
       default:
         output += `Command not found: ${input}\n`;
-        break;
-    }
-    return output;
-  }
-
-  function execGitCommand(args) {
-    const [arg, ...options] = args;
-    let output = "";
-    switch (arg){
-      case "checkout":
-        const target = options[0];
-        if (branches.find(b => target == b) == undefined) return;
-        branch = target;
-        output += `Switched to branch '${branch}'.`;
-        break;
-      case "branch":
-        const branchList = branches.map((b) => (b === branch) ? "*"+b : "  "+b);
-        output += branchList.join("\n");
-        break;
-      case "log":
-        console.log(commits.filter(commit => commit.branch == branch));
-        output += commits.find(commit => commit.branch == branch).commits.join("\n");
         break;
     }
     return output;
