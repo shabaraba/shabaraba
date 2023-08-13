@@ -15,7 +15,7 @@
     "@emotion/styled": "^11",
     "@meronex/icons": "^4.0.0",
     "@netlify/functions": "^0.11.0",
-    "@netlify/plugin-nextjs": "^4.29.4",
+    "@netlify/plugin-nextjs": "^4.39.4",
     "@next/bundle-analyzer": "^12.1.0",
     "@notionhq/client": "^0.4.13",
     "@types/jsdom": "^20.0.1",
