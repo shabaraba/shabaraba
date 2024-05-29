@@ -12,8 +12,8 @@ export default {
     url: siteUrl,
   },
   twitter: {
-    handle: '@shaba_raba',
-    site: '@shaba_raba',
+    handle: '@shaba_dev',
+    site: '@shaba_dev',
     cardType: 'summary_large_image',
   },
   additionalLinkTags: [

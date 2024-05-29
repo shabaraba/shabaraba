@@ -44,7 +44,7 @@ export default () => {
             </Link>
           </Tooltip>
           <Tooltip hasArrow label='Twitter' placement='right-start'>
-            <Link href="https://twitter.com/shaba_raba">
+            <Link href="https://twitter.com/shaba_dev">
               <Icon as={SiTwitter} w={iconSize} h={iconSize} filter='drop-shadow(3px 3px 3px rgba(0,0,0,0.2))' />
             </Link>
           </Tooltip>
