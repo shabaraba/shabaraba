@@ -1,5 +1,5 @@
 import React from "react";
-import { useBreakpointValue, Text } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import Head from "next/head";
 import { InferGetStaticPropsType } from "next";
 import AuthorBox from "components/units/common/AuthorBox";
@@ -14,8 +14,6 @@ import ListLayout from "components/layouts/ListLayout";
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
 export default ({ allPostsData }: Props) => {
-  // PostListに渡していたが、多分使ってない
-  const breakPoint = useBreakpointValue({ lg: "desktop", sm: "mobile" }, "lg");
   const data: PostHeadEntity[] = allPostsData.map(
     (postHead: PostHeadType) => new PostHeadEntity(postHead)
   );

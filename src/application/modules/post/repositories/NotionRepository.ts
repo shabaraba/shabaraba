@@ -1,6 +1,6 @@
 import { QueryDatabaseResponse, ListBlockChildrenResponse } from "@notionhq/client/build/src/api-endpoints";
-import { BlockType, IRetrieveBlockChildrenResponse, IText } from "core/types/NotionApiResponses";
-import { IPageHead } from "core/types/NotionPageApiResponses";
+import { BlockType, IRetrieveBlockChildrenResponse, IText } from "./types/NotionApiResponses";
+import { IPageHead } from "./types/NotionPageApiResponses";
 import { BaseNotionRepository } from "lib/BaseNotionRepository";
 import { NotionPageResponseDxo } from "./NotionPageResponseDxo";
 

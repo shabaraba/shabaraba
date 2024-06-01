@@ -1,5 +1,4 @@
 import { BlockDto } from "../dtos/BlockDto";
-import { PostDetailDto } from "../dtos/PostDetailDto";
 import { Block } from "../entities/blocks/Block";
 import { List, ListItem } from "../entities/blocks/List";
 import { Paragraph } from "../entities/blocks/Paragraph";
