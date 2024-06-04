@@ -1,4 +1,5 @@
 import { PostHeadType } from "core/types/PostHeadType";
+import { PostTagType } from "core/types/PostTagType";
 
 type Props = PostHeadType;
 
@@ -7,12 +8,13 @@ export class PostHeadEntity {
   public coverImageUrl: string;
   public iconText: string;
   public slug: string;
-  public tags: any; // TODO:
+  public tags: PostTagType[];
   public title: string;
   public publishedAt: Date;
   public updatedAt: Date;
 
   constructor({ id, title, coverImageUrl, iconText, slug, tags, publishedAt, updatedAt }: Props) {
+    console.log(tags);
     this.id = id;
     this.title = title;
     this.coverImageUrl = coverImageUrl;

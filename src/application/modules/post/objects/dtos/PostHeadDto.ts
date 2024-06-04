@@ -5,7 +5,7 @@ export class PostHeadDto {
   public coverImageUrl: string;
   public iconText: string;
   public slug: string;
-  public tags: any; // TODO:
+  public tags: Array<{name: string, color: string}>
   public title: string;
   public publishedAt: string;
   public updatedAt: string;

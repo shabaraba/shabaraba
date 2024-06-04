@@ -4,7 +4,7 @@ export type PostHeadType = {
   title: string;
   coverImageUrl: string;
   iconText: string;
-  tags: string;
+  tags: Array<{name: string; color: string;}>;
   slug: string;
   publishedAt: string;
   updatedAt: string;

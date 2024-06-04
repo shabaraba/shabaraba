@@ -2,16 +2,13 @@ import {FC} from 'react';
 import {
   Tag as NotionTag,
   TagLabel,
-  TagLeftIcon,
   LinkBox,
   LinkOverlay
 } from '@chakra-ui/react'
 import NextLink from 'next/link'
-import dynamic from 'next/dynamic'
+import { PostTagType } from 'core/types/PostTagType';
 
-import { NotionTag as NotionTagEntity} from '../../../application/modules/post/objects/entities/notion_entities'
-
-type Props = {entity: NotionTagEntity};
+type Props = {entity: PostTagType};
 
 export const Tag: FC<Props> = ({entity}) => {
   // const [icon, setIcon] = useState(null)

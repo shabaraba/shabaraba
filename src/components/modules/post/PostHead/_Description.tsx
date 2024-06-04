@@ -2,12 +2,12 @@ import { FC } from "react"
 import NextLink from 'next/link'
 import { Box, LinkOverlay } from '@chakra-ui/react'
 import { TagList } from "../../../patterns/TagList";
-import { IPageTag } from "core/types/NotionPageApiResponses";
+import { PostTagType } from 'core/types/PostTagType';
 
 type Props = {
   url: string;
   title: string;
-  tagList?: IPageTag[];
+  tagList?: PostTagType[];
 };
 
 export const Description: FC<Props> = ({ url, title, tagList=[] }) => {

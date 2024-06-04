@@ -2,9 +2,9 @@ import { Wrap, WrapItem } from '@chakra-ui/react';
 import React from 'react';
 import { Tag } from '../../modules/tag';
 import { v4 as uuidv4 } from 'uuid'
-import { IPageTag } from 'core/types/NotionPageApiResponses';
+import { PostTagType } from 'core/types/PostTagType';
 
-type Props = { tags: IPageTag[] };
+type Props = { tags: PostTagType[] };
 
 export const TagList: React.FC<Props> = ({ tags }) => {
   return (
