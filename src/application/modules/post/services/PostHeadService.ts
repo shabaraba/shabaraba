@@ -13,7 +13,7 @@ export class PostHeadService {
   }
 
   public async getBySlug(id: string): Promise<PostHeadDto> {
-    return await this._postLogicTmp.getHeadBySlug(id);
+    return await this._postLogic.getHeadBySlug(id);
   }
 
   public async getList(): Promise<PostHeadDto[]> {

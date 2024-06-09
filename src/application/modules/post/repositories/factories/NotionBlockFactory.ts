@@ -1,17 +1,17 @@
-import { BlockType, IParagraphBlock, IHeading1Block, IHeading2Block, IHeading3Block, ICalloutBlock, ICodeBlock, IImageBlock, IBookmarkBlock, IBulletedListItemBlock, INumberedListItemBlock, IQuoteBlock, IEmbedBlock } from "core/types/NotionApiResponses";
-import { Block } from "../entities/blocks/Block";
-import { Bookmark } from "../entities/blocks/Bookmark";
-import { BulletedListItem } from "../entities/blocks/BulletedList";
-import { Callout } from "../entities/blocks/Callout";
-import { Code } from "../entities/blocks/Code";
-import { Image } from "../entities/blocks/Image";
-import { Embed } from "../entities/blocks/Embed";
-import { Heading1 } from "../entities/blocks/Heading1";
-import { Heading2 } from "../entities/blocks/Heading2";
-import { Heading3 } from "../entities/blocks/Heading3";
-import { NumberedListItem } from "../entities/blocks/NumberedList";
-import { Paragraph } from "../entities/blocks/Paragraph";
-import { Quote } from "../entities/blocks/Quote";
+import { Block } from "../../objects/entities/blocks/Block";
+import { Bookmark } from "../../objects/entities/blocks/Bookmark";
+import { Callout } from "../../objects/entities/blocks/Callout";
+import { Code } from "../../objects/entities/blocks/Code";
+import { Embed } from "../../objects/entities/blocks/Embed";
+import { Heading1 } from "../../objects/entities/blocks/Heading1";
+import { Heading2 } from "../../objects/entities/blocks/Heading2";
+import { Heading3 } from "../../objects/entities/blocks/Heading3";
+import { Image } from "../../objects/entities/blocks/Image";
+import { BulletedListItem, NumberedListItem } from "../../objects/entities/blocks/ListItem";
+import { Paragraph } from "../../objects/entities/blocks/Paragraph";
+import { Quote } from "../../objects/entities/blocks/Quote";
+import {  BlockType, IParagraphBlock, IHeading1Block, IHeading2Block, IHeading3Block, ICalloutBlock, ICodeBlock, IImageBlock, IBookmarkBlock, IBulletedListItemBlock, INumberedListItemBlock, IQuoteBlock, IEmbedBlock  } from "../../repositories/types/NotionApiResponses";
+
 
 export class BlockFactory {
   /**

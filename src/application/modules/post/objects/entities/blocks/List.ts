@@ -1,6 +1,5 @@
-import * as NotionBlockInterfaces from '../../../../../../core/types/NotionApiResponses';
-import { Paragraph } from './Paragraph';
 import { Block } from "./Block";
+import { ListItem } from './ListItem';
 
 
 export class List extends Block {
@@ -15,8 +14,17 @@ export class List extends Block {
   }
 }
 
-export class ListItem extends Paragraph {
-  constructor(resp: NotionBlockInterfaces.IParagraphBlock, nest?: number) {
-    super(resp, nest);
+export class NumberedList extends List {
+  constructor(id: string, nest: number) {
+    super(id, nest);
+    this.type = "NumberedList";
   }
 }
+
+export class BulletedList extends List {
+  constructor(id: string, nest: number) {
+    super(id, nest);
+    this.type = "BulletedList";
+  }
+}
+

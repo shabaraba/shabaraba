@@ -22,19 +22,20 @@ export class PostLogicGitHubReposImpl implements PostLogic {
   }
 
   async getHeadBySlug(slug: string): Promise<PostHeadDto> {
-    const id = await this._repository.getPageIdBySlug(slug);
-    return await this._repository.getPage(id);
+    return await this._repository.getPageHeadBySlug(slug);
   }
 
   async getDetail(id: string): Promise<PostDetailEntity> {
-    const resp: IRetrieveBlockChildrenResponse = await this._repository.getPostBlockListById(id);
-    const respWithOGP: IRetrieveBlockChildrenResponse = await setOGPToBookmarkBlocks(resp);
-    const blockList: BlockList = BlockList.deserialize(respWithOGP.results);
+    console.log(id);
+    const slug = id;
+    const postHeadDto = await this.getHeadBySlug(slug);
+    const resp = await this._repository.getPostByTitle(postHeadDto.title);
+    // const blockList: BlockList = BlockList.deserialize(resp.results);
     return new PostDetailEntity(blockList);
   }
 
   async getBlock(id: string): Promise<Block> {
     const block: BlockType = await this._repository.getBlockById(id)
-    return BlockFactory.make({target: block});
+    // return BlockFactory.make({target: block});
   }
 };

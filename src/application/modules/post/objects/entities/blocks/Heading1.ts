@@ -2,16 +2,15 @@ import * as NotionBlockInterfaces from '../../../../../../core/types/NotionApiRe
 import { Text } from "./Text";
 import { Block } from "./Block";
 
-
 export class Heading1 extends Block {
   public texts: Text[];
 
-  constructor(resp: NotionBlockInterfaces.IHeading1Block) {
+  constructor(resp: Prop) {
     super(resp.id);
     this.type = "Heading1";
 
     this.texts = [];
-    resp.heading_1.text.map((text) => {
+    resp.text.map((text) => {
       this.texts.push(new Text(text));
     });
   }

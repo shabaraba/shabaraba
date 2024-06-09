@@ -23,6 +23,7 @@ export class ArticlePageUsecase {
     const postHeadService = new PostHeadService();
     const postHeadDto = await postHeadService.getBySlug(slug);
     const postHeadJson: PostHeadType = PostHeadDxo.convertForPages(postHeadDto);
+    console.log(postHeadJson);
     const postDetailService = new PostDetailService();
     const postDetailDto = await postDetailService.get(postHeadDto.id);
     const postDetailJson: PostDetailType = PostDetailDxo.convertForPages(postDetailDto);

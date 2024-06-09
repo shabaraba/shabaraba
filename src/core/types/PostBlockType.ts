@@ -1,6 +1,6 @@
 type _RichTextType = {
-  href: string;
-  annotations: _AnnotationType;
+  href?: string;
+  annotations?: _AnnotationType;
 }
 
 type _AnnotationType = {
@@ -32,32 +32,32 @@ type _AnnotationType = {
   ;
 }
 
-export type ParagraphType = {
+type ParagraphType = {
   texts: TextType[];
-  children: SomeoneBlockType[];
+  children?: SomeoneBlockType[];
 }
-export type HeadingType = { texts: TextType[] };
-export type CalloutType = ParagraphType & { icon?: string; }
-export type FileFileType = { file: IFileType }
-export type IFileType = {
+type HeadingType = { texts: TextType[] };
+type CalloutType = ParagraphType & { icon?: string; }
+type FileFileType = { file: IFileType }
+type IFileType = {
   type: "file"
   url: string
   caption?: TextType[]
   expiry_time: string
 }
-export type ExternalFileType = { external: ExternalType }
-export type ExternalType = {
+type ExternalFileType = { external: ExternalType }
+type ExternalType = {
   type: "external"
   caption?: TextType[]
   url: string;
 }
-export type CodeType = {
+type CodeType = {
   texts: TextType[];
   caption?: TextType[];
   language?: "abap" | "arduino" | "bash" | "basic" | "c" | "clojure" | "coffeescript" | "c++" | "c#" | "css" | "dart" | "diff" | "docker" | "elixir" | "elm" | "erlang" | "flow" | "fortran" | "f#" | "gherkin" | "glsl" | "go" | "graphql" | "groovy" | "haskell" | "html" | "java" | "javascript" | "json" | "julia" | "kotlin" | "latex" | "less" | "lisp" | "livescript" | "lua" | "makefile" | "markdown" | "markup" | "matlab" | "mermaid" | "nix" | "objective-c" | "ocaml" | "pascal" | "perl" | "php" | "plain text" | "powershell" | "prolog" | "protobuf" | "python" | "r" | "reason" | "ruby" | "rust" | "sass" | "scala" | "scheme" | "scss" | "shell" | "sql" | "swift" | "typescript" | "vb.net" | "verilog" | "vhdl" | "visual basic" | "webassembly" | "xml" | "yaml" | "java/c/c++/c#";
 }
 
-export type BookmarkType = {
+type BookmarkType = {
   siteTitle?: string;
   pageTitle?: string;
   pageDescription?: string;
@@ -65,15 +65,15 @@ export type BookmarkType = {
   thumbnailUrl?: string;
 }
 
-export type BulletedListItemType = ParagraphType;
-export type NumberedListItemType = ParagraphType;
-export type BulletedListType = { listItem: BulletedListItemBlockType[]; };
-export type NumberedListType = { listItem: NumberedListItemBlockType[]; };
-export type ImageType = { url: string; captions: TextType[]; }
-export type QuoteType = ParagraphType;
-export type EmbedType = { url: string };
+type BulletedListItemType = ParagraphType;
+type NumberedListItemType = ParagraphType;
+type BulletedListType = { listItem: BulletedListItemBlockType[]; };
+type NumberedListType = { listItem: NumberedListItemBlockType[]; };
+type ImageType = { url: string; captions: TextType[]; }
+type QuoteType = ParagraphType;
+type EmbedType = { url: string };
 
-export type BaseBlockType = { id: string; nest: number; }
+type BaseBlockType = { id: string; nest: number; }
 
 export type TextType = _RichTextType & { content?: string; link?: string; };
 export type ParagraphBlockType = BaseBlockType & { type: "Paragraph", content: ParagraphType };

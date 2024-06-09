@@ -3,6 +3,8 @@ import { BlockType, IRetrieveBlockChildrenResponse, IText } from "./types/Notion
 import { IPageHead } from "./types/NotionPageApiResponses";
 import { BaseNotionRepository } from "lib/BaseNotionRepository";
 import { NotionPageResponseDxo } from "./NotionPageResponseDxo";
+import { convertToBlockList } from "./NotionApiResponseDxo";
+import { Block } from "../objects/entities/blocks/Block";
 
 export default class NotionRepository extends BaseNotionRepository {
 
@@ -45,14 +47,12 @@ export default class NotionRepository extends BaseNotionRepository {
     return NotionPageResponseDxo.convertToNotionPostHead(response)
   }
 
-  public async getBlockById(id: string): Promise<BlockType> {
-    const response: any = await this._notion.blocks.retrieve({
+  public async getBlockById(id: string): Promise<Block> {
+    const response: unknown = await this._notion.blocks.retrieve({
       block_id: id
     });
 
-    const result: BlockType = response
-
-    return result
+    return convertToBlockList([response as BlockType])[0];
   }
 
   public async getPostBlockListById(id: string): Promise<IRetrieveBlockChildrenResponse> {
