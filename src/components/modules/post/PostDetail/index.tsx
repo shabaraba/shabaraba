@@ -16,7 +16,7 @@ export const PostDetail: React.FC<Props> = ({ postDetail }: Props) => {
           key={uuidv4()}
           entity={block} />
       )}
-      <Divider size="large" />
+      <Divider />
     </Box>
   )
 }

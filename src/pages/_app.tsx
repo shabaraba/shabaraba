@@ -25,8 +25,6 @@ export default function App({ Component, pageProps }: AppProps) {
     }
   }, [router.events])
 
-  const theme = extendTheme({})
-
   return (
     <>
       <Head>
@@ -34,7 +32,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="description" content={siteDescription} />
       </Head>
       <DefaultSeo {...SEO} />
-      <ChakraProvider>
+      <ChakraProvider theme={extendTheme({})}>
         <TweetLoader />
         <Component {...pageProps} />
       </ChakraProvider>

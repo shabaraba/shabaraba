@@ -1,7 +1,7 @@
 [build]
-    base = ""
-    publish = ".next"
-    command = "yarn build"
+    publish = "out"
+    command = "npm run build"
+    environment = { NETLIFY_NEXT_PLUGIN_SKIP = "true" }
 [functions]
   directory = "src/netlify/functions"
 [[plugins]]

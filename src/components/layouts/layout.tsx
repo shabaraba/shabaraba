@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { SiNotion, SiNetlify, SiNextdotjs } from "react-icons/si";
 import Sticky from "react-sticky-el";
-import { siteTitle } from "../../pages/_document";
+import { siteTitle } from "../../pages/_app";
 import styles from "./layout.module.css";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -27,25 +27,25 @@ const SiteLogo: React.FC = () => {
         background: "#FFF5F3",
       }}
     >
-      <ChakraLink
-        as={Link}
-        href="/"
-        pt={3}
-        fontSize="4xl"
-        position="relative"
-        display="inline-block"
-        textDecoration="none"
-        style={{
-          fontFamily: "'Caveat', cursive",
-          transform: "rotate(-5deg)",
-        }}
-        _hover={{
-          textDecoration: "underline",
-          transition: "transform .3s",
-        }}
-      >
-        {siteTitle}
-      </ChakraLink>
+      <Link href="/" passHref legacyBehavior>
+        <ChakraLink
+          pt={3}
+          fontSize="4xl"
+          position="relative"
+          display="inline-block"
+          textDecoration="none"
+          style={{
+            fontFamily: "'Caveat', cursive",
+            transform: "rotate(-5deg)",
+          }}
+          _hover={{
+            textDecoration: "underline",
+            transition: "transform .3s",
+          }}
+        >
+          {siteTitle}
+        </ChakraLink>
+      </Link>
     </header>
   );
 };
