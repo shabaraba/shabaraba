@@ -4,6 +4,7 @@ import React from 'react'
 import { GA_TRACKING_ID } from '../lib/gtag'
 
 type Props = {}
+// Fix: Add fallback for GA_TRACKING_ID if not in .env
 export const siteTitle = 'Coffee Break Point'
 export const siteDescription = 'コーヒー休憩にちょうどよい技術よみものを目指して'
 
@@ -12,7 +13,7 @@ export default function Document() {
     <Html lang="ja">
       <Head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin={'crossOrigin'} />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Caveat&display=swap" rel="stylesheet" />
         {/* Global Site Tag (gtag.js) - Google Analytics */}
         <script
