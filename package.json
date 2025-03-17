@@ -3,7 +3,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "NODE_OPTIONS=--max-old-space-size=4096 next build && touch .next/export-marker.json && echo 'Build completed'", 
-    "start": "next start",
+    "start": "npx serve@latest out",
     "postbuild": "echo 'Skipping next-sitemap'",
     "analyze": "ANALYZE=true next build"
   },
