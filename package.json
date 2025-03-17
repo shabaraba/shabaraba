@@ -1,8 +1,11 @@
 {
   "private": true,
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "dev": "next dev",
-    "build": "NODE_OPTIONS=--max-old-space-size=4096 next build && touch .next/export-marker.json && echo 'Build completed'", 
+    "build": "NODE_OPTIONS=--max-old-space-size=4096 next build && next export && echo 'Build completed'", 
     "start": "npx serve@latest out",
     "postbuild": "echo 'Skipping next-sitemap'",
     "analyze": "ANALYZE=true next build"
@@ -27,6 +30,7 @@
     "axios": "^0.25.0",
     "date-fns": "^2.28.0",
     "date-fns-tz": "^1.2.2",
+    "esbuild": "^0.20.2",
     "encoding": "^0.1.13",
     "framer-motion": "^6.5.1",
     "fs": "^0.0.1-security",
