@@ -1,8 +1,7 @@
 [build]
-    base = ""
     publish = "out"
     command = "npm run build"
-    environment = { NODE_VERSION = "18" }
+    environment = { NETLIFY_NEXT_PLUGIN_SKIP = "true" }
 [functions]
   directory = "src/netlify/functions"
 [[plugins]]
