@@ -5,13 +5,14 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+    config.resolve.alias.jsdom = false;
+    
     if (isServer) {
-      config.plugins.push(new webpack.IgnorePlugin(
-        {
-          resourceRegExp: /canvas/,
-          contextRegExp: /jsdom$/,
-        }))
-    };
+      config.plugins.push(new webpack.IgnorePlugin({
+        resourceRegExp: /canvas/,
+        contextRegExp: /jsdom$/,
+      }))
+    }
     return config
   },
   typescript: {
@@ -31,7 +32,8 @@ const nextConfig = {
       'www.notion.so',
       'images.unsplash.com',
     ]
-  }
+  },
+  output: 'export'
 };
 
 module.exports = withBundleAnalyzer(nextConfig);

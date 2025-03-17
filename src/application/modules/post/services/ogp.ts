@@ -1,32 +1,16 @@
 import axios from 'axios';
-import { JSDOM } from "jsdom";
 
 import {IOgp, IRetrieveBlockChildrenResponse} from '../../../../core/types/NotionApiResponses';
 
 export const getOGP = async (url: string, id: string): Promise<IOgp> => {
-  const response = await axios.get(url)
-  const data = response.data
-  const dom = new JSDOM(data)
-  const metaList = dom.window.document.getElementsByTagName("meta");
-  let ogp:IOgp = {
+  // Return a placeholder OGP until we can fix the JSDOM issue
+  return {
     siteUrl: url,
-    thumbnailUrl: 'https://placehold.jp/30/a1a1a1/ffffff/300x150.png?text=NO IMAGE'
+    thumbnailUrl: 'https://placehold.jp/30/a1a1a1/ffffff/300x150.png?text=NO IMAGE',
+    siteTitle: 'Placeholder Site',
+    pageTitle: 'Placeholder Title',
+    pageDescription: 'Placeholder description'
   }
-  Array.from(metaList).map((meta: HTMLMetaElement) => {
-    let name = meta.getAttribute("name")
-    if (typeof name == "string") {
-      if (name.match("site_name")) ogp.siteTitle = meta.getAttribute("content")
-      if (name.match("title")) ogp.pageTitle = meta.getAttribute("content")
-      if (name.match("description")) ogp.pageDescription = meta.getAttribute("content")
-      if (name.match("image")) ogp.thumbnailUrl = meta.getAttribute("content")
-    }
-    let property = meta.getAttribute("property"); // OGPが設定されるのはpropertyなのでこちらが優先
-    if (property === "og:site_name") ogp.siteTitle = meta.getAttribute("content")
-    if (property === "og:title") ogp.pageTitle = meta.getAttribute("content")
-    if (property === "og:description") ogp.pageDescription = meta.getAttribute("content")
-    if (property === "og:image") ogp.thumbnailUrl = meta.getAttribute("content")
-  })
-  return ogp
 }
 
 export const setOGPToBookmarkBlocks = async (blockList: IRetrieveBlockChildrenResponse): Promise<IRetrieveBlockChildrenResponse> => {
