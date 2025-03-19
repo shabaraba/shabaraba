@@ -1,13 +1,25 @@
 import axios from 'axios';
 import { IOgp } from 'core/types/NotionApiResponses';
-import { JSDOM } from "jsdom";
+import { JSDOM, VirtualConsole } from "jsdom";
 import { OGPEntity } from '../objects/entities/OGPEntity';
 
 export const getOGP = async (url: string): Promise<OGPEntity> => {
   try {
     const response = await axios.get(url)
     const data = response.data
-    const dom = new JSDOM(data)
+    // Configure JSDOM to ignore CSS parsing errors
+    const dom = new JSDOM(data, {
+      virtualConsole: new VirtualConsole().on("error", () => {
+        /* No-op to skip console errors.*/
+      }),
+      contentType: "text/html",
+      runScripts: "outside-only",
+      includeNodeLocations: false,
+      storageQuota: 10000000,
+      pretendToBeVisual: true,
+      // This is the key option to bypass CSS parsing issues
+      resources: "usable"
+    });
     const metaList = dom.window.document.getElementsByTagName("meta");
     let ogp:IOgp = {
       siteUrl: url,
@@ -29,6 +41,7 @@ export const getOGP = async (url: string): Promise<OGPEntity> => {
     })
     return new OGPEntity(ogp.thumbnailUrl);
   } catch (e) {
+    console.warn(`Failed to fetch OGP for URL: ${url}`, e);
     return new OGPEntity();
   }
 }
