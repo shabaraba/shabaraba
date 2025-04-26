@@ -1,0 +1,64 @@
+
+> dev
+> next dev
+
+   ▲ Next.js 15.2.2
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.0.21:3000
+   - Environments: .env.local, .env
+
+ ✓ Starting...
+ ✓ Ready in 2.1s
+ ○ Compiling /posts/[id] ...
+ ✓ Compiled /posts/[id] in 749ms (1111 modules)
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 505ms (1264 modules)
+Active theme: thema2
+Active theme: thema2
+ GET /_next/static/webpack/728712bf87ebcea1.webpack.hot-update.json 404 in 998ms
+ GET /_next/static/webpack/728712bf87ebcea1.webpack.hot-update.json 404 in 996ms
+ GET /posts/web-requesrt-for-mt5-in-wine 200 in 3075ms
+Active theme: thema2
+ GET /posts/web-requesrt-for-mt5-in-wine 500 in 2573ms
+ GET /posts/web-requesrt-for-mt5-in-wine 500 in 2519ms
+ ✓ Compiled in 481ms (1264 modules)
+Active theme: thema2
+ GET /posts/web-requesrt-for-mt5-in-wine 200 in 1003ms
+ GET /posts/web-requesrt-for-mt5-in-wine 200 in 820ms
+ ✓ Compiled in 247ms (1264 modules)
+Active theme: thema2
+ GET /_next/data/development/posts/web-requesrt-for-mt5-in-wine.json?id=web-requesrt-for-mt5-in-wine 200 in 1268ms
+ GET /_next/data/development/posts/web-requesrt-for-mt5-in-wine.json?id=web-requesrt-for-mt5-in-wine 200 in 1269ms
+ ✓ Compiled in 241ms (1264 modules)
+Active theme: thema2
+ GET /_next/data/development/posts/web-requesrt-for-mt5-in-wine.json?id=web-requesrt-for-mt5-in-wine 200 in 2316ms
+ GET /_next/data/development/posts/web-requesrt-for-mt5-in-wine.json?id=web-requesrt-for-mt5-in-wine 200 in 2316ms
+ ✓ Compiled in 293ms (1264 modules)
+Active theme: thema2
+ GET /_next/data/development/posts/web-requesrt-for-mt5-in-wine.json?id=web-requesrt-for-mt5-in-wine 200 in 935ms
+ GET /_next/data/development/posts/web-requesrt-for-mt5-in-wine.json?id=web-requesrt-for-mt5-in-wine 200 in 935ms
+ ✓ Compiled in 257ms (1264 modules)
+Active theme: thema2
+ GET /_next/data/development/posts/web-requesrt-for-mt5-in-wine.json?id=web-requesrt-for-mt5-in-wine 200 in 2477ms
+ GET /_next/data/development/posts/web-requesrt-for-mt5-in-wine.json?id=web-requesrt-for-mt5-in-wine 200 in 2478ms
+ ✓ Compiled in 251ms (1264 modules)
+Active theme: thema2
+ GET /_next/data/development/posts/web-requesrt-for-mt5-in-wine.json?id=web-requesrt-for-mt5-in-wine 200 in 801ms
+ GET /_next/data/development/posts/web-requesrt-for-mt5-in-wine.json?id=web-requesrt-for-mt5-in-wine 200 in 801ms
+ ✓ Compiled in 4.2s (1264 modules)
+Active theme: thema2
+ GET /_next/data/development/posts/web-requesrt-for-mt5-in-wine.json?id=web-requesrt-for-mt5-in-wine 200 in 1451ms
+ GET /_next/data/development/posts/web-requesrt-for-mt5-in-wine.json?id=web-requesrt-for-mt5-in-wine 200 in 1451ms
+ ✓ Compiled / in 378ms (1270 modules)
+Active theme: thema2
+ GET / 200 in 1064ms
+Active theme: thema2
+ GET /_next/data/development/posts/web-requesrt-for-mt5-in-wine.json?id=web-requesrt-for-mt5-in-wine 200 in 1131ms
+ ✓ Compiled in 261ms (1269 modules)
+Active theme: thema2
+ GET /_next/data/development/posts/web-requesrt-for-mt5-in-wine.json?id=web-requesrt-for-mt5-in-wine 200 in 1803ms
+ GET /_next/data/development/posts/web-requesrt-for-mt5-in-wine.json?id=web-requesrt-for-mt5-in-wine 200 in 1803ms
+ ✓ Compiled in 404ms (1269 modules)
+Active theme: thema2
+ GET /_next/data/development/posts/web-requesrt-for-mt5-in-wine.json?id=web-requesrt-for-mt5-in-wine 200 in 891ms
+ GET /_next/data/development/posts/web-requesrt-for-mt5-in-wine.json?id=web-requesrt-for-mt5-in-wine 200 in 892ms

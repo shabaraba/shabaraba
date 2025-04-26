@@ -1,40 +1,28 @@
-import React from "react";
-import { useBreakpointValue, Text } from "@chakra-ui/react";
-import Head from "next/head";
-import { InferGetStaticPropsType } from "next";
-import AuthorBox from "components/units/common/AuthorBox";
-import { Seo } from "components/units/common/Seo";
-import { PostHeadList } from "components/patterns/PostHeadList";
-import { siteTitle } from "./_app";
-import { PostHeadEntity } from "../core/entities/PostHeadEntity";
-import { ArticleListPageUsecase } from "application/usecases/ArticleListPageUsecase";
-import { PostHeadType } from "core/types/PostHeadType";
-import ListLayout from "components/layouts/ListLayout";
+import { ACTIVE_THEME } from '../lib/themeSelector';
+import { ArticleServiceFactory } from '../core/factories/ArticleServiceFactory';
 
-type Props = InferGetStaticPropsType<typeof getStaticProps>;
+// 動的にテーマのホームページコンポーネントをインポート
+const HomePage = require(`../themes/${ACTIVE_THEME}/pages/HomePage`).default;
 
-export default ({ allPostsData }: Props) => {
-  // PostListに渡していたが、多分使ってない
-  const breakPoint = useBreakpointValue({ lg: "desktop", sm: "mobile" }, "lg");
-  const data: PostHeadEntity[] = allPostsData.map(
-    (postHead: PostHeadType) => new PostHeadEntity(postHead)
-  );
+export default HomePage;
 
-  return (
-    <ListLayout home leftside={<AuthorBox />}>
-      <Seo title="Coffee+Break+Point" />
-      <Head>
-        {" "}
-        <title>{siteTitle}</title>{" "}
-      </Head>
-      <Text fontSize="md" mt={10}>
-        日々の気付きやメモはこちらに
-      </Text>
-      <PostHeadList data={data} />
-    </ListLayout>
-  );
-};
-
-// server側で呼ばれる
-export const getStaticProps = async () =>
-  ArticleListPageUsecase.getStaticProps();
+// getStaticProps関数でデータを取得
+export async function getStaticProps() {
+  try {
+    const articleService = ArticleServiceFactory.createArticleService();
+    const articles = await articleService.getArticleList();
+    
+    return {
+      props: {
+        articles,
+      },
+    };
+  } catch (error) {
+    console.error('Error fetching articles:', error);
+    return {
+      props: {
+        articles: [],
+      },
+    };
+  }
+}

@@ -1,53 +1,56 @@
-import { SlideFade } from '@chakra-ui/react'
-import { ArticlePageUsecase } from 'application/usecases/ArticlePageUsecase'
-import { PostHeadEntity } from 'core/entities/PostHeadEntity'
-import { PostDetailType } from 'core/types/PostDetailType'
-import { InferGetStaticPropsType } from 'next'
-import Head from 'next/head'
-import AuthorBox from 'components/units/common/AuthorBox'
-import { Seo } from 'components/units/common/Seo'
-import { PostDetail } from 'components/modules/post/PostDetail'
-import { PostTitle } from 'components/modules/post/PostTitle'
-import DetailLayout from 'components/layouts/DetailLayout'
+import { ACTIVE_THEME } from '../../lib/themeSelector';
+import { ArticleServiceFactory } from '../../core/factories/ArticleServiceFactory';
 
+// 動的にテーマの記事詳細ページコンポーネントをインポート
+const ArticlePage = require(`../../themes/${ACTIVE_THEME}/pages/ArticlePage`).default;
 
-const SideArea = ({ tags, post, title }: { tags: any[], post: PostHeadEntity, title: string }) => {
-  return (
-    <>
-      <PostTitle tags={tags} post={post} title={title} />
-    </>
-  )
+// ページコンポーネントをエクスポート
+export default ArticlePage;
+
+// 静的パスを生成するための関数
+export async function getStaticPaths() {
+  try {
+    const articleService = ArticleServiceFactory.createArticleService();
+    const slugs = await articleService.getArticleSlugs();
+    
+    const paths = slugs.map((slug) => ({
+      params: { id: slug },
+    }));
+    
+    return {
+      paths,
+      fallback: false, // blockingから変更。exportモードではfalseのみサポート
+    };
+  } catch (error) {
+    console.error('Error generating static paths:', error);
+    return {
+      paths: [],
+      fallback: false, // blockingから変更
+    };
+  }
 }
 
-const MainArea = ({ postDetail }: { postDetail: PostDetailType }) => {
-  return (
-    <PostDetail postDetail={postDetail} />
-  )
+// 静的ページ生成のためのデータ取得関数
+export async function getStaticProps({ params }) {
+  if (!params?.id) {
+    return {
+      notFound: true,
+    };
+  }
+
+  try {
+    const articleService = ArticleServiceFactory.createArticleService();
+    const article = await articleService.getArticleBySlug(params.id);
+    
+    return {
+      props: {
+        article,
+      },
+    };
+  } catch (error) {
+    console.error(`Error fetching article with slug "${params.id}":`, error);
+    return {
+      notFound: true,
+    };
+  }
 }
-
-type Props = InferGetStaticPropsType<typeof getStaticProps>;
-
-export default ({ tags, postHead, title, postDetail }: Props) => {
-  const postHeadEntity:PostHeadEntity = new PostHeadEntity(postHead);
-
-  return (
-    <DetailLayout leftside={
-      <SlideFade in={true} offsetY='20px'>
-        <SideArea tags={tags} post={postHeadEntity} title={title} />
-      </SlideFade>
-    } >
-      <Seo title={postHeadEntity.title} coverImageUrl={postHeadEntity.coverImageUrl} />
-      <Head> <title>{postHeadEntity.title}</title> </Head>
-      <SlideFade in={true} offsetY='20px'>
-        <MainArea postDetail={postDetail} />
-      </SlideFade>
-      <AuthorBox />
-    </DetailLayout>
-  )
-}
-
-// server側で呼ばれる
-export const getStaticPaths = async () => ArticlePageUsecase.getStaticPaths();
-
-// server側で呼ばれる
-export const getStaticProps = async ({ params }) => ArticlePageUsecase.getStaticProps({params});

@@ -1,0 +1,168 @@
+.notionContent {
+  font-family: 'Noto Serif JP', serif;
+  line-height: 1.8;
+  color: var(--text-color);
+}
+
+.paragraph {
+  margin-bottom: 1.5rem;
+}
+
+.heading1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 2.5rem 0 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--accent-color);
+  color: var(--heading-color);
+}
+
+.heading2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 2rem 0 1rem;
+  color: var(--heading-color);
+}
+
+.heading3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 1.5rem 0 1rem;
+  color: var(--heading-color);
+}
+
+.bulletedList, .numberedList {
+  margin-bottom: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+.bulletedList li, .numberedList li {
+  margin-bottom: 0.5rem;
+}
+
+.nestedList {
+  margin-top: 0.5rem;
+  margin-left: 1.5rem;
+}
+
+.codeBlock {
+  margin: 1.5rem 0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.syntaxHighlighter {
+  margin: 0 !important;
+  border-radius: 6px !important;
+  font-family: 'Fira Code', monospace !important;
+  font-size: 0.9rem !important;
+}
+
+.codeCaption {
+  margin-top: 0.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.imageContainer {
+  margin: 2rem 0;
+}
+
+.image {
+  width: 100%;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.imageCaption {
+  margin-top: 0.75rem;
+  text-align: center;
+  font-size: 0.9rem;
+  font-style: italic;
+  color: #666;
+}
+
+.divider {
+  margin: 2rem 0;
+  border: 0;
+  height: 1px;
+  background-color: rgba(123, 94, 87, 0.1);
+}
+
+.quote {
+  margin: 1.5rem 0;
+  padding: 1rem 1.5rem;
+  border-left: 4px solid var(--accent-color);
+  background-color: rgba(123, 94, 87, 0.05);
+  font-style: italic;
+}
+
+.callout {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background-color: var(--sidebar-bg-color);
+  border-radius: 6px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.calloutIcon {
+  margin-right: 0.75rem;
+  font-size: 1.25rem;
+}
+
+.calloutContent {
+  flex: 1;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.strikethrough {
+  text-decoration: line-through;
+}
+
+.inlineCode {
+  font-family: 'Fira Code', monospace;
+  background-color: rgba(123, 94, 87, 0.1);
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  font-size: 0.9em;
+}
+
+.link {
+  color: var(--link-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.link:hover {
+  color: var(--link-hover-color);
+}
+
+.unsupportedBlock {
+  margin: 1rem 0;
+  padding: 1rem;
+  background-color: #f8f8f8;
+  border: 1px dashed #ccc;
+  border-radius: 4px;
+  color: #666;
+}
+
+.caption {
+  margin-top: 0.8rem;
+  text-align: center;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: #666;
+}

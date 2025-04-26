@@ -1,18 +1,18 @@
-import React, { useEffect } from "react"
-import Head from "next/head"
-import { AppProps } from "next/app"
-import { useRouter } from "next/router"
-import { DefaultSeo } from "next-seo"
-import * as gtag from "../lib/gtag"
-import SEO from "../../next-seo.config"
-import { ACTIVE_THEME } from "../lib/themeSelector"
+import React, { useEffect } from 'react'
+import Head from 'next/head'
+import { AppProps } from 'next/app'
+import { useRouter } from 'next/router'
+import { DefaultSeo } from 'next-seo'
+import * as gtag from '../lib/gtag'
+import SEO from '../../next-seo.config'
+import { ACTIVE_THEME } from '../lib/themeSelector'
 
 // グローバルスタイルのインポート
-import "../styles/global.css"
+import '../styles/global.css'
 
-export const siteTitle = "Coffee Break Point"
-export const siteDescription = "コーヒー休憩にちょうどよい技術よみものを目指して"
-export const siteUrl = "https://blog.shaba.dev"
+export const siteTitle = 'Coffee Break Point'
+export const siteDescription = 'コーヒー休憩にちょうどよい技術よみものを目指して'
+export const siteUrl = 'https://blog.shaba.dev'
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
@@ -22,9 +22,9 @@ export default function App({ Component, pageProps }: AppProps) {
     const handleRouteChange = (url: string) => {
       gtag.pageview(url)
     }
-    router.events.on("routeChangeComplete", handleRouteChange)
+    router.events.on('routeChangeComplete', handleRouteChange)
     return () => {
-      router.events.off("routeChangeComplete", handleRouteChange)
+      router.events.off('routeChangeComplete', handleRouteChange)
     }
   }, [router.events])
 
