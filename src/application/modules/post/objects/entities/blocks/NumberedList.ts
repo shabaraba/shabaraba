@@ -21,6 +21,8 @@ export class NumberedListItem extends Paragraph {
       archived: resp.archived,
       type: "paragraph",
       paragraph: {
+        // Notion APIの仕様変更に対応: rich_textプロパティを優先的に使用し、存在しない場合はtextプロパティを使用
+        rich_text: resp.numbered_list_item.rich_text || resp.numbered_list_item.text,
         text: resp.numbered_list_item.text,
         children: resp.numbered_list_item.children,
       }

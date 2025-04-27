@@ -13,7 +13,9 @@ export class Code extends Block {
     this.type = "Code";
 
     this.texts = [];
-    resp.code.text.map((text: NotionBlockInterfaces.IText) => {
+    // Notion APIの仕様変更に対応: rich_textプロパティを優先的に使用し、存在しない場合はtextプロパティを使用
+    const textSource = resp.code.rich_text || resp.code.text || [];
+    textSource.map((text: NotionBlockInterfaces.IText) => {
       this.texts.push(new Text(text));
     });
     this.captions = [];

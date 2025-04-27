@@ -13,6 +13,8 @@ export class Quote extends Paragraph {
       archived: resp.archived,
       type: "paragraph",
       paragraph: {
+        // Notion APIの仕様変更に対応: rich_textプロパティを優先的に使用し、存在しない場合はtextプロパティを使用
+        rich_text: resp.quote.rich_text || resp.quote.text,
         text: resp.quote.text,
         children: resp.quote.children,
       }
