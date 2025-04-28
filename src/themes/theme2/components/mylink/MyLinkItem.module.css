@@ -1,0 +1,99 @@
+.mylinkCard {
+  display: flex;
+  background-color: var(--content-bg-color);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 16px;
+  height: 120px;
+}
+
+.mylinkCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+}
+
+.mylinkImage {
+  width: 200px;
+  height: 120px;
+  overflow: hidden;
+  flex-shrink: 0;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--sidebar-bg-color);
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.mylinkCard:hover .image {
+  transform: scale(1.05);
+}
+
+.mylinkContent {
+  padding: 12px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.mylinkTitle {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
+
+.titleLink {
+  color: var(--link-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.titleLink:hover {
+  color: var(--link-hover-color);
+}
+
+.mylinkTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.tagItem {
+  display: inline-block;
+  padding: 2px 8px;
+  background-color: var(--sidebar-bg-color);
+  color: var(--accent-color);
+  border-radius: 4px;
+  font-size: 0.8rem;
+  text-decoration: none;
+}
+
+/* モバイル対応 */
+@media (max-width: 768px) {
+  .mylinkCard {
+    flex-direction: column;
+    height: auto;
+  }
+  
+  .mylinkImage {
+    width: 100%;
+    height: 160px;
+  }
+  
+  .mylinkContent {
+    padding: 12px;
+  }
+  
+  .mylinkTitle {
+    font-size: 1rem;
+  }
+}
