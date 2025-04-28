@@ -7,12 +7,22 @@ import styles from './HomePage.module.css';
 // getStaticProps関数でデータを取得する場合の型定義
 interface HomePageProps {
   articles: any[];
+  sidebarData?: {
+    trendingPosts: any[];
+    tags: any[];
+    series: any[];
+  };
 }
 
 /**
  * ホームページコンポーネント
  */
-export default function HomePage({ articles }: HomePageProps) {
+export default function HomePage({ articles, sidebarData }: HomePageProps) {
+  // サイドバーデータをグローバル変数に設定
+  if (typeof window !== 'undefined' && sidebarData) {
+    window.__SIDEBAR_DATA__ = sidebarData;
+  }
+
   return (
     <Layout>
       <div className={styles.hero}>
@@ -24,27 +34,4 @@ export default function HomePage({ articles }: HomePageProps) {
       <ArticleList articles={articles} />
     </Layout>
   );
-}
-
-// データ取得関数
-export async function getStaticProps() {
-  try {
-    const articleService = ArticleServiceFactory.createArticleService();
-    const articles = await articleService.getArticleList();
-    
-    return {
-      props: {
-        articles,
-      },
-      // revalidateオプションを削除
-    };
-  } catch (error) {
-    console.error('Error fetching articles:', error);
-    return {
-      props: {
-        articles: [],
-      },
-      // revalidateオプションを削除
-    };
-  }
 }
