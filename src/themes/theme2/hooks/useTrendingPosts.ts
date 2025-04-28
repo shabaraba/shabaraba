@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { IPageHead } from 'core/types/NotionPageApiResponses';
-import { PostLogicNotionImpl } from 'application/modules/post/logic/PostLogicNotionImpl';
 
 interface UseTrendingPostsReturn {
   trendingPosts: IPageHead[];
@@ -10,6 +9,7 @@ interface UseTrendingPostsReturn {
 
 /**
  * トレンド記事一覧を取得するカスタムフック
+ * APIルートを使用して取得します
  * @returns {UseTrendingPostsReturn} トレンド記事一覧、ローディング状態、エラー情報
  */
 export function useTrendingPosts(): UseTrendingPostsReturn {
@@ -20,10 +20,13 @@ export function useTrendingPosts(): UseTrendingPostsReturn {
   useEffect(() => {
     async function fetchTrendingPosts() {
       try {
-        const postLogic = new PostLogicNotionImpl();
-        const postList = await postLogic.getTrendingPosts();
-        console.log('Fetched trending posts:', postList);
-        setTrendingPosts(postList);
+        const response = await fetch('/api/trending');
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
+        const data = await response.json();
+        console.log('Fetched trending posts from API:', data);
+        setTrendingPosts(data);
       } catch (err) {
         console.error('Error fetching trending posts:', err);
         setError(err instanceof Error ? err : new Error('トレンド記事の取得に失敗しました'));
