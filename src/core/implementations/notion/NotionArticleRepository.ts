@@ -50,7 +50,7 @@ export class NotionArticleRepository implements ArticleRepository {
           and: [
             {
               property: 'Slug',
-              text: { equals: slug }
+              rich_text: { equals: slug }
             },
             {
               property: 'Published',
