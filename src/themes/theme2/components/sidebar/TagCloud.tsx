@@ -1,19 +1,15 @@
 import React from 'react';
 import Link from 'next/link';
 import styles from './TagCloud.module.css';
-import { useTags } from 'themes/theme2/hooks/useTags';
+import { useSidebarData } from 'contexts/SidebarContext';
 
 /**
  * タグクラウドコンポーネント
- * Notionから取得したタグを表示します
+ * SidebarContextからタグデータを表示します
  */
 export default function TagCloud() {
-  const { tags, isLoading, error } = useTags();
+  const { tags, isLoading } = useSidebarData();
   
-  if (error) {
-    console.error('Error in TagCloud:', error);
-  }
-
   if (isLoading) {
     return <div className={styles.loading}>読み込み中...</div>;
   }
