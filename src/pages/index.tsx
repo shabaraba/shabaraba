@@ -89,9 +89,7 @@ export async function getStaticProps() {
           tags,
           series
         }
-      },
-      // ISRのための再検証時間（秒）
-      revalidate: 60 * 60, // 1時間ごとに再検証
+      }
     };
   } catch (error) {
     console.error('Error in getStaticProps:', error);
@@ -103,8 +101,7 @@ export async function getStaticProps() {
           tags: [],
           series: []
         }
-      },
-      revalidate: 60, // エラー時は短い時間で再検証
+      }
     };
   }
 }
