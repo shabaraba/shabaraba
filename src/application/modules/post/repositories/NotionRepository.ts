@@ -12,7 +12,9 @@ export default class NotionRepository extends BaseNotionRepository {
       filter: {
         and: [{
           property: 'Published',
-          checkbox: { equals: true }
+          formula: { 
+            boolean: { equals: true } 
+          }
         }],
       },
       sorts: [
@@ -73,11 +75,13 @@ export default class NotionRepository extends BaseNotionRepository {
       filter: {
         and: [{
           property: 'Slug',
-          text: { equals: slug }
+          rich_text: { equals: slug }
         },
         {
           property: 'Published',
-          checkbox: { equals: true }
+          formula: { 
+            boolean: { equals: true } 
+          }
         }]
       }
     });
