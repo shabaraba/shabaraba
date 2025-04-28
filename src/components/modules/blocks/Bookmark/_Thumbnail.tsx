@@ -16,9 +16,11 @@ export const _Thumbnail: React.FC<Props> =  ({url}: Props) => {
       >
         <Image
           src={url}
-          width='100%'
-          height='100%'
+          width={800}
+          height={600}
+          layout="responsive"
           objectFit={'contain'}
+          alt="Bookmark thumbnail"
         />
       </Box>
     );
