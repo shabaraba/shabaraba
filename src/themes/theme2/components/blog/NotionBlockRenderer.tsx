@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { tomorrow } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import styles from './NotionBlockRenderer.module.css';
+import { useOgpData, OgpFetchStatus, getFaviconUrl } from '../../../../lib/ogp';
 
 // Notionブロックの型定義（実際はより複雑です）
 interface NotionBlock {
@@ -270,55 +271,9 @@ function renderBlock(block: NotionBlock) {
         );
       }
       
-      const bookmarkUrl = block.bookmark.url;
-      const hostname = (() => {
-        try {
-          return new URL(bookmarkUrl).hostname;
-        } catch (e) {
-          return bookmarkUrl;
-        }
-      })();
-      
-      // Notion APIのbookmarkブロックにはtitleとdescriptionが含まれていない可能性がある
-      // そのため、ホスト名をデフォルトのタイトルとして使用し、説明はない場合は表示しない
-      const bookmarkTitle = block.bookmark.title || hostname;
-      const bookmarkDescription = block.bookmark.description || '';
-      
-      // キャプションの処理
-      const bookmarkCaption = block.bookmark.caption && Array.isArray(block.bookmark.caption) && block.bookmark.caption.length > 0
-        ? renderRichText(block.bookmark.caption)
-        : null;
-      
-      return (
-        <div key={id} className={styles.bookmarkBlock}>
-          <a href={bookmarkUrl} 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className={styles.bookmarkContent}
-            data-testid="bookmark-link">
-            <div className={styles.bookmarkInfo}>
-              <div className={styles.bookmarkTitle}>
-                {bookmarkTitle}
-              </div>
-              {bookmarkDescription && (
-                <div className={styles.bookmarkDescription}>
-                  {bookmarkDescription}
-                </div>
-              )}
-              <div className={styles.bookmarkUrl}>
-                {hostname}
-              </div>
-            </div>
-            {block.bookmark.thumbnail && (
-              <div 
-                className={styles.bookmarkThumbnail} 
-                style={{ backgroundImage: `url(${block.bookmark.thumbnail})` }}
-              />
-            )}
-          </a>
-          {bookmarkCaption && <div className={styles.bookmarkCaption}>{bookmarkCaption}</div>}
-        </div>
-      );
+      // Bookmarkコンポーネントを使用
+      return <BookmarkBlock key={id} url={block.bookmark.url} caption={block.bookmark.caption} />;
+    
     
     case 'toggle':
       if (!block.toggle) {
@@ -383,6 +338,110 @@ function renderBlock(block: NotionBlock) {
       );
   }
 }
+
+/**
+ * OGPデータを表示するブックマークブロックコンポーネント
+ */
+interface BookmarkBlockProps {
+  url: string;
+  caption?: any[];
+}
+
+const BookmarkBlock: React.FC<BookmarkBlockProps> = ({ url, caption }) => {
+  const { data, status } = useOgpData(url);
+  
+  // ホスト名を取得
+  const hostname = (() => {
+    try {
+      return new URL(url).hostname;
+    } catch (e) {
+      return url;
+    }
+  })();
+  
+  // キャプションの処理
+  const bookmarkCaption = caption && Array.isArray(caption) && caption.length > 0
+    ? renderRichText(caption)
+    : null;
+  
+  // ロード中・エラー時の表示
+  if (status === OgpFetchStatus.LOADING) {
+    return (
+      <div className={styles.bookmarkBlock}>
+        <div className={styles.bookmarkContent}>
+          <div className={styles.bookmarkInfo}>
+            <div className={styles.bookmarkTitle}>読み込み中...</div>
+            <div className={styles.bookmarkDescription}>ページ情報を取得しています</div>
+            <div className={styles.bookmarkUrl}>{hostname}</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  
+  if (status === OgpFetchStatus.ERROR || !data) {
+    return (
+      <div className={styles.bookmarkBlock}>
+        <a 
+          href={url} 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className={styles.bookmarkContent}
+          data-testid="bookmark-link"
+        >
+          <div className={styles.bookmarkInfo}>
+            <div className={styles.bookmarkTitle}>{hostname}</div>
+            <div className={styles.bookmarkUrl}>{url}</div>
+          </div>
+        </a>
+        {bookmarkCaption && <div className={styles.bookmarkCaption}>{bookmarkCaption}</div>}
+      </div>
+    );
+  }
+  
+  // OGPデータの表示
+  return (
+    <div className={styles.bookmarkBlock}>
+      <a 
+        href={url} 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        className={styles.bookmarkContent}
+        data-testid="bookmark-link"
+      >
+        <div className={styles.bookmarkInfo}>
+          <div className={styles.bookmarkTitle}>
+            {data.title}
+          </div>
+          {data.description && (
+            <div className={styles.bookmarkDescription}>
+              {data.description}
+            </div>
+          )}
+          <div className={styles.bookmarkMetadata}>
+            {data.faviconUrl && (
+              <img 
+                src={data.faviconUrl} 
+                alt=""
+                className={styles.bookmarkFavicon}
+              />
+            )}
+            <div className={styles.bookmarkUrl}>
+              {hostname}
+            </div>
+          </div>
+        </div>
+        {data.imageUrl && (
+          <div 
+            className={styles.bookmarkThumbnail} 
+            style={{ backgroundImage: `url(${data.imageUrl})` }}
+          />
+        )}
+      </a>
+      {bookmarkCaption && <div className={styles.bookmarkCaption}>{bookmarkCaption}</div>}
+    </div>
+  );
+};
 
 /**
  * Notionのリッチテキストをレンダリングする関数
