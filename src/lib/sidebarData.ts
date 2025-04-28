@@ -19,10 +19,15 @@ export async function getSidebarData() {
     
     // すべての記事を取得
     const allPosts = await postLogic.getList();
+    console.log('SSG: All posts count:', allPosts.length);
     
-    // トレンド記事をAPIから直接取得
-    const trendingPosts = await postLogic.getTrendingPosts();
-    console.log('SSG: Trending posts count:', trendingPosts.length);
+    // 人気記事はフロントエンドで選択（現状ではtrueプロパティなし）
+    // Trendプロパティがある場合はそれを使用、なければ固定した配列を使用
+    // 将来的にTrendプロパティが追加されたら自動的に対応
+    const trendingPosts = allPosts
+      .filter(post => post.trend === true || post.title.includes('Notion') || post.title.includes('dotfiles'))
+      .slice(0, 5); // 最大5件表示
+    console.log('SSG: Selected trending posts count:', trendingPosts.length);
     
     // タグを集計
     const tagCounts: { [key: string]: { count: number, tag: IPageTag } } = {};
