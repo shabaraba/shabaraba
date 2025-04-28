@@ -97,7 +97,9 @@ export default class NotionRepository extends BaseNotionRepository {
     for (let result of resp.results) {
       let block = result as BlockType
       if (block.type === 'paragraph') {
-        block.paragraph.text.forEach((textObject: IText) => {
+        // BlockTypeのparagraphプロパティには、textまたはrich_textのどちらかが設定されている
+        const textArray = block.paragraph.rich_text || block.paragraph.text || []
+        textArray.forEach((textObject: IText) => {
           openingSentence += textObject.plain_text
         })
       }
