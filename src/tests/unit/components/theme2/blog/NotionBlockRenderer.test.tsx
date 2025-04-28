@@ -29,6 +29,18 @@ jest.mock('next/link', () => ({
   },
 }));
 
+jest.mock('../../../../../lib/ogp', () => ({
+  OgpFetchStatus: {
+    IDLE: 'idle',
+    LOADING: 'loading',
+    SUCCESS: 'success',
+    ERROR: 'error'
+  },
+  getFaviconUrl: (url: string) => {
+    return `https://www.google.com/s2/favicons?domain=${url}&sz=32`;
+  }
+}));
+
 describe('NotionBlockRenderer', () => {
   it('should render nothing when blocks array is empty', () => {
     const { container } = render(<NotionBlockRenderer blocks={[]} />);
@@ -85,20 +97,30 @@ describe('NotionBlockRenderer', () => {
     expect(screen.getByText('Unsupported block type: embed')).toBeInTheDocument();
   });
 
-  it('should display a fallback for bookmark block type', () => {
+  it('should render a bookmark block correctly', () => {
     const blocks = [
       {
         id: 'bookmark1',
-        type: 'bookmark', // ブックマークブロック
+        type: 'bookmark',
         bookmark: {
           url: 'https://www.example.com',
-          caption: []
+          caption: [],
+          ogp: {
+            siteTitle: 'Example Website',
+            pageTitle: 'Example Page',
+            pageDescription: 'This is an example website',
+            siteUrl: 'https://www.example.com',
+            thumbnailUrl: 'https://www.example.com/image.jpg'
+          }
         }
       }
     ];
 
     render(<NotionBlockRenderer blocks={blocks} />);
-    expect(screen.getByText('Unsupported block type: bookmark')).toBeInTheDocument();
+    // 実装後に期待される要素
+    expect(screen.getByText('Example Page')).toBeInTheDocument();
+    const link = screen.getByTestId('bookmark-link');
+    expect(link).toHaveAttribute('href', 'https://www.example.com');
   });
 
   it('should display a fallback for toggle block type', () => {
@@ -149,29 +171,7 @@ describe('NotionBlockRenderer', () => {
     expect(iframe).toHaveAttribute('src', 'https://www.youtube.com/embed/dQw4w9WgXcQ');
   });
 
-  // 将来的に bookmark ブロックを実装する場合を想定したテスト
-  it.skip('should render a bookmark block correctly when implemented', () => {
-    const blocks = [
-      {
-        id: 'bookmark1',
-        type: 'bookmark',
-        bookmark: {
-          url: 'https://www.example.com',
-          caption: [{ plain_text: 'Example website', annotations: {} }],
-          title: 'Example Website',
-          description: 'This is an example website for testing purposes'
-        }
-      }
-    ];
-
-    render(<NotionBlockRenderer blocks={blocks} />);
-    // 実装後に期待される要素
-    expect(screen.getByText('Example Website')).toBeInTheDocument();
-    expect(screen.getByText('This is an example website for testing purposes')).toBeInTheDocument();
-    expect(screen.getByText('Example website')).toBeInTheDocument();
-    const link = screen.getByTestId('bookmark-link');
-    expect(link).toHaveAttribute('href', 'https://www.example.com');
-  });
+  // 実装済みのためスキップテストは削除
 
   // 将来的に toggle ブロックを実装する場合を想定したテスト
   it.skip('should render a toggle block correctly when implemented', () => {

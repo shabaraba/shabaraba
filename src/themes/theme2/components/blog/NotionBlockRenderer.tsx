@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { tomorrow } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import styles from './NotionBlockRenderer.module.css';
-import { useOgpData, OgpFetchStatus, getFaviconUrl } from '../../../../lib/ogp';
+import { OgpFetchStatus, getFaviconUrl } from '../../../../lib/ogp';
 
 // Notionブロックの型定義（実際はより複雑です）
 interface NotionBlock {
@@ -272,7 +272,8 @@ function renderBlock(block: NotionBlock) {
       }
       
       // Bookmarkコンポーネントを使用
-      return <BookmarkBlock key={id} url={block.bookmark.url} caption={block.bookmark.caption} />;
+      // ビルド時に取得したOGPデータをcaptionと一緒に渡す
+      return <BookmarkBlock key={id} url={block.bookmark.url} caption={block.bookmark.caption || block.bookmark.ogp ? { ...block.bookmark.caption, ogp: block.bookmark.ogp } : undefined} />;
     
     
     case 'toggle':
@@ -348,8 +349,6 @@ interface BookmarkBlockProps {
 }
 
 const BookmarkBlock: React.FC<BookmarkBlockProps> = ({ url, caption }) => {
-  const { data, status } = useOgpData(url);
-  
   // ホスト名を取得
   const hostname = (() => {
     try {
@@ -364,22 +363,11 @@ const BookmarkBlock: React.FC<BookmarkBlockProps> = ({ url, caption }) => {
     ? renderRichText(caption)
     : null;
   
-  // ロード中・エラー時の表示
-  if (status === OgpFetchStatus.LOADING) {
-    return (
-      <div className={styles.bookmarkBlock}>
-        <div className={styles.bookmarkContent}>
-          <div className={styles.bookmarkInfo}>
-            <div className={styles.bookmarkTitle}>読み込み中...</div>
-            <div className={styles.bookmarkDescription}>ページ情報を取得しています</div>
-            <div className={styles.bookmarkUrl}>{hostname}</div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // ビルド時に取得したOGPデータを使用
+  const ogp = caption?.ogp;
   
-  if (status === OgpFetchStatus.ERROR || !data) {
+  // OGPデータがない場合はホスト名のみ表示
+  if (!ogp) {
     return (
       <div className={styles.bookmarkBlock}>
         <a 
@@ -400,6 +388,8 @@ const BookmarkBlock: React.FC<BookmarkBlockProps> = ({ url, caption }) => {
   }
   
   // OGPデータの表示
+  const faviconUrl = getFaviconUrl(url);
+  
   return (
     <div className={styles.bookmarkBlock}>
       <a 
@@ -411,30 +401,28 @@ const BookmarkBlock: React.FC<BookmarkBlockProps> = ({ url, caption }) => {
       >
         <div className={styles.bookmarkInfo}>
           <div className={styles.bookmarkTitle}>
-            {data.title}
+            {ogp.pageTitle || ogp.siteTitle || hostname}
           </div>
-          {data.description && (
+          {ogp.pageDescription && (
             <div className={styles.bookmarkDescription}>
-              {data.description}
+              {ogp.pageDescription}
             </div>
           )}
           <div className={styles.bookmarkMetadata}>
-            {data.faviconUrl && (
-              <img 
-                src={data.faviconUrl} 
-                alt=""
-                className={styles.bookmarkFavicon}
-              />
-            )}
+            <img 
+              src={faviconUrl} 
+              alt=""
+              className={styles.bookmarkFavicon}
+            />
             <div className={styles.bookmarkUrl}>
               {hostname}
             </div>
           </div>
         </div>
-        {data.imageUrl && (
+        {ogp.thumbnailUrl && (
           <div 
             className={styles.bookmarkThumbnail} 
-            style={{ backgroundImage: `url(${data.imageUrl})` }}
+            style={{ backgroundImage: `url(${ogp.thumbnailUrl})` }}
           />
         )}
       </a>
