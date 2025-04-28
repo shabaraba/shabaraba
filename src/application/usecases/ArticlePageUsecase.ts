@@ -37,12 +37,34 @@ export class ArticlePageUsecase {
       
       // JSONシリアライズ時のundefinedプロパティを処理
       const sanitizedArticle = this.sanitizeUndefinedValues(article);
-
-      return {
-        props: {
-          article: sanitizedArticle,
-        },
-      };
+      
+      // シリアライズエラーをデバッグするための追加処理
+      try {
+        // 一度JSONにシリアライズしてから戻すことで、シリアライズできない値を除去
+        const serialized = JSON.stringify(sanitizedArticle);
+        const deserialized = JSON.parse(serialized);
+        
+        return {
+          props: {
+            article: deserialized,
+          },
+        };
+      } catch (serializeError) {
+        console.error('Serialization error:', serializeError);
+        
+        // エラー発生時はNullish値をすべて空オブジェクトに変換する緊急措置
+        const emergencySanitized = JSON.parse(
+          JSON.stringify(sanitizedArticle, (_, value) => 
+            value === undefined ? null : value
+          )
+        );
+        
+        return {
+          props: {
+            article: emergencySanitized,
+          },
+        };
+      }
     } catch (error) {
       console.error(`Error fetching article with slug "${slug}":`, error);
       return {
