@@ -39,8 +39,12 @@ export default function MyLinkItem({ mylink }: MyLinkItemProps) {
         {mylink.tags && mylink.tags.length > 0 && (
           <div className={styles.mylinkTags}>
             {mylink.tags.map((tag, index) => (
-              <span key={index} className={styles.tagItem}>
-                {tag}
+              <span 
+                key={tag.id || index} 
+                className={styles.tagItem} 
+                style={tag.color ? { backgroundColor: `var(--${tag.color}-color, var(--sidebar-bg-color))` } : {}}
+              >
+                {tag.name || (typeof tag === 'string' ? tag : '')}
               </span>
             ))}
           </div>

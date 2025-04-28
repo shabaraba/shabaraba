@@ -8,6 +8,18 @@
   --link-hover-color: #D99873;
   --heading-color: #4B3832;
   --text-color: #333333;
+  
+  /* NotionTagの色 */
+  --gray-color: #E9E8E3;
+  --brown-color: #E6D9C7;
+  --orange-color: #F8E3DA;
+  --yellow-color: #FBF3D0;
+  --green-color: #DDEDDC;
+  --blue-color: #D9E8F5;
+  --purple-color: #E8DEEE;
+  --pink-color: #F5E0E9;
+  --red-color: #FBE4E4;
+  --default-color: var(--sidebar-bg-color);
 }
 
 /* フォントとアイコン */
