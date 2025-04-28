@@ -36,6 +36,8 @@ export class NotionPageResponseDxo {
   public static convertToNotionPostHead(response: NotionPageResponseType): IPageHead {
     const properties = response?.properties;
     
+    console.log('Converting page response:', response.id, properties);
+    
     // 必須プロパティの安全な取得
     const title: string = properties.Name.title[0]?.plain_text || 'Untitled';
     
@@ -59,11 +61,13 @@ export class NotionPageResponseDxo {
     
     // Trendプロパティの安全な取得
     const trend: boolean = properties.Trend?.checkbox || false;
+    console.log('Trend property for', title, ':', properties.Trend);
     
     // Seriesプロパティの安全な取得
     const series: string | null = properties.Series?.select?.name || null;
+    console.log('Series property for', title, ':', properties.Series);
 
-    return {
+    const result = {
       id: response.id,
       title,
       tags,
@@ -75,6 +79,10 @@ export class NotionPageResponseDxo {
       trend,
       ...(series && { series }),
     };
+    
+    console.log('Converted page:', result);
+    
+    return result;
   }
 
 }

@@ -13,6 +13,9 @@ export default function SeriesList() {
   // シリーズごとにグループ化
   const seriesGroups: { [key: string]: number } = {};
   
+  console.log('SeriesList - posts:', posts);
+  console.log('SeriesList - posts with series property:', posts.filter(post => post.series));
+  
   posts.forEach((post) => {
     if (post.series) {
       if (!seriesGroups[post.series]) {
@@ -22,10 +25,14 @@ export default function SeriesList() {
     }
   });
   
+  console.log('SeriesList - seriesGroups:', seriesGroups);
+  
   // 表示用のシリーズデータに変換
   const seriesData = Object.entries(seriesGroups)
     .map(([name, count]) => ({ name, count }))
     .sort((a, b) => b.count - a.count); // 記事数の多い順にソート
+    
+  console.log('SeriesList - seriesData:', seriesData);
 
   if (isLoading) {
     return <div className={styles.loading}>読み込み中...</div>;

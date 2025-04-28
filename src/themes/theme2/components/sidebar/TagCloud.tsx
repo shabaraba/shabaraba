@@ -21,6 +21,8 @@ export default function TagCloud() {
   // すべての記事からタグを抽出して集計
   const tagCounts: { [key: string]: { count: number, tag: IPageTag } } = {};
   
+  console.log('TagCloud - posts:', posts);
+  
   posts.forEach((post) => {
     if (post.tags) {
       post.tags.forEach((tag) => {
@@ -31,6 +33,8 @@ export default function TagCloud() {
       });
     }
   });
+  
+  console.log('TagCloud - tagCounts:', tagCounts);
   
   // 表示用のタグデータに変換
   const tagData = Object.values(tagCounts).map(({ count, tag }) => {
@@ -49,6 +53,8 @@ export default function TagCloud() {
       color: tag.color
     };
   }).sort((a, b) => b.count - a.count); // 使用頻度順にソート
+  
+  console.log('TagCloud - tagData:', tagData);
 
   if (isLoading) {
     return <div className={styles.loading}>読み込み中...</div>;

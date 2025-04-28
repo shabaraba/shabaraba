@@ -22,8 +22,27 @@ export function usePostList(): UsePostListReturn {
       try {
         const postLogic = new PostLogicNotionImpl();
         const postList = await postLogic.getList();
+        console.log('Fetched posts:', postList);
+        
+        // トレンド記事とシリーズの確認
+        const trendingPosts = postList.filter(post => post.trend === true);
+        console.log('Trending posts:', trendingPosts);
+        
+        const postsWithSeries = postList.filter(post => post.series);
+        console.log('Posts with series:', postsWithSeries);
+        
+        // タグのログ
+        const allTags = [];
+        postList.forEach(post => {
+          if (post.tags) {
+            allTags.push(...post.tags);
+          }
+        });
+        console.log('All tags:', allTags);
+        
         setPosts(postList);
       } catch (err) {
+        console.error('Error fetching posts:', err);
         setError(err instanceof Error ? err : new Error('記事の取得に失敗しました'));
       } finally {
         setIsLoading(false);

@@ -13,13 +13,15 @@ export default function PopularArticles() {
   
   // トレンド記事のみをフィルタリング
   const trendingPosts: IPageHead[] = posts.filter(post => post.trend === true);
+  console.log('PopularArticles - posts:', posts);
+  console.log('PopularArticles - trendingPosts:', trendingPosts);
 
   if (isLoading) {
     return <div className={styles.loading}>読み込み中...</div>;
   }
 
   if (trendingPosts.length === 0) {
-    return <div className={styles.noArticles}>人気記事はありません</div>;
+    return <div className={styles.noArticles}>人気記事はありません (trend=trueの記事が見つかりません)</div>;
   }
 
   return (
