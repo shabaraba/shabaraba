@@ -10,8 +10,6 @@ import { useSeries } from 'themes/theme2/hooks/useSeries';
 export default function SeriesList() {
   const { seriesList, isLoading, error } = useSeries();
   
-  console.log('SeriesList - seriesList:', seriesList);
-  
   if (error) {
     console.error('Error in SeriesList:', error);
   }

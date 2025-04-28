@@ -10,8 +10,6 @@ import { useTags } from 'themes/theme2/hooks/useTags';
 export default function TagCloud() {
   const { tags, isLoading, error } = useTags();
   
-  console.log('TagCloud - tags:', tags);
-  
   if (error) {
     console.error('Error in TagCloud:', error);
   }
