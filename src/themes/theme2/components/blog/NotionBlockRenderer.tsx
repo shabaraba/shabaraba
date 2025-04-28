@@ -23,8 +23,11 @@ interface NotionBlockRendererProps {
  */
 /**
  * ネストされたリストをレンダリングする関数
+ * @param blocks ブロックのリスト
+ * @param parentType 親リストのタイプ（リストのネスト時に使用）
+ * @returns JSX要素の配列
  */
-function renderNestedList(blocks: NotionBlock[]) {
+function renderNestedList(blocks: NotionBlock[], parentType?: string) {
   if (!blocks || blocks.length === 0) {
     return null;
   }
@@ -40,9 +43,11 @@ function renderNestedList(blocks: NotionBlock[]) {
       if (currentListType !== block.type) {
         // 前のリストがあれば追加
         if (currentListItems.length > 0) {
-          const ListTag = currentListType === 'bulleted_list_item' ? 'ul' : 'ol';
+          // 親リストのタイプがあれば、それを継承する
+          const actualListType = parentType || currentListType;
+          const ListTag = actualListType === 'bulleted_list_item' ? 'ul' : 'ol';
           result.push(
-            <ListTag key={`nested-list-${index}`} className={currentListType === 'bulleted_list_item' ? styles.nestedList : styles.nestedList}>
+            <ListTag key={`nested-list-${index}`} className={actualListType === 'bulleted_list_item' ? styles.nestedList : styles.nestedList}>
               {currentListItems}
             </ListTag>
           );
@@ -51,14 +56,15 @@ function renderNestedList(blocks: NotionBlock[]) {
         currentListType = block.type;
       }
 
-      // 現在のリストにアイテムを追加
-      currentListItems.push(renderBlock(block));
+      // 現在のリストにアイテムを追加（親リストのタイプを渡す）
+      currentListItems.push(renderListItem(block, parentType || currentListType));
     } else {
       // リストアイテムでない場合は、現在のリストがあれば追加
       if (currentListItems.length > 0) {
-        const ListTag = currentListType === 'bulleted_list_item' ? 'ul' : 'ol';
+        const actualListType = parentType || currentListType;
+        const ListTag = actualListType === 'bulleted_list_item' ? 'ul' : 'ol';
         result.push(
-          <ListTag key={`nested-list-${index}`} className={currentListType === 'bulleted_list_item' ? styles.nestedList : styles.nestedList}>
+          <ListTag key={`nested-list-${index}`} className={actualListType === 'bulleted_list_item' ? styles.nestedList : styles.nestedList}>
             {currentListItems}
           </ListTag>
         );
@@ -73,15 +79,54 @@ function renderNestedList(blocks: NotionBlock[]) {
 
   // 最後のリストがあれば追加
   if (currentListItems.length > 0) {
-    const ListTag = currentListType === 'bulleted_list_item' ? 'ul' : 'ol';
+    const actualListType = parentType || currentListType;
+    const ListTag = actualListType === 'bulleted_list_item' ? 'ul' : 'ol';
     result.push(
-      <ListTag key="nested-list-end" className={currentListType === 'bulleted_list_item' ? styles.nestedList : styles.nestedList}>
+      <ListTag key="nested-list-end" className={actualListType === 'bulleted_list_item' ? styles.nestedList : styles.nestedList}>
         {currentListItems}
       </ListTag>
     );
   }
 
   return result;
+}
+
+/**
+ * リストアイテムをレンダリングする特別な関数
+ * @param block リストアイテムブロック
+ * @param parentType 親リストのタイプ
+ * @returns JSX要素
+ */
+function renderListItem(block: NotionBlock, parentType: string | null) {
+  const { id, type } = block;
+  
+  // リストアイテムの内容を取得
+  const content = type === 'bulleted_list_item' 
+    ? block.bulleted_list_item && renderRichText(block.bulleted_list_item.rich_text)
+    : block.numbered_list_item && renderRichText(block.numbered_list_item.rich_text);
+  
+  // 子要素があるかチェック
+  const hasChildren = block.has_children && block.children && Array.isArray(block.children.results);
+  
+  // 子要素があれば再帰的に処理（親のリストタイプを継承）
+  const childrenContent = hasChildren ? (
+    parentType === 'bulleted_list_item' ? (
+      <ul className={styles.nestedList}>
+        {renderNestedList(block.children.results, parentType)}
+      </ul>
+    ) : (
+      <ol className={styles.nestedList}>
+        {renderNestedList(block.children.results, parentType)}
+      </ol>
+    )
+  ) : null;
+  
+  return (
+    <li key={id}>
+      {content}
+      {childrenContent}
+    </li>
+  );
 }
 
 export default function NotionBlockRenderer({ blocks }: NotionBlockRendererProps) {
@@ -116,8 +161,8 @@ export default function NotionBlockRenderer({ blocks }: NotionBlockRendererProps
           currentListType = block.type;
         }
         
-        // 現在のリストにアイテムを追加
-        currentListItems.push(renderBlock(block));
+        // 現在のリストにアイテムを追加（親リストのタイプを渡す）
+        currentListItems.push(renderListItem(block, currentListType));
       } else {
         // リストアイテムでない場合は、現在のリストがあれば追加
         if (currentListItems.length > 0) {
@@ -193,28 +238,10 @@ function renderBlock(block: NotionBlock) {
       );
     
     case 'bulleted_list_item':
-      return (
-        <li key={id}>
-          {block.bulleted_list_item && renderRichText(block.bulleted_list_item.rich_text)}
-          {block.has_children && block.children && Array.isArray(block.children.results) && (
-            <ul className={styles.nestedList}>
-              {renderNestedList(block.children.results)}
-            </ul>
-          )}
-        </li>
-      );
+      return renderListItem(block, 'bulleted_list_item');
     
     case 'numbered_list_item':
-      return (
-        <li key={id}>
-          {block.numbered_list_item && renderRichText(block.numbered_list_item.rich_text)}
-          {block.has_children && block.children && Array.isArray(block.children.results) && (
-            <ol className={styles.nestedList}>
-              {renderNestedList(block.children.results)}
-            </ol>
-          )}
-        </li>
-      );
+      return renderListItem(block, 'numbered_list_item');
     
     case 'code':
       if (!block.code) {
@@ -442,7 +469,6 @@ function renderBlock(block: NotionBlock) {
               </Link>
             </div>
           );
-        }
         }
       }
       
