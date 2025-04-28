@@ -21,6 +21,10 @@ export class PostLogicNotionImpl implements PostLogic {
     return await this._repository.getPostList();
   }
 
+  async getTrendingPosts(): Promise<IPageHead[]> {
+    return await this._repository.getTrendingPosts();
+  }
+
   async getPathList(): Promise<string[]> {
     return (await this.getList()).map(post => post.slug);
   }

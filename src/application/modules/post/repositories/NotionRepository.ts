@@ -30,6 +30,38 @@ export default class NotionRepository extends BaseNotionRepository {
 
     return postList;
   }
+  
+  public async getTrendingPosts(): Promise<IPageHead[]> {
+    const response: QueryDatabaseResponse = await this._notion.databases.query({
+      database_id: this._databaseId,
+      filter: {
+        and: [
+          {
+            property: 'Published',
+            checkbox: { equals: true }
+          },
+          {
+            property: 'Trend',
+            checkbox: { equals: true }
+          }
+        ],
+      },
+      sorts: [
+        {
+            "property": "Published_Time",
+            "direction": "descending"
+        }
+      ]
+    });
+
+    console.log('Trending posts response:', response);
+
+    const postList: IPageHead[] = response.results.map((item) => {
+      return NotionPageResponseDxo.convertToNotionPostHead(item as NotionPageResponseType);
+    });
+
+    return postList;
+  }
 
   public async getTitleBlock(id: string): Promise<IPageHead> {
     const response: GetPageResponse = await this._notion.pages.retrieve({
