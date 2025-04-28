@@ -13,7 +13,10 @@ export class NotionArticleRepository implements ArticleRepository {
       throw new Error("Notion token or database ID is not defined in environment variables");
     }
 
-    this.notion = new Client({ auth: token });
+    this.notion = new Client({ 
+      auth: token,
+      notionVersion: "2022-06-28" // 最新のAPIバージョンを指定
+    });
     this.databaseId = databaseId;
   }
 
@@ -50,7 +53,7 @@ export class NotionArticleRepository implements ArticleRepository {
           and: [
             {
               property: 'Slug',
-              text: { equals: slug }
+              rich_text: { equals: slug }
             },
             {
               property: 'Published',

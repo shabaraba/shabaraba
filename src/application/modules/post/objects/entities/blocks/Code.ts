@@ -13,7 +13,7 @@ export class Code extends Block {
     this.type = "Code";
 
     this.texts = [];
-    resp.code.text.map((text: NotionBlockInterfaces.IText) => {
+    resp.code.rich_text.map((text: NotionBlockInterfaces.IText) => {
       this.texts.push(new Text(text));
     });
     this.captions = [];

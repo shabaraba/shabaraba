@@ -13,7 +13,7 @@ export class Paragraph extends Block {
     this.type = "Paragraph";
 
     this.texts = [];
-    resp.paragraph.text.map((text: NotionBlockInterfaces.IText) => {
+    resp.paragraph.rich_text.map((text: NotionBlockInterfaces.IText) => {
       this.texts.push(new Text(text));
     });
     this.children = [];

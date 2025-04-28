@@ -75,7 +75,7 @@ export default class NotionRepository extends BaseNotionRepository {
       filter: {
         and: [{
           property: 'Slug',
-          text: { equals: slug }
+          rich_text: { equals: slug }
         },
         {
           property: 'Published',
@@ -97,7 +97,7 @@ export default class NotionRepository extends BaseNotionRepository {
     for (let result of resp.results) {
       let block = result as BlockType
       if (block.type === 'paragraph') {
-        block.paragraph.text.forEach((textObject: IText) => {
+        block.paragraph.rich_text.forEach((textObject: IText) => {
           openingSentence += textObject.plain_text
         })
       }

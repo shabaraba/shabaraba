@@ -16,7 +16,7 @@ export class Callout extends Paragraph {
       archived: resp.archived,
       type: "paragraph",
       paragraph: {
-        text: resp.callout.text,
+        rich_text: resp.callout.rich_text,
         children: resp.callout.children,
       }
     };
@@ -24,7 +24,7 @@ export class Callout extends Paragraph {
     this.type = "Callout";
 
     this.texts = [];
-    resp.callout.text.map((text: NotionBlockInterfaces.IText) => {
+    resp.callout.rich_text.map((text: NotionBlockInterfaces.IText) => {
       this.texts.push(new Text(text));
     });
 

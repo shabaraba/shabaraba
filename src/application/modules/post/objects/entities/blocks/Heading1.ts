@@ -11,7 +11,7 @@ export class Heading1 extends Block {
     this.type = "Heading1";
 
     this.texts = [];
-    resp.heading_1.text.map((text) => {
+    resp.heading_1.rich_text.map((text) => {
       this.texts.push(new Text(text));
     });
   }

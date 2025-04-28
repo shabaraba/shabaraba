@@ -20,7 +20,7 @@ export class BulletedListItem extends ListItem {
       archived: resp.archived,
       type: "paragraph",
       paragraph: {
-        text: resp.bulleted_list_item.text,
+        rich_text: resp.bulleted_list_item.rich_text,
         children: resp.bulleted_list_item.children,
       }
     };

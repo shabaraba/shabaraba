@@ -13,7 +13,7 @@ export class Quote extends Paragraph {
       archived: resp.archived,
       type: "paragraph",
       paragraph: {
-        text: resp.quote.text,
+        rich_text: resp.quote.rich_text,
         children: resp.quote.children,
       }
     };

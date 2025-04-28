@@ -10,7 +10,8 @@ export class BaseNotionRepository {
     this._databaseId = databaseId;
 
     this._notion = new Client({
-      auth: this._token
+      auth: this._token,
+      notionVersion: "2022-06-28" // 最新のAPIバージョンを指定
     });
   }
 
