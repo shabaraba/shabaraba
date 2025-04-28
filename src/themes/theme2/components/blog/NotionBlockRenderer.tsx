@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -21,15 +21,137 @@ interface NotionBlockRendererProps {
 /**
  * Notionブロックをレンダリングするコンポーネント
  */
+/**
+ * ネストされたリストをレンダリングする関数
+ */
+function renderNestedList(blocks: NotionBlock[]) {
+  if (!blocks || blocks.length === 0) {
+    return null;
+  }
+
+  // リストアイテムをグループ化
+  const result: JSX.Element[] = [];
+  let currentListType: string | null = null;
+  let currentListItems: JSX.Element[] = [];
+
+  blocks.forEach((block, index) => {
+    if (block.type === 'bulleted_list_item' || block.type === 'numbered_list_item') {
+      // 新しいリストタイプが始まった場合
+      if (currentListType !== block.type) {
+        // 前のリストがあれば追加
+        if (currentListItems.length > 0) {
+          const ListTag = currentListType === 'bulleted_list_item' ? 'ul' : 'ol';
+          result.push(
+            <ListTag key={`nested-list-${index}`} className={currentListType === 'bulleted_list_item' ? styles.nestedList : styles.nestedList}>
+              {currentListItems}
+            </ListTag>
+          );
+          currentListItems = [];
+        }
+        currentListType = block.type;
+      }
+
+      // 現在のリストにアイテムを追加
+      currentListItems.push(renderBlock(block));
+    } else {
+      // リストアイテムでない場合は、現在のリストがあれば追加
+      if (currentListItems.length > 0) {
+        const ListTag = currentListType === 'bulleted_list_item' ? 'ul' : 'ol';
+        result.push(
+          <ListTag key={`nested-list-${index}`} className={currentListType === 'bulleted_list_item' ? styles.nestedList : styles.nestedList}>
+            {currentListItems}
+          </ListTag>
+        );
+        currentListItems = [];
+        currentListType = null;
+      }
+
+      // 通常のブロックを追加
+      result.push(renderBlock(block));
+    }
+  });
+
+  // 最後のリストがあれば追加
+  if (currentListItems.length > 0) {
+    const ListTag = currentListType === 'bulleted_list_item' ? 'ul' : 'ol';
+    result.push(
+      <ListTag key="nested-list-end" className={currentListType === 'bulleted_list_item' ? styles.nestedList : styles.nestedList}>
+        {currentListItems}
+      </ListTag>
+    );
+  }
+
+  return result;
+}
+
 export default function NotionBlockRenderer({ blocks }: NotionBlockRendererProps) {
   // ブロックがない場合は何も表示しない
   if (!blocks || blocks.length === 0) {
     return null;
   }
 
+  // リストアイテムをグループ化する関数
+  const renderBlocks = (blocks: NotionBlock[]) => {
+    const result: JSX.Element[] = [];
+    let currentListType: string | null = null;
+    let currentListItems: JSX.Element[] = [];
+
+    blocks.forEach((block, index) => {
+      // リストアイテムの場合はグループ化
+      if (block.type === 'bulleted_list_item' || block.type === 'numbered_list_item') {
+        const isBullet = block.type === 'bulleted_list_item';
+        
+        // 新しいリストタイプが始まった場合
+        if (currentListType !== block.type) {
+          // 前のリストがあれば追加
+          if (currentListItems.length > 0) {
+            const ListTag = currentListType === 'bulleted_list_item' ? 'ul' : 'ol';
+            result.push(
+              <ListTag key={`list-${index}`} className={currentListType === 'bulleted_list_item' ? styles.bulletedList : styles.numberedList}>
+                {currentListItems}
+              </ListTag>
+            );
+            currentListItems = [];
+          }
+          currentListType = block.type;
+        }
+        
+        // 現在のリストにアイテムを追加
+        currentListItems.push(renderBlock(block));
+      } else {
+        // リストアイテムでない場合は、現在のリストがあれば追加
+        if (currentListItems.length > 0) {
+          const ListTag = currentListType === 'bulleted_list_item' ? 'ul' : 'ol';
+          result.push(
+            <ListTag key={`list-${index}`} className={currentListType === 'bulleted_list_item' ? styles.bulletedList : styles.numberedList}>
+              {currentListItems}
+            </ListTag>
+          );
+          currentListItems = [];
+          currentListType = null;
+        }
+        
+        // 通常のブロックを追加
+        result.push(renderBlock(block));
+      }
+    });
+    
+    // 最後のリストがあれば追加
+    if (currentListItems.length > 0) {
+      const ListTag = currentListType === 'bulleted_list_item' ? 'ul' : 'ol';
+      result.push(
+        <ListTag key={`list-end`} className={currentListType === 'bulleted_list_item' ? styles.bulletedList : styles.numberedList}>
+          {currentListItems}
+        </ListTag>
+      );
+    }
+    
+    return result;
+  };
+
   return (
     <div className={styles.notionContent}>
-      {blocks.map((block) => renderBlock(block))}
+      {renderBlocks(blocks)}
     </div>
   );
 }
@@ -72,26 +194,26 @@ function renderBlock(block: NotionBlock) {
     
     case 'bulleted_list_item':
       return (
-        <ul key={id} className={styles.bulletedList}>
-          <li>{block.bulleted_list_item && renderRichText(block.bulleted_list_item.rich_text)}</li>
-          {block.has_children && block.children && Array.isArray(block.children.results) && 
-            <div className={styles.nestedList}>
-              {block.children.results.map((child: NotionBlock) => renderBlock(child))}
-            </div>
-          }
-        </ul>
+        <li key={id}>
+          {block.bulleted_list_item && renderRichText(block.bulleted_list_item.rich_text)}
+          {block.has_children && block.children && Array.isArray(block.children.results) && (
+            <ul className={styles.nestedList}>
+              {renderNestedList(block.children.results)}
+            </ul>
+          )}
+        </li>
       );
     
     case 'numbered_list_item':
       return (
-        <ol key={id} className={styles.numberedList}>
-          <li>{block.numbered_list_item && renderRichText(block.numbered_list_item.rich_text)}</li>
-          {block.has_children && block.children && Array.isArray(block.children.results) && 
-            <div className={styles.nestedList}>
-              {block.children.results.map((child: NotionBlock) => renderBlock(child))}
-            </div>
-          }
-        </ol>
+        <li key={id}>
+          {block.numbered_list_item && renderRichText(block.numbered_list_item.rich_text)}
+          {block.has_children && block.children && Array.isArray(block.children.results) && (
+            <ol className={styles.nestedList}>
+              {renderNestedList(block.children.results)}
+            </ol>
+          )}
+        </li>
       );
     
     case 'code':
@@ -204,14 +326,24 @@ function renderBlock(block: NotionBlock) {
         );
       }
       
-      // YouTubeの埋め込み処理
+      // 埋め込みURLの処理
       const embedUrl = block.embed.url;
+      
+      // YouTube埋め込み処理
       const youtubeRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]+)(?:\?.*)?/;
       const youtubeMatch = embedUrl.match(youtubeRegex);
       
-      // Vimeoの埋め込み処理
+      // Vimeo埋め込み処理
       const vimeoRegex = /(?:https?:\/\/)?(?:www\.)?(?:vimeo\.com\/)([0-9]+)(?:\?.*)?/;
       const vimeoMatch = embedUrl.match(vimeoRegex);
+      
+      // Twitter埋め込み処理
+      const twitterRegex = /(?:https?:\/\/)?(?:www\.)?(?:twitter\.com|x\.com)\/(?:#!\/)?(\w+)\/status(?:es)?\/(\d+)/;
+      const twitterMatch = embedUrl.match(twitterRegex);
+
+      // CodePen埋め込み処理
+      const codepenRegex = /(?:https?:\/\/)?(?:www\.)?codepen\.io\/([^\/]+)\/(?:pen|embed)\/([^\/]+)/;
+      const codepenMatch = embedUrl.match(codepenRegex);
       
       // キャプション処理
       const embedCaption = block.embed.caption && Array.isArray(block.embed.caption) && block.embed.caption.length > 0
@@ -229,7 +361,9 @@ function renderBlock(block: NotionBlock) {
             title="YouTube video"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
+            width="100%"
             height="450"
+            frameBorder="0"
             data-testid="embed-iframe"
           />
         );
@@ -243,20 +377,73 @@ function renderBlock(block: NotionBlock) {
             title="Vimeo video"
             allow="autoplay; fullscreen; picture-in-picture"
             allowFullScreen
+            width="100%"
             height="450"
+            frameBorder="0"
+            data-testid="embed-iframe"
+          />
+        );
+      } else if (twitterMatch && twitterMatch[1] && twitterMatch[2]) {
+        // Twitter埋め込み
+        const username = twitterMatch[1];
+        const tweetId = twitterMatch[2];
+        embedContent = (
+          <div className={styles.twitterEmbed}>
+            <blockquote className="twitter-tweet">
+              <a 
+                href={`https://twitter.com/${username}/status/${tweetId}`}
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
+                Loading Tweet...
+              </a>
+            </blockquote>
+            <script async src="https://platform.twitter.com/widgets.js" charSet="utf-8"></script>
+          </div>
+        );
+      } else if (codepenMatch && codepenMatch[1] && codepenMatch[2]) {
+        // CodePen埋め込み
+        const username = codepenMatch[1];
+        const penId = codepenMatch[2];
+        embedContent = (
+          <iframe
+            className={styles.embedIframe}
+            src={`https://codepen.io/${username}/embed/${penId}?default-tab=result`}
+            title="CodePen Embed"
+            allowFullScreen
+            width="100%"
+            height="450"
+            frameBorder="0"
             data-testid="embed-iframe"
           />
         );
       } else {
-        // その他のURL：iframeで表示
-        embedContent = (
-          <div className={styles.unsupportedBlock}>
-            <p>外部コンテンツの埋め込み:</p>
-            <Link href={embedUrl} target="_blank" rel="noopener noreferrer" className={styles.link}>
-              {embedUrl}
-            </Link>
-          </div>
-        );
+        // 一般的なiframe埋め込み
+        try {
+          const url = new URL(embedUrl);
+          embedContent = (
+            <iframe
+              className={styles.embedIframe}
+              src={embedUrl}
+              title="Embedded content"
+              width="100%"
+              height="450"
+              frameBorder="0"
+              data-testid="embed-iframe"
+            />
+          );
+        } catch (e) {
+          // URLが無効な場合はリンクとして表示
+          embedContent = (
+            <div className={styles.unsupportedBlock}>
+              <p>外部コンテンツの埋め込み:</p>
+              <Link href={embedUrl} target="_blank" rel="noopener noreferrer" className={styles.link}>
+                {embedUrl}
+              </Link>
+            </div>
+          );
+        }
+        }
       }
       
       return (
@@ -314,7 +501,7 @@ function renderBlock(block: NotionBlock) {
             </div>
             {isOpen && hasChildren && (
               <div className={styles.toggleContent}>
-                {block.children.results.map((child: NotionBlock) => renderBlock(child))}
+                {renderBlocks(block.children.results)}
               </div>
             )}
           </div>
@@ -458,9 +645,54 @@ function renderRichText(richText: any[] = []) {
       code = false
     } = annotations;
     
-    const plain_text = text.plain_text || '';
+    let plain_text = text.plain_text || '';
     const href = text.href;
 
+    // 改行を処理
+    const hasNewlines = plain_text.includes('\n');
+    if (hasNewlines) {
+      const textParts = plain_text.split('\n');
+
+      // 改行を<br />タグに変換
+      return (
+        <Fragment key={index}>
+          {textParts.map((part, i) => {
+            // スタイルをクラス名に変換
+            const classNames = [];
+            if (bold) classNames.push(styles.bold);
+            if (italic) classNames.push(styles.italic);
+            if (strikethrough) classNames.push(styles.strikethrough);
+            if (underline) classNames.push(styles.underline);
+            if (code) classNames.push(styles.inlineCode);
+
+            // クラス名を結合
+            const className = classNames.length > 0 ? classNames.join(' ') : undefined;
+
+            // リンクがある場合
+            if (href) {
+              return (
+                <Fragment key={i}>
+                  <Link href={href} className={`${styles.link} ${className}`} target="_blank" rel="noopener noreferrer">
+                    {part}
+                  </Link>
+                  {i < textParts.length - 1 && <br />}
+                </Fragment>
+              );
+            }
+
+            // 通常のテキスト
+            return (
+              <Fragment key={i}>
+                <span className={className}>{part}</span>
+                {i < textParts.length - 1 && <br />}
+              </Fragment>
+            );
+          })}
+        </Fragment>
+      );
+    }
+
+    // 改行がない場合は通常の処理
     // スタイルをクラス名に変換
     const classNames = [];
     if (bold) classNames.push(styles.bold);
