@@ -73,14 +73,16 @@ export default class NotionRepository extends BaseNotionRepository {
     const response: QueryDatabaseResponse = await this._notion.databases.query({
       database_id: this._databaseId,
       filter: {
-        and: [{
-          property: 'Slug',
-          text: { equals: slug }
-        },
-        {
-          property: 'Published',
-          checkbox: { equals: true }
-        }]
+        and: [
+          {
+            property: 'Slug',
+            rich_text: { equals: slug }
+          },
+          {
+            property: 'Published',
+            checkbox: { equals: true }
+          }
+        ]
       }
     });
     return response.results[0]?.id;
@@ -97,9 +99,13 @@ export default class NotionRepository extends BaseNotionRepository {
     for (let result of resp.results) {
       let block = result as BlockType
       if (block.type === 'paragraph') {
-        block.paragraph.text.forEach((textObject: IText) => {
-          openingSentence += textObject.plain_text
-        })
+        // Support both old and new Notion API formats
+        const textContent = block.paragraph.text || block.paragraph.rich_text;
+        if (textContent) {
+          textContent.forEach((textObject: IText) => {
+            openingSentence += textObject.plain_text
+          })
+        }
       }
       if (openingSentence.length >= 80) {
         break
