@@ -1,12 +1,38 @@
 .mylinkList {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 24px;
   width: 100%;
+  padding: 10px 5px;
+  position: relative;
+}
+
+/* コーヒーショップをイメージした装飾 */
+.mylinkList::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+  opacity: 0.2;
+}
+
+.mylinkList::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+  opacity: 0.2;
 }
 
 @media (max-width: 768px) {
   .mylinkList {
-    gap: 12px;
+    gap: 20px;
+    padding: 8px 2px;
   }
 }

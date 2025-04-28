@@ -1,22 +1,23 @@
 .mylinkCard {
   display: flex;
   background-color: var(--content-bg-color);
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  margin-bottom: 16px;
-  height: 120px;
+  box-shadow: 0 4px 12px rgba(123, 94, 87, 0.08);
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+  height: 140px;
+  border-left: 4px solid var(--accent-color);
 }
 
 .mylinkCard:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(123, 94, 87, 0.15);
 }
 
 .mylinkImage {
   width: 200px;
-  height: 120px;
+  height: 140px;
   overflow: hidden;
   flex-shrink: 0;
   position: relative;
@@ -24,40 +25,52 @@
   justify-content: center;
   align-items: center;
   background-color: var(--sidebar-bg-color);
+  transition: all 0.3s ease;
 }
 
 .image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease;
+  transition: transform 0.5s ease;
 }
 
 .mylinkCard:hover .image {
-  transform: scale(1.05);
+  transform: scale(1.08);
 }
 
 .mylinkContent {
-  padding: 12px;
+  padding: 16px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.mylinkCard:hover .mylinkContent {
+  background-color: rgba(249, 246, 240, 0.7);
 }
 
 .mylinkTitle {
-  font-size: 1.1rem;
-  margin-bottom: 8px;
+  font-size: 1.2rem;
+  margin-bottom: 12px;
   line-height: 1.4;
+  font-weight: 600;
 }
 
 .titleLink {
-  color: var(--link-color);
+  color: var(--heading-color);
   text-decoration: none;
   transition: color 0.3s ease;
+  display: inline-block;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 2px;
 }
 
 .titleLink:hover {
-  color: var(--link-hover-color);
+  color: var(--link-color);
+  border-bottom: 2px solid var(--link-color);
 }
 
 .mylinkTags {
@@ -69,12 +82,33 @@
 
 .tagItem {
   display: inline-block;
-  padding: 2px 8px;
+  padding: 3px 10px;
   background-color: var(--sidebar-bg-color);
   color: var(--accent-color);
-  border-radius: 4px;
+  border-radius: 20px;
   font-size: 0.8rem;
   text-decoration: none;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.tagItem:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* コーヒースタイルの装飾 */
+.mylinkCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  background-color: transparent;
+  border-radius: 0 0 0 40px;
+  z-index: 1;
 }
 
 /* モバイル対応 */
@@ -82,18 +116,24 @@
   .mylinkCard {
     flex-direction: column;
     height: auto;
+    border-left: none;
+    border-top: 4px solid var(--accent-color);
   }
   
   .mylinkImage {
     width: 100%;
-    height: 160px;
+    height: 180px;
   }
   
   .mylinkContent {
-    padding: 12px;
+    padding: 16px;
   }
   
   .mylinkTitle {
-    font-size: 1rem;
+    font-size: 1.1rem;
+  }
+  
+  .tagItem {
+    padding: 2px 8px;
   }
 }
