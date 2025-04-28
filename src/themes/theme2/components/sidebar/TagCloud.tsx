@@ -1,33 +1,71 @@
 import React from 'react';
 import Link from 'next/link';
 import styles from './TagCloud.module.css';
+import { usePostList } from 'themes/theme2/hooks/usePostList';
+import { IPageTag } from 'core/types/NotionPageApiResponses';
+
+// タグのサイズを決めるための閾値
+const SIZE_THRESHOLDS = {
+  large: 5,   // 5回以上使われているタグは大きく表示
+  medium: 3,  // 3-4回使われているタグは中くらいに表示
+  small: 0    // それ以外は小さく表示
+};
 
 /**
  * タグクラウドコンポーネント
- * 注: 実際の実装では、データは動的に取得します
+ * Notionから取得したタグを表示します
  */
 export default function TagCloud() {
-  // 仮のデータ - 実際の実装では動的に取得する
-  const tags = [
-    { id: 1, name: 'JavaScript', count: 8, size: 'large' },
-    { id: 2, name: 'React', count: 6, size: 'large' },
-    { id: 3, name: 'TypeScript', count: 5, size: 'medium' },
-    { id: 4, name: 'Next.js', count: 5, size: 'medium' },
-    { id: 5, name: 'CSS', count: 4, size: 'medium' },
-    { id: 6, name: 'HTML', count: 3, size: 'small' },
-    { id: 7, name: 'Node.js', count: 3, size: 'small' },
-    { id: 8, name: 'API', count: 2, size: 'small' },
-    { id: 9, name: 'Notion', count: 2, size: 'small' },
-    { id: 10, name: 'デザイン', count: 2, size: 'small' },
-  ];
+  const { posts, isLoading } = usePostList();
+  
+  // すべての記事からタグを抽出して集計
+  const tagCounts: { [key: string]: { count: number, tag: IPageTag } } = {};
+  
+  posts.forEach((post) => {
+    if (post.tags) {
+      post.tags.forEach((tag) => {
+        if (!tagCounts[tag.name]) {
+          tagCounts[tag.name] = { count: 0, tag };
+        }
+        tagCounts[tag.name].count += 1;
+      });
+    }
+  });
+  
+  // 表示用のタグデータに変換
+  const tagData = Object.values(tagCounts).map(({ count, tag }) => {
+    let size = 'small';
+    if (count >= SIZE_THRESHOLDS.large) {
+      size = 'large';
+    } else if (count >= SIZE_THRESHOLDS.medium) {
+      size = 'medium';
+    }
+    
+    return {
+      id: tag.id,
+      name: tag.name,
+      count,
+      size,
+      color: tag.color
+    };
+  }).sort((a, b) => b.count - a.count); // 使用頻度順にソート
+
+  if (isLoading) {
+    return <div className={styles.loading}>読み込み中...</div>;
+  }
+  
+  if (tagData.length === 0) {
+    return <div className={styles.noTags}>タグはありません</div>;
+  }
 
   return (
     <div className={styles.tagCloud}>
-      {tags.map((tag) => (
+      {tagData.map((tag) => (
         <Link 
           key={tag.id} 
           href={`/tags/${tag.name.toLowerCase()}`} 
           className={`${styles.tag} ${styles[tag.size]}`}
+          style={{ backgroundColor: tag.color === 'default' ? undefined : `var(--notion-${tag.color})` }}
         >
           {tag.name}
         </Link>

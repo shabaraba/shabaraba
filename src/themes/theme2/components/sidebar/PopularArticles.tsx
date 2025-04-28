@@ -1,25 +1,31 @@
 import React from 'react';
 import Link from 'next/link';
 import styles from './PopularArticles.module.css';
+import { IPageHead } from 'core/types/NotionPageApiResponses';
+import { usePostList } from 'themes/theme2/hooks/usePostList';
 
 /**
  * 人気記事一覧コンポーネント
- * 注: 実際の実装では、データは動的に取得します
+ * Notionからtrend属性がtrueの記事を表示します
  */
 export default function PopularArticles() {
-  // 仮のデータ - 実際の実装では記事データを取得する
-  const popularArticles = [
-    { id: 1, title: 'Notion APIを使ったブログの作り方', slug: 'build-blog-using-notion-api-1' },
-    { id: 2, title: '効率的な開発環境の構築方法', slug: 'setup-develop-environment' },
-    { id: 3, title: 'ipadだけでのコーディング環境構築', slug: 'coding-with-ipad' },
-    { id: 4, title: '長距離通勤をしてみて思ったこと', slug: 'long-distance-commutation' },
-    { id: 5, title: '自分のリンク集を公開してみた', slug: 'publish-my-links' },
-  ];
+  const { posts, isLoading } = usePostList();
+  
+  // トレンド記事のみをフィルタリング
+  const trendingPosts: IPageHead[] = posts.filter(post => post.trend === true);
+
+  if (isLoading) {
+    return <div className={styles.loading}>読み込み中...</div>;
+  }
+
+  if (trendingPosts.length === 0) {
+    return <div className={styles.noArticles}>人気記事はありません</div>;
+  }
 
   return (
     <div className={styles.popularArticles}>
       <ul className={styles.articleList}>
-        {popularArticles.map((article) => (
+        {trendingPosts.map((article) => (
           <li key={article.id} className={styles.articleItem}>
             <Link href={`/posts/${article.slug}`} className={styles.articleLink}>
               {article.title}

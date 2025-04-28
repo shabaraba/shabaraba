@@ -5,7 +5,9 @@ import {
   IMultiSelectPropertyValue, 
   IRichTextPropertyValue,
   IDatePropertyValue,
-  ILastEditedTimePropertyValue
+  ILastEditedTimePropertyValue,
+  ICheckboxPropertyValue,
+  ISelectPropertyValue
 } from "core/types/NotionApiResponses";
 
 export type NotionPageResponseType = Partial<IPageResponse> & {
@@ -15,6 +17,8 @@ export type NotionPageResponseType = Partial<IPageResponse> & {
     Slug: IRichTextPropertyValue;
     Published_Time: IDatePropertyValue;
     Updated?: ILastEditedTimePropertyValue;
+    Trend?: ICheckboxPropertyValue;
+    Series?: ISelectPropertyValue;
     [key: string]: any; // その他のプロパティにも対応
   };
   icon?: IPageIcon;
@@ -52,6 +56,12 @@ export class NotionPageResponseDxo {
     // 日付関連の安全な取得
     const publishedAt: string = properties.Published_Time.date?.start || new Date().toISOString();
     const updatedAt: string | undefined = properties.Updated?.last_edited_time;
+    
+    // Trendプロパティの安全な取得
+    const trend: boolean = properties.Trend?.checkbox || false;
+    
+    // Seriesプロパティの安全な取得
+    const series: string | null = properties.Series?.select?.name || null;
 
     return {
       id: response.id,
@@ -62,6 +72,8 @@ export class NotionPageResponseDxo {
       ...(cover && { cover }),
       publishedAt,
       updatedAt,
+      trend,
+      ...(series && { series }),
     };
   }
 

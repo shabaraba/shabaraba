@@ -9,6 +9,8 @@ export type IPageHead = {
   slug?: string
   publishedAt: string
   updatedAt?: string
+  trend?: boolean
+  series?: string
 
   [prop: string]: any
 }

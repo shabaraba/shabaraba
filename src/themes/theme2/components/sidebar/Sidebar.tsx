@@ -2,8 +2,8 @@ import React from 'react';
 import styles from './Sidebar.module.css';
 import AuthorBox from './AuthorBox';
 import PopularArticles from './PopularArticles';
-import CategoryList from './CategoryList';
 import TagCloud from './TagCloud';
+import SeriesList from './SeriesList';
 
 /**
  * サイドバーコンポーネント
@@ -17,8 +17,8 @@ export default function Sidebar() {
         <PopularArticles />
       </div>
       <div className={styles.sidebarSection}>
-        <h3 className={styles.sidebarTitle}>カテゴリ</h3>
-        <CategoryList />
+        <h3 className={styles.sidebarTitle}>シリーズ</h3>
+        <SeriesList />
       </div>
       <div className={styles.sidebarSection}>
         <h3 className={styles.sidebarTitle}>タグ</h3>
