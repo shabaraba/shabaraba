@@ -19,7 +19,11 @@ export class Callout extends Paragraph {
         // Notion APIの仕様変更に対応: rich_textプロパティを優先的に使用し、存在しない場合はtextプロパティを使用
         rich_text: resp.callout.rich_text || resp.callout.text,
         text: resp.callout.text,
-        children: resp.callout.children,
+        // childrenがundefinedの場合、空のリストオブジェクトに置き換える
+        children: resp.callout.children || {
+          object: "list",
+          results: []
+        },
       }
     };
     super(paragraph);

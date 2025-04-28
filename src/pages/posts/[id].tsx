@@ -21,20 +21,4 @@ export async function getStaticProps({ params }) {
     };
   }
   return ArticlePageUsecase.getStaticProps({ params });
-
-  try {
-    const articleService = ArticleServiceFactory.createArticleService();
-    const article = await articleService.getArticleBySlug(params.id);
-
-    return {
-      props: {
-        article,
-      },
-    };
-  } catch (error) {
-    console.error(`Error fetching article with slug "${params.id}":`, error);
-    return {
-      notFound: true,
-    };
-  }
 }

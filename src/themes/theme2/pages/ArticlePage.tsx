@@ -34,27 +34,3 @@ export default function ArticlePage({ article }: ArticlePageProps) {
   );
 }
 
-/**
- * 静的パスを生成するための関数
- */
-export const getStaticPaths: GetStaticPaths<Params> = async () => {
-  try {
-    const articleService = ArticleServiceFactory.createArticleService();
-    const slugs = await articleService.getArticleSlugs();
-    
-    const paths = slugs.map((slug) => ({
-      params: { slug },
-    }));
-    
-    return {
-      paths,
-      fallback: false, // blockingから変更。exportモードではfalseのみサポート
-    };
-  } catch (error) {
-    console.error('Error generating static paths:', error);
-    return {
-      paths: [],
-      fallback: false, // blockingから変更
-    };
-  }
-};

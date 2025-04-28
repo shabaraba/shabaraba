@@ -1,16 +1,18 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { tomorrow } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import styles from './NotionBlockRenderer.module.css';
 import { OgpFetchStatus, getFaviconUrl } from '../../../../lib/ogp';
+import dynamic from 'next/dynamic';
 
 // Notionブロックの型定義（実際はより複雑です）
 interface NotionBlock {
   type: string;
   id: string;
   has_children?: boolean;
+  children?: NotionBlock[];
   [key: string]: any;
 }
 
@@ -105,18 +107,16 @@ function renderListItem(block: NotionBlock, parentType: string | null) {
     ? block.bulleted_list_item && renderRichText(block.bulleted_list_item.rich_text)
     : block.numbered_list_item && renderRichText(block.numbered_list_item.rich_text);
   
-  // 子要素があるかチェック
-  const hasChildren = block.has_children && block.children && Array.isArray(block.children.results);
-  
+  console.log(JSON.stringify(block.children, null, 2));
   // 子要素があれば再帰的に処理（親のリストタイプを継承）
-  const childrenContent = hasChildren ? (
+  const childrenContent = block.has_children ? (
     parentType === 'bulleted_list_item' ? (
       <ul className={styles.nestedList}>
-        {renderNestedList(block.children.results, parentType)}
+        {renderNestedList(block.children, parentType)}
       </ul>
     ) : (
       <ol className={styles.nestedList}>
-        {renderNestedList(block.children.results, parentType)}
+        {renderNestedList(block.children, parentType)}
       </ol>
     )
   ) : null;
@@ -411,22 +411,11 @@ function renderBlock(block: NotionBlock) {
           />
         );
       } else if (twitterMatch && twitterMatch[1] && twitterMatch[2]) {
-        // Twitter埋め込み
+        // Twitter埋め込み - クライアントサイドでのみレンダリング
         const username = twitterMatch[1];
         const tweetId = twitterMatch[2];
         embedContent = (
-          <div className={styles.twitterEmbed}>
-            <blockquote className="twitter-tweet">
-              <a 
-                href={`https://twitter.com/${username}/status/${tweetId}`}
-                target="_blank" 
-                rel="noopener noreferrer"
-              >
-                Loading Tweet...
-              </a>
-            </blockquote>
-            <script async src="https://platform.twitter.com/widgets.js" charSet="utf-8"></script>
-          </div>
+          <TwitterEmbed username={username} tweetId={tweetId} />
         );
       } else if (codepenMatch && codepenMatch[1] && codepenMatch[2]) {
         // CodePen埋め込み
@@ -507,7 +496,6 @@ function renderBlock(block: NotionBlock) {
         const [isOpen, setIsOpen] = useState(false);
         
         const toggleHeader = block.toggle.rich_text ? renderRichText(block.toggle.rich_text) : 'Toggle';
-        const hasChildren = block.has_children && block.children && Array.isArray(block.children.results);
         
         const handleToggle = () => {
           setIsOpen(!isOpen);
@@ -525,9 +513,9 @@ function renderBlock(block: NotionBlock) {
               </span>
               <div>{toggleHeader}</div>
             </div>
-            {isOpen && hasChildren && (
+            {isOpen && block.has_children && (
               <div className={styles.toggleContent}>
-                {renderBlocks(block.children.results)}
+                {block.children.map(child => renderBlock(child))}
               </div>
             )}
           </div>
@@ -747,3 +735,65 @@ function renderRichText(richText: any[] = []) {
     );
   });
 }
+
+/**
+ * Twitter埋め込みコンポーネント - クライアントサイドでのみレンダリング
+ */
+interface TwitterEmbedProps {
+  username: string;
+  tweetId: string;
+}
+
+// クライアントサイドでのみレンダリングされるコンポーネント
+const TwitterEmbed = ({ username, tweetId }: TwitterEmbedProps) => {
+  const [mounted, setMounted] = useState(false);
+
+  // クライアントサイドでのみ実行するためのuseEffect
+  useEffect(() => {
+    setMounted(true);
+    
+    // Twitter widgetスクリプトをロード
+    const script = document.createElement('script');
+    script.src = 'https://platform.twitter.com/widgets.js';
+    script.async = true;
+    script.charset = 'utf-8';
+    document.body.appendChild(script);
+    
+    // コンポーネントがアンマウントされたらスクリプトを削除
+    return () => {
+      if (document.body.contains(script)) {
+        document.body.removeChild(script);
+      }
+    };
+  }, []);
+
+  // サーバーサイドレンダリング時は単純なリンクを表示
+  if (!mounted) {
+    return (
+      <div className={styles.twitterEmbed}>
+        <a
+          href={`https://twitter.com/${username}/status/${tweetId}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Loading Tweet...
+        </a>
+      </div>
+    );
+  }
+
+  // クライアントサイドでのみTwitterの埋め込みを表示
+  return (
+    <div className={styles.twitterEmbed}>
+      <blockquote className="twitter-tweet">
+        <a
+          href={`https://twitter.com/${username}/status/${tweetId}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Loading Tweet...
+        </a>
+      </blockquote>
+    </div>
+  );
+};

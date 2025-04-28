@@ -60,7 +60,7 @@ type _IParagraph = {
   // 後方互換性のために、textもrich_textとして扱う
   rich_text?: IText[],
   text?: IText[],
-  children: IRetrieveBlockChildrenResponse
+  children?: IRetrieveBlockChildrenResponse
 }
 
 export type IHeading1Block = _IBlock & { type: "heading_1", heading_1: _IHeading }

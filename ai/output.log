@@ -1,12 +1,11 @@
 
-> build
-> next build && echo 'Build completed'
+> dev
+> next dev
 
    ▲ Next.js 15.2.2
+   - Local:        http://localhost:3001
+   - Network:      http://192.168.0.8:3001
    - Environments: .env
 
-   Skipping validation of types
-   Skipping linting
-   Creating an optimized production build ...
- ✓ Compiled successfully
-   Collecting page data ...
+ ✓ Starting...
+ ✓ Ready in 4.3s

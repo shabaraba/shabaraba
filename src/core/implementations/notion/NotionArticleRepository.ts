@@ -70,7 +70,6 @@ export class NotionArticleRepository implements ArticleRepository {
       
       // 記事の内容を取得
       const blocks = await setOGPToBookmarkBlocks(await this.getPageBlocks(page.id));
-      console.log(JSON.stringify(blocks, null, 2));
 
       return {
         ...articleListItem,

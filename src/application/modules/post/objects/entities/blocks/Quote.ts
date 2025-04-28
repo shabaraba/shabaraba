@@ -16,7 +16,11 @@ export class Quote extends Paragraph {
         // Notion APIの仕様変更に対応: rich_textプロパティを優先的に使用し、存在しない場合はtextプロパティを使用
         rich_text: resp.quote.rich_text || resp.quote.text,
         text: resp.quote.text,
-        children: resp.quote.children,
+        // childrenがundefinedの場合、空のリストオブジェクトに置き換える
+        children: resp.quote.children || {
+          object: "list",
+          results: []
+        },
       }
     };
     super(paragraph);

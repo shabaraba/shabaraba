@@ -19,8 +19,10 @@ export class Paragraph extends Block {
       this.texts.push(new Text(text));
     });
     this.children = [];
-    if (resp.paragraph.children?.results?.length > 0) {
-      const childBlockList = BlockList.deserialize(resp.paragraph.children.results, this.nest + 1);
+    // childrenがundefinedまたは空配列の場合はデフォルト値を使用
+    const children = resp.paragraph.children || { object: "list", results: [] };
+    if (children.results?.length > 0) {
+      const childBlockList = BlockList.deserialize(children.results, this.nest + 1);
       this.children = childBlockList.data;
     }
   }
