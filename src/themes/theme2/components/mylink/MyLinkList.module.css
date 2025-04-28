@@ -1,9 +1,8 @@
 .mylinkList {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 24px; /* 少し狭くして密度を高める */
   width: 100%;
-  padding: 10px 5px;
   position: relative;
 }
 
@@ -33,6 +32,5 @@
 @media (max-width: 768px) {
   .mylinkList {
     gap: 20px;
-    padding: 8px 2px;
   }
 }
