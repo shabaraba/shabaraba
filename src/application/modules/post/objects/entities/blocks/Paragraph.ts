@@ -13,7 +13,9 @@ export class Paragraph extends Block {
     this.type = "Paragraph";
 
     this.texts = [];
-    resp.paragraph.text.map((text: NotionBlockInterfaces.IText) => {
+    // 新しいAPIでは rich_text フィールドを使用、旧APIとの後方互換性のために text フィールドもサポート
+    const textArray = resp.paragraph.rich_text || resp.paragraph.text || [];
+    textArray.map((text: NotionBlockInterfaces.IText) => {
       this.texts.push(new Text(text));
     });
     this.children = [];

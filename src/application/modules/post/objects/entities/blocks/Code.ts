@@ -13,7 +13,9 @@ export class Code extends Block {
     this.type = "Code";
 
     this.texts = [];
-    resp.code.text.map((text: NotionBlockInterfaces.IText) => {
+    // 新しいAPIでは rich_text フィールドを使用、旧APIとの後方互換性のために text フィールドもサポート
+    const textArray = resp.code.rich_text || resp.code.text || [];
+    textArray.map((text: NotionBlockInterfaces.IText) => {
       this.texts.push(new Text(text));
     });
     this.captions = [];

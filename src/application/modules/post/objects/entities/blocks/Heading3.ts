@@ -11,7 +11,9 @@ export class Heading3 extends Block {
     this.type = "Heading3";
 
     this.texts = [];
-    resp.heading_3.text.map((text) => {
+    // 新しいAPIでは rich_text フィールドを使用、旧APIとの後方互換性のために text フィールドもサポート
+    const textArray = resp.heading_3.rich_text || resp.heading_3.text || [];
+    textArray.map((text) => {
       this.texts.push(new Text(text));
     });
   }

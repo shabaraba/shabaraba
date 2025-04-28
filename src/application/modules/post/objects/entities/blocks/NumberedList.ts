@@ -22,6 +22,7 @@ export class NumberedListItem extends Paragraph {
       type: "paragraph",
       paragraph: {
         text: resp.numbered_list_item.text,
+        rich_text: resp.numbered_list_item.rich_text,
         children: resp.numbered_list_item.children,
       }
     };

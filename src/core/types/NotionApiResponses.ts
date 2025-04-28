@@ -55,12 +55,16 @@ export type IMention = _IRichText
 export type IEquation = _IRichText & { type: "equation" }
 
 export type IParagraphBlock = _IBlock & { type: "paragraph", paragraph: _IParagraph }
-type _IParagraph = { text: IText[], children: IRetrieveBlockChildrenResponse }
+type _IParagraph = { 
+  text?: IText[], 
+  rich_text?: IText[], 
+  children: IRetrieveBlockChildrenResponse 
+}
 
 export type IHeading1Block = _IBlock & { type: "heading_1", heading_1: _IHeading }
 export type IHeading2Block = _IBlock & { type: "heading_2", heading_2: _IHeading }
 export type IHeading3Block = _IBlock & { type: "heading_3", heading_3: _IHeading }
-type _IHeading = { text: IText[] }
+type _IHeading = { text?: IText[], rich_text?: IText[] }
 
 export type ICalloutBlock = _IBlock & { type: "callout", callout: _ICallout }
 type _IIcon = IFileFile | IExternalFile | IEmoji
@@ -85,7 +89,8 @@ export type IEmoji = { emoji: string; }
 
 export type ICodeBlock = _IBlock & { type: "code", code: _ICode }
 type _ICode = {
-  text: IText[];
+  text?: IText[];
+  rich_text?: IText[];
   caption?: IText[];
   language?: "abap" | "arduino" | "bash" | "basic" | "c" | "clojure" | "coffeescript" | "c++" | "c#" | "css" | "dart" | "diff" | "docker" | "elixir" | "elm" | "erlang" | "flow" | "fortran" | "f#" | "gherkin" | "glsl" | "go" | "graphql" | "groovy" | "haskell" | "html" | "java" | "javascript" | "json" | "julia" | "kotlin" | "latex" | "less" | "lisp" | "livescript" | "lua" | "makefile" | "markdown" | "markup" | "matlab" | "mermaid" | "nix" | "objective-c" | "ocaml" | "pascal" | "perl" | "php" | "plain text" | "powershell" | "prolog" | "protobuf" | "python" | "r" | "reason" | "ruby" | "rust" | "sass" | "scala" | "scheme" | "scss" | "shell" | "sql" | "swift" | "typescript" | "vb.net" | "verilog" | "vhdl" | "visual basic" | "webassembly" | "xml" | "yaml" |  "java/c/c++/c#";
 }
