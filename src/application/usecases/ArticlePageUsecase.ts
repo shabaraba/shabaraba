@@ -34,10 +34,13 @@ export class ArticlePageUsecase {
       const articleHeadService = ArticleServiceFactory.createArticleHeadService();
       const articleHead = articleHeadService.getBySlug(slug);
       const article = await articleService.getArticleBySlug(slug);
+      
+      // JSONシリアライズ時のundefinedプロパティを処理
+      const sanitizedArticle = this.sanitizeUndefinedValues(article);
 
       return {
         props: {
-          article,
+          article: sanitizedArticle,
         },
       };
     } catch (error) {
@@ -46,6 +49,34 @@ export class ArticlePageUsecase {
         notFound: true,
       };
     }
+  }
+  
+  /**
+   * オブジェクト内のundefined値をnullに変換
+   * Next.jsのgetStaticPropsではundefined値を含むオブジェクトをJSONシリアライズできないため
+   */
+  private static sanitizeUndefinedValues(obj: any): any {
+    if (obj === undefined) {
+      return null; // undefinedをnullに変換
+    }
+    
+    if (obj === null || typeof obj !== 'object') {
+      return obj; // nullか非オブジェクトの場合はそのまま返す
+    }
+    
+    if (Array.isArray(obj)) {
+      // 配列の場合は各要素を再帰的に処理
+      return obj.map(item => this.sanitizeUndefinedValues(item));
+    }
+    
+    // オブジェクトの場合はプロパティごとに再帰的に処理
+    const result: any = {};
+    for (const key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        result[key] = this.sanitizeUndefinedValues(obj[key]);
+      }
+    }
+    return result;
   }
 }
 
