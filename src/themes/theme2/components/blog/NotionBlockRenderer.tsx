@@ -160,7 +160,11 @@ function renderBlock(block: NotionBlock) {
               alt={'Image'}
               width={800}
               height={500}
-              layout="responsive"
+              style={{
+                width: '100%',
+                height: 'auto',
+                objectFit: 'contain'
+              }}
             />
           </div>
           {caption && <figcaption className={styles.imageCaption}>{caption}</figcaption>}
@@ -423,7 +427,9 @@ const BookmarkBlock: React.FC<BookmarkBlockProps> = ({ url, caption }) => {
           <Image 
             className={styles.bookmarkThumbnail} 
             src={ogp.thumbnailUrl}
-            alt={ogp.title}
+            alt={ogp.title || 'Thumbnail'}
+            width={200}
+            height={120}
           />
         )}
       </a>
