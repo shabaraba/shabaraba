@@ -6,7 +6,7 @@
   box-shadow: 0 4px 12px rgba(123, 94, 87, 0.08);
   transition: all 0.3s ease;
   margin-bottom: 20px;
-  height: 140px;
+  height: 150px; /* カードの高さを増加 */
   border-left: 4px solid var(--accent-color);
 }
 
@@ -17,7 +17,7 @@
 
 .mylinkImage {
   width: 200px;
-  height: 140px;
+  height: 150px;
   overflow: hidden;
   flex-shrink: 0;
   position: relative;
@@ -41,7 +41,7 @@
 }
 
 .mylinkContent {
-  padding: 14px 16px 12px;
+  padding: 14px 16px 16px;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
@@ -56,7 +56,7 @@
 
 .mylinkTitle {
   font-size: 1rem;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   line-height: 1.4;
   font-weight: 600;
   margin-top: 0;
