@@ -1,15 +1,24 @@
 import { IPageIcon, IPageCover, IPageHead, IPageTag } from "core/types/NotionPageApiResponses";
+import { 
+  IPageResponse, 
+  ITitlePropertyValue, 
+  IMultiSelectPropertyValue, 
+  IRichTextPropertyValue,
+  IDatePropertyValue,
+  ILastEditedTimePropertyValue
+} from "core/types/NotionApiResponses";
 
-type NotionPageResponseType = {
+export type NotionPageResponseType = Partial<IPageResponse> & {
   properties: {
-    Name: any;
-    Tags: any;
-    Slug: any;
-    Published_Time: any;
-    Updated: any;
+    Name: ITitlePropertyValue;
+    Tags: IMultiSelectPropertyValue;
+    Slug: IRichTextPropertyValue;
+    Published_Time: IDatePropertyValue;
+    Updated?: ILastEditedTimePropertyValue;
+    [key: string]: any; // その他のプロパティにも対応
   };
-  icon: IPageIcon;
-  cover: IPageCover;
+  icon?: IPageIcon;
+  cover?: IPageCover;
   id: string;
 };
 
@@ -21,23 +30,39 @@ export class NotionPageResponseDxo {
    * @returns 
    */
   public static convertToNotionPostHead(response: NotionPageResponseType): IPageHead {
-    const properties = response?.properties
-    const title: string = properties.Name.title[0]?.plain_text
-    const tags: IPageTag[] = properties.Tags.multi_select
-    const slug: string|null = properties.Slug.rich_text[0]?.plain_text ?? null
-    const icon: IPageIcon = response.icon
-    const cover: IPageCover = response.cover
+    const properties = response?.properties;
+    
+    // 必須プロパティの安全な取得
+    const title: string = properties.Name.title[0]?.plain_text || 'Untitled';
+    
+    // タグ情報の安全な取得と変換
+    const tags: IPageTag[] = properties.Tags.multi_select.map(tag => ({
+      id: parseInt(tag.id, 10) || 0,
+      name: tag.name,
+      color: tag.color
+    }));
+    
+    // スラッグの安全な取得
+    const slug: string|null = properties.Slug.rich_text[0]?.plain_text ?? null;
+    
+    // オプショナルなプロパティの安全な取得
+    const icon: IPageIcon | undefined = response.icon;
+    const cover: IPageCover | undefined = response.cover;
+    
+    // 日付関連の安全な取得
+    const publishedAt: string = properties.Published_Time.date?.start || new Date().toISOString();
+    const updatedAt: string | undefined = properties.Updated?.last_edited_time;
 
     return {
       id: response.id,
-      title: title,
-      tags: tags,
-      slug: slug,
-      icon: icon,
-      cover: cover,
-      publishedAt: properties.Published_Time.date.start,
-      updatedAt: properties.Updated?.last_edited_time,
-    }
+      title,
+      tags,
+      slug,
+      ...(icon && { icon }),
+      ...(cover && { cover }),
+      publishedAt,
+      updatedAt,
+    };
   }
 
 }
