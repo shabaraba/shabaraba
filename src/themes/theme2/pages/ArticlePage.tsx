@@ -58,31 +58,3 @@ export const getStaticPaths: GetStaticPaths<Params> = async () => {
     };
   }
 };
-
-/**
- * 静的ページ生成のためのデータ取得関数
- */
-export const getStaticProps: GetStaticProps<ArticlePageProps, Params> = async ({ params }) => {
-  if (!params?.slug) {
-    return {
-      notFound: true,
-    };
-  }
-
-  try {
-    const articleService = ArticleServiceFactory.createArticleService();
-    const article = await articleService.getArticleBySlug(params.slug);
-    
-    return {
-      props: {
-        article,
-      },
-      // revalidateオプションを削除
-    };
-  } catch (error) {
-    console.error(`Error fetching article with slug "${params.slug}":`, error);
-    return {
-      notFound: true,
-    };
-  }
-};

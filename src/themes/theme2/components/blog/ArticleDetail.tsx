@@ -13,7 +13,6 @@ interface ArticleDetailProps {
  * 記事詳細コンポーネント
  */
 export default function ArticleDetail({ article }: ArticleDetailProps) {
-  console.log(JSON.stringify(article, null, 2));
   return (
     <article className={styles.article}>
       <header className={styles.header}>

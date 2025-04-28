@@ -64,14 +64,12 @@ export const getOGP = async (url: string, id: string): Promise<IOgp> => {
 };
 
 export const setOGPToBookmarkBlocks = async (
-  blockList: IRetrieveBlockChildrenResponse,
-): Promise<IRetrieveBlockChildrenResponse> => {
+  blockList: any,
+): Promise<any> => {
+  console.log(JSON.stringify(blockList, null, 2));
   try {
-    const blocks: IRetrieveBlockChildrenResponse = {
-      object: "list",
-      results: [],
-    };
-    for (let item of blockList.results) {
+    const blocks = [];
+    for (let item of blockList) {
       try {
         if (item.has_children === true) {
           item[item.type].children = await setOGPToBookmarkBlocks(
@@ -82,11 +80,11 @@ export const setOGPToBookmarkBlocks = async (
           let ogp: IOgp = await getOGP(item.bookmark.url, item.id);
           item.bookmark.ogp = ogp;
         }
-        blocks.results.push(item);
+        blocks.push(item);
       } catch (itemError) {
         console.warn(`Error processing block: ${item.id}`, itemError);
         // Still push the item even if OGP fetching fails
-        blocks.results.push(item);
+        blocks.push(item);
       }
     }
     return blocks;

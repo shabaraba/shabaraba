@@ -1,5 +1,6 @@
 import { Client } from "@notionhq/client";
 import { ArticleRepository, ArticleListItem, Article } from "../../interfaces/article/ArticleRepository";
+import { setOGPToBookmarkBlocks } from "application/modules/post/services/ogp";
 
 export class NotionArticleRepository implements ArticleRepository {
   private readonly notion: Client;
@@ -68,7 +69,8 @@ export class NotionArticleRepository implements ArticleRepository {
       const articleListItem = this.convertToArticleListItem(page);
       
       // 記事の内容を取得
-      const blocks = await this.getPageBlocks(page.id);
+      const blocks = await setOGPToBookmarkBlocks(await this.getPageBlocks(page.id));
+      console.log(JSON.stringify(blocks, null, 2));
 
       return {
         ...articleListItem,

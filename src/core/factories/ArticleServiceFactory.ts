@@ -1,5 +1,6 @@
 import { ArticleService } from '../interfaces/article/ArticleService';
 import { NotionArticleService } from '../implementations/notion/NotionArticleService';
+import { PostHeadService } from 'application/modules/post/services/PostHeadService';
 
 /**
  * 記事サービスのファクトリークラス
@@ -22,5 +23,9 @@ export class ArticleServiceFactory {
       default:
         return new NotionArticleService();
     }
+  }
+
+  static createArticleHeadService(): PostHeadService {
+    return new PostHeadService();
   }
 }

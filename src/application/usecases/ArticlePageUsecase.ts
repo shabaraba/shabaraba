@@ -3,41 +3,49 @@ import { PostHeadService } from "application/modules/post/services/PostHeadServi
 import { TagService } from "application/modules/tag/services/TagService";
 import { PostDetailDxo } from "core/dxo/PostDetailDxo";
 import { PostHeadDxo } from "core/dxo/PostHeadDxo";
+import { ArticleServiceFactory } from "core/factories/ArticleServiceFactory";
 import { PostDetailType } from "core/types/PostDetailType";
 import { PostHeadType } from "core/types/PostHeadType";
 import { StaticProps } from "core/types/PostPageType";
 
 export class ArticlePageUsecase {
   public static async getStaticPaths() {
-    const postHeadService = new PostHeadService();
-    const pathParams = await postHeadService.getPathParams();
-    return {
-      paths: pathParams,
-      fallback: false
+    try {
+      const postHeadService = ArticleServiceFactory.createArticleHeadService();
+      const pathParams = await postHeadService.getPathParams();
+      return {
+        paths: pathParams,
+        fallback: false,
+      };
+    } catch (error) {
+      console.error("Error generating static paths:", error);
+      return {
+        paths: [],
+        fallback: false, // blockingから変更
+      };
     }
   }
 
-  public static async getStaticProps({ params }): Promise<StaticProps> {
+  public static async getStaticProps({ params }): Promise<any> {
     const slug = params.id;
 
-    const postHeadService = new PostHeadService();
-    const postHeadDto = await postHeadService.getBySlug(slug);
-    const postHeadJson: PostHeadType = PostHeadDxo.convertForPages(postHeadDto);
-    const postDetailService = new PostDetailService();
-    const postDetailDto = await postDetailService.get(postHeadDto.id);
-    const postDetailJson: PostDetailType = PostDetailDxo.convertForPages(postDetailDto);
+    try {
+      const articleService = ArticleServiceFactory.createArticleService();
+      const articleHeadService = ArticleServiceFactory.createArticleHeadService();
+      const articleHead = articleHeadService.getBySlug(slug);
+      const article = await articleService.getArticleBySlug(slug);
 
-    const tagService = new TagService();
-    const tags = await tagService.getListByPost(postHeadDto);
-
-    return {
-      props: {
-        tags: tags,
-        postHead: postHeadJson,
-        postDetail: postDetailJson,
-        title: postHeadDto.title
-      },
-      // revalidate: 1 * 60
+      return {
+        props: {
+          article,
+        },
+      };
+    } catch (error) {
+      console.error(`Error fetching article with slug "${slug}":`, error);
+      return {
+        notFound: true,
+      };
     }
   }
 }
+

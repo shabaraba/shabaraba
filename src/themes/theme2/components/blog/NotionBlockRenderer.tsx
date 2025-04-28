@@ -157,7 +157,7 @@ function renderBlock(block: NotionBlock) {
           <div className={styles.image}>
             <Image
               src={imageSource}
-              alt={caption || 'Image'}
+              alt={'Image'}
               width={800}
               height={500}
               layout="responsive"
@@ -420,9 +420,10 @@ const BookmarkBlock: React.FC<BookmarkBlockProps> = ({ url, caption }) => {
           </div>
         </div>
         {ogp.thumbnailUrl && (
-          <div 
+          <Image 
             className={styles.bookmarkThumbnail} 
-            style={{ backgroundImage: `url(${ogp.thumbnailUrl})` }}
+            src={ogp.thumbnailUrl}
+            alt={ogp.title}
           />
         )}
       </a>
