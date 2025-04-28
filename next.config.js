@@ -5,7 +5,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   env: {
-    NEXT_PUBLIC_ACTIVE_THEME: process.env.NEXT_PUBLIC_ACTIVE_THEME || 'thema2',
+    NEXT_PUBLIC_ACTIVE_THEME: process.env.NEXT_PUBLIC_ACTIVE_THEME || 'theme2',
     ARTICLE_SOURCE: process.env.ARTICLE_SOURCE || 'notion',
   },
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {

@@ -1,6 +1,6 @@
 import { extendTheme } from '@chakra-ui/theme-utils'
 import type { ThemeConfig } from '@chakra-ui/theme'
-import { theme as caffeTheme } from '../themes/thema2/styles/theme'
+import { theme as caffeTheme } from '../themes/theme2/styles/theme'
 
 // カラーモード設定（デフォルトの設定をここで提供）
 const config: ThemeConfig = {

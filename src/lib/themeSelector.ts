@@ -3,8 +3,8 @@
  * 環境変数からアクティブテーマを取得し、適切なコンポーネントを提供する
  */
 
-// アクティブテーマ（環境変数から取得、デフォルトはthema2）
-export const ACTIVE_THEME = process.env.NEXT_PUBLIC_ACTIVE_THEME || "thema2";
+// アクティブテーマ（環境変数から取得、デフォルトはtheme2）
+export const ACTIVE_THEME = process.env.NEXT_PUBLIC_ACTIVE_THEME || "theme2";
 
 /**
  * テーマに応じたコンポーネントを取得する

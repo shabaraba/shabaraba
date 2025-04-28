@@ -1,0 +1,25 @@
+import React from 'react';
+import { Box, Image } from '@chakra-ui/react';
+
+type Props = {
+  url: string
+};
+
+export const _Thumbnail: React.FC<Props> =  ({url}: Props) => {
+    return (
+      <Box 
+        flexShrink={0}
+        width={{base: '100%', md: 200}}
+        height={{base: 200, md: 150}}
+        mr={{base: 'auto', md: 5}}
+        ml={{base: 'auto', md: 5}}
+      >
+        <Image
+          src={url}
+          width='100%'
+          height='100%'
+          objectFit={'contain'}
+        />
+      </Box>
+    );
+}
