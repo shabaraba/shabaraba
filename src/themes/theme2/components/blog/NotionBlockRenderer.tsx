@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -190,13 +190,195 @@ function renderBlock(block: NotionBlock) {
         </div>
       );
     
+    case 'embed':
+      if (!block.embed || !block.embed.url) {
+        return (
+          <div key={id} className={styles.unsupportedBlock}>
+            Invalid embed block: missing URL
+          </div>
+        );
+      }
+      
+      // YouTubeの埋め込み処理
+      const embedUrl = block.embed.url;
+      const youtubeRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]+)(?:\?.*)?/;
+      const youtubeMatch = embedUrl.match(youtubeRegex);
+      
+      // Vimeoの埋め込み処理
+      const vimeoRegex = /(?:https?:\/\/)?(?:www\.)?(?:vimeo\.com\/)([0-9]+)(?:\?.*)?/;
+      const vimeoMatch = embedUrl.match(vimeoRegex);
+      
+      // キャプション処理
+      const embedCaption = block.embed.caption && Array.isArray(block.embed.caption) && block.embed.caption.length > 0
+        ? renderRichText(block.embed.caption)
+        : null;
+      
+      let embedContent;
+      if (youtubeMatch && youtubeMatch[1]) {
+        // YouTube埋め込み
+        const youtubeId = youtubeMatch[1];
+        embedContent = (
+          <iframe
+            className={styles.embedIframe}
+            src={`https://www.youtube.com/embed/${youtubeId}`}
+            title="YouTube video"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            height="450"
+            data-testid="embed-iframe"
+          />
+        );
+      } else if (vimeoMatch && vimeoMatch[1]) {
+        // Vimeo埋め込み
+        const vimeoId = vimeoMatch[1];
+        embedContent = (
+          <iframe
+            className={styles.embedIframe}
+            src={`https://player.vimeo.com/video/${vimeoId}`}
+            title="Vimeo video"
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowFullScreen
+            height="450"
+            data-testid="embed-iframe"
+          />
+        );
+      } else {
+        // その他のURL：iframeで表示
+        embedContent = (
+          <div className={styles.unsupportedBlock}>
+            <p>外部コンテンツの埋め込み:</p>
+            <Link href={embedUrl} target="_blank" rel="noopener noreferrer" className={styles.link}>
+              {embedUrl}
+            </Link>
+          </div>
+        );
+      }
+      
+      return (
+        <div key={id} className={styles.embedContainer}>
+          {embedContent}
+          {embedCaption && <div className={styles.embedCaption}>{embedCaption}</div>}
+        </div>
+      );
+    
+    case 'bookmark':
+      if (!block.bookmark || !block.bookmark.url) {
+        return (
+          <div key={id} className={styles.unsupportedBlock}>
+            Invalid bookmark block: missing URL
+          </div>
+        );
+      }
+      
+      const bookmarkUrl = block.bookmark.url;
+      const hostname = (() => {
+        try {
+          return new URL(bookmarkUrl).hostname;
+        } catch (e) {
+          return bookmarkUrl;
+        }
+      })();
+      
+      // Notion APIのbookmarkブロックにはtitleとdescriptionが含まれていない可能性がある
+      // そのため、ホスト名をデフォルトのタイトルとして使用し、説明はない場合は表示しない
+      const bookmarkTitle = block.bookmark.title || hostname;
+      const bookmarkDescription = block.bookmark.description || '';
+      
+      // キャプションの処理
+      const bookmarkCaption = block.bookmark.caption && Array.isArray(block.bookmark.caption) && block.bookmark.caption.length > 0
+        ? renderRichText(block.bookmark.caption)
+        : null;
+      
+      return (
+        <div key={id} className={styles.bookmarkBlock}>
+          <a href={bookmarkUrl} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className={styles.bookmarkContent}
+            data-testid="bookmark-link">
+            <div className={styles.bookmarkInfo}>
+              <div className={styles.bookmarkTitle}>
+                {bookmarkTitle}
+              </div>
+              {bookmarkDescription && (
+                <div className={styles.bookmarkDescription}>
+                  {bookmarkDescription}
+                </div>
+              )}
+              <div className={styles.bookmarkUrl}>
+                {hostname}
+              </div>
+            </div>
+            {block.bookmark.thumbnail && (
+              <div 
+                className={styles.bookmarkThumbnail} 
+                style={{ backgroundImage: `url(${block.bookmark.thumbnail})` }}
+              />
+            )}
+          </a>
+          {bookmarkCaption && <div className={styles.bookmarkCaption}>{bookmarkCaption}</div>}
+        </div>
+      );
+    
+    case 'toggle':
+      if (!block.toggle) {
+        return (
+          <div key={id} className={styles.unsupportedBlock}>
+            Invalid toggle block: missing toggle data
+          </div>
+        );
+      }
+      
+      // toggleコンポーネントの状態管理
+      const ToggleBlock = () => {
+        const [isOpen, setIsOpen] = useState(false);
+        
+        const toggleHeader = block.toggle.rich_text ? renderRichText(block.toggle.rich_text) : 'Toggle';
+        const hasChildren = block.has_children && block.children && Array.isArray(block.children.results);
+        
+        const handleToggle = () => {
+          setIsOpen(!isOpen);
+        };
+        
+        return (
+          <div className={styles.toggleBlock}>
+            <div 
+              className={styles.toggleHeader} 
+              onClick={handleToggle}
+              data-testid="toggle-button"
+            >
+              <span className={`${styles.toggleIcon} ${isOpen ? styles.toggleIconOpen : ''}`}>
+                ▶
+              </span>
+              <div>{toggleHeader}</div>
+            </div>
+            {isOpen && hasChildren && (
+              <div className={styles.toggleContent}>
+                {block.children.results.map((child: NotionBlock) => renderBlock(child))}
+              </div>
+            )}
+          </div>
+        );
+      };
+      
+      return <ToggleBlock key={id} />;
+    
+    case 'unsupported':
+      // Notionからunsupported blockとして送られてきた場合の処理
+      return (
+        <div key={id} className={styles.unsupportedBlock}>
+          <p><strong>サポートされていないブロック</strong></p>
+          <p>このブロックタイプはまだサポートしていません。</p>
+        </div>
+      );
+    
     // その他のブロックタイプは必要に応じて追加
     
     default:
       // サポートしていないブロックタイプ
       return (
         <div key={id} className={styles.unsupportedBlock}>
-          Unsupported block type: {type}
+          <p>Unsupported block type: {type}</p>
         </div>
       );
   }
