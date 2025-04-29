@@ -45,11 +45,15 @@ export default function ArticleList({ articles }: ArticleListProps) {
               </time>
               {article.tags && article.tags.length > 0 && (
                 <div className={styles.articleTags}>
-                  {article.tags.map((tag, index) => (
-                    <Link href={`/tags/${tag.toLowerCase()}`} key={index} className={styles.tagLink}>
-                      {tag}
-                    </Link>
-                  ))}
+                  {article.tags.map((tag, index) => {
+                    // タグがオブジェクトか文字列かをチェック
+                    const tagName = typeof tag === 'string' ? tag : (tag.name || '');
+                    return (
+                      <Link href={`/tags/${tagName.toLowerCase()}`} key={index} className={styles.tagLink}>
+                        {tagName}
+                      </Link>
+                    );
+                  })}
                 </div>
               )}
             </div>

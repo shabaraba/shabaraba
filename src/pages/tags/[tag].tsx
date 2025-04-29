@@ -46,7 +46,10 @@ export async function getStaticPaths() {
     commonData.posts.forEach(post => {
       if (post.tags) {
         post.tags.forEach(tag => {
-          tagSet.add(tag.name.toLowerCase());
+          // tagがオブジェクトであることを確認
+          if (tag && typeof tag === 'object' && tag.name) {
+            tagSet.add(tag.name.toLowerCase());
+          }
         });
       }
     });

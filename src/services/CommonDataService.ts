@@ -106,7 +106,13 @@ export class CommonDataService {
     // タグに一致する記事をフィルタリング
     return data.posts.filter(post => {
       if (!post.tags) return false;
-      return post.tags.some(tag => tag.name.toLowerCase() === tagName.toLowerCase());
+      return post.tags.some(tag => {
+        // tagがオブジェクトであることを確認
+        if (tag && typeof tag === 'object' && tag.name) {
+          return tag.name.toLowerCase() === tagName.toLowerCase();
+        }
+        return false;
+      });
     });
   }
   
