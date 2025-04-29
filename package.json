@@ -19,6 +19,7 @@
     "@chakra-ui/theme-utils": "^2.0.21",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@iarna/toml": "^2.2.5",
     "@meronex/icons": "^4.0.0",
     "@netlify/functions": "^0.11.0",
     "@netlify/plugin-nextjs": "^5.10.0",
