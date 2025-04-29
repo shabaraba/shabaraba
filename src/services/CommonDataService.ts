@@ -10,6 +10,20 @@ let cachedPostsData: {
   lastFetched: number;
 } | null = null;
 
+// ページネーション用の型定義
+export interface PaginatedData {
+  items: IPageHead[];
+  totalItems: number;
+  pageSize: number;
+  currentPage: number;
+  totalPages: number;
+  sidebarData?: {
+    trendingPosts: IPageHead[];
+    tags: any[];
+    series: any[];
+  }
+}
+
 // キャッシュ有効期間（ビルド中は長く保持）
 const CACHE_TTL = process.env.NODE_ENV === 'production' ? 60 * 60 * 1000 : 24 * 60 * 60 * 1000;
 
@@ -164,6 +178,82 @@ export class CommonDataService {
       trendingPosts: data.trendingPosts,
       tags: data.tags,
       series: data.series
+    };
+  }
+
+  /**
+   * ページネーション付きの記事一覧を取得（SSG対応）
+   * @param page ページ番号（1から開始）
+   * @param pageSize 1ページあたりの記事数
+   * @returns ページネーション情報を含む記事データ
+   */
+  public static async getPaginatedArticles(page: number = 1, pageSize: number = 10): Promise<PaginatedData> {
+    // キャッシュから全記事データを取得
+    const data = await this.getAllData();
+    
+    // 全記事数の取得
+    const totalItems = data.posts.length;
+    
+    // 合計ページ数の計算
+    const totalPages = Math.ceil(totalItems / pageSize);
+    
+    // 開始と終了インデックスの計算（0から始まるインデックスに調整）
+    const startIndex = (page - 1) * pageSize;
+    const endIndex = Math.min(startIndex + pageSize, totalItems);
+    
+    // ページに該当する記事を抽出
+    const paginatedItems = data.posts.slice(startIndex, endIndex);
+    
+    // ページネーション情報を含むレスポンスを生成
+    return {
+      items: paginatedItems,
+      totalItems,
+      pageSize,
+      currentPage: page,
+      totalPages,
+      sidebarData: {
+        trendingPosts: data.trendingPosts,
+        tags: data.tags,
+        series: data.series
+      }
+    };
+  }
+
+  /**
+   * 特定のタグに関連する記事をページネーション付きで取得（SSG対応）
+   * @param tagName タグ名
+   * @param page ページ番号（1から開始）
+   * @param pageSize 1ページあたりの記事数
+   * @returns ページネーション情報を含む記事データ
+   */
+  public static async getPaginatedArticlesByTag(tagName: string, page: number = 1, pageSize: number = 10): Promise<PaginatedData> {
+    // タグに一致する全記事を取得
+    const filteredPosts = await this.getArticlesByTag(tagName);
+    
+    // 全記事数の取得
+    const totalItems = filteredPosts.length;
+    
+    // 合計ページ数の計算
+    const totalPages = Math.ceil(totalItems / pageSize);
+    
+    // 開始と終了インデックスの計算（0から始まるインデックスに調整）
+    const startIndex = (page - 1) * pageSize;
+    const endIndex = Math.min(startIndex + pageSize, totalItems);
+    
+    // ページに該当する記事を抽出
+    const paginatedItems = filteredPosts.slice(startIndex, endIndex);
+    
+    // サイドバーデータを取得
+    const sidebarData = await this.getSidebarData();
+    
+    // ページネーション情報を含むレスポンスを生成
+    return {
+      items: paginatedItems,
+      totalItems,
+      pageSize,
+      currentPage: page,
+      totalPages,
+      sidebarData
     };
   }
 }

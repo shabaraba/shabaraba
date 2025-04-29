@@ -1,7 +1,6 @@
 import React from 'react';
 import Layout from '../components/layouts/Layout';
-import ArticleList from '../components/blog/ArticleList';
-import { ArticleServiceFactory } from '../../../core/factories/ArticleServiceFactory';
+import PaginatedArticleList from '../components/blog/PaginatedArticleList';
 import styles from './HomePage.module.css';
 
 // getStaticProps関数でデータを取得する場合の型定義
@@ -12,6 +11,11 @@ interface HomePageProps {
     tags: any[];
     series: any[];
   };
+  pagination?: {
+    totalItems: number;
+    itemsPerPage: number;
+    currentPage: number;
+  };
   customTitle?: string;
   customDescription?: string;
   tagName?: string;
@@ -20,10 +24,12 @@ interface HomePageProps {
 /**
  * ホームページコンポーネント
  * タグページとしても利用可能
+ * ページネーション機能付き（SSG対応）
  */
 export default function HomePage({
   articles,
   sidebarData,
+  pagination,
   customTitle,
   customDescription,
   tagName
@@ -36,6 +42,19 @@ export default function HomePage({
   // デフォルトタイトルと説明
   const title = customTitle || 'Coffee Break Point';
   const description = customDescription || 'プログラミングやデザイン、日々の気づきをお届けするブログです';
+
+  // ページネーション設定のデフォルト値
+  const paginationDefaults = {
+    totalItems: articles.length,
+    itemsPerPage: 10,
+    currentPage: 1
+  };
+
+  // 実際のページネーション設定
+  const paginationSettings = pagination || paginationDefaults;
+  
+  // クエリパラメータ（タグページの場合はタグ名を含める）
+  const queryParams = tagName ? { tag: tagName } : {};
 
   return (
     <Layout title={title} description={description}>
@@ -56,7 +75,15 @@ export default function HomePage({
           </>
         )}
       </div>
-      <ArticleList articles={articles} />
+      
+      <PaginatedArticleList 
+        articles={articles}
+        totalItems={paginationSettings.totalItems}
+        itemsPerPage={paginationSettings.itemsPerPage}
+        currentPage={paginationSettings.currentPage}
+        baseUrl={tagName ? `/tags/${tagName.toLowerCase()}` : '/'}
+        queryParams={queryParams}
+      />
     </Layout>
   );
 }
