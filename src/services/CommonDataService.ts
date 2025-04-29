@@ -30,8 +30,47 @@ export class CommonDataService {
     // 全記事データの取得
     const posts = await postLogic.getList();
     
+    // 記事データにcoverImageプロパティを追加
+    const processedPosts = posts.map(post => {
+      // コンソールにカバー情報をログ
+      console.log(`Processing post ${post.title}, cover:`, post.cover);
+      
+      // post.coverからcoverImageプロパティを生成
+      let coverImage = null;
+      if (post.cover) {
+        if (post.cover.type === 'external') {
+          coverImage = post.cover.external.url;
+        } else if (post.cover.type === 'file') {
+          coverImage = post.cover.file.url;
+        }
+      }
+      
+      // 元のポストにcoverImageプロパティを追加（タイプ互換性のため）
+      return {
+        ...post,
+        coverImage: coverImage || undefined
+      };
+    });
+    
     // 人気記事の取得
     const trendingPosts = await postLogic.getTrendingPosts();
+    
+    // 人気記事にもcoverImageプロパティを追加
+    const processedTrendingPosts = trendingPosts.map(post => {
+      let coverImage = null;
+      if (post.cover) {
+        if (post.cover.type === 'external') {
+          coverImage = post.cover.external.url;
+        } else if (post.cover.type === 'file') {
+          coverImage = post.cover.file.url;
+        }
+      }
+      
+      return {
+        ...post,
+        coverImage: coverImage || undefined
+      };
+    });
     
     // タグの集計処理
     const tagCounts: { [key: string]: { count: number, tag: IPageTag } } = {};
@@ -87,8 +126,8 @@ export class CommonDataService {
     
     // キャッシュの更新
     cachedPostsData = {
-      posts,
-      trendingPosts,
+      posts: processedPosts,
+      trendingPosts: processedTrendingPosts,
       tags,
       series,
       lastFetched: Date.now()
