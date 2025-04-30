@@ -5,7 +5,7 @@ import { useRouter } from "next/router"
 import { DefaultSeo } from "next-seo"
 import * as gtag from "../lib/gtag"
 import SEO from "../../next-seo.config"
-import { ACTIVE_THEME } from "../lib/themeSelector"
+import { ACTIVE_THEME } from "../config/themeSelector"
 import { SidebarProvider, TagData, SeriesData } from "../contexts/SidebarContext"
 
 // グローバルスタイルのインポート
