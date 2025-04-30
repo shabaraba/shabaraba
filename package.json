@@ -5,7 +5,8 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build && echo 'Build completed'",
+    "generate-og": "node scripts/generate-og-images.js || ./scripts/generate-og-images.sh",
+    "build": "npm run generate-og && next build && echo 'Build completed'",
     "start": "npx serve@latest out",
     "postbuild": "echo 'Skipping next-sitemap'",
     "analyze": "ANALYZE=true next build"

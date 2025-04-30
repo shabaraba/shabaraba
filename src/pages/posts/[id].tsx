@@ -36,7 +36,7 @@ export default ({ tags, postHead, title, postDetail }: Props) => {
         <SideArea tags={tags} post={postHeadEntity} title={title} />
       </SlideFade>
     } >
-      <Seo title={postHeadEntity.title} coverImageUrl={postHeadEntity.coverImageUrl} />
+      <Seo title={postHeadEntity.title} slug={postHead.slug} coverImageUrl={postHeadEntity.coverImageUrl} />
       <Head> <title>{postHeadEntity.title}</title> </Head>
       <SlideFade in={true} offsetY='20px'>
         <MainArea postDetail={postDetail} />

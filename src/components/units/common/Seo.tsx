@@ -4,22 +4,38 @@ import { FC } from 'react';
 
 type Props = {
   title: string;
+  slug?: string;
   coverImageUrl?: string;
 }
 
-export const Seo: FC<Props> = ({ title, coverImageUrl }) => {
-  let imageUrl: string = 'https://og-image-shabaraba.vercel.app/' + title + '.png?md=1&fontSize=100px&q=85&fm=jpg&crop=entropy&cs=srgb&siteTitle=Coffee+Break+Point';
-  if (coverImageUrl != null && coverImageUrl != undefined) {
-    imageUrl += '&bg=' + encodeURI(coverImageUrl);
-  }
-  // console.log(imageUrl);
+/**
+ * SEOコンポーネント
+ * OGP画像はビルド時に生成されたものを使用
+ */
+export const Seo: FC<Props> = ({ title, slug, coverImageUrl }) => {
+  // サイトのベースURL
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://blog.shaba.dev';
+  
+  // スラッグをIDに変換（スラッグが指定されていない場合はデフォルト画像を使用）
+  const ogImageId = slug ? slug : 'default';
+  
+  // OGP画像URL
+  const imageUrl = `${baseUrl}/og-images/${ogImageId}.png`;
+  
+  // 画像のサイズ設定（OGPのメタデータに必要）
+  const imageWidth = 1200;
+  const imageHeight = 630;
+  
   return (
     <NextSeo
       openGraph={{
         title: title,
         images: [
           {
-            url: imageUrl
+            url: imageUrl,
+            width: imageWidth,
+            height: imageHeight,
+            alt: title,
           },
         ],
       }}

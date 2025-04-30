@@ -22,7 +22,7 @@ export default ({ allPostsData }: Props) => {
 
   return (
     <ListLayout home leftside={<AuthorBox />}>
-      <Seo title="Coffee+Break+Point" />
+      <Seo title="Coffee Break Point" slug="default" />
       <Head>
         {" "}
         <title>{siteTitle}</title>{" "}
