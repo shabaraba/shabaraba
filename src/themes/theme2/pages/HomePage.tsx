@@ -2,6 +2,7 @@ import React from 'react';
 import Layout from '../components/layouts/Layout';
 import PaginatedArticleList from '../components/blog/PaginatedArticleList';
 import styles from './HomePage.module.css';
+import { useConfig } from '../../../lib/useConfig';
 
 // getStaticProps関数でデータを取得する場合の型定義
 interface HomePageProps {
@@ -38,9 +39,12 @@ const HomePage = React.memo(function HomePage({
   // SSGのため、サイドバーデータはページコンポーネントでは操作せず
   // _app.tsxのSidebarProviderを通じて提供される
 
+  // 設定から文字列を取得
+  const { getSetting } = useConfig();
+  
   // デフォルトタイトルと説明
-  const title = customTitle || 'Coffee Break Point';
-  const description = customDescription || 'プログラミングやデザイン、日々の気づきをお届けするブログです';
+  const title = customTitle || getSetting('home.title', 'Coffee Break Point');
+  const description = customDescription || getSetting('home.subtitle', 'プログラミングやデザイン、日々の気づきをお届けするブログです');
 
   // ページネーション設定のデフォルト値
   const paginationDefaults = {
@@ -56,21 +60,25 @@ const HomePage = React.memo(function HomePage({
   const queryParams = tagName ? { tag: tagName } : {};
 
   // LayoutにsidebarDataを直接渡す
+  // タグページのテキスト
+  const tagTitlePrefix = getSetting('tag.title_prefix', 'タグ: ');
+  const tagSubtitleTemplate = getSetting('tag.subtitle_template', '「%s」に関連する記事一覧');
+  
   return (
     <Layout title={title} description={description}>
       <div className={styles.hero}>
         {tagName ? (
           <>
-            <h1 className={styles.title}>タグ: {tagName}</h1>
+            <h1 className={styles.title}>{tagTitlePrefix}{tagName}</h1>
             <p className={styles.subtitle}>
-              「{tagName}」に関連する記事一覧
+              {tagSubtitleTemplate.replace('%s', tagName)}
             </p>
           </>
         ) : (
           <>
-            <h1 className={styles.title}>Coffee Break Point</h1>
+            <h1 className={styles.title}>{getSetting('home.title', 'Coffee Break Point')}</h1>
             <p className={styles.subtitle}>
-              プログラミングやデザイン、日々の気づきをお届けするブログです
+              {getSetting('home.subtitle', 'プログラミングやデザイン、日々の気づきをお届けするブログです')}
             </p>
           </>
         )}

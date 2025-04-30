@@ -43,3 +43,8 @@ author_title = "Author"
 popular_articles_title = "人気記事"
 series_title = "シリーズ"
 tags_title = "タグ"
+
+# MyLinkページ設定
+[mylink]
+page_title = "Links"
+page_description = "筆者の興味関心のある外部ページはこちらに"

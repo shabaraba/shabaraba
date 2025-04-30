@@ -41,6 +41,10 @@ export interface SiteConfig {
     series_title: string;
     tags_title: string;
   };
+  mylink: {
+    page_title: string;
+    page_description: string;
+  };
 }
 
 // デフォルト値（設定ファイルが読み込めない場合のフォールバック）
@@ -78,6 +82,10 @@ const defaultConfig: SiteConfig = {
     popular_articles_title: '人気記事',
     series_title: 'シリーズ',
     tags_title: 'タグ',
+  },
+  mylink: {
+    page_title: 'Links',
+    page_description: '筆者の興味関心のある外部ページはこちらに',
   },
 };
 
