@@ -15,7 +15,7 @@ export function getThemeComponent<T>(componentPath: string): T {
   try {
     // 動的インポートでテーマに応じたコンポーネントを取得
     // CSS ファイルは _app.tsx でのみインポート
-    return require(`../../themes/${ACTIVE_THEME}/${componentPath}`).default;
+    return require(`../themes/${ACTIVE_THEME}/${componentPath}`).default;
   } catch (error) {
     console.error(`Failed to load component: ${componentPath} from theme: ${ACTIVE_THEME}`, error);
     throw error;
