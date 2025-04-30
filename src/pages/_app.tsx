@@ -56,10 +56,17 @@ export default function App({ Component, pageProps }: AppProps) {
     }
   }, [router.events])
 
-  // アクティブテーマの確認 (開発環境のみログ出力)
+  // サイドバーデータの最適化
+  const memoizedSidebarData = React.useMemo(() => ({
+    trendingPosts: sidebarData.trendingPosts,
+    tags: sidebarData.tags,
+    series: sidebarData.series
+  }), [sidebarData.trendingPosts, sidebarData.tags, sidebarData.series]);
+
+  // 開発環境でのみログ出力
   if (process.env.NODE_ENV === 'development') {
-    console.log(`Active theme: ${ACTIVE_THEME}`)
-    console.log(`Sidebar data loaded: ${sidebarData.trendingPosts.length} trending posts, ${sidebarData.tags.length} tags, ${sidebarData.series.length} series`);
+    console.log(`Active theme: ${ACTIVE_THEME}`);
+    console.log(`Optimized sidebar data prepared with ${memoizedSidebarData.trendingPosts.length} trending posts`);
   }
 
   return (
@@ -70,9 +77,9 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <DefaultSeo {...SEO} />
       <SidebarProvider 
-        trendingPosts={sidebarData.trendingPosts}
-        tags={sidebarData.tags}
-        series={sidebarData.series}
+        trendingPosts={memoizedSidebarData.trendingPosts}
+        tags={memoizedSidebarData.tags}
+        series={memoizedSidebarData.series}
       >
         <Component {...pageProps} />
       </SidebarProvider>

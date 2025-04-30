@@ -27,29 +27,35 @@ type Props = InferGetStaticPropsType<typeof getStaticProps>;
 // }>>("MyLinkPage");
 
 const MyLinkPage = dynamic(() =>
-  import(`../../themes/${ACTIVE_THEME}/pages/MyLinkPage`).then(mod => mod.default)
+  import(`../../themes/${ACTIVE_THEME}/pages/MyLinkPage`).then(mod => mod.default),
+  {
+    // loading: () => <Loading />, // 読み込み中に表示されるコンポーネント
+    loading: () => null,
+    ssr: false, // 必要に応じて
+  }
+
 );
 
 // クライアントサイドでページネーションを行うラッパーコンポーネント
 export default function MyLinkIndex({ allData }: Props) {
   const router = useRouter();
-  
+
   // URLからページ番号を取得（デフォルトは1ページ目）
   const page = router.query.page ? parseInt(router.query.page as string, 10) : 1;
-  
+
   // エンティティ変換
   const allMyLinks: MyLinkEntity[] = allData.map(
     (mylink: MyLinkType) => new MyLinkEntity(mylink)
   );
-  
+
   // 表示すべきリンクを計算
   const startIndex = (page - 1) * LINKS_PER_PAGE;
   const endIndex = startIndex + LINKS_PER_PAGE;
   const paginatedLinks = allMyLinks.slice(startIndex, endIndex);
-  
+
   // 総ページ数を計算
   const totalPages = Math.ceil(allMyLinks.length / LINKS_PER_PAGE);
-  
+
   // ページネーション情報の作成
   const pagination = {
     totalItems: allMyLinks.length,
@@ -77,13 +83,13 @@ export default function MyLinkIndex({ allData }: Props) {
 export async function getStaticProps() {
   try {
     console.log('mylink/index.tsx - getStaticProps: Fetching all data for client-side pagination');
-    
+
     // 全データを一度に取得
     const result = await MyLinkListPageUsecase.getStaticProps();
-    
+
     console.log('mylink/index.tsx - getStaticProps: Data fetched successfully');
     console.log(`- Total mylinks: ${result.props.allData.length}`);
-    
+
     return {
       props: {
         allData: result.props.allData

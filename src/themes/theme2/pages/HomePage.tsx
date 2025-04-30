@@ -26,7 +26,8 @@ interface HomePageProps {
  * タグページとしても利用可能
  * ページネーション機能付き（SSG対応）
  */
-export default function HomePage({
+// React.memoでコンポーネントのレンダリングを最適化
+const HomePage = React.memo(function HomePage({
   articles,
   sidebarData,
   pagination,
@@ -85,4 +86,7 @@ export default function HomePage({
       />
     </Layout>
   );
-}
+});
+
+// エクスポート
+export default HomePage;

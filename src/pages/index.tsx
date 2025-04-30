@@ -2,10 +2,19 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { ACTIVE_THEME } from '../lib/themeSelector';
 import { CommonDataService } from '../services/CommonDataService';
+// import HomePage from '../themes/theme2/pages/HomePage';
 
 // 動的にテーマのホームページコンポーネントをインポート
-const HomePage = dynamic(() =>
-  import(`../themes/${ACTIVE_THEME}/pages/HomePage`).then(mod => mod.default)
+const HomePage = dynamic(
+  () =>
+    import(`../themes/${ACTIVE_THEME}/pages/HomePage`).then(
+      (mod) => mod.default
+    ),
+  {
+    // loading: () => <Loading />, // 読み込み中に表示されるコンポーネント
+    loading: () => null,
+    ssr: false, // 必要に応じて
+  }
 );
 // 1ページあたりの記事数
 const POSTS_PER_PAGE = 10;

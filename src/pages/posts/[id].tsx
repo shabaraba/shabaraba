@@ -5,7 +5,13 @@ import dynamic from 'next/dynamic';
 
 // 動的にテーマの記事詳細ページコンポーネントをインポート
 const ArticlePage = dynamic(() =>
-  import(`../../themes/${ACTIVE_THEME}/pages/ArticlePage`).then(mod => mod.default)
+  import(`../../themes/${ACTIVE_THEME}/pages/ArticlePage`).then(mod => mod.default),
+  {
+    // loading: () => <Loading />, // 読み込み中に表示されるコンポーネント
+    loading: () => null,
+    ssr: false, // 必要に応じて
+  }
+
 );
 
 // ページコンポーネントをエクスポート
