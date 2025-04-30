@@ -37,12 +37,13 @@ export default function App({ Component, pageProps }: AppProps) {
   // サイドバーデータを取得
   useEffect(() => {
     if (typeof window !== 'undefined' && window.__SIDEBAR_DATA__) {
-      console.log('Loading sidebar data from window.__SIDEBAR_DATA__', window.__SIDEBAR_DATA__);
+      // コンソールログはデバッグ目的で最小限に
+      if (process.env.NODE_ENV === 'development') {
+        console.log('Loading sidebar data from window.__SIDEBAR_DATA__');
+      }
       setSidebarData(window.__SIDEBAR_DATA__);
-    } else {
-      console.log('No window.__SIDEBAR_DATA__ found');
     }
-  }, [pageProps]);
+  }, []);
   
   // Google Analyticsのページビュートラッキング
   useEffect(() => {
@@ -55,9 +56,11 @@ export default function App({ Component, pageProps }: AppProps) {
     }
   }, [router.events])
 
-  // アクティブテーマの確認
-  console.log(`Active theme: ${ACTIVE_THEME}`)
-  console.log(`Sidebar data loaded: ${sidebarData.trendingPosts.length} trending posts, ${sidebarData.tags.length} tags, ${sidebarData.series.length} series`);
+  // アクティブテーマの確認 (開発環境のみログ出力)
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`Active theme: ${ACTIVE_THEME}`)
+    console.log(`Sidebar data loaded: ${sidebarData.trendingPosts.length} trending posts, ${sidebarData.tags.length} tags, ${sidebarData.series.length} series`);
+  }
 
   return (
     <>

@@ -34,13 +34,8 @@ export default function HomePage({
   customDescription,
   tagName
 }: HomePageProps) {
-  // サイドバーデータをグローバル変数に設定
-  React.useEffect(() => {
-    if (typeof window !== 'undefined' && sidebarData) {
-      console.log('Setting window.__SIDEBAR_DATA__ from HomePage', sidebarData);
-      window.__SIDEBAR_DATA__ = sidebarData;
-    }
-  }, [sidebarData]);
+  // SSGのため、サイドバーデータはページコンポーネントでは操作せず
+  // _app.tsxのSidebarProviderを通じて提供される
 
   // デフォルトタイトルと説明
   const title = customTitle || 'Coffee Break Point';
