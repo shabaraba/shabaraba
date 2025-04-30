@@ -3,7 +3,7 @@ import Image from 'next/image';
 import styles from './AuthorBox.module.css';
 // アイコンをインポート
 import { SiGithub, SiQiita } from '@meronex/icons/si';
-import { FaTwitter } from '@meronex/icons/fa';
+import { AiTwitter } from '@meronex/icons/ai';
 
 /**
  * 著者情報コンポーネント
@@ -29,7 +29,7 @@ export default function AuthorBox() {
           <SiGithub className={styles.socialIcon} />
         </a>
         <a href="https://x.com/shaba_dev" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
-          <FaTwitter className={styles.socialIcon} />
+          <AiTwitter className={styles.socialIcon} />
         </a>
         <a href="https://qiita.com/shabaraba" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
           <SiQiita className={styles.socialIcon} />
