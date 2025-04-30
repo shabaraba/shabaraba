@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import styles from './AuthorBox.module.css';
+import { SiGithub, SiQiita, SiTwitter } from '@icons-pack/react-simple-icons';
 
 /**
  * 著者情報コンポーネント
@@ -23,13 +24,13 @@ export default function AuthorBox() {
       </p>
       <div className={styles.authorSocial}>
         <a href="https://github.com/shabaraba" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
-          <span className={styles.socialIcon}>GH</span>
+          <SiGithub className={styles.socialIcon} />
         </a>
         <a href="https://x.com/shaba_dev" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
-          <span className={styles.socialIcon}>X</span>
+          <SiTwitter className={styles.socialIcon} />
         </a>
         <a href="https://qiita.com/shabaraba" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
-          <span className={styles.socialIcon}>Q</span>
+          <SiQiita className={styles.socialIcon} />
         </a>
       </div>
     </div>

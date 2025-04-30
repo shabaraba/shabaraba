@@ -5,7 +5,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build && echo 'Build completed'",
+    "build": "node scripts/fetch-github-profile.js && next build && echo 'Build completed'",
     "start": "npx serve@latest out",
     "postbuild": "echo 'Skipping next-sitemap'",
     "analyze": "ANALYZE=true next build",
@@ -20,6 +20,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@iarna/toml": "^2.2.5",
+    "@icons-pack/react-simple-icons": "^12.7.0",
     "@meronex/icons": "^4.0.0",
     "@netlify/functions": "^0.11.0",
     "@netlify/plugin-nextjs": "^5.10.0",

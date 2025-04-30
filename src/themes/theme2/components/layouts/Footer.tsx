@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './Footer.module.css';
+import { SiNextdotjs, SiNetlify, SiNotion } from '@icons-pack/react-simple-icons';
 
 /**
  * フッターコンポーネント
@@ -36,9 +37,9 @@ export default function Footer() {
         <div className={styles.poweredBy}>
           powered by
           <span className={styles.techIcons}>
-            <span className={styles.techIcon} title="Next.js">Next.js</span>
-            <span className={styles.techIcon} title="Netlify">Netlify</span>
-            <span className={styles.techIcon} title="Notion">Notion</span>
+            <SiNextdotjs className={styles.techIcon} title="Next.js" />
+            <SiNetlify className={styles.techIcon} title="Netlify" />
+            <SiNotion className={styles.techIcon} title="Notion" />
           </span>
         </div>
       </div>
