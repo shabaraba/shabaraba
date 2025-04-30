@@ -9,11 +9,11 @@
   flex-direction: row; /* 横並びレイアウトに変更 */
   background-color: var(--content-bg-color);
   border-radius: 8px; /* 角丸を小さく (12px → 8px) */
-  overflow: hidden;
+  overflow: visible; /* オーバーフローを表示に変更 */
   box-shadow: 0 2px 8px rgba(123, 94, 87, 0.05); /* シャドウを軽く */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border-left: 3px solid var(--accent-color); /* ボーダーを薄く (4px → 3px) */
-  height: 180px; /* カードの高さを固定 */
+  min-height: 180px; /* 最小高さを設定 (固定高さ→最小高さ) */
 }
 
 .articleCard:hover {
@@ -45,18 +45,15 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  overflow: hidden; /* 内容がはみ出したときに非表示 */
+  overflow: visible; /* オーバーフローを表示に変更 */
+  min-height: 0; /* 最小高さを0に設定 */
 }
 
 .articleTitle {
   font-size: 1.25rem; /* フォントサイズを小さく (1.5rem → 1.25rem) */
   margin-bottom: 8px; /* マージンを小さく (12px → 8px) */
-  max-height: 3rem; /* 2行程度に制限 */
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  width: 100%; /* 幅を100%に設定 */
+  overflow: visible; /* オーバーフローを表示 */
 }
 
 .titleLink {
