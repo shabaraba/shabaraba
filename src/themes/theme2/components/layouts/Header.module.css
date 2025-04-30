@@ -26,7 +26,7 @@
 .logoText {
   font-family: 'Caveat', cursive;
   font-size: 3rem;
-  font-weight: 700;
+  font-weight: 400;
   color: var(--heading-color);
   transform: rotate(-5deg);
   display: inline-block;
