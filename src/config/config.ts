@@ -59,7 +59,7 @@ const defaultConfig: SiteConfig = {
     name: 'しゃば',
     bio: 'プログラミングとデザインが好きなエンジニア。日々の発見や気づきをこのブログで共有しています。',
     detail: {
-      info: 'ロボット好きのPHPエンジニア\n自分でイジれるおもちゃを欲しがち\n時間がなく3年ほど中断している工作機械自作の完成が夢\n\n休憩の傍らななめ読みできそうな技術ブログを目指す',
+      info: 'ロボット好きのPHPエンジニア\\n自分でイジれるおもちゃを欲しがち\\n時間がなく3年ほど中断している工作機械自作の完成が夢\\n\\n休憩の傍らななめ読みできそうな技術ブログを目指す',
     },
   },
   footer: {
@@ -82,14 +82,52 @@ const defaultConfig: SiteConfig = {
   },
 };
 
-// クライアントサイドでは常にデフォルト設定を使用する
-// サーバーサイドでは可能であれば設定ファイルを読み込む
-let config: SiteConfig = defaultConfig;
+// 設定保存用の変数
+let config: SiteConfig = null;
 
-// Node.js環境（サーバーサイド）でのみ実行
+// クライアントサイドの設定読み込みリクエストを追跡する変数
+let configPromise: Promise<SiteConfig> | null = null;
+
+/**
+ * クライアントサイドで設定を非同期に読み込む関数
+ * 一度だけ実行され、結果をキャッシュする
+ */
+const loadClientConfig = async (): Promise<SiteConfig> => {
+  // すでにリクエストが進行中の場合はそれを返す
+  if (configPromise) {
+    return configPromise;
+  }
+  
+  // 新しいリクエストを開始
+  configPromise = new Promise<SiteConfig>(async (resolve) => {
+    try {
+      console.log('クライアントサイドで設定を読み込み中...');
+      const response = await fetch('/config/site-config.json');
+      
+      if (!response.ok) {
+        throw new Error(`Failed to load config: ${response.status} ${response.statusText}`);
+      }
+      
+      const loadedConfig = await response.json();
+      // グローバル設定を更新
+      config = loadedConfig;
+      console.log('設定ファイルを読み込みました (クライアントサイド)');
+      resolve(loadedConfig);
+    } catch (error) {
+      console.warn('JSONファイルの読み込みに失敗しました。デフォルト値を使用します:', error);
+      // エラー時はデフォルト設定を維持
+      resolve(defaultConfig);
+    }
+  });
+  
+  return configPromise;
+};
+
+// サーバーサイドとクライアントサイドで異なる処理
 if (typeof window === 'undefined') {
+  // サーバーサイドの場合: 直接ファイルからTOMLを読み込む
   try {
-    // 必要なモジュールを動的にインポート（クライアントサイドではインポートされない）
+    // 必要なモジュールを動的にインポート
     const fs = require('fs');
     const path = require('path');
     const TOML = require('@iarna/toml');
@@ -103,11 +141,18 @@ if (typeof window === 'undefined') {
     // TOMLのパース
     config = TOML.parse(fileContent) as SiteConfig;
     
-    console.log('設定ファイルを読み込みました:', CONFIG_FILE_PATH);
+    console.log('設定ファイルを読み込みました (サーバーサイド):', CONFIG_FILE_PATH);
   } catch (error) {
     console.warn('設定ファイルの読み込みに失敗しました。デフォルト値を使用します:', error);
     config = defaultConfig;
   }
+} else {
+  // クライアントサイドの場合: JSONを読み込むリクエストを開始
+  // 非同期で設定を読み込む（コンポーネントマウント前に読み込み開始）
+  loadClientConfig().catch(() => {
+    // エラーハンドリングはloadClientConfig内で行われるが、
+    // Promiseの未処理エラーを防ぐために空のcatchを追加
+  });
 }
 
 /**
@@ -138,7 +183,10 @@ export function getConfig<T>(path: string, defaultValue?: T): T {
   }
 }
 
-// 設定全体を取得
+/**
+ * 設定全体を取得
+ * クライアントサイドでは設定が完全に読み込まれていない可能性があるため注意
+ */
 export function getAllConfig(): SiteConfig {
   return config;
 }
