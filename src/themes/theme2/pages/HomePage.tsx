@@ -61,7 +61,7 @@ export default function HomePage({
 
   // LayoutにsidebarDataを直接渡す
   return (
-    <Layout title={title} description={description}>
+    <Layout title={title} description={description} sidebarContent={null}>
       <div className={styles.hero}>
         {tagName ? (
           <>
