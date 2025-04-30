@@ -13,12 +13,16 @@ export class Paragraph extends Block {
     this.type = "Paragraph";
 
     this.texts = [];
-    resp.paragraph.text.map((text: NotionBlockInterfaces.IText) => {
+    // Notion APIの仕様変更に対応: rich_textプロパティを優先的に使用し、存在しない場合はtextプロパティを使用
+    const textSource = resp.paragraph.rich_text || resp.paragraph.text || [];
+    textSource.map((text: NotionBlockInterfaces.IText) => {
       this.texts.push(new Text(text));
     });
     this.children = [];
-    if (resp.paragraph.children?.results?.length > 0) {
-      const childBlockList = BlockList.deserialize(resp.paragraph.children.results, this.nest + 1);
+    // childrenがundefinedまたは空配列の場合はデフォルト値を使用
+    const children = resp.paragraph.children || { object: "list", results: [] };
+    if (children.results?.length > 0) {
+      const childBlockList = BlockList.deserialize(children.results, this.nest + 1);
       this.children = childBlockList.data;
     }
   }

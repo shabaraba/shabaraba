@@ -1,0 +1,65 @@
+.authorBox {
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.authorImage {
+  margin-bottom: 16px;
+  text-align: center; /* 中央寄せを追加 */
+  display: flex;
+  justify-content: center; /* 水平方向の中央寄せ */
+  align-items: center; /* 垂直方向の中央寄せ */
+}
+
+.avatar {
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.authorName {
+  font-size: 1.2rem;
+  color: var(--heading-color);
+  margin-bottom: 8px;
+}
+
+.authorBio {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: 16px;
+  color: var(--text-color);
+}
+
+.authorSocial {
+  display: flex;
+  justify-content: center;
+  gap: 16px; /* アイコン間の間隔 */
+  margin-top: 16px;
+}
+
+.socialLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background-color: var(--accent-color);
+  color: white;
+  border-radius: 50%;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.socialLink:hover {
+  background-color: var(--link-hover-color);
+  transform: translateY(-2px);
+}
+
+.socialIcon {
+  width: 20px;
+  height: 20px;
+}

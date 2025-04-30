@@ -1,8 +1,8 @@
-import { QueryDatabaseResponse, ListBlockChildrenResponse } from "@notionhq/client/build/src/api-endpoints";
-import { BlockType, IRetrieveBlockChildrenResponse, IText } from "core/types/NotionApiResponses";
+import { QueryDatabaseResponse, ListBlockChildrenResponse, GetPageResponse, GetBlockResponse } from "@notionhq/client/build/src/api-endpoints";
+import { BlockType, IRetrieveBlockChildrenResponse, IText, IPageResponse, IParagraphBlock } from "core/types/NotionApiResponses";
 import { IPageHead } from "core/types/NotionPageApiResponses";
 import { BaseNotionRepository } from "lib/BaseNotionRepository";
-import { NotionPageResponseDxo } from "./NotionPageResponseDxo";
+import { NotionPageResponseDxo, NotionPageResponseType } from "./NotionPageResponseDxo";
 
 export default class NotionRepository extends BaseNotionRepository {
 
@@ -22,51 +22,79 @@ export default class NotionRepository extends BaseNotionRepository {
             "direction":"descending"
         }
       ]
-    })
+    });
 
-    const postList: IPageHead[] = response.results.map((item: any) => {
-      return NotionPageResponseDxo.convertToNotionPostHead(item)
-    })
+    const postList: IPageHead[] = response.results.map((item) => {
+      return NotionPageResponseDxo.convertToNotionPostHead(item as NotionPageResponseType);
+    });
 
-    return postList
+    return postList;
+  }
+  
+  public async getTrendingPosts(): Promise<IPageHead[]> {
+    const response: QueryDatabaseResponse = await this._notion.databases.query({
+      database_id: this._databaseId,
+      filter: {
+        and: [
+          {
+            property: 'Published',
+            checkbox: { equals: true }
+          },
+          {
+            property: 'Trend',
+            checkbox: { equals: true }
+          }
+        ],
+      },
+      sorts: [
+        {
+            "property": "Published_Time",
+            "direction": "descending"
+        }
+      ]
+    });
+
+    const postList: IPageHead[] = response.results.map((item) => {
+      return NotionPageResponseDxo.convertToNotionPostHead(item as NotionPageResponseType);
+    });
+
+    return postList;
   }
 
   public async getTitleBlock(id: string): Promise<IPageHead> {
-    const response: any = await this._notion.pages.retrieve({
+    const response: GetPageResponse = await this._notion.pages.retrieve({
       page_id: id
     });
-    return NotionPageResponseDxo.convertToNotionPostHead(response)
+    return NotionPageResponseDxo.convertToNotionPostHead(response as NotionPageResponseType);
   }
 
   public async getPage(id: string): Promise<IPageHead> {
-    const response: any = await this._notion.pages.retrieve({
+    const response: GetPageResponse = await this._notion.pages.retrieve({
       page_id: id
     });
-    return NotionPageResponseDxo.convertToNotionPostHead(response)
+    return NotionPageResponseDxo.convertToNotionPostHead(response as NotionPageResponseType);
   }
 
   public async getBlockById(id: string): Promise<BlockType> {
-    const response: any = await this._notion.blocks.retrieve({
+    const response: GetBlockResponse = await this._notion.blocks.retrieve({
       block_id: id
     });
 
-    const result: BlockType = response
-
-    return result
+    return response as BlockType;
   }
 
   public async getPostBlockListById(id: string): Promise<IRetrieveBlockChildrenResponse> {
     const response: ListBlockChildrenResponse = await this._notion.blocks.children.list({
       block_id: id
     });
-    let blocks: IRetrieveBlockChildrenResponse = NotionRepository.createInterfaceList(response);
+    const blocks: IRetrieveBlockChildrenResponse = NotionRepository.createInterfaceList(response);
 
-    for(let block of blocks.results) {
+    for (const block of blocks.results) {
       if (block.has_children === true) {
-        block[block.type].children = await this.getPostBlockListById(block.id)
+        block[block.type].children = await this.getPostBlockListById(block.id);
       }
     }
-    return blocks
+    return blocks;
   }
 
   public async getPageIdBySlug(slug: string): Promise<string> {
@@ -75,7 +103,7 @@ export default class NotionRepository extends BaseNotionRepository {
       filter: {
         and: [{
           property: 'Slug',
-          text: { equals: slug }
+          rich_text: { equals: slug }
         },
         {
           property: 'Published',
@@ -88,33 +116,37 @@ export default class NotionRepository extends BaseNotionRepository {
 
   /// 冒頭80字を返す。存在しなかったらnullを返す
   public async getOpeningSentence(blockId: string): Promise<string> {
-    let openingSentence = ''
+    let openingSentence = '';
 
-    const resp = await this._notion.blocks.children.list({
+    const resp: ListBlockChildrenResponse = await this._notion.blocks.children.list({
       block_id: blockId,
-    })
+    });
 
     for (let result of resp.results) {
-      let block = result as BlockType
+      const block = result as BlockType;
       if (block.type === 'paragraph') {
-        block.paragraph.text.forEach((textObject: IText) => {
-          openingSentence += textObject.plain_text
-        })
+        const paragraphBlock = block as unknown as IParagraphBlock;
+        // BlockTypeのparagraphプロパティには、textまたはrich_textのどちらかが設定されている
+        const textItems = paragraphBlock.paragraph.rich_text || paragraphBlock.paragraph.text || [];
+        
+        textItems.forEach((textObject: IText) => {
+          openingSentence += textObject.plain_text;
+        });
       }
       if (openingSentence.length >= 80) {
-        break
+        break;
       }
     }
 
-    return openingSentence.substring(0, 80)
+    return openingSentence.substring(0, 80);
   }
 
   static createInterfaceList(response: ListBlockChildrenResponse): IRetrieveBlockChildrenResponse {
-    let blocks: IRetrieveBlockChildrenResponse = {object: "list", results: []};
-    response.results.map((item: BlockType) => {
-      blocks.results.push(item)
-    })
-    return blocks
+    const blocks: IRetrieveBlockChildrenResponse = {object: "list", results: []};
+    response.results.forEach((item) => {
+      blocks.results.push(item as BlockType);
+    });
+    return blocks;
   }
 }
 

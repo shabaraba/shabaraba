@@ -3,41 +3,102 @@ import { PostHeadService } from "application/modules/post/services/PostHeadServi
 import { TagService } from "application/modules/tag/services/TagService";
 import { PostDetailDxo } from "core/dxo/PostDetailDxo";
 import { PostHeadDxo } from "core/dxo/PostHeadDxo";
+import { ArticleServiceFactory } from "core/factories/ArticleServiceFactory";
 import { PostDetailType } from "core/types/PostDetailType";
 import { PostHeadType } from "core/types/PostHeadType";
 import { StaticProps } from "core/types/PostPageType";
 
 export class ArticlePageUsecase {
   public static async getStaticPaths() {
-    const postHeadService = new PostHeadService();
-    const pathParams = await postHeadService.getPathParams();
-    return {
-      paths: pathParams,
-      fallback: false
+    try {
+      const postHeadService = ArticleServiceFactory.createArticleHeadService();
+      const pathParams = await postHeadService.getPathParams();
+      return {
+        paths: pathParams,
+        fallback: false,
+      };
+    } catch (error) {
+      console.error("Error generating static paths:", error);
+      return {
+        paths: [],
+        fallback: false, // blockingから変更
+      };
     }
   }
 
-  public static async getStaticProps({ params }): Promise<StaticProps> {
+  public static async getStaticProps({ params }): Promise<any> {
     const slug = params.id;
 
-    const postHeadService = new PostHeadService();
-    const postHeadDto = await postHeadService.getBySlug(slug);
-    const postHeadJson: PostHeadType = PostHeadDxo.convertForPages(postHeadDto);
-    const postDetailService = new PostDetailService();
-    const postDetailDto = await postDetailService.get(postHeadDto.id);
-    const postDetailJson: PostDetailType = PostDetailDxo.convertForPages(postDetailDto);
-
-    const tagService = new TagService();
-    const tags = await tagService.getListByPost(postHeadDto);
-
-    return {
-      props: {
-        tags: tags,
-        postHead: postHeadJson,
-        postDetail: postDetailJson,
-        title: postHeadDto.title
-      },
-      // revalidate: 1 * 60
+    try {
+      const articleService = ArticleServiceFactory.createArticleService();
+      const articleHeadService = ArticleServiceFactory.createArticleHeadService();
+      const articleHead = articleHeadService.getBySlug(slug);
+      const article = await articleService.getArticleBySlug(slug);
+      
+      // JSONシリアライズ時のundefinedプロパティを処理
+      const sanitizedArticle = this.sanitizeUndefinedValues(article);
+      
+      // シリアライズエラーをデバッグするための追加処理
+      try {
+        // 一度JSONにシリアライズしてから戻すことで、シリアライズできない値を除去
+        const serialized = JSON.stringify(sanitizedArticle);
+        const deserialized = JSON.parse(serialized);
+        
+        return {
+          props: {
+            article: deserialized,
+          },
+        };
+      } catch (serializeError) {
+        console.error('Serialization error:', serializeError);
+        
+        // エラー発生時はNullish値をすべて空オブジェクトに変換する緊急措置
+        const emergencySanitized = JSON.parse(
+          JSON.stringify(sanitizedArticle, (_, value) => 
+            value === undefined ? null : value
+          )
+        );
+        
+        return {
+          props: {
+            article: emergencySanitized,
+          },
+        };
+      }
+    } catch (error) {
+      console.error(`Error fetching article with slug "${slug}":`, error);
+      return {
+        notFound: true,
+      };
     }
   }
+  
+  /**
+   * オブジェクト内のundefined値をnullに変換
+   * Next.jsのgetStaticPropsではundefined値を含むオブジェクトをJSONシリアライズできないため
+   */
+  private static sanitizeUndefinedValues(obj: any): any {
+    if (obj === undefined) {
+      return null; // undefinedをnullに変換
+    }
+    
+    if (obj === null || typeof obj !== 'object') {
+      return obj; // nullか非オブジェクトの場合はそのまま返す
+    }
+    
+    if (Array.isArray(obj)) {
+      // 配列の場合は各要素を再帰的に処理
+      return obj.map(item => this.sanitizeUndefinedValues(item));
+    }
+    
+    // オブジェクトの場合はプロパティごとに再帰的に処理
+    const result: any = {};
+    for (const key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        result[key] = this.sanitizeUndefinedValues(obj[key]);
+      }
+    }
+    return result;
+  }
 }
+

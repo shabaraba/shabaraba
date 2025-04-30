@@ -11,7 +11,9 @@ export class Heading1 extends Block {
     this.type = "Heading1";
 
     this.texts = [];
-    resp.heading_1.text.map((text) => {
+    // Notion APIの仕様変更に対応: rich_textプロパティを優先的に使用し、存在しない場合はtextプロパティを使用
+    const textSource = resp.heading_1.rich_text || resp.heading_1.text || [];
+    textSource.map((text) => {
       this.texts.push(new Text(text));
     });
   }

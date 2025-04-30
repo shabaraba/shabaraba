@@ -16,15 +16,23 @@ export class Callout extends Paragraph {
       archived: resp.archived,
       type: "paragraph",
       paragraph: {
+        // Notion APIの仕様変更に対応: rich_textプロパティを優先的に使用し、存在しない場合はtextプロパティを使用
+        rich_text: resp.callout.rich_text || resp.callout.text,
         text: resp.callout.text,
-        children: resp.callout.children,
+        // childrenがundefinedの場合、空のリストオブジェクトに置き換える
+        children: resp.callout.children || {
+          object: "list",
+          results: []
+        },
       }
     };
     super(paragraph);
     this.type = "Callout";
 
     this.texts = [];
-    resp.callout.text.map((text: NotionBlockInterfaces.IText) => {
+    // Notion APIの仕様変更に対応: rich_textプロパティを優先的に使用し、存在しない場合はtextプロパティを使用
+    const textSource = resp.callout.rich_text || resp.callout.text || [];
+    textSource.map((text: NotionBlockInterfaces.IText) => {
       this.texts.push(new Text(text));
     });
 

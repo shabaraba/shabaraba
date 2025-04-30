@@ -1,0 +1,65 @@
+.mainContent {
+  width: 100%;
+  position: relative;
+  padding: 0 10px;
+}
+
+.pageTitle {
+  color: var(--heading-color);
+  font-size: 2.2rem;
+  margin-bottom: 16px;
+  font-weight: bold;
+  display: inline-block;
+  position: relative;
+  padding-bottom: 5px;
+}
+
+.pageTitle::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent-color), transparent);
+}
+
+.pageDescription {
+  color: var(--text-color);
+  margin-bottom: 32px;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  font-style: italic;
+  padding-left: 10px;
+  border-left: 3px solid var(--sidebar-bg-color);
+}
+
+/* コーヒーカップのアイコン的装飾 */
+.pageTitle::before {
+  content: "☕";
+  font-size: 1.5rem;
+  margin-right: 10px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+@media (max-width: 768px) {
+  .mainContent {
+    padding: 0 5px;
+  }
+  
+  .pageTitle {
+    font-size: 1.6rem;
+  }
+  
+  .pageDescription {
+    font-size: 1rem;
+    margin-bottom: 24px;
+    padding-left: 8px;
+  }
+  
+  .pageTitle::before {
+    font-size: 1.2rem;
+    margin-right: 8px;
+  }
+}

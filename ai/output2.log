@@ -1,0 +1,43 @@
+
+> build
+> next build && echo 'Build completed'
+
+   ▲ Next.js 15.2.2
+   - Environments: .env.local, .env
+
+   Skipping validation of types
+   Skipping linting
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Collecting page data ...
+   Generating static pages (0/50) ...
+Active theme: thema2
+Active theme: thema2
+Active theme: thema2
+Active theme: thema2
+Active theme: thema2
+Active theme: thema2
+Active theme: thema2
+Active theme: thema2
+Active theme: thema2
+Active theme: thema2
+Active theme: thema2
+Active theme: thema2
+   Generating static pages (12/50) 
+Active theme: thema2
+Active theme: thema2
+Active theme: thema2
+Active theme: thema2
+Active theme: thema2
+Active theme: thema2
+Active theme: thema2
+Active theme: thema2
+Active theme: thema2
+Active theme: thema2
+Active theme: thema2
+Active theme: thema2
+   Generating static pages (24/50) 
+Active theme: thema2
+Active theme: thema2
+Active theme: thema2
+Active theme: thema2

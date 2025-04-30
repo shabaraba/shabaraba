@@ -1,0 +1,162 @@
+.mylinkCard {
+  display: flex;
+  background-color: var(--content-bg-color);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(123, 94, 87, 0.08);
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+  height: 160px; /* カードの高さをさらに増加 */
+  border-left: 4px solid var(--accent-color);
+}
+
+.mylinkCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(123, 94, 87, 0.15);
+}
+
+.mylinkImage {
+  width: 200px;
+  height: 160px;
+  overflow: hidden;
+  flex-shrink: 0;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--sidebar-bg-color);
+  transition: all 0.3s ease;
+  align-self: center;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.mylinkCard:hover .image {
+  transform: scale(1.08);
+}
+
+.mylinkContent {
+  padding: 14px 16px 16px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s ease;
+  position: relative;
+  justify-content: space-between;
+}
+
+.mylinkCard:hover .mylinkContent {
+  background-color: rgba(249, 246, 240, 0.7);
+}
+
+.mylinkTitle {
+  font-size: 1rem;
+  margin-bottom: 12px;
+  line-height: 1.4;
+  font-weight: 600;
+  margin-top: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.titleLink {
+  color: var(--heading-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+  display: inline-block;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 2px;
+}
+
+.titleLink:hover {
+  color: var(--link-color);
+  border-bottom: 2px solid var(--link-color);
+}
+
+.mylinkTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 0;
+}
+
+.tagItem {
+  display: inline-block;
+  padding: 2px 8px;
+  background-color: var(--sidebar-bg-color);
+  color: var(--accent-color);
+  border-radius: 20px;
+  font-size: 0.75rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tagItem:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  background-color: var(--link-color); /* 記事カードと統一 */
+  color: white;
+}
+
+/* コーヒースタイルの装飾 */
+.mylinkCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  background-color: transparent;
+  border-radius: 0 0 0 40px;
+  z-index: 1;
+}
+
+/* モバイル対応 */
+@media (max-width: 768px) {
+  .mylinkCard {
+    flex-direction: column;
+    height: auto;
+    border-left: none;
+    border-top: 4px solid var(--accent-color);
+  }
+  
+  .mylinkImage {
+    width: 100%;
+    height: 160px;
+  }
+  
+  .mylinkContent {
+    padding: 12px 14px;
+    justify-content: flex-start;
+  }
+  
+  .mylinkTitle {
+    font-size: 1rem;
+    margin-top: 0;
+    margin-bottom: 6px;
+  }
+  
+  .mylinkTags {
+    margin-top: 4px;
+  }
+  
+  .tagItem {
+    padding: 2px 6px;
+    font-size: 0.7rem;
+    max-width: 100px;
+  }
+}
