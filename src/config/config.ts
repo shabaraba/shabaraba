@@ -1,10 +1,3 @@
-import fs from 'fs';
-import path from 'path';
-import * as TOML from '@iarna/toml';
-
-// 設定ファイルのパス
-const CONFIG_FILE_PATH = path.join(process.cwd(), 'src/config/site.toml');
-
 // 設定ファイルの型定義
 export interface SiteConfig {
   site: {
@@ -89,20 +82,32 @@ const defaultConfig: SiteConfig = {
   },
 };
 
-// 設定の読み込み
-let config: SiteConfig;
+// クライアントサイドでは常にデフォルト設定を使用する
+// サーバーサイドでは可能であれば設定ファイルを読み込む
+let config: SiteConfig = defaultConfig;
 
-try {
-  // ファイルの読み込み
-  const fileContent = fs.readFileSync(CONFIG_FILE_PATH, 'utf8');
-  
-  // TOMLのパース
-  config = TOML.parse(fileContent) as SiteConfig;
-  
-  console.log('設定ファイルを読み込みました:', CONFIG_FILE_PATH);
-} catch (error) {
-  console.warn('設定ファイルの読み込みに失敗しました。デフォルト値を使用します:', error);
-  config = defaultConfig;
+// Node.js環境（サーバーサイド）でのみ実行
+if (typeof window === 'undefined') {
+  try {
+    // 必要なモジュールを動的にインポート（クライアントサイドではインポートされない）
+    const fs = require('fs');
+    const path = require('path');
+    const TOML = require('@iarna/toml');
+    
+    // 設定ファイルのパス
+    const CONFIG_FILE_PATH = path.join(process.cwd(), 'src/config/site.toml');
+    
+    // ファイルの読み込み
+    const fileContent = fs.readFileSync(CONFIG_FILE_PATH, 'utf8');
+    
+    // TOMLのパース
+    config = TOML.parse(fileContent) as SiteConfig;
+    
+    console.log('設定ファイルを読み込みました:', CONFIG_FILE_PATH);
+  } catch (error) {
+    console.warn('設定ファイルの読み込みに失敗しました。デフォルト値を使用します:', error);
+    config = defaultConfig;
+  }
 }
 
 /**
