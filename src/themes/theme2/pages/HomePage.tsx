@@ -68,7 +68,6 @@ export default function HomePage({
           </>
         ) : (
           <>
-            <h1 className={styles.title}>Coffee Break Point</h1>
             <p className={styles.subtitle}>
               プログラミングやデザイン、日々の気づきをお届けするブログです
             </p>

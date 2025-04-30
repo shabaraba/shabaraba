@@ -1,6 +1,5 @@
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import styles from './Header.module.css';
 
 /**
@@ -11,13 +10,7 @@ export default function Header() {
     <header className={styles.header}>
       <div className={styles.logoContainer}>
         <Link href="/" className={styles.logo}>
-          <Image 
-            src="/images/CoffeeBreakPoint.png" 
-            alt="Coffee Break Point" 
-            width={240} 
-            height={60} 
-            priority
-          />
+          <span className={styles.logoText}>Coffee Break Point</span>
         </Link>
       </div>
       <nav className={styles.nav}>
