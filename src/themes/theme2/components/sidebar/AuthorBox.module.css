@@ -8,6 +8,10 @@
 
 .authorImage {
   margin-bottom: 16px;
+  text-align: center; /* 中央寄せを追加 */
+  display: flex;
+  justify-content: center; /* 水平方向の中央寄せ */
+  align-items: center; /* 垂直方向の中央寄せ */
 }
 
 .avatar {
@@ -32,21 +36,30 @@
 .authorSocial {
   display: flex;
   justify-content: center;
+  gap: 16px; /* アイコン間の間隔 */
+  margin-top: 16px;
 }
 
 .socialLink {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 8px 12px;
+  width: 36px;
+  height: 36px;
   background-color: var(--accent-color);
   color: white;
-  border-radius: 4px;
+  border-radius: 50%;
   text-decoration: none;
   font-size: 0.9rem;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .socialLink:hover {
   background-color: var(--link-hover-color);
+  transform: translateY(-2px);
+}
+
+.socialIcon {
+  width: 20px;
+  height: 20px;
 }

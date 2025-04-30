@@ -70,6 +70,7 @@ article {
 
 .main-layout {
   display: flex;
+  flex-direction: row-reverse; /* 順序を逆にして左側にサイドバーを配置 */
   gap: 32px;
   padding-top: 24px;
 }
@@ -92,7 +93,7 @@ article {
 /* モバイル対応 */
 @media (max-width: 768px) {
   .main-layout {
-    flex-direction: column;
+    flex-direction: column-reverse; /* モバイルでは上にサイドバー、下にメインコンテンツ */
   }
   
   .sidebar {

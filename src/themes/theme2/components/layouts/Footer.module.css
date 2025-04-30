@@ -57,11 +57,41 @@
   border-top: 1px solid rgba(123, 94, 87, 0.1);
   padding-top: 24px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
 }
 
 .copyright {
   font-size: 0.9rem;
   color: var(--text-color);
+}
+
+.poweredBy {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: var(--text-color);
+}
+
+.techIcons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: 8px;
+}
+
+.techIcon {
+  width: 20px;
+  height: 20px;
+  color: var(--accent-color);
+  transition: transform 0.2s ease;
+}
+
+.techIcon:hover {
+  transform: scale(1.2);
 }
 
 /* モバイル対応 */
