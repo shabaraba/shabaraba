@@ -1,7 +1,5 @@
 import React from 'react';
 import styles from './Footer.module.css';
-// アイコンをインポート
-import { SiNextdotjs, SiNetlify, SiNotion } from '@meronex/icons/si';
 
 /**
  * フッターコンポーネント
@@ -38,9 +36,9 @@ export default function Footer() {
         <div className={styles.poweredBy}>
           powered by
           <span className={styles.techIcons}>
-            <SiNextdotjs className={styles.techIcon} title="Next.js" />
-            <SiNetlify className={styles.techIcon} title="Netlify" />
-            <SiNotion className={styles.techIcon} title="Notion" />
+            <span className={styles.techIcon} title="Next.js">Next.js</span>
+            <span className={styles.techIcon} title="Netlify">Netlify</span>
+            <span className={styles.techIcon} title="Notion">Notion</span>
           </span>
         </div>
       </div>

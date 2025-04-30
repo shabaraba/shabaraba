@@ -1,9 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
 import styles from './AuthorBox.module.css';
-// アイコンをインポート
-import { SiGithub, SiQiita } from '@meronex/icons/si';
-import { AiTwitter } from '@meronex/icons/ai';
 
 /**
  * 著者情報コンポーネント
@@ -26,13 +23,13 @@ export default function AuthorBox() {
       </p>
       <div className={styles.authorSocial}>
         <a href="https://github.com/shabaraba" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
-          <SiGithub className={styles.socialIcon} />
+          <span className={styles.socialIcon}>GH</span>
         </a>
         <a href="https://x.com/shaba_dev" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
-          <AiTwitter className={styles.socialIcon} />
+          <span className={styles.socialIcon}>X</span>
         </a>
         <a href="https://qiita.com/shabaraba" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
-          <SiQiita className={styles.socialIcon} />
+          <span className={styles.socialIcon}>Q</span>
         </a>
       </div>
     </div>
