@@ -1,11 +1,17 @@
 import React from 'react';
 import Link from 'next/link';
 import styles from './Header.module.css';
+import useConfig from 'config/useConfig';
 
 /**
  * ヘッダーコンポーネント
  */
 export default function Header() {
+
+  const { getSetting } = useConfig();
+  const homeText = getSetting('header.homelink', 'ホーム');
+  const mylinkText = getSetting('header.mylink', 'マイリンク');
+
   return (
     <header className={styles.header}>
       <div className={styles.logoContainer}>
@@ -19,12 +25,12 @@ export default function Header() {
         <ul className={styles.navList}>
           <li className={styles.navItem}>
             <Link href="/" className={styles.navLink}>
-              ホーム
+              { homeText }
             </Link>
           </li>
           <li className={styles.navItem}>
             <Link href="/mylink" className={styles.navLink}>
-              リンク集
+              { mylinkText }
             </Link>
           </li>
         </ul>

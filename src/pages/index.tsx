@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import { ACTIVE_THEME } from '../lib/themeSelector';
+import { ACTIVE_THEME } from '../config/themeSelector';
 import { CommonDataService } from '../services/CommonDataService';
 // import HomePage from '../themes/theme2/pages/HomePage';
 

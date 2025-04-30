@@ -5,10 +5,10 @@ import { siteTitle } from "../../../next-seo.config";
 import { MyLinkListPageUsecase } from "application/usecases/MyLinkListPageUsecase";
 import { MyLinkEntity } from "core/entities/MyLinkEntity";
 import { MyLinkType } from "core/types/MyLinkType";
-import { getThemePage } from "../../lib/themeSelector";
+import { getThemePage } from "../../config/themeSelector";
 import dynamic from "next/dynamic";
 
-import { ACTIVE_THEME } from '../../lib/themeSelector';
+import { ACTIVE_THEME } from '../../config/themeSelector';
 
 // 1ページあたりのマイリンク数
 const LINKS_PER_PAGE = 10;

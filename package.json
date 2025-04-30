@@ -4,7 +4,9 @@
     "node": ">=18"
   },
   "scripts": {
+    "predev": "node scripts/convert-toml-to-json.js",
     "dev": "next dev",
+    "prebuild": "node scripts/convert-toml-to-json.js",
     "build": "node scripts/fetch-github-profile.js && next build && echo 'Build completed'",
     "start": "npx serve@latest out",
     "postbuild": "echo 'Skipping next-sitemap'",

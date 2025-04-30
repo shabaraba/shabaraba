@@ -1,0 +1,44 @@
+{
+  "site": {
+    "title": "Coffee Break Point",
+    "description": "コーヒー休憩にちょうどよい技術よみものを目指して",
+    "url": "https://blog.shaba.dev"
+  },
+  "home": {
+    "title": "Coffee Break Point",
+    "subtitle": "プログラミングやデザイン、日々の気づきをお届けするブログです"
+  },
+  "tag": {
+    "title_prefix": "タグ: ",
+    "subtitle_template": "「%s」に関連する記事一覧"
+  },
+  "author": {
+    "name": "しゃば",
+    "bio": "プログラミングとデザインが好きなエンジニア。日々の発見や気づきをこのブログで共有しています。",
+    "detail": {
+      "info": "ロボット好きのPHPエンジニア\n自分でイジれるおもちゃを欲しがち\n時間がなく3年ほど中断している工作機械自作の完成が夢\n\n休憩の傍らななめ読みできそうな技術ブログを目指す"
+    }
+  },
+  "header": {
+    "homelink": "記事一覧",
+    "mylink": "MyLinks"
+  },
+  "footer": {
+    "copyright": "©from-garage 2022 All Rights Reserved.",
+    "powered_by_text": "powered by"
+  },
+  "layout": {
+    "default_title": "Coffee Break Point",
+    "default_description": "日々の気付きやメモを書いていくブログです"
+  },
+  "sidebar": {
+    "author_title": "Author",
+    "popular_articles_title": "人気記事",
+    "series_title": "シリーズ",
+    "tags_title": "タグ"
+  },
+  "mylink": {
+    "page_title": "Links",
+    "page_description": "筆者の興味関心のある外部ページはこちらに"
+  }
+}
