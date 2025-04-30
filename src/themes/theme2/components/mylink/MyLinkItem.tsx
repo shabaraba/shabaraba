@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './MyLinkItem.module.css';
+import { v4 as uuidv4 } from 'uuid'
 import { MyLinkEntity } from '../../../../core/entities/MyLinkEntity';
 
 interface MyLinkItemProps {
@@ -38,9 +39,9 @@ export default function MyLinkItem({ mylink }: MyLinkItemProps) {
         </h3>
         {mylink.tags && mylink.tags.length > 0 && (
           <div className={styles.mylinkTags}>
-            {mylink.tags.map((tag, index) => (
+            {mylink.tags.map((tag) => (
               <span 
-                key={tag.id || index} 
+                key={uuidv4()} 
                 className={styles.tagItem} 
                 style={tag.color ? { backgroundColor: `var(--${tag.color}-color, var(--sidebar-bg-color))` } : {}}
               >

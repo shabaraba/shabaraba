@@ -11,9 +11,9 @@ import { ArticleListPageUsecase } from "application/usecases/ArticleListPageUsec
 import { PostHeadType } from "core/types/PostHeadType";
 import ListLayout from "../components/layouts/ListLayout";
 
-type Props = InferGetStaticPropsType<typeof getStaticProps>;
+// type Props = InferGetStaticPropsType<typeof getStaticProps>;
 
-export default ({ allPostsData }: Props) => {
+export default ({ allPostsData }: any) => {
   // PostListに渡していたが、多分使ってない
   const data: PostHeadEntity[] = allPostsData.map(
     (postHead: PostHeadType) => new PostHeadEntity(postHead)

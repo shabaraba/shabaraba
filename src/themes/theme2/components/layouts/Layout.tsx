@@ -9,7 +9,7 @@ interface LayoutProps {
   title?: string;
   description?: string;
   showSidebar?: boolean;
-  sidebarContent?: ReactNode | null;
+  sidebarContent?: ReactNode;
 }
 
 /**
@@ -38,7 +38,7 @@ export default function Layout({
           </div>
           {showSidebar && (
             <aside className="sidebar">
-              {sidebarContent === null ? <Sidebar /> : sidebarContent || <Sidebar />}
+              {sidebarContent || <Sidebar />}
             </aside>
           )}
         </main>

@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import styles from './TagCloud.module.css';
+import {v4 as uuidv4} from 'uuid';
 import { useSidebarData } from 'contexts/SidebarContext';
 
 /**
@@ -22,7 +23,7 @@ export default function TagCloud() {
     <div className={styles.tagCloud}>
       {tags.map((tag) => (
         <Link 
-          key={tag.id} 
+          key={uuidv4()} 
           href={`/tags/${tag.name.toLowerCase()}`} 
           className={`${styles.tag} ${styles[tag.size]}`}
           style={{ backgroundColor: tag.color === 'default' ? undefined : `var(--notion-${tag.color})` }}

@@ -1,12 +1,15 @@
 import React from 'react';
+import dynamic from 'next/dynamic';
 import { GetStaticPropsContext, GetStaticPathsResult } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import { ACTIVE_THEME } from '../../lib/themeSelector';
 import { IPageHead } from 'core/types/NotionPageApiResponses';
 import { CommonDataService } from '../../services/CommonDataService';
 
-// 動的にテーマのタグページコンポーネントをインポート
-const HomePage = require(`../../themes/${ACTIVE_THEME}/pages/HomePage`).default;
+// 動的にテーマのホームページコンポーネントをインポート
+const HomePage = dynamic(() =>
+  import(`../../themes/${ACTIVE_THEME}/pages/HomePage`).then(mod => mod.default)
+);
 
 // 1ページあたりの記事数
 const POSTS_PER_PAGE = 10;

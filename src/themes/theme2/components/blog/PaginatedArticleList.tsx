@@ -9,7 +9,7 @@ interface PaginatedArticleListProps {
   totalItems: number;
   itemsPerPage: number;
   currentPage: number;
-  totalPages: number;
+  totalPages?: number;
   baseUrl: string;
   queryParams?: Record<string, string>;
 }

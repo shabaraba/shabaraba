@@ -107,7 +107,7 @@ function renderListItem(block: NotionBlock, parentType: string | null) {
     ? block.bulleted_list_item && renderRichText(block.bulleted_list_item.rich_text)
     : block.numbered_list_item && renderRichText(block.numbered_list_item.rich_text);
   
-  console.log(JSON.stringify(block.children, null, 2));
+  // console.log(JSON.stringify(block.children, null, 2));
   // 子要素があれば再帰的に処理（親のリストタイプを継承）
   const childrenContent = block.has_children ? (
     parentType === 'bulleted_list_item' ? (

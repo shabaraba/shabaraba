@@ -66,7 +66,7 @@ export const getOGP = async (url: string, id: string): Promise<IOgp> => {
 export const setOGPToBookmarkBlocks = async (
   blockList: any,
 ): Promise<any> => {
-  console.log(JSON.stringify(blockList, null, 2));
+  // console.log(JSON.stringify(blockList, null, 2));
   try {
     const blocks = [];
     for (let item of blockList) {

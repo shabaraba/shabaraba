@@ -1,11 +1,12 @@
-import { GetStaticPropsContext } from 'next';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { ACTIVE_THEME } from '../lib/themeSelector';
 import { CommonDataService } from '../services/CommonDataService';
 
 // 動的にテーマのホームページコンポーネントをインポート
-const HomePage = require(`../themes/${ACTIVE_THEME}/pages/HomePage`).default;
-
+const HomePage = dynamic(() =>
+  import(`../themes/${ACTIVE_THEME}/pages/HomePage`).then(mod => mod.default)
+);
 // 1ページあたりの記事数
 const POSTS_PER_PAGE = 10;
 
@@ -35,7 +36,6 @@ function HomePageWrapper(props) {
       totalPages: totalPages
     }
   };
-  
   return <HomePage {...enhancedProps} />;
 }
 
