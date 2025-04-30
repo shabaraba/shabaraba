@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as TOML from '@iarna/toml';
-import { getConfig, getAllConfig } from '../../../lib/config';
+import { getConfig, getAllConfig } from '../../../config/config';
 
 jest.mock('fs');
 jest.mock('path');
@@ -47,7 +47,7 @@ describe('config', () => {
   // Re-import to utilize mocks
   function reimportModule() {
     jest.resetModules();
-    return require('../../../lib/config');
+    return require('../../../config/config');
   }
 
   describe('getConfig', () => {

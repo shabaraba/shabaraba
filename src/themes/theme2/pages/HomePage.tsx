@@ -2,7 +2,7 @@ import React from 'react';
 import Layout from '../components/layouts/Layout';
 import PaginatedArticleList from '../components/blog/PaginatedArticleList';
 import styles from './HomePage.module.css';
-import { useConfig } from '../../../lib/useConfig';
+import { useConfig } from '../../../config/useConfig';
 
 // getStaticProps関数でデータを取得する場合の型定義
 interface HomePageProps {

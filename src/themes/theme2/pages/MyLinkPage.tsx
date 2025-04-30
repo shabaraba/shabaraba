@@ -4,7 +4,7 @@ import { MyLinkEntity } from '../../../core/entities/MyLinkEntity';
 import Layout from '../components/layouts/Layout';
 import MyLinkList from '../components/mylink/MyLinkList';
 import PaginatedLinkList from '../components/mylink/PaginatedLinkList';
-import { useConfig } from '../../../lib/useConfig';
+import { useConfig } from '../../../config/useConfig';
 
 interface MyLinkPageProps {
   mylinks: MyLinkEntity[];

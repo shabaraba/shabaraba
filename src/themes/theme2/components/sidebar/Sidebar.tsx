@@ -4,7 +4,7 @@ import AuthorBox from './AuthorBox';
 import PopularArticles from './PopularArticles';
 import TagCloud from './TagCloud';
 import SeriesList from './SeriesList';
-import { useConfig } from '../../../../lib/useConfig';
+import { useConfig } from '../../../../config/useConfig';
 
 /**
  * サイドバーコンポーネント

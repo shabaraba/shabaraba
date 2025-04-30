@@ -1,8 +1,8 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { useConfig } from '../../../lib/useConfig';
-import * as configModule from '../../../lib/config';
+import { useConfig } from '../../../config/useConfig';
+import * as configModule from '../../../config/config';
 
-jest.mock('../../../lib/config', () => ({
+jest.mock('../../../config/config', () => ({
   getConfig: jest.fn(),
 }));
 

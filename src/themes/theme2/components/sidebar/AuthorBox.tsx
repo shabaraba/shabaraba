@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import styles from './AuthorBox.module.css';
 import { Icon } from '@iconify/react';
-import { useConfig } from '../../../../lib/useConfig';
+import { useConfig } from '../../../../config/useConfig';
 
 /**
  * 著者情報コンポーネント

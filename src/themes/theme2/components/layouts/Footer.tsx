@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './Footer.module.css';
 import { Icon } from '@iconify/react';
-import { useConfig } from '../../../../lib/useConfig';
+import { useConfig } from '../../../../config/useConfig';
 
 /**
  * フッターコンポーネント

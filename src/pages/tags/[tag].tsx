@@ -2,7 +2,7 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 import { GetStaticPropsContext, GetStaticPathsResult } from 'next';
 import { ParsedUrlQuery } from 'querystring';
-import { ACTIVE_THEME } from '../../lib/themeSelector';
+import { ACTIVE_THEME } from '../../config/themeSelector';
 import { IPageHead } from 'core/types/NotionPageApiResponses';
 import { CommonDataService } from '../../services/CommonDataService';
 
