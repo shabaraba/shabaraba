@@ -7,7 +7,8 @@
     "predev": "node scripts/convert-toml-to-json.js",
     "dev": "next dev",
     "prebuild": "node scripts/convert-toml-to-json.js",
-    "build": "node scripts/fetch-github-profile.js && next build && echo 'Build completed'",
+    "generate-og": "node scripts/generate-og-images.js || ./scripts/generate-og-images.sh",
+    "build": "node scripts/fetch-github-profile.js && npm run generate-og && next build && echo 'Build completed'",
     "start": "npx serve@latest out",
     "postbuild": "echo 'Skipping next-sitemap'",
     "analyze": "ANALYZE=true next build",
@@ -60,6 +61,7 @@
     "react-syntax-highlighter": "^15.5.0",
     "remark": "^14.0.1",
     "remark-html": "^15.0.0",
+    "skia-canvas": "^2.0.2",
     "swr": "^1.2.1",
     "tls": "^0.0.1",
     "uuid": "^8.3.2"

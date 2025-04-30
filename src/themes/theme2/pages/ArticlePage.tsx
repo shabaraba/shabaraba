@@ -5,6 +5,7 @@ import Layout from '../components/layouts/Layout';
 import ArticleDetail from '../components/blog/ArticleDetail';
 import { ArticleServiceFactory } from '../../../core/factories/ArticleServiceFactory';
 import { Article } from '../../../core/interfaces/article/ArticleRepository';
+import { Seo } from '../../../components/units/common/Seo';
 
 // URLパラメータの型定義
 interface Params extends ParsedUrlQuery {
@@ -29,6 +30,7 @@ export default function ArticlePage({ article }: ArticlePageProps) {
       title={`${article.title} | Coffee Break Point`}
       description={article.excerpt || ''}
     >
+      <Seo title={article.title} slug={article.slug} coverImageUrl={article.coverImageUrl} />
       <ArticleDetail article={article} />
     </Layout>
   );
