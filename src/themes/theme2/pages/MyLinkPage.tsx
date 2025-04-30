@@ -19,7 +19,7 @@ interface MyLinkPageProps {
  */
 export default function MyLinkPage({ mylinks, pagination }: MyLinkPageProps) {
   return (
-    <Layout sidebarContent={null}>
+    <Layout>
       <div className={styles.mainContent}>
         <h1 className={styles.pageTitle}>Links</h1>
         <p className={styles.pageDescription}>筆者の興味関心のある外部ページはこちらに</p>

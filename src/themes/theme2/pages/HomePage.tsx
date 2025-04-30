@@ -59,9 +59,9 @@ export default function HomePage({
   // クエリパラメータ（タグページの場合はタグ名を含める）
   const queryParams = tagName ? { tag: tagName } : {};
 
-  // LayoutにsidebarDataを直接渡す
+  // Layoutにはsidebarコンポーネントを自動的に表示させる
   return (
-    <Layout title={title} description={description} sidebarContent={null}>
+    <Layout title={title} description={description}>
       <div className={styles.hero}>
         {tagName ? (
           <>

@@ -36,9 +36,9 @@ export default function Layout({
           <div className="main-column">
             {children}
           </div>
-          {showSidebar && sidebarContent !== null && (
+          {showSidebar && (
             <aside className="sidebar">
-              {sidebarContent || <Sidebar />}
+              {sidebarContent === null ? <Sidebar /> : sidebarContent || <Sidebar />}
             </aside>
           )}
         </main>
