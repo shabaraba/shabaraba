@@ -68,21 +68,47 @@ export const setOGPToBookmarkBlocks = async (
 ): Promise<any> => {
   // console.log(JSON.stringify(blockList, null, 2));
   try {
+    // 入力チェック - API v2.3対応
+    if (!blockList) {
+      console.warn('blockList is undefined or null');
+      return [];
+    }
+    
+    // Notionの応答構造をチェック
+    // APIの結果オブジェクトを扱う場合
+    if (blockList.results && Array.isArray(blockList.results)) {
+      blockList = blockList.results;
+    }
+    
+    // 配列でない場合は配列に変換（単一ブロックの場合のための対応）
+    if (!Array.isArray(blockList)) {
+      console.warn('blockList is not an array, converting to array:', typeof blockList);
+      return blockList; // 変換できない場合はそのまま返す
+    }
+    
     const blocks = [];
     for (let item of blockList) {
       try {
-        if (item.has_children === true) {
+        if (!item) {
+          console.warn('Skipping undefined or null item in blockList');
+          continue;
+        }
+        
+        if (item.has_children === true && item.type && item[item.type] && item[item.type].children) {
+          // 子ブロックが存在し、適切な型の場合のみ再帰処理
           item[item.type].children = await setOGPToBookmarkBlocks(
             item[item.type].children,
           );
         }
-        if (item.type === "bookmark") {
+        
+        if (item.type === "bookmark" && item.bookmark && item.bookmark.url) {
           let ogp: IOgp = await getOGP(item.bookmark.url, item.id);
           item.bookmark.ogp = ogp;
         }
+        
         blocks.push(item);
       } catch (itemError) {
-        console.warn(`Error processing block: ${item.id}`, itemError);
+        console.warn(`Error processing block: ${item?.id || 'unknown'}`, itemError);
         // Still push the item even if OGP fetching fails
         blocks.push(item);
       }
@@ -90,7 +116,15 @@ export const setOGPToBookmarkBlocks = async (
     return blocks;
   } catch (error) {
     console.error("Error in setOGPToBookmarkBlocks", error);
-    // Return the original blocklist if processing fails
-    return blockList;
+    // 元のブロックリストを返す（安全な操作のため）
+    if (Array.isArray(blockList)) {
+      return blockList;
+    }
+    // APIレスポンスオブジェクトであればresultsを返す
+    if (blockList && blockList.results && Array.isArray(blockList.results)) {
+      return blockList.results;
+    }
+    // それ以外の場合は空配列
+    return [];
   }
 };

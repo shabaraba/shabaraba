@@ -36,8 +36,26 @@ export class PostLogicNotionImpl implements PostLogic {
 
   async getDetail(id: string): Promise<PostDetailEntity> {
     const resp: IRetrieveBlockChildrenResponse = await this._repository.getPostBlockListById(id);
-    const respWithOGP: IRetrieveBlockChildrenResponse = await setOGPToBookmarkBlocks(resp);
-    const blockList: BlockList = BlockList.deserialize(respWithOGP.results);
+    
+    // 安全なOGP処理
+    let respWithOGP: any;
+    try {
+      respWithOGP = await setOGPToBookmarkBlocks(resp);
+      // respWithOGPが配列の場合はラップして結果オブジェクトを作成
+      if (Array.isArray(respWithOGP)) {
+        respWithOGP = { results: respWithOGP };
+      }
+    } catch (error) {
+      console.error('Error adding OGP to bookmark blocks:', error);
+      // エラー時は元のデータをそのまま使用
+      respWithOGP = resp;
+    }
+    
+    // .resultsプロパティが確実に存在することを確認
+    const resultsToDeserialize = respWithOGP.results || 
+                               (Array.isArray(respWithOGP) ? respWithOGP : []);
+    
+    const blockList: BlockList = BlockList.deserialize(resultsToDeserialize);
     return new PostDetailEntity(blockList);
   }
 

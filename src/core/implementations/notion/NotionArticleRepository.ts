@@ -69,7 +69,18 @@ export class NotionArticleRepository implements ArticleRepository {
       const articleListItem = this.convertToArticleListItem(page);
       
       // 記事の内容を取得
-      const blocks = await setOGPToBookmarkBlocks(await this.getPageBlocks(page.id));
+      const rawBlocks = await this.getPageBlocks(page.id);
+      console.log(`Fetched ${rawBlocks ? rawBlocks.length : 0} blocks for page ${page.id}`);
+      
+      // OGP情報を追加
+      let blocks;
+      try {
+        blocks = await setOGPToBookmarkBlocks(rawBlocks);
+      } catch (ogpError) {
+        console.error(`Error setting OGP for blocks in page ${page.id}:`, ogpError);
+        // エラー時は元のブロックをそのまま使用
+        blocks = rawBlocks;
+      }
 
       return {
         ...articleListItem,
