@@ -35,9 +35,12 @@ export default function HomePage({
   tagName
 }: HomePageProps) {
   // サイドバーデータをグローバル変数に設定
-  if (typeof window !== 'undefined' && sidebarData) {
-    window.__SIDEBAR_DATA__ = sidebarData;
-  }
+  React.useEffect(() => {
+    if (typeof window !== 'undefined' && sidebarData) {
+      console.log('Setting window.__SIDEBAR_DATA__ from HomePage', sidebarData);
+      window.__SIDEBAR_DATA__ = sidebarData;
+    }
+  }, [sidebarData]);
 
   // デフォルトタイトルと説明
   const title = customTitle || 'Coffee Break Point';
@@ -56,6 +59,7 @@ export default function HomePage({
   // クエリパラメータ（タグページの場合はタグ名を含める）
   const queryParams = tagName ? { tag: tagName } : {};
 
+  // LayoutにsidebarDataを直接渡す
   return (
     <Layout title={title} description={description}>
       <div className={styles.hero}>
@@ -68,6 +72,7 @@ export default function HomePage({
           </>
         ) : (
           <>
+            <h1 className={styles.title}>Coffee Break Point</h1>
             <p className={styles.subtitle}>
               プログラミングやデザイン、日々の気づきをお届けするブログです
             </p>

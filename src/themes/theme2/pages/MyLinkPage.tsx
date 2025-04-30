@@ -6,12 +6,18 @@ import MyLinkList from '../components/mylink/MyLinkList';
 
 interface MyLinkPageProps {
   mylinks: MyLinkEntity[];
+  pagination?: {
+    totalItems: number;
+    itemsPerPage: number;
+    currentPage: number;
+    totalPages: number;
+  };
 }
 
 /**
  * MyLinkページコンポーネント（Theme2用）
  */
-export default function MyLinkPage({ mylinks }: MyLinkPageProps) {
+export default function MyLinkPage({ mylinks, pagination }: MyLinkPageProps) {
   return (
     <Layout>
       <div className={styles.mainContent}>

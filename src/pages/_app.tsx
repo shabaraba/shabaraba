@@ -37,9 +37,12 @@ export default function App({ Component, pageProps }: AppProps) {
   // サイドバーデータを取得
   useEffect(() => {
     if (typeof window !== 'undefined' && window.__SIDEBAR_DATA__) {
+      console.log('Loading sidebar data from window.__SIDEBAR_DATA__', window.__SIDEBAR_DATA__);
       setSidebarData(window.__SIDEBAR_DATA__);
+    } else {
+      console.log('No window.__SIDEBAR_DATA__ found');
     }
-  }, []);
+  }, [pageProps]);
   
   // Google Analyticsのページビュートラッキング
   useEffect(() => {

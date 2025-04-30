@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './Footer.module.css';
-import { SiNextdotjs, SiNetlify, SiNotion } from '@icons-pack/react-simple-icons';
+import { Icon } from '@iconify/react';
 
 /**
  * フッターコンポーネント
@@ -24,22 +24,15 @@ export default function Footer() {
             <li><a href="/mylink" className={styles.footerLink}>リンク集</a></li>
           </ul>
         </div>
-        <div className={styles.footerHours}>
-          <h4 className={styles.footerSubtitle}>営業時間</h4>
-          <p className={styles.footerText}>
-            当ブログは24時間営業中<br />
-            いつでもお気軽にお立ち寄りください
-          </p>
-        </div>
       </div>
       <div className={styles.footerBottom}>
         <p className={styles.copyright}>© {currentYear} Coffee Break Point. All rights reserved.</p>
         <div className={styles.poweredBy}>
           powered by
           <span className={styles.techIcons}>
-            <SiNextdotjs className={styles.techIcon} title="Next.js" />
-            <SiNetlify className={styles.techIcon} title="Netlify" />
-            <SiNotion className={styles.techIcon} title="Notion" />
+            <Icon icon="simple-icons:notion" width="24" height="24" />
+            <Icon icon="simple-icons:nextdotjs" width="24" height="24" />
+            <Icon icon="simple-icons:netlify" width="24" height="24" />
           </span>
         </div>
       </div>
