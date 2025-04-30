@@ -10,7 +10,9 @@ export default function Header() {
     <header className={styles.header}>
       <div className={styles.logoContainer}>
         <Link href="/" className={styles.logo}>
-          <span className={styles.logoText}>Coffee Break Point</span>
+          <span className={styles.logoText}>
+            Coffee Break Point
+          </span>
         </Link>
       </div>
       <nav className={styles.nav}>
