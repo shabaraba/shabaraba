@@ -3,6 +3,7 @@ import Layout from '../components/layouts/Layout';
 import PaginatedArticleList from '../components/blog/PaginatedArticleList';
 import styles from './HomePage.module.css';
 import { useConfig } from '../../../config/useConfig';
+import { Seo } from '../../../components/units/common/Seo';
 
 // getStaticProps関数でデータを取得する場合の型定義
 interface HomePageProps {
@@ -66,6 +67,7 @@ const HomePage = React.memo(function HomePage({
   
   return (
     <Layout title={title} description={description}>
+      <Seo title={title} slug="default" />
       <div className={styles.hero}>
         {tagName ? (
           <>

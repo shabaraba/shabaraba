@@ -1,5 +1,4 @@
 import { ACTIVE_THEME } from '../../config/themeSelector';
-import { ArticleServiceFactory } from '../../core/factories/ArticleServiceFactory';
 import { ArticlePageUsecase } from 'application/usecases/ArticlePageUsecase';
 import dynamic from 'next/dynamic';
 
