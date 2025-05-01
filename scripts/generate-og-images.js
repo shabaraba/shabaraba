@@ -277,7 +277,7 @@ async function generateOgImage(title, id, thumbnailPath = null) {
         }
       }
     }
-    
+
     lines.push(line);
     
     // フォントサイズの自動調整
