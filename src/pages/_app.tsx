@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import Head from "next/head"
 import { AppProps } from "next/app"
 import { useRouter } from "next/router"
@@ -11,16 +11,7 @@ import { SidebarProvider, TagData, SeriesData } from "../contexts/SidebarContext
 // グローバルスタイルのインポート
 import "../styles/global.css"
 
-// グローバル変数の型定義
-declare global {
-  interface Window {
-    __SIDEBAR_DATA__?: {
-      trendingPosts: any[];
-      tags: TagData[];
-      series: SeriesData[];
-    };
-  }
-}
+// サイドバーデータはページPropsから提供されるため、グローバル変数は不要
 
 export const siteTitle = "Coffee Break Point"
 export const siteDescription = "コーヒー休憩にちょうどよい技術よみものを目指して"
@@ -28,22 +19,13 @@ export const siteUrl = "https://blog.shaba.dev"
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
-  const [sidebarData, setSidebarData] = useState({
+  
+  // サイドバーデータをページPropsから取得
+  const sidebarData = pageProps.sidebarData || {
     trendingPosts: [],
     tags: [],
     series: []
-  });
-
-  // サイドバーデータを取得
-  useEffect(() => {
-    if (typeof window !== 'undefined' && window.__SIDEBAR_DATA__) {
-      // コンソールログはデバッグ目的で最小限に
-      if (process.env.NODE_ENV === 'development') {
-        console.log('Loading sidebar data from window.__SIDEBAR_DATA__');
-      }
-      setSidebarData(window.__SIDEBAR_DATA__);
-    }
-  }, []);
+  };
   
   // Google Analyticsのページビュートラッキング
   useEffect(() => {

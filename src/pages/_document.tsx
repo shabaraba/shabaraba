@@ -2,7 +2,6 @@ import NextDocument, { Html, Head, Main, NextScript, DocumentContext } from 'nex
 import React from 'react'
 
 import { GA_TRACKING_ID } from '../lib/gtag'
-import { getSidebarData } from '../lib/sidebarData'
 
 type Props = {}
 // Fix: Add fallback for GA_TRACKING_ID if not in .env
@@ -12,19 +11,14 @@ export const siteDescription = 'コーヒー休憩にちょうどよい技術よ
 export default class Document extends NextDocument {
   static async getInitialProps(ctx: DocumentContext) {
     const initialProps = await NextDocument.getInitialProps(ctx);
-    // サイドバーデータをビルド時に取得
-    const sidebarData = await getSidebarData();
+    // サイドバーデータはgetStaticPropsから提供するため、ここでは取得しない
     
-    // サーバーサイドでdataプロパティを定義して、クライアント側でwindow.__SIDEBAR_DATA__として使用
     return { 
-      ...initialProps,
-      sidebarData 
+      ...initialProps
     };
   }
 
   render() {
-    // @ts-ignore - sidebarDataプロパティをDocumentに追加
-    const { sidebarData } = this.props;
     
     return (
       <Html lang="ja">
@@ -59,14 +53,6 @@ export default class Document extends NextDocument {
         </Head>
         <body>
           <Main />
-          {/* サイドバーデータをグローバル変数として埋め込む */}
-          {sidebarData && (
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `window.__SIDEBAR_DATA__ = ${JSON.stringify(sidebarData)};`,
-              }}
-            />
-          )}
           <NextScript />
         </body>
       </Html>
