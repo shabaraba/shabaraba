@@ -31,8 +31,7 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   color: inherit;
   text-decoration: none;
-  height: 122px; /* 固定高さを設定 */
-  overflow: hidden;
+  min-height: 122px; /* 最小高さを設定（固定高さではなく） */
 }
 
 .relatedItem:hover {
@@ -80,21 +79,21 @@
   font-size: 0.8rem;
   color: #7b5e57;
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.3rem;
 }
 
 .relatedTags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 0.25rem;
+  gap: 0.3rem;
+  margin-top: 0.2rem;
 }
 
 .relatedTag {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   background-color: #f1e7d6;
   color: #7b5e57;
-  padding: 0.2rem 0.5rem;
+  padding: 0.15rem 0.4rem;
   border-radius: 4px;
   display: inline-block;
 }
@@ -107,7 +106,7 @@
   
   .relatedItem {
     padding: 0.75rem;
-    height: 102px; /* モバイル向けに高さを調整 */
+    min-height: 102px; /* モバイル向けに最小高さを調整 */
   }
   
   .relatedThumbnail {
@@ -130,8 +129,13 @@
     -webkit-line-clamp: 2;
   }
   
+  .relatedTags {
+    gap: 0.2rem;
+    margin-top: 0.15rem;
+  }
+  
   .relatedTag {
-    font-size: 0.7rem;
-    padding: 0.1rem 0.4rem;
+    font-size: 0.65rem;
+    padding: 0.1rem 0.3rem;
   }
 }

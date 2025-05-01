@@ -39,7 +39,7 @@ export default function RelatedArticles({ articles }: RelatedArticlesProps) {
               ) : (
                 <div className={styles.noImage} />
               )}
-            </div>}
+            </div>
             <div className={styles.relatedContent}>
               <h3 className={styles.relatedItemTitle}>{article.title}</h3>
               <time className={styles.relatedDate}>
