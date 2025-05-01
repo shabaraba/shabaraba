@@ -6,6 +6,13 @@ const fs = require('fs');
 const path = require('path');
 const { promisify } = require('util');
 const readdir = promisify(fs.readdir);
+const dotenv = require('dotenv');
+
+// 環境変数を読み込み
+dotenv.config();
+
+// NotionのClient
+const { Client } = require('@notionhq/client');
 
 // skia-canvasを使用
 const { Canvas, loadImage, ImageData, FontLibrary } = require('skia-canvas');
@@ -15,6 +22,11 @@ const WIDTH = 1200;
 const HEIGHT = 630;
 const OUTPUT_DIR = path.join(process.cwd(), 'public', 'og-images');
 const THUMBNAIL_DIR = path.join(process.cwd(), 'public', 'thumbnailImage');
+
+// Notion API設定
+const NOTION_TOKEN = process.env.NOTION_TOKEN;
+const NOTION_BLOG_DATABASE = process.env.NOTION_BLOG_DATABASE;
+const notionClient = new Client({ auth: NOTION_TOKEN });
 
 // カフェ風のカラースキーム
 const COLORS = {
@@ -52,15 +64,6 @@ async function findThumbnailImage(id) {
 
     // サムネイルディレクトリ内のファイルリストを取得
     const files = await readdir(THUMBNAIL_DIR);
-    
-    // スラッグ化関数（シェルスクリプトと同様の処理）
-    const slugify = (str) => {
-      return str.toLowerCase()
-        .replace(/\s+/g, '-')        // スペースをハイフンに置換
-        .replace(/[^a-z0-9-]/g, '-') // 英数字とハイフン以外をハイフンに置換
-        .replace(/-+/g, '-')         // 連続するハイフンを一つにまとめる
-        .replace(/^-|-$/g, '');      // 先頭と末尾のハイフンを削除
-    };
     
     // 各ファイルについて、ファイル名からスラッグを生成し、idと一致するか確認
     for (const file of files) {
@@ -266,41 +269,175 @@ function copyDefaultOgImage() {
 }
 
 /**
- * サムネイル画像とスラッグのマッピング情報を取得
- * @returns {Array<Object>} - サムネイル画像とスラッグのマッピング配列
+ * スラッグ化関数（文字列をURL用のスラッグに変換）
+ * @param {string} str - スラッグ化する文字列
+ * @returns {string} - スラッグ化された文字列
  */
-async function getThumbnailImageMappings() {
+function slugify(str) {
+  if (!str) return '';
+  return String(str).toLowerCase()
+    .replace(/\s+/g, '-')        // スペースをハイフンに置換
+    .replace(/[^a-z0-9-]/g, '-') // 英数字とハイフン以外をハイフンに置換
+    .replace(/-+/g, '-')         // 連続するハイフンを一つにまとめる
+    .replace(/^-|-$/g, '');      // 先頭と末尾のハイフンを削除
+}
+
+/**
+ * Notionからブログのページリストを取得する
+ * @returns {Promise<Array<Object>>} - ブログページオブジェクトの配列
+ */
+async function getNotionBlogPages() {
   try {
-    if (!fs.existsSync(THUMBNAIL_DIR)) {
-      console.warn('Thumbnail directory not found at:', THUMBNAIL_DIR);
+    if (!NOTION_TOKEN || !NOTION_BLOG_DATABASE) {
+      console.error('Notion API credentials not found in environment variables.');
+      return [];
+    }
+
+    // 公開済みの記事のみを取得
+    const response = await notionClient.databases.query({
+      database_id: NOTION_BLOG_DATABASE,
+      filter: {
+        and: [{
+          property: 'Published',
+          checkbox: { equals: true }
+        }],
+      },
+      sorts: [
+        {
+          property: 'Published_Time',
+          direction: 'descending'
+        }
+      ]
+    });
+
+    // 記事情報を変換
+    return response.results.map(page => {
+      // タイトル取得
+      const title = page.properties.Name?.title?.[0]?.plain_text || 'Untitled';
+      
+      // スラッグ取得
+      const slug = page.properties.Slug?.rich_text?.[0]?.plain_text || slugify(title);
+      
+      // カバー画像取得
+      let coverImageUrl = null;
+      if (page.cover) {
+        if (page.cover.type === 'external') {
+          coverImageUrl = page.cover.external.url;
+        } else if (page.cover.type === 'file') {
+          coverImageUrl = page.cover.file.url;
+        }
+      }
+      
+      return {
+        id: page.id,
+        title,
+        slug,
+        coverImageUrl
+      };
+    });
+  } catch (error) {
+    console.error('Error fetching Notion blog pages:', error);
+    return [];
+  }
+}
+
+/**
+ * 外部画像URLからローカルに画像を保存する
+ * @param {string} imageUrl - 画像URL
+ * @param {string} slug - 記事スラッグ
+ * @returns {Promise<string|null>} - 保存したローカルパス、または失敗時はnull
+ */
+async function downloadImage(imageUrl, slug) {
+  try {
+    if (!imageUrl) return null;
+    
+    // 画像保存用のディレクトリを作成
+    const headerImagesDir = path.join(process.cwd(), 'public', 'header-images');
+    if (!fs.existsSync(headerImagesDir)) {
+      fs.mkdirSync(headerImagesDir, { recursive: true });
+    }
+    
+    // 画像の拡張子を取得 (URLのパス部分の最後の.以降)
+    const fileExtension = path.extname(new URL(imageUrl).pathname) || '.jpg';
+    
+    // 保存先のパス
+    const imagePath = path.join(headerImagesDir, `${slug}${fileExtension}`);
+    
+    // 既に存在する場合は再利用
+    if (fs.existsSync(imagePath)) {
+      return imagePath;
+    }
+    
+    // HTTPSモジュールをrequire
+    const https = require('https');
+    
+    // 画像をダウンロードして保存
+    await new Promise((resolve, reject) => {
+      https.get(imageUrl, (response) => {
+        if (response.statusCode !== 200) {
+          reject(new Error(`Failed to download image: ${response.statusCode}`));
+          return;
+        }
+        
+        const file = fs.createWriteStream(imagePath);
+        response.pipe(file);
+        
+        file.on('finish', () => {
+          file.close();
+          resolve();
+        });
+        
+        file.on('error', (err) => {
+          fs.unlink(imagePath, () => {}); // 失敗した場合、部分的なファイルを削除
+          reject(err);
+        });
+      }).on('error', reject);
+    });
+    
+    return imagePath;
+  } catch (error) {
+    console.error(`Error downloading image for ${slug}:`, error);
+    return null;
+  }
+}
+
+/**
+ * NotionのブログページからOGP画像生成用のマッピング情報を取得
+ * @returns {Promise<Array<Object>>} - OGP画像生成用のマッピング配列
+ */
+async function getNotionPageMappings() {
+  try {
+    // Notionからブログページを取得
+    const notionPages = await getNotionBlogPages();
+    
+    if (!notionPages || notionPages.length === 0) {
+      console.warn('No published pages found in Notion database.');
       return [];
     }
     
-    const files = await readdir(THUMBNAIL_DIR);
+    console.log(`Found ${notionPages.length} published pages in Notion.`);
     
-    // スラッグ化関数（シェルスクリプトと同様の処理）
-    const slugify = (str) => {
-      return str.toLowerCase()
-        .replace(/\s+/g, '-')        // スペースをハイフンに置換
-        .replace(/[^a-z0-9-]/g, '-') // 英数字とハイフン以外をハイフンに置換
-        .replace(/-+/g, '-')         // 連続するハイフンを一つにまとめる
-        .replace(/^-|-$/g, '');      // 先頭と末尾のハイフンを削除
-    };
+    // 各ページについて、カバー画像をダウンロードし、マッピング情報を作成
+    const mappings = [];
     
-    // 各ファイルについて、ファイル名からスラッグを生成
-    const mappings = files.map(file => {
-      const filename = path.basename(file, path.extname(file));
-      const slug = slugify(filename);
-      return {
-        slug,
-        title: filename, // タイトルはファイル名から取得
-        thumbnailPath: path.join(THUMBNAIL_DIR, file)
-      };
-    });
+    for (const page of notionPages) {
+      // カバー画像がある場合はダウンロード
+      let headerImagePath = null;
+      if (page.coverImageUrl) {
+        headerImagePath = await downloadImage(page.coverImageUrl, page.slug);
+      }
+      
+      mappings.push({
+        id: page.id,
+        title: page.title,
+        slug: page.slug,
+        headerImagePath
+      });
+    }
     
     return mappings;
   } catch (error) {
-    console.error('Error getting thumbnail mappings:', error);
+    console.error('Error creating Notion page mappings:', error);
     return [];
   }
 }
@@ -333,21 +470,52 @@ async function main() {
         copyDefaultOgImage();
         await generateOgImage('Coffee Break Point', 'default');
         
-        // サムネイル画像のマッピング情報を取得
-        console.log('Fetching thumbnail images...');
-        const thumbnailMappings = await getThumbnailImageMappings();
+        // Notionから記事情報を取得
+        console.log('Fetching posts from Notion...');
+        const notionMappings = await getNotionPageMappings();
         
-        if (thumbnailMappings.length > 0) {
-          console.log(`Found ${thumbnailMappings.length} thumbnail images to process.`);
+        if (notionMappings.length > 0) {
+          console.log(`Found ${notionMappings.length} published posts in Notion.`);
           
-          // 各サムネイル画像をOGP画像に変換
-          for (const mapping of thumbnailMappings) {
-            const { slug, title, thumbnailPath } = mapping;
+          // 各記事のOGP画像を生成
+          for (const mapping of notionMappings) {
+            const { id, title, slug, headerImagePath } = mapping;
             console.log(`Generating OG image for: ${title} (${slug})`);
-            await generateOgImage(title, slug, thumbnailPath);
+            await generateOgImage(title, slug, headerImagePath);
           }
         } else {
-          console.log('No thumbnail images found to process.');
+          console.log('No published posts found in Notion.');
+          
+          // Notionから取得できない場合は、従来のサムネイル方式を試す
+          console.log('Trying to find existing thumbnail images as fallback...');
+          const findThumbnailImage = async (slug) => {
+            if (!fs.existsSync(THUMBNAIL_DIR)) return null;
+            const files = await readdir(THUMBNAIL_DIR);
+            for (const file of files) {
+              const filename = path.basename(file, path.extname(file));
+              const fileSlug = slugify(filename);
+              if (fileSlug === slug || filename === slug) {
+                return path.join(THUMBNAIL_DIR, file);
+              }
+            }
+            return null;
+          };
+          
+          // 既存のOGP画像ディレクトリから記事IDを推測
+          if (fs.existsSync(OUTPUT_DIR)) {
+            const ogFiles = await readdir(OUTPUT_DIR);
+            for (const file of ogFiles) {
+              if (file === 'default.png') continue;
+              
+              const slug = path.basename(file, path.extname(file));
+              const thumbnailPath = await findThumbnailImage(slug);
+              
+              if (thumbnailPath) {
+                console.log(`Found thumbnail for ${slug}, regenerating OG image...`);
+                await generateOgImage(slug, slug, thumbnailPath);
+              }
+            }
+          }
         }
       } catch (error) {
         console.error('Error in OG image generation:', error);
