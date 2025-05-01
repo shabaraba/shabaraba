@@ -11,6 +11,9 @@ const dotenv = require('dotenv');
 // 環境変数を読み込み
 dotenv.config();
 
+// ビルド時のタイムスタンプ（OGP画像のキャッシュバスティング用）
+const BUILD_TIMESTAMP = Date.now();
+
 // NotionのClient
 const { Client } = require('@notionhq/client');
 
@@ -421,9 +424,13 @@ async function generateOgImage(title, id, thumbnailPath = null) {
     if (!fs.existsSync(OUTPUT_DIR)) {
       fs.mkdirSync(OUTPUT_DIR, { recursive: true });
     }
-    fs.writeFileSync(path.join(OUTPUT_DIR, `${id}.png`), buffer);
     
-    console.log(`Generated OG image for: ${title}`);
+    // 元のファイル名をそのまま使用
+    const fileName = id === 'default' ? 'default.png' : `${id}.png`;
+    fs.writeFileSync(path.join(OUTPUT_DIR, fileName), buffer);
+    
+    // タイムスタンプ情報を記録（デバッグとキャッシュバスティング用）
+    console.log(`Generated OG image for: ${title} (${fileName}) with timestamp: ${BUILD_TIMESTAMP}`);
     return true;
   } catch (error) {
     console.error(`Failed to generate OG image for ${title}:`, error);

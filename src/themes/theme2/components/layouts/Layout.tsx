@@ -26,9 +26,19 @@ export default function Layout({
 }: LayoutProps) {
   // OGP画像のURL生成
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://blog.shaba.dev';
-  const ogImageUrl = slug 
-    ? `${baseUrl}/og-images/${slug}.png` 
-    : `${baseUrl}/og-images/default.png`;
+  
+  // タイムスタンプをビルド時に固定して生成（キャッシュバスティング用）
+  const timestamp = process.env.BUILD_TIME || Date.now();
+  
+  // OGP画像URL - タイムスタンプをクエリパラメータとして追加
+  let ogImageUrl;
+  if (!slug) {
+    // デフォルト画像の場合
+    ogImageUrl = `${baseUrl}/og-images/default.png`;
+  } else {
+    // 記事OGP画像の場合はクエリパラメータでタイムスタンプを付与
+    ogImageUrl = `${baseUrl}/og-images/${slug}.png?v=${timestamp}`;
+  }
   
   // 現在のページのURL
   const pageUrl = slug 

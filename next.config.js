@@ -7,6 +7,7 @@ const nextConfig = {
   env: {
     NEXT_PUBLIC_ACTIVE_THEME: process.env.NEXT_PUBLIC_ACTIVE_THEME || 'theme2',
     ARTICLE_SOURCE: process.env.ARTICLE_SOURCE || 'notion',
+    BUILD_TIME: Date.now().toString(), // OGP画像のキャッシュバスティング用タイムスタンプ
   },
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     config.resolve.alias.jsdom = false;
