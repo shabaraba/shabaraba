@@ -7,6 +7,7 @@ import { ArticleServiceFactory } from "core/factories/ArticleServiceFactory";
 import { PostDetailType } from "core/types/PostDetailType";
 import { PostHeadType } from "core/types/PostHeadType";
 import { StaticProps } from "core/types/PostPageType";
+import { CommonDataService } from "../../services/CommonDataService";
 
 export class ArticlePageUsecase {
   public static async getStaticPaths() {
@@ -35,6 +36,9 @@ export class ArticlePageUsecase {
       const articleHead = articleHeadService.getBySlug(slug);
       const article = await articleService.getArticleBySlug(slug);
       
+      // サイドバーデータを取得
+      const sidebarData = await CommonDataService.getSidebarData();
+      
       // JSONシリアライズ時のundefinedプロパティを処理
       const sanitizedArticle = this.sanitizeUndefinedValues(article);
       
@@ -47,6 +51,7 @@ export class ArticlePageUsecase {
         return {
           props: {
             article: deserialized,
+            sidebarData: sidebarData,
           },
         };
       } catch (serializeError) {
@@ -62,6 +67,7 @@ export class ArticlePageUsecase {
         return {
           props: {
             article: emergencySanitized,
+            sidebarData: sidebarData,
           },
         };
       }

@@ -3,6 +3,7 @@
  * Next.jsのビルド時に実行され、各記事のOGP画像を生成します
  */
 const fs = require('fs');
+const fetch = require('node-fetch');
 const path = require('path');
 const { promisify } = require('util');
 const readdir = promisify(fs.readdir);
@@ -49,6 +50,7 @@ async function setupCaveatFont() {
   const fontsDir = path.join(process.cwd(), 'public', 'fonts');
   const caveatRegularPath = path.join(fontsDir, 'Caveat-Regular.ttf');
   const caveatBoldPath = path.join(fontsDir, 'Caveat-Bold.ttf');
+  const zenMaruPath = path.join(fontsDir, 'ZenMaruGothic-Regular.ttf');
   
   // フォントディレクトリがなければ作成
   if (!fs.existsSync(fontsDir)) {
@@ -57,36 +59,18 @@ async function setupCaveatFont() {
   
   // フォントファイルが存在するか確認し、なければダウンロード
   const downloadFont = async (url, outputPath) => {
+
     if (fs.existsSync(outputPath)) {
       console.log(`Font already exists: ${outputPath}`);
       return true;
     }
     
     try {
-      const https = require('https');
-      const file = fs.createWriteStream(outputPath);
-      
-      await new Promise((resolve, reject) => {
-        https.get(url, (response) => {
-          if (response.statusCode !== 200) {
-            reject(new Error(`Failed to download font: ${response.statusCode}`));
-            return;
-          }
-          
-          response.pipe(file);
-          
-          file.on('finish', () => {
-            file.close();
-            resolve();
-          });
-          
-          file.on('error', (err) => {
-            fs.unlink(outputPath, () => {});
-            reject(err);
-          });
-        }).on('error', reject);
-      });
-      
+
+      const response = await fetch( url, { redirect: 'follow' });
+      const buffer = await response.buffer();
+      fs.writeFileSync(outputPath, buffer);
+
       console.log(`Downloaded font to: ${outputPath}`);
       return true;
     } catch (error) {
@@ -107,6 +91,11 @@ async function setupCaveatFont() {
       caveatBoldPath
     );
     
+    const zenMaruDownloaded = await downloadFont(
+      'https://github.com/googlefonts/zen-marugothic/raw/main/fonts/ttf/ZenMaruGothic-Regular.ttf',
+      zenMaruPath
+    );
+    
     // ダウンロードしたフォントをライブラリに登録
     if (regularDownloaded) {
       FontLibrary.use('Caveat', caveatRegularPath);
@@ -116,6 +105,11 @@ async function setupCaveatFont() {
     if (boldDownloaded) {
       FontLibrary.use('Caveat Bold', caveatBoldPath);
       console.log('Registered Caveat Bold font');
+    }
+    
+    if (zenMaruDownloaded) {
+      FontLibrary.use('Zen Maru Gothic', zenMaruPath);
+      console.log('Registered Zen Maru font');
     }
     
     return regularDownloaded || boldDownloaded;
@@ -242,7 +236,7 @@ async function generateOgImage(title, id, thumbnailPath = null) {
     ctx.shadowOffsetX = 2;
     ctx.shadowOffsetY = 2;
     ctx.fillStyle = COLORS.title;
-    ctx.font = 'bold 48px "Hiragino Sans", "Noto Sans JP", "Meiryo", sans-serif';
+    // ctx.font = '48px "Zen Maru Gothic"';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     
@@ -322,7 +316,7 @@ async function generateOgImage(title, id, thumbnailPath = null) {
     }
     
     // 調整後のフォントサイズを設定
-    ctx.font = `bold ${fontSize}px "Hiragino Sans", "Noto Sans JP", "Meiryo", sans-serif`;
+    ctx.font = `bold ${fontSize}px "Zen Maru Gothic"`;
     
     // 行を再計算（フォントサイズ調整後）
     line = '';
