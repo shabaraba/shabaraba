@@ -239,26 +239,45 @@ async function generateOgImage(title, id, thumbnailPath = null) {
     ctx.shadowOffsetX = 2;
     ctx.shadowOffsetY = 2;
     ctx.fillStyle = COLORS.title;
-    ctx.font = 'bold 48px "Hiragino Bold", sans-serif';
+    ctx.font = 'bold 48px "Hiragino Sans", "Noto Sans JP", "Meiryo", sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     
     // タイトルが長い場合は折り返し
     const maxWidth = WIDTH - 200;
-    const words = title.split(' ');
     let line = '';
     let lines = [];
     
-    for (let i = 0; i < words.length; i++) {
-      const testLine = line + words[i] + ' ';
-      const metrics = ctx.measureText(testLine);
-      if (metrics.width > maxWidth) {
-        lines.push(line);
-        line = words[i] + ' ';
-      } else {
-        line = testLine;
+    // 日本語と英語が混在するテキストのために単語分割を改善
+    // 日本語はスペースで区切られていないので、文字単位で処理
+    if (/[\u3000-\u303f\u3040-\u309f\u30a0-\u30ff\uff00-\uff9f\u4e00-\u9faf\u3400-\u4dbf]/.test(title)) {
+      // 日本語を含む場合は、文字ごとに追加するか改行するかを判断
+      const chars = title.split('');
+      for (let i = 0; i < chars.length; i++) {
+        const testLine = line + chars[i];
+        const metrics = ctx.measureText(testLine);
+        if (metrics.width > maxWidth) {
+          lines.push(line);
+          line = chars[i];
+        } else {
+          line = testLine;
+        }
+      }
+    } else {
+      // 英語などスペースで区切られた言語の場合は単語単位で処理
+      const words = title.split(' ');
+      for (let i = 0; i < words.length; i++) {
+        const testLine = line + words[i] + ' ';
+        const metrics = ctx.measureText(testLine);
+        if (metrics.width > maxWidth) {
+          lines.push(line);
+          line = words[i] + ' ';
+        } else {
+          line = testLine;
+        }
       }
     }
+    
     lines.push(line);
     
     // フォントサイズの自動調整
@@ -300,21 +319,41 @@ async function generateOgImage(title, id, thumbnailPath = null) {
     }
     
     // 調整後のフォントサイズを設定
-    ctx.font = `bold ${fontSize}px "Hiragino Bold", sans-serif`;
+    ctx.font = `bold ${fontSize}px "Hiragino Sans", "Noto Sans JP", "Meiryo", sans-serif`;
     
     // 行を再計算（フォントサイズ調整後）
     line = '';
     lines = [];
-    for (let i = 0; i < words.length; i++) {
-      const testLine = line + words[i] + ' ';
-      const metrics = ctx.measureText(testLine);
-      if (metrics.width > maxWidth) {
-        lines.push(line);
-        line = words[i] + ' ';
-      } else {
-        line = testLine;
+    
+    // 日本語と英語が混在するテキストの場合の処理方法を再適用
+    if (/[\u3000-\u303f\u3040-\u309f\u30a0-\u30ff\uff00-\uff9f\u4e00-\u9faf\u3400-\u4dbf]/.test(title)) {
+      // 日本語を含む場合は、文字ごとに追加するか改行するかを判断
+      const chars = title.split('');
+      for (let i = 0; i < chars.length; i++) {
+        const testLine = line + chars[i];
+        const metrics = ctx.measureText(testLine);
+        if (metrics.width > maxWidth) {
+          lines.push(line);
+          line = chars[i];
+        } else {
+          line = testLine;
+        }
+      }
+    } else {
+      // 英語などスペースで区切られた言語の場合は単語単位で処理
+      const words = title.split(' ');
+      for (let i = 0; i < words.length; i++) {
+        const testLine = line + words[i] + ' ';
+        const metrics = ctx.measureText(testLine);
+        if (metrics.width > maxWidth) {
+          lines.push(line);
+          line = words[i] + ' ';
+        } else {
+          line = testLine;
+        }
       }
     }
+    
     lines.push(line);
     
     // 最終的なチェック
@@ -328,7 +367,7 @@ async function generateOgImage(title, id, thumbnailPath = null) {
     if (finalMaxLineWidth > maxWidth && fontSize > minFontSize) {
       const finalScaleFactor = maxWidth / finalMaxLineWidth;
       fontSize = Math.max(minFontSize, Math.floor(fontSize * finalScaleFactor));
-      ctx.font = `bold ${fontSize}px "Hiragino Bold", sans-serif`;
+      ctx.font = `bold ${fontSize}px "Hiragino Sans", "Noto Sans JP", "Meiryo", sans-serif`;
     }
     
     // 中央揃えで描画
