@@ -54,6 +54,7 @@
     "react-syntax-highlighter": "^15.5.0",
     "remark": "^14.0.1",
     "remark-html": "^15.0.0",
+    "skia-canvas": "^2.0.2",
     "swr": "^1.2.1",
     "tls": "^0.0.1",
     "uuid": "^8.3.2"

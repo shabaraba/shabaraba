@@ -4,7 +4,9 @@
  */
 const fs = require('fs');
 const path = require('path');
-const { createCanvas, loadImage, registerFont } = require('canvas');
+
+// skia-canvasを使用
+const { Canvas, loadImage, ImageData, FontLibrary } = require('skia-canvas');
 
 // 記事データの取得に必要なモジュール
 // Note: 相対パスでモジュールをインポートする
@@ -26,11 +28,13 @@ const COLORS = {
 
 // フォント設定
 try {
-  // Noto Sans JPフォントを登録（システムにインストールされている必要あり）
-  registerFont('/System/Library/Fonts/ヒラギノ角ゴシック W3.ttc', { family: 'Hiragino' });
-  registerFont('/System/Library/Fonts/ヒラギノ角ゴシック W6.ttc', { family: 'Hiragino Bold', weight: 'bold' });
+  // skia-canvasではSystemフォントが自動的に利用可能
+  // 必要に応じて追加フォントを登録することも可能
+  // FontLibrary.use('Hiragino', '/System/Library/Fonts/ヒラギノ角ゴシック W3.ttc');
+  // FontLibrary.use('Hiragino Bold', '/System/Library/Fonts/ヒラギノ角ゴシック W6.ttc');
+  console.log('Using system fonts for OG image generation');
 } catch (err) {
-  console.warn('Failed to register fonts:', err);
+  console.warn('Font configuration warning:', err);
   console.warn('Will use system default fonts instead.');
 }
 
@@ -39,8 +43,8 @@ try {
  */
 async function generateOgImage(title, id) {
   try {
-    // Canvas作成
-    const canvas = createCanvas(WIDTH, HEIGHT);
+    // Canvas作成 (skia-canvas用)
+    const canvas = new Canvas(WIDTH, HEIGHT);
     const ctx = canvas.getContext('2d');
     
     // 背景を描画
@@ -173,12 +177,12 @@ async function main() {
       fs.mkdirSync(OUTPUT_DIR, { recursive: true });
     }
     
-    // canvasモジュールが利用可能かチェック
+    // skia-canvasモジュールが利用可能かチェック
     let canvasAvailable = true;
     try {
-      createCanvas(100, 100);
+      new Canvas(100, 100);
     } catch (err) {
-      console.warn('Canvas module not available, falling back to image copying:', err);
+      console.warn('skia-canvas module not available, falling back to image copying:', err);
       canvasAvailable = false;
     }
     
