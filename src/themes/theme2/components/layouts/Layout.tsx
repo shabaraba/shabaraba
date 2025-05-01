@@ -70,6 +70,9 @@ export default function Layout({
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content={ogImageUrl} />
+
+        {/* adsens */}
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1981741527756003" crossOrigin="anonymous"></script>
       </Head>
       <div className="container">
         <Header />
