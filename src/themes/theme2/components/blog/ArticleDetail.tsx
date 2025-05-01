@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Article } from '../../../../core/interfaces/article/ArticleRepository';
 import styles from './ArticleDetail.module.css';
 import NotionBlockRenderer from './NotionBlockRenderer';
+import RelatedArticles from './RelatedArticles';
 
 interface ArticleDetailProps {
   article: Article;
@@ -52,6 +53,11 @@ export default function ArticleDetail({ article }: ArticleDetailProps) {
       <div className={styles.content}>
         <NotionBlockRenderer blocks={article.content} />
       </div>
+      
+      {/* 関連記事セクション */}
+      {article.relatedArticles && article.relatedArticles.length > 0 && (
+        <RelatedArticles articles={article.relatedArticles} />
+      )}
       
       <footer className={styles.footer}>
         <div className={styles.share}>

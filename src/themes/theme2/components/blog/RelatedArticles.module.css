@@ -1,0 +1,88 @@
+/* 関連記事セクション */
+.relatedArticles {
+  margin-top: 3rem;
+  padding: 1.5rem;
+  background-color: #f8f4ec;
+  border-radius: 8px;
+}
+
+.relatedTitle {
+  font-size: 1.5rem;
+  margin-bottom: 1.25rem;
+  color: #4b3832;
+  font-weight: 700;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #7b5e57;
+}
+
+.relatedList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.relatedItem {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  color: inherit;
+  text-decoration: none;
+}
+
+.relatedItem:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+.relatedThumbnail {
+  flex: 0 0 120px;
+  margin-right: 1rem;
+}
+
+.relatedImage {
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.relatedContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.relatedItemTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  color: #4b3832;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.relatedDate {
+  font-size: 0.8rem;
+  color: #7b5e57;
+  display: block;
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 768px) {
+  .relatedList {
+    grid-template-columns: 1fr;
+  }
+  
+  .relatedThumbnail {
+    flex: 0 0 80px;
+  }
+  
+  .relatedImage {
+    width: 80px;
+    height: 60px;
+  }
+}
