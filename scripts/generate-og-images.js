@@ -425,28 +425,12 @@ async function generateOgImage(title, id, thumbnailPath = null) {
       fs.mkdirSync(OUTPUT_DIR, { recursive: true });
     }
     
-    // タイムスタンプを含むファイル名
-    const fileName = id === 'default' ? 'default.png' : `${id}-${BUILD_TIMESTAMP}.png`;
+    // 元のファイル名をそのまま使用
+    const fileName = id === 'default' ? 'default.png' : `${id}.png`;
     fs.writeFileSync(path.join(OUTPUT_DIR, fileName), buffer);
     
-    // 以前のバージョンのファイルを削除（デフォルト画像以外）
-    if (id !== 'default') {
-      try {
-        const files = await readdir(OUTPUT_DIR);
-        const fileRegex = new RegExp(`^${id}-\\d+\\.png$`);
-        
-        for (const file of files) {
-          if (file.startsWith(`${id}-`) && file !== fileName && fileRegex.test(file)) {
-            fs.unlinkSync(path.join(OUTPUT_DIR, file));
-            console.log(`Removed old OGP image: ${file}`);
-          }
-        }
-      } catch (err) {
-        console.error(`Error cleaning up old OGP images for ${id}:`, err);
-      }
-    }
-    
-    console.log(`Generated OG image for: ${title} (${fileName})`);
+    // タイムスタンプ情報を記録（デバッグとキャッシュバスティング用）
+    console.log(`Generated OG image for: ${title} (${fileName}) with timestamp: ${BUILD_TIMESTAMP}`);
     return true;
   } catch (error) {
     console.error(`Failed to generate OG image for ${title}:`, error);

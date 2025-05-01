@@ -27,14 +27,17 @@ export default function Layout({
   // OGP画像のURL生成
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://blog.shaba.dev';
   
-  // OGP画像URL - 最新のバージョンを自動的に取得するために非同期に追加
+  // タイムスタンプをビルド時に固定して生成（キャッシュバスティング用）
+  const timestamp = process.env.BUILD_TIME || Date.now();
+  
+  // OGP画像URL - タイムスタンプをクエリパラメータとして追加
   let ogImageUrl;
   if (!slug) {
-    // デフォルト画像の場合は拡張子を直接指定
+    // デフォルト画像の場合
     ogImageUrl = `${baseUrl}/og-images/default.png`;
   } else {
-    // 書き出し時には静的にビルドされるので、最新のファイルのパスがわかるようにハイフン以降を*で置換
-    ogImageUrl = `${baseUrl}/og-images/${slug}-*.png`;
+    // 記事OGP画像の場合はクエリパラメータでタイムスタンプを付与
+    ogImageUrl = `${baseUrl}/og-images/${slug}.png?v=${timestamp}`;
   }
   
   // 現在のページのURL
