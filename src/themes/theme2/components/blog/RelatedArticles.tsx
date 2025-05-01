@@ -27,8 +27,8 @@ export default function RelatedArticles({ articles }: RelatedArticlesProps) {
             href={`/posts/${article.slug}`} 
             className={styles.relatedItem}
           >
-            {article.coverImage && (
-              <div className={styles.relatedThumbnail}>
+            <div className={styles.relatedThumbnail}>
+              {article.coverImage ? (
                 <Image
                   src={article.coverImage}
                   alt={article.title}
@@ -36,8 +36,10 @@ export default function RelatedArticles({ articles }: RelatedArticlesProps) {
                   height={80}
                   className={styles.relatedImage}
                 />
-              </div>
-            )}
+              ) : (
+                <div className={styles.noImage} />
+              )}
+            </div>}
             <div className={styles.relatedContent}>
               <h3 className={styles.relatedItemTitle}>{article.title}</h3>
               <time className={styles.relatedDate}>
