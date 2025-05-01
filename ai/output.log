@@ -1,0 +1,130 @@
+
+> prebuild
+> node scripts/convert-toml-to-json.js
+
+✅ Config converted and saved to /Users/t002451/my_work/private/Notiography/public/config/site-config.json
+
+> build
+> node scripts/fetch-github-profile.js && npm run generate-og && next build && echo 'Build completed'
+
+Fetching GitHub profile for shabaraba...
+Avatar URL found: https://avatars.githubusercontent.com/u/53943902?v=4
+Image downloaded to /Users/t002451/my_work/private/Notiography/public/images/github-profile.jpg
+GitHub profile image has been successfully fetched and saved.
+
+> generate-og
+> node scripts/generate-og-images.js || ./scripts/generate-og-images.sh
+
+Starting OG image generation...
+Setting up Caveat font...
+Font already exists: /Users/t002451/my_work/private/Notiography/public/fonts/Caveat-Regular.ttf
+Font already exists: /Users/t002451/my_work/private/Notiography/public/fonts/Caveat-Bold.ttf
+Registered Caveat Regular font
+Registered Caveat Bold font
+Generating default OG image...
+Copied default OG image successfully
+Generated OG image for: Coffee Break Point
+Fetching posts from Notion...
+Found 46 published pages in Notion.
+Found 46 published posts in Notion.
+Generating OG image for: Claudeでブログのデザインを刷新してもらった (design-renewal)
+Generated OG image for: Claudeでブログのデザインを刷新してもらった
+Generating OG image for: Wine環境のMT5でWinAPIを使ったHTTP通信を実装する方法 (web-requesrt-for-mt5-in-wine)
+Generated OG image for: Wine環境のMT5でWinAPIを使ったHTTP通信を実装する方法
+Generating OG image for: ブラウザとターミナルでアクセスされるlocalhostが違った話 (localhost-and-proxy)
+Generated OG image for: ブラウザとターミナルでアクセスされるlocalhostが違った話
+Generating OG image for: dotfilesの構成を更改した (update-dotfiles)
+Generated OG image for: dotfilesの構成を更改した
+Generating OG image for: XREALを体験してきた (expeirence-xreal)
+Generated OG image for: XREALを体験してきた
+Generating OG image for: トランプのカードはEntityかValueObjectか (entity-vs-value-object)
+Generated OG image for: トランプのカードはEntityかValueObjectか
+Generating OG image for: 自分を棚卸す (inventory-myself)
+Generated OG image for: 自分を棚卸す
+Generating OG image for: Cannot set LC_XXX to default locale: No such file or directoryを解決する (fix-vim-lc)
+Generated OG image for: Cannot set LC_XXX to default locale: No such file or directoryを解決する
+Generating OG image for: 2023年を振り返る (look-back-on-2023)
+Generated OG image for: 2023年を振り返る
+Generating OG image for: ビジュアルシンカー脳のゆる言語学ラジオを聞いた (visual-thinker)
+Generated OG image for: ビジュアルシンカー脳のゆる言語学ラジオを聞いた
+Generating OG image for: 育休を半年間取りました (paternity-leave)
+Generated OG image for: 育休を半年間取りました
+Generating OG image for: Arc Browserのboostでkintone JS APIを無理やり扱う (how-to-use-object-in-arc-boost)
+Generated OG image for: Arc Browserのboostでkintone JS APIを無理やり扱う
+Generating OG image for: USキーボードでかな入力時の配列をmacとwinで揃える方法 (share-us-keyboard-using-kana)
+Generated OG image for: USキーボードでかな入力時の配列をmacとwinで揃える方法
+Generating OG image for: Vivaldiの救出方法 (fix-vivaldi-brawser)
+Generated OG image for: Vivaldiの救出方法
+Generating OG image for: HHKBからMoonlanderに乗り換えた (introduce-moonlander)
+Generated OG image for: HHKBからMoonlanderに乗り換えた
+Generating OG image for: iPadだけでプログラミング環境を整えた話[VPS+Coder] (programming-with-coder)
+Generated OG image for: iPadだけでプログラミング環境を整えた話[VPS+Coder]
+Generating OG image for: codespacesでastroを使うときは開発環境の立ち上げに—hostをつけよう (astro-host-in-codespaces)
+Generated OG image for: codespacesでastroを使うときは開発環境の立ち上げに—hostをつけよう
+Generating OG image for: NotionWebClipperで保存した記事をブログに公開した (publish-my-links)
+Generated OG image for: NotionWebClipperで保存した記事をブログに公開した
+Generating OG image for: tsでtypeを&で繋ぐとnever型になってしまった話 (ts-type-param-cannot-override)
+Generated OG image for: tsでtypeを&で繋ぐとnever型になってしまった話
+Generating OG image for: アソシエーション分析ができるAPIの話 (create-association-analysis-api)
+Generated OG image for: アソシエーション分析ができるAPIの話
+Generating OG image for: Next.js製のブログの内部構成を更改した (upgrade-directory-structure)
+Generated OG image for: Next.js製のブログの内部構成を更改した
+Generating OG image for: 2023年の抱負 (resolution-2023)
+Generated OG image for: 2023年の抱負
+Generating OG image for: 2022年を振り返る (look-back-on-2022)
+Generated OG image for: 2022年を振り返る
+Generating OG image for: iPadでプログラミング開発環境構築の努力と2023年個人的ベストプラクティス[Blink+VSCode+Codespaces] (coding-with-ipad)
+Generated OG image for: iPadでプログラミング開発環境構築の努力と2023年個人的ベストプラクティス[Blink+VSCode+Codespaces]
+Generating OG image for: sudo権限でリダイレクト処理を行ってファイルに書き込む方法 (redirect-with-sudo)
+Generated OG image for: sudo権限でリダイレクト処理を行ってファイルに書き込む方法
+Generating OG image for: よく使う開発環境構成を１コマンドで作成できるようにした (setup-develop-environment)
+Generated OG image for: よく使う開発環境構成を１コマンドで作成できるようにした
+Generating OG image for: PythonでDIを実装する (di-with-python)
+Generated OG image for: PythonでDIを実装する
+Generating OG image for: 便利なGitコマンド覚書 (useful-git-command)
+Generated OG image for: 便利なGitコマンド覚書
+Generating OG image for: Reactのレンダリング順について (react-rendering-sequence)
+Generated OG image for: Reactのレンダリング順について
+Generating OG image for: Google Drive内の画像に直接アクセスできるURLの作成方法 (google-drive-url-directly)
+Generated OG image for: Google Drive内の画像に直接アクセスできるURLの作成方法
+Generating OG image for: 片道2時間半超えの超長距離通勤を１年半頑張ってた時の話 (long-distance-commutation)
+Generated OG image for: 片道2時間半超えの超長距離通勤を１年半頑張ってた時の話
+Generating OG image for: URIライクな文字列で改行してくれないときのcssの充て方 (new-line-css-for-uri-like-string)
+Generated OG image for: URIライクな文字列で改行してくれないときのcssの充て方
+Generating OG image for: dyld: Library not loaded: /usr/local/opt/icu4c/lib/libicudata.69.dylib で動かなくなったmacのPHPを救出した (library-icu4c-not-found)
+Generated OG image for: dyld: Library not loaded: /usr/local/opt/icu4c/lib/libicudata.69.dylib で動かなくなったmacのPHPを救出した
+Generating OG image for: notion API + NEXT.js + netlify でブログ立ち上げ ⑦ 動的OGP (build-blog-using-notion-api-7)
+Generated OG image for: notion API + NEXT.js + netlify でブログ立ち上げ ⑦ 動的OGP
+Generating OG image for: notion API + NEXT.js + netlify でブログ立ち上げ ⑥ SEO関連の設定 (build-blog-using-notion-api-6)
+Generated OG image for: notion API + NEXT.js + netlify でブログ立ち上げ ⑥ SEO関連の設定
+Generating OG image for: notion API + NEXT.js + netlify でブログ立ち上げ ⑤ 画面作成 (build-blog-using-notion-api-5)
+Generated OG image for: notion API + NEXT.js + netlify でブログ立ち上げ ⑤ 画面作成
+Generating OG image for: notion API + NEXT.js + netlify でブログ立ち上げ ④ ChakraUIのお勉強 (build-blog-using-notion-api-4)
+Generated OG image for: notion API + NEXT.js + netlify でブログ立ち上げ ④ ChakraUIのお勉強
+Generating OG image for: DockerImageのComposerを利用して突如エラーが出るようになった (error-in-composer-docker-image)
+Generated OG image for: DockerImageのComposerを利用して突如エラーが出るようになった
+Generating OG image for: notion API + NEXT.js + netlify でブログ立ち上げ ③  NEXT.jsのお勉強 (build-blog-using-notion-api-3)
+Generated OG image for: notion API + NEXT.js + netlify でブログ立ち上げ ③  NEXT.jsのお勉強
+Generating OG image for: 書籍[融けるデザイン]から学んだこと (what-to-learn-by-reading-natural-design)
+Generated OG image for: 書籍[融けるデザイン]から学んだこと
+Generating OG image for: 書籍 [ドメイン駆動設計入門] から学んだこと (what-to-learn-by-reading-ddd)
+Generated OG image for: 書籍 [ドメイン駆動設計入門] から学んだこと
+Generating OG image for: 書籍[リーダブルコード] から学んだこと (what-to-learn-by-reading-readable-code)
+Generated OG image for: 書籍[リーダブルコード] から学んだこと
+Generating OG image for: notion API + NEXT.js + netlify でブログ立ち上げ ② notion api確認 (build-blog-using-notion-api-2)
+Generated OG image for: notion API + NEXT.js + netlify でブログ立ち上げ ② notion api確認
+Generating OG image for: notion API + NEXT.js + netlify でブログ立ち上げ ① (build-blog-using-notion-api-1)
+Generated OG image for: notion API + NEXT.js + netlify でブログ立ち上げ ①
+Generating OG image for: ブログ作りました👋 (hello-world)
+Generated OG image for: ブログ作りました👋
+Generating OG image for: _typography (typography)
+Generated OG image for: _typography
+OG image generation completed!
+   ▲ Next.js 15.2.2
+   - Environments: .env
+
+   Skipping validation of types
+   Skipping linting
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Collecting page data ...

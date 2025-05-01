@@ -5,6 +5,8 @@ import { Article } from '../../../../core/interfaces/article/ArticleRepository';
 import styles from './ArticleDetail.module.css';
 import NotionBlockRenderer from './NotionBlockRenderer';
 import RelatedArticles from './RelatedArticles';
+import { FaTwitter, FaFacebook } from 'react-icons/fa';
+import { SiHatenabookmark } from 'react-icons/si';
 
 interface ArticleDetailProps {
   article: Article;
@@ -68,16 +70,27 @@ export default function ArticleDetail({ article }: ArticleDetailProps) {
               target="_blank" 
               rel="noopener noreferrer" 
               className={styles.shareButton}
+              aria-label="Twitter でシェア"
             >
-              Twitter
+              <FaTwitter size={20} />
             </a>
             <a 
               href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://blog.shaba.dev/posts/${article.slug}`)}`} 
               target="_blank" 
               rel="noopener noreferrer" 
               className={styles.shareButton}
+              aria-label="Facebook でシェア"
             >
-              Facebook
+              <FaFacebook size={20} />
+            </a>
+            <a 
+              href={`https://b.hatena.ne.jp/entry/s/${encodeURIComponent(`blog.shaba.dev/posts/${article.slug}`).replace(/^https?:\/\//, '')}`}
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className={styles.shareButton}
+              aria-label="はてなブックマークに追加"
+            >
+              <SiHatenabookmark size={20} />
             </a>
           </div>
         </div>
