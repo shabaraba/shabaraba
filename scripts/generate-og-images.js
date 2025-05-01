@@ -11,6 +11,9 @@ const dotenv = require('dotenv');
 // 環境変数を読み込み
 dotenv.config();
 
+// ビルド時のタイムスタンプ（OGP画像のキャッシュバスティング用）
+const BUILD_TIMESTAMP = Date.now();
+
 // NotionのClient
 const { Client } = require('@notionhq/client');
 
@@ -421,9 +424,29 @@ async function generateOgImage(title, id, thumbnailPath = null) {
     if (!fs.existsSync(OUTPUT_DIR)) {
       fs.mkdirSync(OUTPUT_DIR, { recursive: true });
     }
-    fs.writeFileSync(path.join(OUTPUT_DIR, `${id}.png`), buffer);
     
-    console.log(`Generated OG image for: ${title}`);
+    // タイムスタンプを含むファイル名
+    const fileName = id === 'default' ? 'default.png' : `${id}-${BUILD_TIMESTAMP}.png`;
+    fs.writeFileSync(path.join(OUTPUT_DIR, fileName), buffer);
+    
+    // 以前のバージョンのファイルを削除（デフォルト画像以外）
+    if (id !== 'default') {
+      try {
+        const files = await readdir(OUTPUT_DIR);
+        const fileRegex = new RegExp(`^${id}-\\d+\\.png$`);
+        
+        for (const file of files) {
+          if (file.startsWith(`${id}-`) && file !== fileName && fileRegex.test(file)) {
+            fs.unlinkSync(path.join(OUTPUT_DIR, file));
+            console.log(`Removed old OGP image: ${file}`);
+          }
+        }
+      } catch (err) {
+        console.error(`Error cleaning up old OGP images for ${id}:`, err);
+      }
+    }
+    
+    console.log(`Generated OG image for: ${title} (${fileName})`);
     return true;
   } catch (error) {
     console.error(`Failed to generate OG image for ${title}:`, error);

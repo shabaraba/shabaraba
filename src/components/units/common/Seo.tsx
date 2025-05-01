@@ -19,8 +19,16 @@ export const Seo: FC<Props> = ({ title, slug, coverImageUrl }) => {
   // スラッグをIDに変換（スラッグが指定されていない場合はデフォルト画像を使用）
   const ogImageId = slug ? slug : 'default';
   
-  // OGP画像URL
-  const imageUrl = `${baseUrl}/og-images/${ogImageId}.png`;
+  // OGP画像URL - 最新のバージョンを自動的に取得するために非同期に追加
+  let imageUrl = `${baseUrl}/og-images/${ogImageId}`;
+  
+  // デフォルト画像の場合は拡張子を直接指定
+  if (ogImageId === 'default') {
+    imageUrl += '.png';
+  } else {
+    // 書き出し時には静的にビルドされるので、最新のファイルのパスがわかるようにハイフン以降を*で置換
+    imageUrl += '-*.png';
+  }
   
   // 画像のサイズ設定（OGPのメタデータに必要）
   const imageWidth = 1200;

@@ -26,9 +26,16 @@ export default function Layout({
 }: LayoutProps) {
   // OGP画像のURL生成
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://blog.shaba.dev';
-  const ogImageUrl = slug 
-    ? `${baseUrl}/og-images/${slug}.png` 
-    : `${baseUrl}/og-images/default.png`;
+  
+  // OGP画像URL - 最新のバージョンを自動的に取得するために非同期に追加
+  let ogImageUrl;
+  if (!slug) {
+    // デフォルト画像の場合は拡張子を直接指定
+    ogImageUrl = `${baseUrl}/og-images/default.png`;
+  } else {
+    // 書き出し時には静的にビルドされるので、最新のファイルのパスがわかるようにハイフン以降を*で置換
+    ogImageUrl = `${baseUrl}/og-images/${slug}-*.png`;
+  }
   
   // 現在のページのURL
   const pageUrl = slug 
