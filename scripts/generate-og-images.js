@@ -4,6 +4,8 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { promisify } = require('util');
+const readdir = promisify(fs.readdir);
 
 // skia-canvasを使用
 const { Canvas, loadImage, ImageData, FontLibrary } = require('skia-canvas');
@@ -12,6 +14,7 @@ const { Canvas, loadImage, ImageData, FontLibrary } = require('skia-canvas');
 const WIDTH = 1200;
 const HEIGHT = 630;
 const OUTPUT_DIR = path.join(process.cwd(), 'public', 'og-images');
+const THUMBNAIL_DIR = path.join(process.cwd(), 'public', 'thumbnailImage');
 
 // カフェ風のカラースキーム
 const COLORS = {
@@ -19,7 +22,9 @@ const COLORS = {
   content: '#FFFFFF',      // 白
   accent: '#7B5E57',       // コーヒーのようなダークブラウン
   title: '#4B3832',        // 重厚感ある濃いチョコレート
-  shadow: 'rgba(0,0,0,0.1)' // 影
+  titleShadow: 'rgba(0,0,0,0.5)', // タイトル用の影
+  shadow: 'rgba(0,0,0,0.1)', // 影
+  titleBackground: 'rgba(255,255,255,0.7)' // タイトル背景
 };
 
 // フォント設定
@@ -35,9 +40,55 @@ try {
 }
 
 /**
- * 指定されたタイトルとIDを元にOGP画像を生成します
+ * サムネイル画像のパスを取得する
+ * @param {string} id - 記事ID（スラッグ）
+ * @returns {string|null} - サムネイル画像のパス（存在しない場合はnull）
  */
-async function generateOgImage(title, id) {
+async function findThumbnailImage(id) {
+  try {
+    if (!fs.existsSync(THUMBNAIL_DIR)) {
+      return null;
+    }
+
+    // サムネイルディレクトリ内のファイルリストを取得
+    const files = await readdir(THUMBNAIL_DIR);
+    
+    // スラッグ化関数（シェルスクリプトと同様の処理）
+    const slugify = (str) => {
+      return str.toLowerCase()
+        .replace(/\s+/g, '-')        // スペースをハイフンに置換
+        .replace(/[^a-z0-9-]/g, '-') // 英数字とハイフン以外をハイフンに置換
+        .replace(/-+/g, '-')         // 連続するハイフンを一つにまとめる
+        .replace(/^-|-$/g, '');      // 先頭と末尾のハイフンを削除
+    };
+    
+    // 各ファイルについて、ファイル名からスラッグを生成し、idと一致するか確認
+    for (const file of files) {
+      // 拡張子を除いたファイル名を取得
+      const filename = path.basename(file, path.extname(file));
+      // スラッグ化
+      const slug = slugify(filename);
+      
+      // idと一致する場合はファイルパスを返す
+      if (slug === id || filename === id) {
+        return path.join(THUMBNAIL_DIR, file);
+      }
+    }
+    
+    return null;
+  } catch (error) {
+    console.error('Error finding thumbnail image:', error);
+    return null;
+  }
+}
+
+/**
+ * 指定されたタイトルとIDを元にOGP画像を生成します
+ * @param {string} title - 記事タイトル
+ * @param {string} id - 記事ID（スラッグ）
+ * @param {string|null} thumbnailPath - サムネイル画像のパス（オプション）
+ */
+async function generateOgImage(title, id, thumbnailPath = null) {
   try {
     // Canvas作成 (skia-canvas用)
     const canvas = new Canvas(WIDTH, HEIGHT);
@@ -46,17 +97,58 @@ async function generateOgImage(title, id) {
     // 背景を描画
     ctx.fillStyle = COLORS.background;
     ctx.fillRect(0, 0, WIDTH, HEIGHT);
+
+    // サムネイル画像が指定されていない場合は自動検索
+    if (!thumbnailPath && id !== 'default') {
+      thumbnailPath = await findThumbnailImage(id);
+    }
     
-    // コンテンツエリア（カード）を描画
-    ctx.shadowColor = COLORS.shadow;
-    ctx.shadowBlur = 20;
-    ctx.shadowOffsetX = 0;
-    ctx.shadowOffsetY = 4;
-    ctx.fillStyle = COLORS.content;
-    ctx.fillRect(60, 60, WIDTH - 120, HEIGHT - 120);
+    // ヘッダー画像の描画（サムネイル画像がある場合）
+    if (thumbnailPath && fs.existsSync(thumbnailPath)) {
+      try {
+        const headerImage = await loadImage(thumbnailPath);
+        
+        // 画像のアスペクト比を維持しながらキャンバスに合わせる
+        const ratio = Math.max(WIDTH / headerImage.width, HEIGHT / headerImage.height);
+        const imgWidth = headerImage.width * ratio;
+        const imgHeight = headerImage.height * ratio;
+        const offsetX = (WIDTH - imgWidth) / 2;
+        const offsetY = (HEIGHT - imgHeight) / 2;
+        
+        // 画像を描画
+        ctx.drawImage(headerImage, offsetX, offsetY, imgWidth, imgHeight);
+        
+        // 半透明のオーバーレイを追加
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+        ctx.fillRect(0, 0, WIDTH, HEIGHT);
+      } catch (err) {
+        console.error('Header image loading error:', err);
+        // 画像読み込みに失敗した場合はベーシックな背景を描画
+        ctx.fillStyle = COLORS.content;
+        ctx.fillRect(60, 60, WIDTH - 120, HEIGHT - 120);
+      }
+    } else {
+      // サムネイル画像がない場合は、基本的な背景を描画
+      ctx.shadowColor = COLORS.shadow;
+      ctx.shadowBlur = 20;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 4;
+      ctx.fillStyle = COLORS.content;
+      ctx.fillRect(60, 60, WIDTH - 120, HEIGHT - 120);
+    }
+    
+    // タイトル背景を描画（視認性向上のため）
+    const titleBackgroundHeight = 180;
+    const titleBackgroundY = (HEIGHT - titleBackgroundHeight) / 2;
+    
+    ctx.fillStyle = COLORS.titleBackground;
+    ctx.fillRect(0, titleBackgroundY, WIDTH, titleBackgroundHeight);
     
     // タイトルテキストを描画
-    ctx.shadowColor = 'transparent';
+    ctx.shadowColor = COLORS.titleShadow;
+    ctx.shadowBlur = 5;
+    ctx.shadowOffsetX = 2;
+    ctx.shadowOffsetY = 2;
     ctx.fillStyle = COLORS.title;
     ctx.font = 'bold 48px "Hiragino Bold", sans-serif';
     ctx.textAlign = 'center';
@@ -118,14 +210,26 @@ async function generateOgImage(title, id) {
       console.error('Logo image loading error:', err);
     }
     
+    // ブログタイトルを描画（下部）
+    ctx.shadowColor = COLORS.titleShadow;
+    ctx.shadowBlur = 3;
+    ctx.font = 'bold 28px "Hiragino Bold", sans-serif';
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillText('Coffee Break Point', WIDTH / 2, HEIGHT - 90);
+    
     // サイトURLを描画
     ctx.font = '24px "Hiragino", sans-serif';
-    ctx.fillStyle = COLORS.accent;
-    ctx.fillText('blog.shaba.dev', WIDTH / 2, HEIGHT - 70);
+    ctx.fillStyle = '#F1E7D6';
+    ctx.shadowBlur = 1;
+    ctx.fillText('blog.shaba.dev', WIDTH / 2, HEIGHT - 50);
     
     // 画像を保存
-    const buffer = canvas.toBuffer('image/png');
-    if (\!fs.existsSync(OUTPUT_DIR)) {
+    // skia-canvasのバージョンによってtoBufferが同期か非同期かが変わる可能性があるため、
+    // Promiseとして扱い、適切に解決する
+    const bufferPromise = canvas.toBuffer('image/png');
+    const buffer = bufferPromise instanceof Promise ? await bufferPromise : bufferPromise;
+    
+    if (!fs.existsSync(OUTPUT_DIR)) {
       fs.mkdirSync(OUTPUT_DIR, { recursive: true });
     }
     fs.writeFileSync(path.join(OUTPUT_DIR, `${id}.png`), buffer);
@@ -162,6 +266,46 @@ function copyDefaultOgImage() {
 }
 
 /**
+ * サムネイル画像とスラッグのマッピング情報を取得
+ * @returns {Array<Object>} - サムネイル画像とスラッグのマッピング配列
+ */
+async function getThumbnailImageMappings() {
+  try {
+    if (!fs.existsSync(THUMBNAIL_DIR)) {
+      console.warn('Thumbnail directory not found at:', THUMBNAIL_DIR);
+      return [];
+    }
+    
+    const files = await readdir(THUMBNAIL_DIR);
+    
+    // スラッグ化関数（シェルスクリプトと同様の処理）
+    const slugify = (str) => {
+      return str.toLowerCase()
+        .replace(/\s+/g, '-')        // スペースをハイフンに置換
+        .replace(/[^a-z0-9-]/g, '-') // 英数字とハイフン以外をハイフンに置換
+        .replace(/-+/g, '-')         // 連続するハイフンを一つにまとめる
+        .replace(/^-|-$/g, '');      // 先頭と末尾のハイフンを削除
+    };
+    
+    // 各ファイルについて、ファイル名からスラッグを生成
+    const mappings = files.map(file => {
+      const filename = path.basename(file, path.extname(file));
+      const slug = slugify(filename);
+      return {
+        slug,
+        title: filename, // タイトルはファイル名から取得
+        thumbnailPath: path.join(THUMBNAIL_DIR, file)
+      };
+    });
+    
+    return mappings;
+  } catch (error) {
+    console.error('Error getting thumbnail mappings:', error);
+    return [];
+  }
+}
+
+/**
  * メイン処理
  */
 async function main() {
@@ -169,7 +313,7 @@ async function main() {
     console.log('Starting OG image generation...');
     
     // 出力ディレクトリの作成
-    if (\!fs.existsSync(OUTPUT_DIR)) {
+    if (!fs.existsSync(OUTPUT_DIR)) {
       fs.mkdirSync(OUTPUT_DIR, { recursive: true });
     }
     
@@ -183,15 +327,28 @@ async function main() {
     }
     
     if (canvasAvailable) {
-      // 記事データの取得を試み
       try {
-        // 記事データを取得する代わりに、サムネイル画像を使用
-        console.log('Using thumbnail images as OG images...');
+        // デフォルトOGP画像を生成
+        console.log('Generating default OG image...');
         copyDefaultOgImage();
-        
-        // デフォルトOGP画像の生成
         await generateOgImage('Coffee Break Point', 'default');
         
+        // サムネイル画像のマッピング情報を取得
+        console.log('Fetching thumbnail images...');
+        const thumbnailMappings = await getThumbnailImageMappings();
+        
+        if (thumbnailMappings.length > 0) {
+          console.log(`Found ${thumbnailMappings.length} thumbnail images to process.`);
+          
+          // 各サムネイル画像をOGP画像に変換
+          for (const mapping of thumbnailMappings) {
+            const { slug, title, thumbnailPath } = mapping;
+            console.log(`Generating OG image for: ${title} (${slug})`);
+            await generateOgImage(title, slug, thumbnailPath);
+          }
+        } else {
+          console.log('No thumbnail images found to process.');
+        }
       } catch (error) {
         console.error('Error in OG image generation:', error);
         console.log('Falling back to copying default OG image...');
@@ -203,7 +360,7 @@ async function main() {
       console.log('Using default OG image only. Canvas dependency issues prevented generating article-specific images.');
     }
     
-    console.log('OG image generation completed\!');
+    console.log('OG image generation completed!');
   } catch (error) {
     console.error('Error in OG image generation:', error);
     process.exit(1);
@@ -215,4 +372,3 @@ main().catch(err => {
   console.error('Unhandled error in OG image generation:', err);
   process.exit(1);
 });
-EOL < /dev/null
