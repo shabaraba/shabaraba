@@ -54,6 +54,8 @@ export default class NotionRepository extends BaseNotionRepository {
       ]
     });
 
+    console.log('DEBUG - getTrendingPosts query results:', response.results.length);
+    
     const postList: IPageHead[] = response.results.map((item) => {
       return NotionPageResponseDxo.convertToNotionPostHead(item as NotionPageResponseType);
     });

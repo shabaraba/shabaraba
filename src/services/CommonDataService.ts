@@ -67,7 +67,15 @@ export class CommonDataService {
     });
     
     // 人気記事の取得
-    const trendingPosts = await postLogic.getTrendingPosts();
+    let trendingPosts = await postLogic.getTrendingPosts();
+    console.log(`[CommonDataService] Fetched ${trendingPosts.length} trending posts from Notion`);
+    
+    // もしトレンド記事が0件の場合、代替として最新の記事を表示する
+    if (trendingPosts.length === 0) {
+      console.log('[CommonDataService] No trending posts found, using recent posts as fallback');
+      // 最新の記事を最大5件取得（既に日付順でソート済み）
+      trendingPosts = processedPosts.slice(0, 5);
+    }
     
     // 人気記事にもcoverImageプロパティを追加
     const processedTrendingPosts = trendingPosts.map(post => {

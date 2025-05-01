@@ -15,6 +15,7 @@ export interface ArticleListItem {
 
 export interface Article extends ArticleListItem {
   content: any; // コンテンツの形式はソースによって異なるため、anyとする
+  relatedArticles?: ArticleListItem[]; // 関連記事
 }
 
 export interface ArticleRepository {
