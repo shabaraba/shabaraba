@@ -5,7 +5,8 @@ import { Article } from '../../../../core/interfaces/article/ArticleRepository';
 import styles from './ArticleDetail.module.css';
 import NotionBlockRenderer from './NotionBlockRenderer';
 import RelatedArticles from './RelatedArticles';
-import { FaTwitter, FaFacebook } from 'react-icons/fa';
+import { FaFacebook } from 'react-icons/fa';
+import { FaXTwitter } from 'react-icons/fa6';
 import { SiHatenabookmark } from 'react-icons/si';
 
 interface ArticleDetailProps {
@@ -70,9 +71,9 @@ export default function ArticleDetail({ article }: ArticleDetailProps) {
               target="_blank" 
               rel="noopener noreferrer" 
               className={styles.shareButton}
-              aria-label="Twitter でシェア"
+              aria-label="X (旧Twitter) でシェア"
             >
-              <FaTwitter size={20} />
+              <FaXTwitter size={20} />
             </a>
             <a 
               href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://blog.shaba.dev/posts/${article.slug}`)}`} 
