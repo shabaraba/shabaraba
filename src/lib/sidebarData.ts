@@ -21,11 +21,10 @@ export async function getSidebarData() {
     const allPosts = await postLogic.getList();
     console.log('SSG: All posts count:', allPosts.length);
     
-    // 人気記事はフロントエンドで選択（現状ではtrueプロパティなし）
-    // Trendプロパティがある場合はそれを使用、なければ固定した配列を使用
-    // 将来的にTrendプロパティが追加されたら自動的に対応
+    // 人気記事はTrendプロパティがtrueの記事のみを表示
+    // Notionデータベースで「トレンド」としてマークされた記事だけを表示する
     const trendingPosts = allPosts
-      .filter(post => post.trend === true || post.title.includes('Notion') || post.title.includes('dotfiles'))
+      .filter(post => post.trend === true)
       .slice(0, 5); // 最大5件表示
     console.log('SSG: Selected trending posts count:', trendingPosts.length);
     
