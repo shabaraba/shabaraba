@@ -85,14 +85,17 @@ export class NotionArticleRepository implements ArticleRepository {
       // Relations（関連記事）を取得
       let relatedArticles: ArticleListItem[] = [];
       try {
-        const properties = page.properties;
-        // Relationsプロパティがあり、中身が存在する場合
-        if (properties.Relations && properties.Relations.relation && properties.Relations.relation.length > 0) {
-          // 関連記事IDを取得
-          const relationIds = properties.Relations.relation.map((rel: any) => rel.id);
-          // 関連記事情報を取得
-          relatedArticles = await this.getRelatedArticles(relationIds);
-          console.log(`Found ${relatedArticles.length} related articles for ${slug}`);
+        if ('properties' in page) {
+          const properties = page.properties;
+          // Relationsプロパティがあり、中身が存在する場合
+          if (properties.Relations && 'relation' in properties.Relations) {
+            console.log('Relations: ' + JSON.stringify(properties.Relations.relation, null, 2));
+            // 関連記事IDを取得
+            const relationIds = properties.Relations.relation.map((rel: any) => rel.id);
+            // 関連記事情報を取得
+            relatedArticles = await this.getRelatedArticles(relationIds);
+            console.log(`Found ${relatedArticles.length} related articles for ${slug}`);
+          }
         }
       } catch (relationsError) {
         console.error(`Error fetching related articles for "${slug}":`, relationsError);
@@ -217,7 +220,30 @@ export class NotionArticleRepository implements ArticleRepository {
       for (const id of relationIds) {
         try {
           const response = await this.notion.pages.retrieve({ page_id: id });
-          relatedArticles.push(this.convertToArticleListItem(response));
+          console.log(`Fetched related article ID "${id}"`);
+          
+          // Publishedプロパティをチェック
+          let isPublished = false;
+          
+          if (response.properties?.Published) {
+            // checkbox型の場合
+            if ('checkbox' in response.properties.Published) {
+              isPublished = response.properties.Published.checkbox === true;
+            } 
+            // formula型の場合
+            else if ('formula' in response.properties.Published && 
+                     'boolean' in response.properties.Published.formula) {
+              isPublished = response.properties.Published.formula.boolean === true;
+            }
+          }
+          
+          // 公開されている記事のみ追加
+          if (isPublished) {
+            relatedArticles.push(this.convertToArticleListItem(response));
+            console.log(`Added related article: ${response.properties?.Name?.title[0]?.plain_text || 'Untitled'}`);
+          } else {
+            console.log(`Skipping unpublished related article ID "${id}"`);
+          }
         } catch (error) {
           console.error(`Error fetching related article with ID "${id}":`, error);
           // エラーが発生しても処理を続行
