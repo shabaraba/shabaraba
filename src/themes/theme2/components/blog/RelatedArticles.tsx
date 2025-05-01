@@ -47,6 +47,13 @@ export default function RelatedArticles({ articles }: RelatedArticlesProps) {
                   day: 'numeric'
                 })}
               </time>
+              {article.tags && article.tags.length > 0 && (
+                <div className={styles.relatedTags}>
+                  {article.tags.map((tag, idx) => (
+                    <span key={idx} className={styles.relatedTag}>{tag}</span>
+                  ))}
+                </div>
+              )}
             </div>
           </Link>
         ))}
