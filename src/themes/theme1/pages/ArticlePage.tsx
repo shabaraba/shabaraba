@@ -32,11 +32,17 @@ export default ({ tags, postHead, title, postDetail }: Props) => {
   const postHeadEntity:PostHeadEntity = new PostHeadEntity(postHead);
 
   return (
-    <DetailLayout leftside={
-      <Box mt="20px">
-        <SideArea tags={tags} post={postHeadEntity} title={title} />
-      </Box>
-    } >
+    <DetailLayout 
+      leftside={
+        <Box mt="20px">
+          <SideArea tags={tags} post={postHeadEntity} title={title} />
+        </Box>
+      }
+      title={postHeadEntity.title}
+      description={postHeadEntity.excerpt || ''}
+      slug={postHeadEntity.slug}
+    >
+      {/* Seoコンポーネントは互換性のために残しておきます */}
       <Seo title={postHeadEntity.title} coverImageUrl={postHeadEntity.coverImageUrl} />
       <Head> <title>{postHeadEntity.title}</title> </Head>
       <Box mt="20px">

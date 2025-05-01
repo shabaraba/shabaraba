@@ -29,7 +29,10 @@ export default function ArticlePage({ article }: ArticlePageProps) {
     <Layout
       title={`${article.title} | Coffee Break Point`}
       description={article.excerpt || ''}
+      slug={article.slug}
     >
+      {/* Seoコンポーネントは互換性のために残しておきますが、
+          主要なOGP情報はLayoutでHTMLに直接出力されます */}
       <Seo title={article.title} slug={article.slug} />
       <ArticleDetail article={article} />
     </Layout>
