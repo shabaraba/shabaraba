@@ -30,6 +30,7 @@ export default function ArticlePage({ article }: ArticlePageProps) {
       title={`${article.title} | Coffee Break Point`}
       description={article.excerpt || ''}
       slug={article.slug}
+      showSidebar={true}
     >
       {/* Seoコンポーネントは互換性のために残しておきますが、
           主要なOGP情報はLayoutでHTMLに直接出力されます */}

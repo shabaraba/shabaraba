@@ -3,7 +3,7 @@ import { MyLinkService } from "application/modules/mylink/services/MyLinkService
 import { MyLinkDxo } from "core/dxo/MyLinkDxo";
 import { StaticProps } from "core/types/MyLinkListPageType";
 import { MyLinkType } from "core/types/MyLinkType";
-import { PaginatedData } from "../../services/CommonDataService"; // 追加
+import { CommonDataService, PaginatedData } from "../../services/CommonDataService";
 
 export class MyLinkListPageUsecase {
   /**
@@ -13,10 +13,14 @@ export class MyLinkListPageUsecase {
     const mylinkService = new MyLinkService();
     const myLinkDtoList: MyLinkDto[] = await mylinkService.getList();
     const myLinkEntityList: MyLinkType[] = myLinkDtoList.map(myLinkDto => MyLinkDxo.convertForPages(myLinkDto));
+    
+    // サイドバーデータを取得
+    const sidebarData = await CommonDataService.getSidebarData();
 
     return {
       props: {
         allData: myLinkEntityList,
+        sidebarData: sidebarData,
       },
       // revalidate: 1 * 60
     }

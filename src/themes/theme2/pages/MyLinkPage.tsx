@@ -26,7 +26,11 @@ export default function MyLinkPage({ mylinks, pagination }: MyLinkPageProps) {
   const pageDescription = getSetting('mylink.page_description', '筆者の興味関心のある外部ページはこちらに');
 
   return (
-    <Layout>
+    <Layout
+      title={pageTitle}
+      description={pageDescription}
+      showSidebar={true}
+    >
       <div className={styles.mainContent}>
         <h1 className={styles.pageTitle}>{pageTitle}</h1>
         <p className={styles.pageDescription}>{pageDescription}</p>
