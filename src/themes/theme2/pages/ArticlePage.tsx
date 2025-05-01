@@ -30,7 +30,7 @@ export default function ArticlePage({ article }: ArticlePageProps) {
       title={`${article.title} | Coffee Break Point`}
       description={article.excerpt || ''}
     >
-      <Seo title={article.title} slug={article.slug} coverImageUrl={article.coverImageUrl} />
+      <Seo title={article.title} slug={article.slug} />
       <ArticleDetail article={article} />
     </Layout>
   );

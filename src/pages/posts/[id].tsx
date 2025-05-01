@@ -1,5 +1,4 @@
 import { ACTIVE_THEME } from '../../config/themeSelector';
-import { ArticleServiceFactory } from '../../core/factories/ArticleServiceFactory';
 import { ArticlePageUsecase } from 'application/usecases/ArticlePageUsecase';
 import dynamic from 'next/dynamic';
 
@@ -31,33 +30,3 @@ export async function getStaticProps({ params }) {
   }
   return ArticlePageUsecase.getStaticProps({ params });
 }
-<<<<<<< HEAD
-=======
-
-type Props = InferGetStaticPropsType<typeof getStaticProps>;
-
-export default ({ tags, postHead, title, postDetail }: Props) => {
-  const postHeadEntity:PostHeadEntity = new PostHeadEntity(postHead);
-
-  return (
-    <DetailLayout leftside={
-      <SlideFade in={true} offsetY='20px'>
-        <SideArea tags={tags} post={postHeadEntity} title={title} />
-      </SlideFade>
-    } >
-      <Seo title={postHeadEntity.title} slug={postHead.slug} coverImageUrl={postHeadEntity.coverImageUrl} />
-      <Head> <title>{postHeadEntity.title}</title> </Head>
-      <SlideFade in={true} offsetY='20px'>
-        <MainArea postDetail={postDetail} />
-      </SlideFade>
-      <AuthorBox />
-    </DetailLayout>
-  )
-}
-
-// server側で呼ばれる
-export const getStaticPaths = async () => ArticlePageUsecase.getStaticPaths();
-
-// server側で呼ばれる
-export const getStaticProps = async ({ params }) => ArticlePageUsecase.getStaticProps({params});
->>>>>>> 7fe3759 (feat: implement OGP image generation at build time)

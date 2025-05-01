@@ -36,19 +36,90 @@ const COLORS = {
   title: '#4B3832',        // 重厚感ある濃いチョコレート
   titleShadow: 'rgba(0,0,0,0.5)', // タイトル用の影
   shadow: 'rgba(0,0,0,0.1)', // 影
-  titleBackground: 'rgba(255,255,255,0.7)' // タイトル背景
+  titleBackground: 'rgba(255,255,255,0.7)', // タイトル背景
+  coffeeFilter: '#7B5E5780',
+  logoColor: '#4B3832'    // ロゴテキスト色
 };
 
-// フォント設定
-try {
-  // skia-canvasではSystemフォントが自動的に利用可能
-  // 必要に応じて追加フォントを登録することも可能
-  // FontLibrary.use('Hiragino', '/System/Library/Fonts/ヒラギノ角ゴシック W3.ttc');
-  // FontLibrary.use('Hiragino Bold', '/System/Library/Fonts/ヒラギノ角ゴシック W6.ttc');
-  console.log('Using system fonts for OG image generation');
-} catch (err) {
-  console.warn('Font configuration warning:', err);
-  console.warn('Will use system default fonts instead.');
+// Caveatフォントをダウンロード & 設定
+async function setupCaveatFont() {
+  const fontsDir = path.join(process.cwd(), 'public', 'fonts');
+  const caveatRegularPath = path.join(fontsDir, 'Caveat-Regular.ttf');
+  const caveatBoldPath = path.join(fontsDir, 'Caveat-Bold.ttf');
+  
+  // フォントディレクトリがなければ作成
+  if (!fs.existsSync(fontsDir)) {
+    fs.mkdirSync(fontsDir, { recursive: true });
+  }
+  
+  // フォントファイルが存在するか確認し、なければダウンロード
+  const downloadFont = async (url, outputPath) => {
+    if (fs.existsSync(outputPath)) {
+      console.log(`Font already exists: ${outputPath}`);
+      return true;
+    }
+    
+    try {
+      const https = require('https');
+      const file = fs.createWriteStream(outputPath);
+      
+      await new Promise((resolve, reject) => {
+        https.get(url, (response) => {
+          if (response.statusCode !== 200) {
+            reject(new Error(`Failed to download font: ${response.statusCode}`));
+            return;
+          }
+          
+          response.pipe(file);
+          
+          file.on('finish', () => {
+            file.close();
+            resolve();
+          });
+          
+          file.on('error', (err) => {
+            fs.unlink(outputPath, () => {});
+            reject(err);
+          });
+        }).on('error', reject);
+      });
+      
+      console.log(`Downloaded font to: ${outputPath}`);
+      return true;
+    } catch (error) {
+      console.error(`Error downloading font: ${error.message}`);
+      return false;
+    }
+  };
+  
+  // Caveatフォントをダウンロード (Google Fontsから)
+  try {
+    const regularDownloaded = await downloadFont(
+      'https://fonts.gstatic.com/s/caveat/v18/WnznHAc5bAfYB2QRah7pcpNvOx-pjfJ9eIWpZA.ttf',
+      caveatRegularPath
+    );
+    
+    const boldDownloaded = await downloadFont(
+      'https://fonts.gstatic.com/s/caveat/v18/WnznHAc5bAfYB2QRah7pcpNvOx-pjRV6eIWpZA.ttf',
+      caveatBoldPath
+    );
+    
+    // ダウンロードしたフォントをライブラリに登録
+    if (regularDownloaded) {
+      FontLibrary.use('Caveat', caveatRegularPath);
+      console.log('Registered Caveat Regular font');
+    }
+    
+    if (boldDownloaded) {
+      FontLibrary.use('Caveat Bold', caveatBoldPath);
+      console.log('Registered Caveat Bold font');
+    }
+    
+    return regularDownloaded || boldDownloaded;
+  } catch (error) {
+    console.error('Error setting up Caveat font:', error);
+    return false;
+  }
 }
 
 /**
@@ -100,6 +171,17 @@ async function generateOgImage(title, id, thumbnailPath = null) {
     // 背景を描画
     ctx.fillStyle = COLORS.background;
     ctx.fillRect(0, 0, WIDTH, HEIGHT);
+    
+    // アクセントカラーで外周を縁取り
+    // 外側の縁取り（太さを強調）
+    ctx.strokeStyle = COLORS.accent;
+    ctx.lineWidth = 12;
+    ctx.strokeRect(6, 6, WIDTH - 12, HEIGHT - 12);
+    
+    // 内側の縁取り（より細い線で、デザイン性を高める）
+    ctx.strokeStyle = COLORS.accent;
+    ctx.lineWidth = 3;
+    ctx.strokeRect(22, 22, WIDTH - 44, HEIGHT - 44);
 
     // サムネイル画像が指定されていない場合は自動検索
     if (!thumbnailPath && id !== 'default') {
@@ -143,6 +225,10 @@ async function generateOgImage(title, id, thumbnailPath = null) {
     // タイトル背景を描画（視認性向上のため）
     const titleBackgroundHeight = 180;
     const titleBackgroundY = (HEIGHT - titleBackgroundHeight) / 2;
+
+    // コーヒー色フィルターを画像全体に適用
+    ctx.fillStyle = COLORS.background + '80';
+    ctx.fillRect(0, 0, WIDTH, HEIGHT);
     
     ctx.fillStyle = COLORS.titleBackground;
     ctx.fillRect(0, titleBackgroundY, WIDTH, titleBackgroundHeight);
@@ -175,26 +261,74 @@ async function generateOgImage(title, id, thumbnailPath = null) {
     }
     lines.push(line);
     
-    // 行数が多すぎる場合はフォントサイズを調整
-    let fontSize = 48;
-    if (lines.length > 3) {
-      fontSize = Math.max(24, Math.floor(48 * (3 / lines.length)));
-      ctx.font = `bold ${fontSize}px "Hiragino Bold", sans-serif`;
-      
-      // 行を再計算
-      line = '';
-      lines = [];
-      for (let i = 0; i < words.length; i++) {
-        const testLine = line + words[i] + ' ';
-        const metrics = ctx.measureText(testLine);
-        if (metrics.width > maxWidth) {
-          lines.push(line);
-          line = words[i] + ' ';
-        } else {
-          line = testLine;
-        }
+    // フォントサイズの自動調整
+    let fontSize = 48; // 初期フォントサイズ
+    const minFontSize = 22; // 最小許容フォントサイズ
+    
+    // タイトルの総文字数を取得
+    const totalCharCount = title.length;
+    
+    // 文字数に基づく初期調整
+    if (totalCharCount > 100) {
+      fontSize = Math.max(minFontSize, Math.floor(48 * (100 / totalCharCount) * 1.2));
+    } else if (totalCharCount > 60) {
+      fontSize = Math.max(minFontSize, Math.floor(48 * (60 / totalCharCount) * 1.5));
+    }
+    
+    // 行数に基づいてフォントサイズを調整
+    if (lines.length > 2) {
+      fontSize = Math.max(minFontSize, Math.floor(fontSize * (2.5 / lines.length)));
+    }
+    
+    // 1行あたりの最大文字数を確認
+    let maxLineWidth = 0;
+    for (let i = 0; i < lines.length; i++) {
+      const metrics = ctx.measureText(lines[i]);
+      maxLineWidth = Math.max(maxLineWidth, metrics.width);
+    }
+    
+    // 最大行幅が利用可能幅を超える場合、フォントサイズをさらに調整
+    if (maxLineWidth > maxWidth) {
+      const scaleFactor = maxWidth / maxLineWidth;
+      fontSize = Math.max(minFontSize, Math.floor(fontSize * scaleFactor));
+    }
+    
+    // タイトルのはみ出しを検知してログ出力
+    const isOverflowing = maxLineWidth > maxWidth || lines.length > 4;
+    if (isOverflowing) {
+      console.log(`Warning: Title may overflow in OGP image for: "${title}" - Adjusting font size to ${fontSize}px.`);
+    }
+    
+    // 調整後のフォントサイズを設定
+    ctx.font = `bold ${fontSize}px "Hiragino Bold", sans-serif`;
+    
+    // 行を再計算（フォントサイズ調整後）
+    line = '';
+    lines = [];
+    for (let i = 0; i < words.length; i++) {
+      const testLine = line + words[i] + ' ';
+      const metrics = ctx.measureText(testLine);
+      if (metrics.width > maxWidth) {
+        lines.push(line);
+        line = words[i] + ' ';
+      } else {
+        line = testLine;
       }
-      lines.push(line);
+    }
+    lines.push(line);
+    
+    // 最終的なチェック
+    let finalMaxLineWidth = 0;
+    for (let i = 0; i < lines.length; i++) {
+      const metrics = ctx.measureText(lines[i]);
+      finalMaxLineWidth = Math.max(finalMaxLineWidth, metrics.width);
+    }
+    
+    // それでもはみ出す場合は最終調整
+    if (finalMaxLineWidth > maxWidth && fontSize > minFontSize) {
+      const finalScaleFactor = maxWidth / finalMaxLineWidth;
+      fontSize = Math.max(minFontSize, Math.floor(fontSize * finalScaleFactor));
+      ctx.font = `bold ${fontSize}px "Hiragino Bold", sans-serif`;
     }
     
     // 中央揃えで描画
@@ -204,28 +338,41 @@ async function generateOgImage(title, id, thumbnailPath = null) {
       ctx.fillText(lines[i], WIDTH / 2, startY + (i * lineHeight));
     }
     
-    // コーヒーアイコンを描画
-    try {
-      const logoPath = path.join(process.cwd(), 'public', 'images', 'CoffeeBreakPoint.png');
-      const logoImage = await loadImage(logoPath);
-      ctx.drawImage(logoImage, WIDTH - 200, HEIGHT - 150, 140, 100);
-    } catch (err) {
-      console.error('Logo image loading error:', err);
-    }
+    // サイン風のロゴテキストを右下に配置（CSSの.logoTextクラスに準拠）
+    ctx.save(); // 現在の描画状態を保存
     
-    // ブログタイトルを描画（下部）
-    ctx.shadowColor = COLORS.titleShadow;
-    ctx.shadowBlur = 3;
-    ctx.font = 'bold 28px "Hiragino Bold", sans-serif';
-    ctx.fillStyle = '#FFFFFF';
-    ctx.fillText('Coffee Break Point', WIDTH / 2, HEIGHT - 90);
+    // 右下にロゴを配置
+    const logoX = WIDTH - 280;
+    const logoY = HEIGHT - 80;
     
-    // サイトURLを描画
-    ctx.font = '24px "Hiragino", sans-serif';
-    ctx.fillStyle = '#F1E7D6';
-    ctx.shadowBlur = 1;
-    ctx.fillText('blog.shaba.dev', WIDTH / 2, HEIGHT - 50);
+    // テキストの回転設定（-5度）
+    ctx.translate(logoX, logoY);
+    ctx.rotate(-5 * Math.PI / 180);
     
+    // ロゴテキストのスタイル設定
+    ctx.font = 'bold 72px "Caveat", cursive'; // フォント名をクォートなしで指定
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = COLORS.title; // --heading-color相当
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.1)'; // text-shadow
+    ctx.shadowBlur = 2;
+    ctx.shadowOffsetX = 1;
+    ctx.shadowOffsetY = 1;
+    
+    // ロゴテキスト描画
+    ctx.fillText('Coffee Break Point', 0, 0);
+    
+    ctx.restore(); // 描画状態を元に戻す
+    
+    // // サイトURLを描画
+    // ctx.font = '24px "Hiragino", sans-serif';
+    // ctx.fillStyle = '#F1E7D6';
+    // ctx.shadowColor = 'rgba(0, 0, 0, 0.2)';
+    // ctx.shadowBlur = 2;
+    // ctx.shadowOffsetX = 1;
+    // ctx.shadowOffsetY = 1;
+    // ctx.fillText('blog.shaba.dev', WIDTH / 2, HEIGHT - 40);
+
     // 画像を保存
     // skia-canvasのバージョンによってtoBufferが同期か非同期かが変わる可能性があるため、
     // Promiseとして扱い、適切に解決する
@@ -453,6 +600,10 @@ async function main() {
     if (!fs.existsSync(OUTPUT_DIR)) {
       fs.mkdirSync(OUTPUT_DIR, { recursive: true });
     }
+    
+    // Caveatフォントのセットアップ
+    console.log('Setting up Caveat font...');
+    await setupCaveatFont();
     
     // skia-canvasモジュールが利用可能かチェック
     let canvasAvailable = true;
