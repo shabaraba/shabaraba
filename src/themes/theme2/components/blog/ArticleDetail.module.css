@@ -96,18 +96,21 @@
 }
 
 .shareButton {
-  display: inline-block;
-  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
   background-color: var(--accent-color);
   color: white;
-  border-radius: 4px;
-  font-size: 0.85rem;
+  border-radius: 50%;
   text-decoration: none;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .shareButton:hover {
   background-color: var(--link-hover-color);
+  transform: translateY(-2px);
 }
 
 .backLink {
