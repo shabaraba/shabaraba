@@ -32,3 +32,11 @@ yarn-error.log*
 /public/sitemap*.xml
 /public/rss/*
 
+# image caches
+/public/header-images/*
+!/public/header-images/.gitkeep
+/public/og-images/*
+!/public/og-images/.gitkeep
+
+# backup files
+*.bak
