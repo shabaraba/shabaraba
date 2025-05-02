@@ -180,10 +180,10 @@ const About = () => {
             proposing creative solutions, and implementing them effectively.
           </Paragraph>
           <Paragraph>
-            Throughout my career at companies like Cybozu, SmartRegisty, and Kawasaki Heavy Industries, 
-            I've consistently driven initiatives to enhance efficiency and product quality. 
-            I'm particularly skilled at refactoring complex code, automating repetitive processes, 
-            and improving team workflows.
+            Throughout my career at companies like Cybozu, Smaregi, Kawasaki Heavy Industries, 
+            and Brother Industries, I've consistently driven initiatives to enhance efficiency 
+            and product quality. I'm particularly skilled at refactoring complex code, automating 
+            repetitive processes, and improving team workflows.
           </Paragraph>
         </Section>
         
@@ -239,7 +239,7 @@ const About = () => {
               whileHover={{ y: -5 }}
               transition={{ type: 'spring', stiffness: 300 }}
             >
-              <CompanyName>SmartRegistry Inc.</CompanyName>
+              <CompanyName>Smaregi Inc.</CompanyName>
               <JobTitle>Full Stack Engineer</JobTitle>
               <DateRange>February 2020 - July 2022</DateRange>
               <Description>
@@ -260,6 +260,20 @@ const About = () => {
                 Led quality assurance for industrial robot software, automated testing processes, 
                 and improved progress tracking systems. Reduced evaluation workload by approximately 
                 30% through custom automation scripts.
+              </Description>
+            </ExperienceCard>
+            
+            <ExperienceCard
+              whileHover={{ y: -5 }}
+              transition={{ type: 'spring', stiffness: 300 }}
+            >
+              <CompanyName>Brother Industries, Ltd.</CompanyName>
+              <JobTitle>Engineer</JobTitle>
+              <DateRange>April 2017 - May 2018</DateRange>
+              <Description>
+                Participated in embedded software development for industrial equipment. Worked on 
+                software design, testing, and implementation. Also gained experience through manufacturing, 
+                sales, customer support, and quality assurance assignments.
               </Description>
             </ExperienceCard>
           </ExperienceWrapper>
