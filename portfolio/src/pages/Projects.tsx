@@ -3,11 +3,16 @@ import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import Navigation from '../components/ui/Navigation';
 import { useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
-const Container = styled.div`
+interface ProjectsProps {
+  isSection?: boolean;
+}
+
+const Container = styled.div<{ isSection?: boolean }>`
   min-height: 100vh;
   position: relative;
-  background-color: var(--color-background);
+  background-color: ${props => props.isSection ? 'transparent' : 'var(--color-background)'};
   overflow-x: hidden;
 `;
 
@@ -144,71 +149,50 @@ const ProjectLink = styled.a`
   }
 `;
 
-// Project data
-const projects = [
+// Project data using objects for i18n support
+const getProjects = (t: any) => [
   {
     id: 1,
-    title: 'API Client Auto-Generator',
-    description: 'Automated solution for generating API clients, reducing development time and maintenance costs. Identified high API client maintenance costs and proposed this solution that was adopted in the product roadmap.',
+    title: 'Pile.nvim',
+    description: t('projects.pile_description', 'Neovim plugin for managing buffers in a vertical sidebar, similar to how books are stacked in a pile. This plugin provides an intuitive and simple way to browse, rename, and manage open buffers in Neovim.'),
     imageUrl: '/assets/images/project1.jpg',
-    techStack: ['TypeScript', 'Java', 'OpenAPI', 'SpringBoot'],
-    demoLink: '#',
-    codeLink: '#',
+    techStack: ['Lua', 'Neovim', 'Plugin Development'],
+    demoLink: null,
+    codeLink: 'https://github.com/shabaraba/pile.nvim',
   },
   {
     id: 2,
-    title: 'Transaction System Refactoring',
-    description: 'Comprehensive refactoring of a large-scale POS transaction system. Improved code structure with appropriate class design and introduced a tree structure for transaction processing.',
+    title: 'Look Into Baskets',
+    description: t('projects.baskets_description', 'Web application to analyze retail store transactions with Smaregi services integration. Provides insights into transaction data through a web interface with robust backend data processing.'),
     imageUrl: '/assets/images/project2.jpg',
-    techStack: ['PHP', 'JavaScript', 'MySQL', 'jQuery'],
-    demoLink: '#',
-    codeLink: '#',
+    techStack: ['Python', 'Responder', 'Tortoise ORM', 'MySQL', 'Pug'],
+    demoLink: null,
+    codeLink: 'https://github.com/shabaraba/look-into-baskets',
   },
   {
     id: 3,
-    title: 'Test Automation Framework',
-    description: 'Automated test framework for industrial robot software that reduced evaluation workload by approximately 30%. Independently developed using VBS and UWSC for custom scripts.',
-    imageUrl: '/assets/images/project3.jpg',
-    techStack: ['VBS', 'UWSC', 'Testing', 'Automation'],
-    demoLink: '#',
-    codeLink: '#',
-  },
-  {
-    id: 4,
-    title: 'Progress Tracking System',
-    description: 'Automated project progress tracking system using Redmine and Excel VBA. Developed to address visibility issues in project management and later adopted as a team standard.',
-    imageUrl: '/assets/images/project4.jpg',
-    techStack: ['VBA', 'Excel', 'Redmine', 'Project Management'],
-    demoLink: '#',
-    codeLink: '#',
-  },
-  {
-    id: 5,
-    title: 'Dynamic Advertisement Management',
-    description: 'System to control advertisement content from the database instead of hardcoding, significantly reducing developer workload for content updates.',
-    imageUrl: '/assets/images/project5.jpg',
-    techStack: ['PHP', 'MySQL', 'JavaScript', 'Web Development'],
-    demoLink: '#',
-    codeLink: '#',
-  },
-  {
-    id: 6,
-    title: 'Three.js Portfolio',
-    description: 'This portfolio website featuring Three.js for 3D graphics and animations, with a modern, responsive design and interactive elements.',
+    title: t('projects.portfolio_title', 'Portfolio Website'),
+    description: t('projects.portfolio_description', 'This portfolio website featuring Three.js for 3D graphics and animated particles background, with a modern, responsive design and interactive elements.'),
     imageUrl: '/assets/images/project6.jpg',
     techStack: ['TypeScript', 'React', 'Three.js', 'Emotion'],
-    demoLink: '#',
-    codeLink: '#',
+    demoLink: 'https://shaba.dev',
+    codeLink: 'https://github.com/shabaraba/shabaraba',
   }
 ];
 
-const Projects = () => {
+const Projects = ({ isSection = false }: ProjectsProps) => {
   const location = useLocation();
+  const { t } = useTranslation();
   
-  // Scroll to top when page loads
+  // Get projects with translations
+  const projects = getProjects(t);
+  
+  // Scroll to top when page loads (only when not used as a section)
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [location]);
+    if (!isSection) {
+      window.scrollTo(0, 0);
+    }
+  }, [location, isSection]);
 
   // Animation variants for staggered animations
   const containerVariants = {
@@ -233,15 +217,15 @@ const Projects = () => {
   };
 
   return (
-    <Container>
-      <Navigation />
+    <Container isSection={isSection}>
+      {!isSection && <Navigation />}
       <ContentWrapper>
         <Title
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
         >
-          Projects
+          {t('projects.title', 'Projects')}
         </Title>
         
         <motion.p
@@ -250,9 +234,7 @@ const Projects = () => {
           transition={{ duration: 0.8, delay: 0.2 }}
           style={{ marginBottom: '2rem', maxWidth: '800px' }}
         >
-          Here's a selection of projects I've worked on throughout my career. Each project 
-          represents a unique challenge that I've approached with my focus on efficiency 
-          optimization and quality enhancement.
+          {t('projects.intro', "Here's a selection of personal projects I've developed. These projects showcase my interests in developer tools, data analysis, and web development. Each represents an opportunity for me to explore new technologies and solve problems I've encountered.")}
         </motion.p>
         
         <ProjectsGrid
@@ -276,14 +258,14 @@ const Projects = () => {
                   ))}
                 </TechStack>
                 <ProjectLinks>
-                  {project.demoLink && (
+                  {project.demoLink && project.demoLink !== null && (
                     <ProjectLink href={project.demoLink} target="_blank" rel="noopener noreferrer">
-                      Live Demo
+                      {t('projects.live_demo', 'Live Demo')}
                     </ProjectLink>
                   )}
-                  {project.codeLink && (
+                  {project.codeLink && project.codeLink !== null && (
                     <ProjectLink href={project.codeLink} target="_blank" rel="noopener noreferrer">
-                      View Code
+                      {t('projects.view_code', 'View Code')}
                     </ProjectLink>
                   )}
                 </ProjectLinks>

@@ -15,7 +15,6 @@ const CanvasContainer = styled.div`
   left: 0;
   width: 100%;
   height: 100vh;
-  z-index: -1;
 `;
 
 interface ThreeSceneProps {
@@ -29,7 +28,7 @@ const ThreeScene = ({ mousePosition = { x: 0, y: 0 } }: ThreeSceneProps) => {
         <Suspense fallback={null}>
           <PerspectiveCamera makeDefault position={[0, 0, 15]} fov={50} />
           <Lights />
-          <ParticleField count={2000} mousePosition={mousePosition} />
+          <ParticleField count={5000} mousePosition={mousePosition} />
           {/* Temporarily disable FloatingText until font is available */}
           {/* <FloatingText 
             text="SHABARABA"

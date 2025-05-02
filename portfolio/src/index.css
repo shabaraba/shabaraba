@@ -1,10 +1,12 @@
 :root {
-  --color-background: #0f0f0f;
-  --color-primary: #1a1a1a;
-  --color-secondary: #242424;
+  --color-background: #070a14;
+  --color-primary: #0f1729;
+  --color-secondary: #1a243c;
   --color-text: #ffffff;
-  --color-accent: #00ffcc;
-  --color-accent-alt: #ff00cc;
+  --color-accent: #00a5ff;
+  --color-accent-rgb: 0, 165, 255;
+  --color-accent-alt: #ff00ba;
+  --color-accent-alt-rgb: 255, 0, 186;
   
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
