@@ -3,6 +3,7 @@ import { Suspense, lazy } from 'react';
 import LoadingScreen from './components/ui/LoadingScreen';
 
 // Lazy load pages for better performance
+const LandingPage = lazy(() => import('./pages/LandingPage'));
 const Home = lazy(() => import('./pages/Home'));
 const About = lazy(() => import('./pages/About'));
 const Projects = lazy(() => import('./pages/Projects'));
@@ -14,7 +15,8 @@ function App() {
     <Router>
       <Suspense fallback={<LoadingScreen />}>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/contact" element={<Contact />} />

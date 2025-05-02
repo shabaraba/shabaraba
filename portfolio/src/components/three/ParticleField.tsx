@@ -60,11 +60,11 @@ const ParticleField = ({ count, mousePosition }: ParticleFieldProps) => {
       positions[i3 + 1] = particles[i].position[1];
       positions[i3 + 2] = particles[i].position[2];
       
-      // Color (cyan to purple gradient)
+      // Color (blue to pink gradient)
       const mixFactor = Math.random();
-      colors[i3] = 0;
-      colors[i3 + 1] = mixFactor;
-      colors[i3 + 2] = 1 - mixFactor;
+      colors[i3] = mixFactor * 0.8; // Red component (for pink)
+      colors[i3 + 1] = 0.4 + mixFactor * 0.2; // Green component
+      colors[i3 + 2] = 1.0; // Blue component (always high)
       
       // Size (random between 0.1 and 0.5)
       sizes[i] = Math.random() * 0.4 + 0.1;
@@ -96,8 +96,8 @@ const ParticleField = ({ count, mousePosition }: ParticleFieldProps) => {
       if (positionsArray[i3 + 2] > 10) positionsArray[i3 + 2] = -10;
       if (positionsArray[i3 + 2] < -10) positionsArray[i3 + 2] = 10;
       
-      // Add slight mouse attraction
-      const mouseInfluence = 0.0005;
+      // Add stronger mouse attraction
+      const mouseInfluence = 0.001;
       const mouseX = (mousePosition.x * 20) - 10;
       const mouseY = (mousePosition.y * -20) + 10;
       
@@ -144,7 +144,7 @@ const ParticleField = ({ count, mousePosition }: ParticleFieldProps) => {
         />
       </bufferGeometry>
       <pointsMaterial
-        size={0.2}
+        size={0.3}
         sizeAttenuation={true}
         vertexColors
         transparent

@@ -1,13 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
 import Navigation from '../components/ui/Navigation';
 import { useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
-const Container = styled.div`
+interface ContactProps {
+  isSection?: boolean;
+}
+
+const Container = styled.div<{ isSection?: boolean }>`
   min-height: 100vh;
   position: relative;
-  background-color: var(--color-background);
+  background-color: ${props => props.isSection ? 'transparent' : 'var(--color-background)'};
   overflow-x: hidden;
 `;
 
@@ -129,10 +134,28 @@ const SubmitButton = styled(motion.button)`
   }
 `;
 
+const SocialLinksSection = styled(motion.div)`
+  margin-top: 3rem;
+`;
+
+const SocialLinksHeading = styled.h2`
+  font-size: 1.8rem;
+  color: var(--color-accent);
+  margin-bottom: 1.2rem;
+`;
+
+const SocialLinksDescription = styled(motion.p)`
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  line-height: 1.7;
+  color: var(--color-text);
+  opacity: 0.9;
+`;
+
 const SocialLinks = styled(motion.div)`
   display: flex;
   gap: 2rem;
-  margin-top: 4rem;
+  margin-top: 2rem;
   
   @media (max-width: 768px) {
     gap: 1.5rem;
@@ -143,73 +166,46 @@ const SocialLink = styled(motion.a)`
   color: var(--color-text);
   font-size: 1.5rem;
   transition: color 0.3s ease, transform 0.3s ease;
+  display: flex;
+  align-items: center;
   
   &:hover {
     color: var(--color-accent);
     transform: translateY(-5px);
   }
-`;
-
-const SuccessMessage = styled(motion.div)`
-  background-color: rgba(0, 255, 204, 0.1);
-  border: 2px solid var(--color-accent);
-  border-radius: 4px;
-  padding: 1.5rem;
-  margin-top: 2rem;
-  color: var(--color-text);
-`;
-
-const Contact = () => {
-  const location = useLocation();
-  const [formState, setFormState] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
   
-  // Scroll to top when page loads
+  i {
+    margin-right: 0.5rem;
+  }
+`;
+
+const SocialLinkText = styled.span`
+  font-size: 1rem;
+  margin-left: 0.5rem;
+`;
+
+
+const Contact = ({ isSection = false }: ContactProps) => {
+  const location = useLocation();
+  const { t } = useTranslation();
+  
+  // Scroll to top when page loads (only when not used as a section)
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [location]);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormState(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    // Simulate form submission
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setIsSubmitted(true);
-      setFormState({
-        name: '',
-        email: '',
-        subject: '',
-        message: ''
-      });
-    }, 1500);
-  };
+    if (!isSection) {
+      window.scrollTo(0, 0);
+    }
+  }, [location, isSection]);
 
   return (
-    <Container>
-      <Navigation />
+    <Container isSection={isSection}>
+      {!isSection && <Navigation />}
       <ContentWrapper>
         <Title
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
         >
-          Get In Touch
+          {t('contact.title')}
         </Title>
         
         <Paragraph
@@ -217,115 +213,43 @@ const Contact = () => {
           animate={{ opacity: 0.9 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          I'm always open to discussing new projects, creative ideas or opportunities to be part 
-          of your vision. Whether you have a question or just want to say hi, I'll try my best 
-          to get back to you!
+          {t('contact.subtitle')}
         </Paragraph>
         
-        {isSubmitted ? (
-          <SuccessMessage
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <h3>Message Sent!</h3>
-            <p>Thank you for reaching out. I'll get back to you as soon as possible.</p>
-          </SuccessMessage>
-        ) : (
-          <ContactForm
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            onSubmit={handleSubmit}
-          >
-            <FormGroup>
-              <Label htmlFor="name">Name</Label>
-              <Input
-                type="text"
-                id="name"
-                name="name"
-                value={formState.name}
-                onChange={handleChange}
-                required
-              />
-            </FormGroup>
-            
-            <FormGroup>
-              <Label htmlFor="email">Email</Label>
-              <Input
-                type="email"
-                id="email"
-                name="email"
-                value={formState.email}
-                onChange={handleChange}
-                required
-              />
-            </FormGroup>
-            
-            <FormGroup>
-              <Label htmlFor="subject">Subject</Label>
-              <Input
-                type="text"
-                id="subject"
-                name="subject"
-                value={formState.subject}
-                onChange={handleChange}
-                required
-              />
-            </FormGroup>
-            
-            <FormGroup>
-              <Label htmlFor="message">Message</Label>
-              <TextArea
-                id="message"
-                name="message"
-                value={formState.message}
-                onChange={handleChange}
-                required
-              />
-            </FormGroup>
-            
-            <SubmitButton
-              type="submit"
-              disabled={isSubmitting}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              {isSubmitting ? 'Sending...' : 'Send Message'}
-            </SubmitButton>
-          </ContactForm>
-        )}
-        
-        <SocialLinks
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
+        <SocialLinksSection
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <SocialLink 
-            href="https://github.com/shabaraba" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            whileHover={{ y: -5 }}
-          >
-            <i className="fab fa-github"></i>
-          </SocialLink>
-          <SocialLink 
-            href="https://twitter.com/shabaraba" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            whileHover={{ y: -5 }}
-          >
-            <i className="fab fa-twitter"></i>
-          </SocialLink>
-          <SocialLink 
-            href="https://linkedin.com/in/shabaraba" 
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ y: -5 }}
-          >
-            <i className="fab fa-linkedin"></i>
-          </SocialLink>
-        </SocialLinks>
+          <SocialLinksHeading>{t('contact.connect_with_me')}</SocialLinksHeading>
+          <SocialLinksDescription>
+            {t('contact.connect_message')}
+          </SocialLinksDescription>
+          
+          <SocialLinks>
+            <SocialLink 
+              href="https://github.com/shabaraba" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              whileHover={{ y: -5 }}
+            >
+              <i className="fab fa-github"></i>
+              <SocialLinkText>GitHub</SocialLinkText>
+            </SocialLink>
+            
+            <SocialLink 
+              href="https://x.com/shabaraba" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              whileHover={{ y: -5 }}
+            >
+              <i className="fab fa-x"></i>
+              <SocialLinkText>X</SocialLinkText>
+            </SocialLink>
+            
+          </SocialLinks>
+          
+        </SocialLinksSection>
       </ContentWrapper>
     </Container>
   );

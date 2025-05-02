@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import Navigation from '../components/ui/Navigation';
 import ThreeScene from '../components/three/ThreeScene';
 
@@ -97,6 +98,7 @@ const SecondaryButton = styled(StyledButton)`
 
 const Home = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const { t } = useTranslation();
   
   // Update mouse position
   useEffect(() => {
@@ -128,24 +130,22 @@ const Home = () => {
             Hello, I'm <Highlight>Shabaraba</Highlight>
           </Title>
           <Subtitle>
-            Full Stack Engineer & Problem Solver
+            {t('home.title')}
           </Subtitle>
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.8 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            I specialize in creating efficient solutions and optimizing workflows.
-            With experience across multiple industries, I bring a unique perspective
-            to every project.
+            {t('home.subtitle')}
           </motion.p>
           <ButtonContainer
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <StyledButton href="/about">Learn More</StyledButton>
-            <SecondaryButton href="/contact">Get In Touch</SecondaryButton>
+            <StyledButton href="/about">{t('home.cta')}</StyledButton>
+            <SecondaryButton href="/contact">{t('contact.subtitle')}</SecondaryButton>
           </ButtonContainer>
         </motion.div>
       </ContentWrapper>

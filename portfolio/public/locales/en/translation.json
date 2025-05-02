@@ -1,0 +1,77 @@
+{
+  "navigation": {
+    "home": "Home",
+    "about": "About",
+    "projects": "Projects",
+    "contact": "Contact",
+    "blog": "Blog"
+  },
+  "home": {
+    "title": "Creative Developer",
+    "subtitle": "Building engaging digital experiences",
+    "cta": "View My Work"
+  },
+  "about": {
+    "title": "About Me",
+    "professional_profile": "Professional Profile",
+    "professional_profile_text1": "I'm a versatile engineer with experience across multiple industries, always focused on technical innovation and process optimization. I excel at identifying challenges, proposing creative solutions, and implementing them effectively.",
+    "professional_profile_text2": "Throughout my career at companies like Cybozu, Smaregi, Kawasaki Heavy Industries, and Brother Industries, I've consistently driven initiatives to enhance efficiency and product quality. I'm particularly skilled at refactoring complex code, automating repetitive processes, and improving team workflows.",
+    "technical_skills": "Technical Skills",
+    "technical_skills_text": "I've developed expertise in a wide range of technologies through hands-on experience across different sectors. My technical toolkit enables me to tackle diverse challenges and deliver efficient solutions.",
+    "work_experience": "Work Experience",
+    "professional_approach": "Professional Approach",
+    "professional_approach_text1": "My career has consistently been guided by two core principles: efficiency optimization and quality enhancement. I take pride in my analytical ability to identify issues, creative problem-solving skills to develop solutions, and technical expertise to implement them effectively.",
+    "professional_approach_text2": "I'm passionate about continuous learning and applying new technologies to solve real-world problems. I thrive in collaborative environments and enjoy contributing to team growth through knowledge sharing and mentorship.",
+    "companies": {
+      "cybozu": {
+        "name": "Cybozu Inc.",
+        "job_title": "Full Stack Engineer",
+        "date_range": "August 2022 - Present",
+        "description": "Working on kintone application features and developer tools, focused on API development, backend services, and frontend components. Led code refactoring initiatives to improve maintainability and implemented API client auto-generation solutions."
+      },
+      "smaregi": {
+        "name": "Smaregi Inc.",
+        "job_title": "Full Stack Engineer",
+        "date_range": "February 2020 - July 2022",
+        "description": "Developed and maintained POS management web applications, refactored large-scale transaction logic to improve maintainability, and implemented automated E2E testing for critical business logic."
+      },
+      "kawasaki": {
+        "name": "Kawasaki Heavy Industries",
+        "job_title": "QA Engineer / Embedded Engineer",
+        "date_range": "June 2018 - January 2020",
+        "description": "Led quality assurance for industrial robot software, automated testing processes, and improved progress tracking systems. Reduced evaluation workload by approximately 30% through custom automation scripts."
+      },
+      "brother": {
+        "name": "Brother Industries, Ltd.",
+        "job_title": "Engineer",
+        "date_range": "April 2017 - May 2018",
+        "description": "Participated in embedded software development for industrial equipment. Worked on software design, testing, and implementation. Also gained experience through manufacturing, sales, customer support, and quality assurance assignments."
+      }
+    }
+  },
+  "projects": {
+    "title": "Projects",
+    "description": "A showcase of my recent work and side projects",
+    "view_project": "View Project",
+    "all_projects": "All Projects",
+    "intro": "Here's a selection of personal projects I've developed. These projects showcase my interests in developer tools, data analysis, and web development. Each represents an opportunity for me to explore new technologies and solve problems I've encountered.",
+    "live_demo": "Live Demo",
+    "view_code": "View Code",
+    "pile_description": "Neovim plugin for managing buffers in a vertical sidebar, similar to how books are stacked in a pile. This plugin provides an intuitive and simple way to browse, rename, and manage open buffers in Neovim.",
+    "baskets_description": "Web application to analyze retail store transactions with Smaregi services integration. Provides insights into transaction data through a web interface with robust backend data processing.",
+    "portfolio_title": "Portfolio Website",
+    "portfolio_description": "This portfolio website featuring Three.js for 3D graphics and animated particles background, with a modern, responsive design and interactive elements."
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "I'm always open to discussing new projects, creative ideas or opportunities to be part of your vision. Feel free to reach out through any of the channels below!",
+    "connect_with_me": "Connect With Me",
+    "connect_message": "The best way to reach me is through direct messages on social media. Feel free to connect with me on any of the platforms below."
+  },
+  "language_selector": {
+    "language": "Language",
+    "en": "English",
+    "ja": "日本語"
+  },
+  "scroll_down": "Scroll Down"
+}

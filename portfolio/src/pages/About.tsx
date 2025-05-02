@@ -1,13 +1,18 @@
 import { useEffect } from 'react';
 import styled from '@emotion/styled';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import Navigation from '../components/ui/Navigation';
 import { useLocation } from 'react-router-dom';
 
-const Container = styled.div`
+interface AboutProps {
+  isSection?: boolean;
+}
+
+const Container = styled.div<{ isSection?: boolean }>`
   min-height: 100vh;
   position: relative;
-  background-color: var(--color-background);
+  background-color: ${props => props.isSection ? 'transparent' : 'var(--color-background)'};
   overflow-x: hidden;
 `;
 
@@ -148,24 +153,59 @@ const Description = styled.p`
   opacity: 0.9;
 `;
 
-const About = () => {
-  const location = useLocation();
+const ProductLinkContainer = styled.div`
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+`;
+
+const ProductCard = styled(motion.a)`
+  display: inline-block;
+  background-color: rgba(var(--color-accent-rgb), 0.1);
+  border: 1px solid rgba(var(--color-accent-rgb), 0.3);
+  border-radius: 6px;
+  padding: 0.7rem 1.2rem;
+  margin-right: 0.8rem;
+  text-decoration: none;
+  color: var(--color-accent);
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
   
-  // Scroll to top when page loads
+  &:hover {
+    background-color: rgba(var(--color-accent-rgb), 0.2);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  @media (max-width: 768px) {
+    font-size: 0.8rem;
+    padding: 0.6rem 1rem;
+    margin-bottom: 0.5rem;
+  }
+`;
+
+const About = ({ isSection = false }: AboutProps) => {
+  const location = useLocation();
+  const { t } = useTranslation();
+  
+  // Scroll to top when page loads (only when not used as a section)
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [location]);
+    if (!isSection) {
+      window.scrollTo(0, 0);
+    }
+  }, [location, isSection]);
 
   return (
-    <Container>
-      <Navigation />
+    <Container isSection={isSection}>
+      {!isSection && <Navigation />}
       <ContentWrapper>
         <Title
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
         >
-          About Me
+          {t('about.title')}
         </Title>
         
         <Section
@@ -173,17 +213,12 @@ const About = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <SectionTitle>Professional Profile</SectionTitle>
+          <SectionTitle>{t('about.professional_profile')}</SectionTitle>
           <Paragraph>
-            I'm a versatile engineer with experience across multiple industries, always focused on 
-            technical innovation and process optimization. I excel at identifying challenges, 
-            proposing creative solutions, and implementing them effectively.
+            {t('about.professional_profile_text1')}
           </Paragraph>
           <Paragraph>
-            Throughout my career at companies like Cybozu, Smaregi, Kawasaki Heavy Industries, 
-            and Brother Industries, I've consistently driven initiatives to enhance efficiency 
-            and product quality. I'm particularly skilled at refactoring complex code, automating 
-            repetitive processes, and improving team workflows.
+            {t('about.professional_profile_text2')}
           </Paragraph>
         </Section>
         
@@ -192,11 +227,9 @@ const About = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <SectionTitle>Technical Skills</SectionTitle>
+          <SectionTitle>{t('about.technical_skills')}</SectionTitle>
           <Paragraph>
-            I've developed expertise in a wide range of technologies through hands-on experience across 
-            different sectors. My technical toolkit enables me to tackle diverse challenges and deliver 
-            efficient solutions.
+            {t('about.technical_skills_text')}
           </Paragraph>
           <SkillsContainer>
             <Skill whileHover={{ scale: 1.05 }}>TypeScript</Skill>
@@ -219,62 +252,94 @@ const About = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
         >
-          <SectionTitle>Work Experience</SectionTitle>
+          <SectionTitle>{t('about.work_experience')}</SectionTitle>
           <ExperienceWrapper>
             <ExperienceCard
               whileHover={{ y: -5 }}
               transition={{ type: 'spring', stiffness: 300 }}
             >
-              <CompanyName>Cybozu Inc.</CompanyName>
-              <JobTitle>Full Stack Engineer</JobTitle>
-              <DateRange>August 2022 - Present</DateRange>
+              <CompanyName>{t('about.companies.cybozu.name')}</CompanyName>
+              <JobTitle>{t('about.companies.cybozu.job_title')}</JobTitle>
+              <DateRange>{t('about.companies.cybozu.date_range')}</DateRange>
               <Description>
-                Working on kintone application features and developer tools, focused on API development, 
-                backend services, and frontend components. Led code refactoring initiatives to improve 
-                maintainability and implemented API client auto-generation solutions.
+                {t('about.companies.cybozu.description')}
               </Description>
+              <ProductLinkContainer>
+                <ProductCard 
+                  href="https://kintone.cybozu.co.jp/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  kintone
+                </ProductCard>
+              </ProductLinkContainer>
             </ExperienceCard>
             
             <ExperienceCard
               whileHover={{ y: -5 }}
               transition={{ type: 'spring', stiffness: 300 }}
             >
-              <CompanyName>Smaregi Inc.</CompanyName>
-              <JobTitle>Full Stack Engineer</JobTitle>
-              <DateRange>February 2020 - July 2022</DateRange>
+              <CompanyName>{t('about.companies.smaregi.name')}</CompanyName>
+              <JobTitle>{t('about.companies.smaregi.job_title')}</JobTitle>
+              <DateRange>{t('about.companies.smaregi.date_range')}</DateRange>
               <Description>
-                Developed and maintained POS management web applications, refactored large-scale 
-                transaction logic to improve maintainability, and implemented automated E2E testing 
-                for critical business logic.
+                {t('about.companies.smaregi.description')}
               </Description>
+              <ProductLinkContainer>
+                <ProductCard 
+                  href="https://smaregi.jp/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  Smaregi
+                </ProductCard>
+              </ProductLinkContainer>
             </ExperienceCard>
             
             <ExperienceCard
               whileHover={{ y: -5 }}
               transition={{ type: 'spring', stiffness: 300 }}
             >
-              <CompanyName>Kawasaki Heavy Industries</CompanyName>
-              <JobTitle>QA Engineer / Embedded Engineer</JobTitle>
-              <DateRange>June 2018 - January 2020</DateRange>
+              <CompanyName>{t('about.companies.kawasaki.name')}</CompanyName>
+              <JobTitle>{t('about.companies.kawasaki.job_title')}</JobTitle>
+              <DateRange>{t('about.companies.kawasaki.date_range')}</DateRange>
               <Description>
-                Led quality assurance for industrial robot software, automated testing processes, 
-                and improved progress tracking systems. Reduced evaluation workload by approximately 
-                30% through custom automation scripts.
+                {t('about.companies.kawasaki.description')}
               </Description>
+              <ProductLinkContainer>
+                <ProductCard 
+                  href="https://kawasakirobotics.com/jp/robots-category/wafer/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  Kawasaki Robots
+                </ProductCard>
+              </ProductLinkContainer>
             </ExperienceCard>
             
             <ExperienceCard
               whileHover={{ y: -5 }}
               transition={{ type: 'spring', stiffness: 300 }}
             >
-              <CompanyName>Brother Industries, Ltd.</CompanyName>
-              <JobTitle>Engineer</JobTitle>
-              <DateRange>April 2017 - May 2018</DateRange>
+              <CompanyName>{t('about.companies.brother.name')}</CompanyName>
+              <JobTitle>{t('about.companies.brother.job_title')}</JobTitle>
+              <DateRange>{t('about.companies.brother.date_range')}</DateRange>
               <Description>
-                Participated in embedded software development for industrial equipment. Worked on 
-                software design, testing, and implementation. Also gained experience through manufacturing, 
-                sales, customer support, and quality assurance assignments.
+                {t('about.companies.brother.description')}
               </Description>
+              <ProductLinkContainer>
+                <ProductCard 
+                  href="https://www.brother.co.jp/product/machine/speedio/index.aspx"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  SPEEDIO
+                </ProductCard>
+              </ProductLinkContainer>
             </ExperienceCard>
           </ExperienceWrapper>
         </Section>
@@ -284,17 +349,12 @@ const About = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
         >
-          <SectionTitle>Professional Approach</SectionTitle>
+          <SectionTitle>{t('about.professional_approach')}</SectionTitle>
           <Paragraph>
-            My career has consistently been guided by two core principles: efficiency optimization 
-            and quality enhancement. I take pride in my analytical ability to identify issues, 
-            creative problem-solving skills to develop solutions, and technical expertise to 
-            implement them effectively.
+            {t('about.professional_approach_text1')}
           </Paragraph>
           <Paragraph>
-            I'm passionate about continuous learning and applying new technologies to solve 
-            real-world problems. I thrive in collaborative environments and enjoy contributing 
-            to team growth through knowledge sharing and mentorship.
+            {t('about.professional_approach_text2')}
           </Paragraph>
         </Section>
       </ContentWrapper>
