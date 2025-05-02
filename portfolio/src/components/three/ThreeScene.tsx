@@ -5,7 +5,8 @@ import styled from '@emotion/styled';
 
 // Three.js components
 import ParticleField from './ParticleField';
-import FloatingText from './FloatingText';
+// Temporarily disable FloatingText import until font is available
+// import FloatingText from './FloatingText';
 import Lights from './Lights';
 
 const CanvasContainer = styled.div`

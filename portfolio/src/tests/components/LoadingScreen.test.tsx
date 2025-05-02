@@ -1,6 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, act } from '@testing-library/react';
 import LoadingScreen from '../../components/ui/LoadingScreen';
+import React from 'react';
 
 // Mock framer-motion and styled components
 vi.mock('@emotion/styled', () => ({

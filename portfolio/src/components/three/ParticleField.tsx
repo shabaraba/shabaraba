@@ -74,7 +74,7 @@ const ParticleField = ({ count, mousePosition }: ParticleFieldProps) => {
   }, [count, particles]);
 
   // Update particles on each frame
-  useFrame((state, delta) => {
+  useFrame((_, delta) => {
     if (!mesh.current || !particlesGeometry.current) return;
     
     const positionsArray = particlesGeometry.current.attributes.position.array as Float32Array;
@@ -126,18 +126,21 @@ const ParticleField = ({ count, mousePosition }: ParticleFieldProps) => {
           array={positions.positions}
           count={count}
           itemSize={3}
+          args={[positions.positions, 3]}
         />
         <bufferAttribute
           attach="attributes-color"
           array={positions.colors}
           count={count}
           itemSize={3}
+          args={[positions.colors, 3]}
         />
         <bufferAttribute
           attach="attributes-size"
           array={positions.sizes}
           count={count}
           itemSize={1}
+          args={[positions.sizes, 1]}
         />
       </bufferGeometry>
       <pointsMaterial
