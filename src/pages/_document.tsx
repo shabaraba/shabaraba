@@ -59,7 +59,8 @@ export default class Document extends NextDocument {
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
           <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet" />
           <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap" rel="stylesheet" />
-          
+
+          <meta name="google-adsense-account" content="ca-pub-1981741527756003">
           {/* OGP画像設定 - 記事ページの場合のみ */}
           {slug && (
             <>
@@ -89,13 +90,6 @@ export default class Document extends NextDocument {
             });
           `,
             }}
-          />
-          
-          {/*google adsense*/}
-          <script 
-            async 
-            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1788385520787014" 
-            crossOrigin="anonymous"
           />
         </Head>
         <body>
