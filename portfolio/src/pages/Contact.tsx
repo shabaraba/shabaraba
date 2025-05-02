@@ -235,8 +235,7 @@ const Contact = ({ isSection = false }: ContactProps) => {
             >
               <i className="fab fa-github"></i>
               <SocialLinkText>GitHub</SocialLinkText>
-            </SocialLink>
-            
+            </SocialLink>            
             <SocialLink 
               href="https://x.com/shabaraba" 
               target="_blank" 
@@ -246,7 +245,6 @@ const Contact = ({ isSection = false }: ContactProps) => {
               <i className="fab fa-x"></i>
               <SocialLinkText>X</SocialLinkText>
             </SocialLink>
-            
             <SocialLink 
               href="https://youtrust.jp/users/takahiko_kawakami" 
               target="_blank" 
