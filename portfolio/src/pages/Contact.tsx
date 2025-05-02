@@ -248,12 +248,12 @@ const Contact = ({ isSection = false }: ContactProps) => {
             </SocialLink>
             
             <SocialLink 
-              href="https://youtrust.jp/users/shabaraba" 
+              href="https://youtrust.jp/users/takahiko_kawakami" 
               target="_blank" 
               rel="noopener noreferrer"
               whileHover={{ y: -5 }}
             >
-              <i className="fa fa-user-circle"></i>
+              <i className="fa fa-id-badge"></i>
               <SocialLinkText>YOUTRUST</SocialLinkText>
             </SocialLink>
             
