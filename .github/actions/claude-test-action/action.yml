@@ -1,0 +1,40 @@
+name: "Claude Test Action"
+description: "claude test action"
+
+inputs:
+  timeout_minutes:
+    description: "Timeout in minutes for execution"
+    required: false
+    default: "5"
+  anthropic_api_key:
+    description: "Anthropic API key"
+    required: true
+  github_token:
+    description: "GitHub token with repo and issues permissions"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout repository code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Create prompt file
+      shell: bash
+      run: |
+        mkdir -p /tmp/claude-prompts
+        cat > /tmp/claude-prompts/claude-issue-triage-prompt.txt << 'EOF'
+          please show me the following word: "hello from actions"
+        EOF
+
+    - name: Run Claude Code
+      uses: ./.github/actions/claude-code-action
+      with:
+        prompt_file: /tmp/claude-prompts/claude-issue-triage-prompt.txt
+        allowed_tools: "Bash(gh label list),mcp__github__get_issue,mcp__github__get_issue_comments,mcp__github__update_issue,mcp__github__search_issues,mcp__github__list_issues"
+        install_github_mcp: "true"
+        timeout_minutes: ${{ inputs.timeout_minutes }}
+        anthropic_api_key: ${{ inputs.anthropic_api_key }}
+        github_token: ${{ inputs.github_token }}

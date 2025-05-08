@@ -1,0 +1,21 @@
+name: Claude Test
+description: "Claude Code Test"
+
+on:
+  workflow_dispatch:
+jobs:
+  call claude:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Claude 
+        uses: ./.github/actions/claude-test-action
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
