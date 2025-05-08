@@ -27,6 +27,9 @@ body {
   font-family: "Noto Serif JP", serif;
   font-size: 16px;
   line-height: 1.8;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 a {

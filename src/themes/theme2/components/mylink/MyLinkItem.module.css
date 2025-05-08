@@ -100,9 +100,10 @@
   font-weight: 500;
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
   max-width: 120px;
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .tagItem:hover {
