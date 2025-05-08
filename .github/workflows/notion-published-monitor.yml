@@ -33,7 +33,12 @@ jobs:
 
       - name: Check for changes in published status
         id: check-changes
-        run: node scripts/check-notion-published.js
+        run: |
+          node scripts/check-notion-published.js
+          # 変更があった場合にのみ出力を設定
+          if [ $? -eq 0 ]; then
+            echo "changes_detected=true" >> $GITHUB_OUTPUT
+          fi
         env:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_BLOG_DATABASE: ${{ secrets.NOTION_BLOG_DATABASE }}
@@ -47,7 +52,7 @@ jobs:
       - name: Trigger Netlify Build
         # ステップの終了コードが0の場合は常に実行 
         # (check-changesスクリプトで変更を検出した場合のみ有効なのでここでは常に実行)
-        if: success()
+        if: steps.check-changes.outputs.changes_detected == 'true'
         run: |
           # Netlify Build Hookを呼び出す
           curl -X POST -d {} ${{ secrets.NETLIFY_BUILD_HOOK }}
