@@ -1,10 +1,9 @@
-name: Claude Test
-description: "Claude Code Test"
+name: "Claude Test"
 
 on:
   workflow_dispatch:
 jobs:
-  call claude:
+  call_claude:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
