@@ -9,6 +9,24 @@
   align-items: center;
 }
 
+.footerLinks {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 16px;
+}
+
+.footerLinks a {
+  color: var(--link-color);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s;
+}
+
+.footerLinks a:hover {
+  color: var(--link-hover-color);
+  text-decoration: underline;
+}
+
 .footerContent {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -106,5 +124,11 @@
 
   .footerContent {
     grid-template-columns: 1fr;
+  }
+
+  .footerLinks {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
   }
 }

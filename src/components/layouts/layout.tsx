@@ -98,6 +98,19 @@ export default function Layout({
 const Footer = () => {
   return (
     <Container p={5} fontSize="sm">
+      <HStack align="center" justify="center" spacing={4} mb={3}>
+        <Link href="/privacy" passHref legacyBehavior>
+          <ChakraLink>プライバシーポリシー</ChakraLink>
+        </Link>
+        <Text>|</Text>
+        <Link href="/contact" passHref legacyBehavior>
+          <ChakraLink>お問い合わせ</ChakraLink>
+        </Link>
+        <Text>|</Text>
+        <Link href="/about" passHref legacyBehavior>
+          <ChakraLink>About</ChakraLink>
+        </Link>
+      </HStack>
       <Text textAlign="center">©from-garage 2022 All Rights Reserved.</Text>
       <HStack align="center" justify="center">
         <Text as="span"> powered by</Text>
