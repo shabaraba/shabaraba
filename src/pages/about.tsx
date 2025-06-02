@@ -1,5 +1,5 @@
 import { GetStaticProps } from 'next';
-import { DetailLayout } from 'src/components/layouts/DetailLayout';
+import Head from 'next/head';
 
 interface AboutPageProps {
   config: any;
@@ -7,9 +7,13 @@ interface AboutPageProps {
 
 export default function AboutPage({ config }: AboutPageProps) {
   return (
-    <DetailLayout config={config}>
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <article className="prose prose-lg max-w-none">
+    <>
+      <Head>
+        <title>About | Coffee Break Point</title>
+        <meta name="description" content="Coffee Break Pointのサイト情報と運営者について。" />
+      </Head>
+      <div style={{ maxWidth: '800px', margin: '0 auto', padding: '2rem 1rem', fontFamily: 'system-ui, sans-serif', lineHeight: '1.6' }}>
+        <article style={{ color: '#333' }}>
           <h1>About</h1>
 
           <h2>Coffee Break Point について</h2>
@@ -133,12 +137,12 @@ export default function AboutPage({ config }: AboutPageProps) {
           </p>
 
           <hr />
-          <p className="text-sm text-gray-600">
+          <p style={{ fontSize: '0.9rem', color: '#666' }}>
             <em>最後まで読んでいただき、ありがとうございます。皆様の開発ライフがより充実したものになるよう、有益な情報発信を続けてまいります。</em>
           </p>
         </article>
       </div>
-    </DetailLayout>
+    </>
   );
 }
 

@@ -1,6 +1,5 @@
 import { GetStaticProps } from 'next';
-import { DetailLayout } from 'src/components/layouts/DetailLayout';
-import { PostDetailType } from 'src/core/types/PostDetailType';
+import Head from 'next/head';
 
 interface PrivacyPageProps {
   config: any;
@@ -8,11 +7,15 @@ interface PrivacyPageProps {
 
 export default function PrivacyPage({ config }: PrivacyPageProps) {
   return (
-    <DetailLayout config={config}>
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <article className="prose prose-lg max-w-none">
+    <>
+      <Head>
+        <title>プライバシーポリシー | Coffee Break Point</title>
+        <meta name="description" content="Coffee Break Pointのプライバシーポリシーページです。" />
+      </Head>
+      <div style={{ maxWidth: '800px', margin: '0 auto', padding: '2rem 1rem', fontFamily: 'system-ui, sans-serif', lineHeight: '1.6' }}>
+        <article style={{ color: '#333' }}>
           <h1>プライバシーポリシー</h1>
-          <p className="text-gray-600">最終更新日：2025年5月26日</p>
+          <p style={{ color: '#666', fontSize: '0.9rem' }}>最終更新日：2025年5月26日</p>
 
           <h2>1. はじめに</h2>
           <p>
@@ -103,7 +106,7 @@ export default function PrivacyPage({ config }: PrivacyPageProps) {
           </p>
         </article>
       </div>
-    </DetailLayout>
+    </>
   );
 }
 

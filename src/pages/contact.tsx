@@ -1,5 +1,5 @@
 import { GetStaticProps } from 'next';
-import { DetailLayout } from 'src/components/layouts/DetailLayout';
+import Head from 'next/head';
 
 interface ContactPageProps {
   config: any;
@@ -7,9 +7,13 @@ interface ContactPageProps {
 
 export default function ContactPage({ config }: ContactPageProps) {
   return (
-    <DetailLayout config={config}>
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <article className="prose prose-lg max-w-none">
+    <>
+      <Head>
+        <title>お問い合わせ | Coffee Break Point</title>
+        <meta name="description" content="Coffee Break Pointへのお問い合わせページです。" />
+      </Head>
+      <div style={{ maxWidth: '800px', margin: '0 auto', padding: '2rem 1rem', fontFamily: 'system-ui, sans-serif', lineHeight: '1.6' }}>
+        <article style={{ color: '#333' }}>
           <h1>お問い合わせ</h1>
 
           <h2>Contact</h2>
@@ -82,12 +86,12 @@ export default function ContactPage({ config }: ContactPageProps) {
           </ul>
 
           <hr />
-          <p className="text-sm text-gray-600">
+          <p style={{ fontSize: '0.9rem', color: '#666' }}>
             <em>お問い合わせいただいた内容は、プライバシーポリシーに従って適切に管理いたします。</em>
           </p>
         </article>
       </div>
-    </DetailLayout>
+    </>
   );
 }
 

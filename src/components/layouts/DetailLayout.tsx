@@ -5,7 +5,7 @@ import Link from "next/link";
 import Layout from "./layout";
 import { useRouter } from "next/router";
 
-export default function ListLayout({
+export function DetailLayout({
   children,
   leftside,
 }: {
@@ -29,3 +29,5 @@ export default function ListLayout({
     </Layout>
   );
 }
+
+export default DetailLayout;
