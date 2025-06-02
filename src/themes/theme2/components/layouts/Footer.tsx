@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import styles from './Footer.module.css';
 import { Icon } from '@iconify/react';
 import { useConfig } from '../../../../config/useConfig';
@@ -19,6 +20,11 @@ export default function Footer() {
 
   return (
     <footer className={styles.footer}>
+      <div className={styles.footerLinks}>
+        <Link href="/privacy">プライバシーポリシー</Link>
+        <Link href="/contact">お問い合わせ</Link>
+        <Link href="/about">About</Link>
+      </div>
       <p className={styles.copyright}>{copyrightWithYear}</p>
       <div className={styles.poweredBy}>
         {poweredByText}
