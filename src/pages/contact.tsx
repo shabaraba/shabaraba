@@ -18,25 +18,37 @@ export default function ContactPage({ config }: ContactPageProps) {
 
           <h2>Contact</h2>
           <p>
-            当サイト「Coffee Break Point」に関するお問い合わせは、以下の方法でご連絡ください。
+            当サイト「Coffee Break Point」に関するお問い合わせは、下記のフォームからご連絡ください。
           </p>
 
-          <h3>📧 メールでのお問い合わせ</h3>
+          <h3>📝 お問い合わせフォーム</h3>
           <p>
-            <strong>メールアドレス：</strong> contact@shaba.dev
+            以下のボタンからGoogle Formでお問い合わせいただけます。
           </p>
-          <p>お問い合わせの際は、以下の内容をご記載いただけますとスムーズに対応できます：</p>
-          <ul>
-            <li>お名前</li>
-            <li>件名</li>
-            <li>お問い合わせ内容</li>
-            <li>返信をご希望のメールアドレス</li>
-          </ul>
+          <div style={{ margin: '2rem 0', textAlign: 'center' }}>
+            <a 
+              href="https://forms.gle/5KLSAY1KkvAXQ5wi8" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-block',
+                backgroundColor: '#4285f4',
+                color: 'white',
+                padding: '12px 24px',
+                textDecoration: 'none',
+                borderRadius: '8px',
+                fontSize: '1.1rem',
+                fontWeight: 'bold',
+                transition: 'background-color 0.3s'
+              }}
+            >
+              お問い合わせフォームを開く
+            </a>
+          </div>
 
           <h3>⏰ 返信について</h3>
           <p>
-            通常、<strong>2-3営業日以内</strong>にご返信いたします。<br />
-            お急ぎの場合は、件名に【急】と記載してください。
+            通常、<strong>2-3営業日以内</strong>にご返信いたします。
           </p>
 
           <h3>📝 お問い合わせ内容について</h3>
@@ -69,20 +81,6 @@ export default function ContactPage({ config }: ContactPageProps) {
             <li>営業・宣伝目的のメール</li>
             <li>無関係な商品・サービスの宣伝</li>
             <li>不適切な内容を含むもの</li>
-          </ul>
-
-          <h3>ℹ️ サイト情報</h3>
-          <p>
-            <strong>サイト名：</strong> Coffee Break Point<br />
-            <strong>URL：</strong> https://blog.shaba.dev<br />
-            <strong>運営者：</strong> shaba<br />
-            <strong>開設日：</strong> 2022年
-          </p>
-
-          <h3>🔗 その他の連絡方法</h3>
-          <ul>
-            <li><strong>GitHub：</strong> <a href="https://github.com/yourusername" target="_blank" rel="noopener noreferrer">github.com/yourusername</a></li>
-            <li><strong>Twitter：</strong> <a href="https://twitter.com/yourhandle" target="_blank" rel="noopener noreferrer">@yourhandle</a></li>
           </ul>
 
           <hr />
