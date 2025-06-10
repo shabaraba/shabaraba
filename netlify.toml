@@ -1,11 +1,11 @@
 [build]
     publish = "out"
     command = "npm run build"
-    environment = { 
-        NETLIFY_NEXT_PLUGIN_SKIP = "true",
-        NODE_OPTIONS = "--max-old-space-size=4096",
-        PYTHON_VERSION = "3.9"
-    }
+
+[build.environment]
+    NETLIFY_NEXT_PLUGIN_SKIP = "true"
+    NODE_OPTIONS = "--max-old-space-size=4096"
+    PYTHON_VERSION = "3.9"
     
 [build.processing]
     skip_processing = false
