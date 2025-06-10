@@ -650,7 +650,7 @@ async function main() {
     try {
       new Canvas(100, 100);
     } catch (err) {
-      console.warn('skia-canvas module not available, falling back to image copying:', err);
+      console.warn('skia-canvas module not available, falling back to image copying. Error:', err.message);
       canvasAvailable = false;
     }
     
