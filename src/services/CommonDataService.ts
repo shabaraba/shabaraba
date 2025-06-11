@@ -62,7 +62,7 @@ export class CommonDataService {
       // 元のポストにcoverImageプロパティを追加（タイプ互換性のため）
       return {
         ...post,
-        coverImage: coverImage || undefined
+        coverImage: coverImage || null
       };
     });
     
@@ -90,7 +90,7 @@ export class CommonDataService {
       
       return {
         ...post,
-        coverImage: coverImage || undefined
+        coverImage: coverImage || null
       };
     });
     
