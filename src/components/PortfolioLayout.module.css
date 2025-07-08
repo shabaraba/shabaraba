@@ -1,0 +1,23 @@
+.layoutContainer {
+  min-height: 100vh;
+  background-color: var(--main-bg-color);
+  position: relative;
+}
+
+.mainContent {
+  width: 100%;
+  padding-top: 5rem; /* ヘッダー分のスペース確保 */
+}
+
+/* モバイル対応 */
+@media (max-width: 600px) {
+  .mainContent {
+    padding-top: 6rem; /* 縦に並ぶヘッダー分のスペース確保 */
+  }
+}
+
+@media (min-width: 601px) and (max-width: 768px) {
+  .mainContent {
+    padding-top: 4.5rem; /* タブレット用 */
+  }
+}

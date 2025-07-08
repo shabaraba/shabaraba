@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;700&family=Montserrat:wght@400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;700&family=Montserrat:wght@400;500;700&family=Caveat:wght@400;500;700&display=swap");
 
 /* Theme2: カフェ風のカラースキーム */
 :root {
@@ -10,6 +10,10 @@
   --link-hover-color: #D99873;
   --heading-color: #4B3832;
   --text-color: #333333;
+  
+  /* Font Variables */
+  --body-font-family: "Noto Serif JP", serif;
+  --ui-font-family: "Montserrat", sans-serif;
 }
 
 * {
@@ -30,6 +34,7 @@ body {
   word-wrap: break-word;
   overflow-wrap: break-word;
   word-break: break-word;
+  scroll-behavior: smooth;
 }
 
 a {

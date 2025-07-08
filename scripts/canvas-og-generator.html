@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas OG Image Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            text-align: center;
+        }
+        
+        #canvas {
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .download-btn {
+            padding: 12px 24px;
+            background: #A67C52;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        
+        .download-btn:hover {
+            background: #8B6238;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>OG Image Generator</h1>
+        <canvas id="canvas" width="1200" height="630"></canvas>
+        <br>
+        <button class="download-btn" onclick="generateAndDownload()">PNG画像をダウンロード</button>
+        <button class="download-btn" onclick="generateOGImage()">プレビュー更新</button>
+    </div>
+
+    <script>
+        function generateOGImage() {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, 1200, 630);
+            
+            // Create gradient background
+            const gradient = ctx.createLinearGradient(0, 0, 1200, 630);
+            gradient.addColorStop(0, '#F5F5DC');
+            gradient.addColorStop(0.5, '#DDBEA9');
+            gradient.addColorStop(1, '#CB997E');
+            
+            // Fill background
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 1200, 630);
+            
+            // Add decorative circles
+            ctx.globalAlpha = 0.3;
+            ctx.fillStyle = 'rgba(217, 152, 115, 0.5)';
+            ctx.beginPath();
+            ctx.arc(240, 504, 100, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            ctx.fillStyle = 'rgba(75, 56, 50, 0.3)';
+            ctx.beginPath();
+            ctx.arc(960, 126, 80, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            ctx.globalAlpha = 1.0;
+            
+            // Add shadow for text
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.1)';
+            ctx.shadowBlur = 8;
+            ctx.shadowOffsetX = 2;
+            ctx.shadowOffsetY = 4;
+            
+            // Main title: Shaba
+            ctx.fillStyle = '#4B3832';
+            ctx.font = 'bold 96px Caveat, cursive';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            // Rotate for Shaba
+            ctx.save();
+            ctx.translate(600, 280);
+            ctx.rotate(-0.035); // -2 degrees in radians
+            ctx.fillText('Shaba', 0, 0);
+            ctx.restore();
+            
+            // Subtitle
+            ctx.fillStyle = '#A67C52';
+            ctx.font = '500 48px Caveat, cursive';
+            ctx.shadowBlur = 4;
+            ctx.fillText('Web Developer & Solopreneur', 600, 380);
+            
+            // Reset shadow
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+        }
+        
+        function generateAndDownload() {
+            generateOGImage();
+            
+            // Create download link
+            const canvas = document.getElementById('canvas');
+            const link = document.createElement('a');
+            link.download = 'shaba-portfolio-og-image.png';
+            link.href = canvas.toDataURL('image/png');
+            
+            // Trigger download
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            console.log('OG画像がダウンロードされました！');
+        }
+        
+        // Auto-generate on load
+        window.addEventListener('load', () => {
+            // Wait for fonts to load
+            setTimeout(generateOGImage, 1000);
+        });
+    </script>
+</body>
+</html>

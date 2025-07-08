@@ -4,8 +4,6 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: '/blog',
-  assetPrefix: '/blog',
   env: {
     NEXT_PUBLIC_ACTIVE_THEME: process.env.NEXT_PUBLIC_ACTIVE_THEME || 'theme2',
     ARTICLE_SOURCE: process.env.ARTICLE_SOURCE || 'notion',
@@ -40,7 +38,16 @@ const nextConfig = {
       'images.unsplash.com',
     ]
   },
-  output: 'export'
+  output: 'export',
+  async redirects() {
+    return [
+      {
+        source: '/posts/:path*',
+        destination: '/blog/posts/:path*',
+        permanent: true,
+      },
+    ]
+  }
 };
 
 module.exports = withBundleAnalyzer(nextConfig);

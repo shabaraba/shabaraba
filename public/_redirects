@@ -1,5 +1,5 @@
-# Redirect blog.shaba.dev to shaba.dev/blog for AdSense compliance
-/* https://shaba.dev/blog/:splat 301!
+# Redirect legacy post URLs to new blog structure
+/posts/* /blog/posts/:splat 301!
 
 # Legacy redirects
 https://blog.from-garage.com/* https://shaba.dev/blog/:splat 301!

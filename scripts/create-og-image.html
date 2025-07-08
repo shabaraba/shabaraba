@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OG Image Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;700&family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Montserrat', sans-serif;
+            background: #f5f5f5;
+        }
+        
+        .og-image {
+            width: 1200px;
+            height: 630px;
+            background: linear-gradient(135deg, #F5F5DC 0%, #DDBEA9 50%, #CB997E 100%);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            box-sizing: border-box;
+            padding: 80px;
+        }
+        
+        .og-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(217, 152, 115, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(75, 56, 50, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+        
+        .main-title {
+            font-family: 'Caveat', cursive;
+            font-size: 96px;
+            font-weight: 700;
+            color: #4B3832;
+            margin-bottom: 20px;
+            transform: rotate(-2deg);
+            text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .subtitle {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 32px;
+            font-weight: 500;
+            color: #A67C52;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .description {
+            font-family: 'Caveat', cursive;
+            font-size: 48px;
+            font-weight: 500;
+            color: #A67C52;
+            margin-top: 20px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .coffee-accent {
+            position: absolute;
+            bottom: 40px;
+            right: 60px;
+            font-size: 48px;
+            opacity: 0.3;
+            transform: rotate(15deg);
+        }
+        
+        .download-btn {
+            margin-top: 40px;
+            padding: 12px 24px;
+            background: #A67C52;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .download-btn:hover {
+            background: #8B6238;
+        }
+    </style>
+</head>
+<body>
+    <div class="og-image" id="og-image">
+        <h1 class="main-title">Shaba</h1>
+        <p class="description">Web Developer & Solopreneur</p>
+    </div>
+    
+    <div style="margin-top: 40px; text-align: center;">
+        <button class="download-btn" onclick="downloadImage()">OG画像をダウンロード</button>
+        <p style="color: #666; margin-top: 20px;">
+            ダウンロード後、public/og-images/default.png として保存してください
+        </p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        async function downloadImage() {
+            const element = document.getElementById('og-image');
+            
+            try {
+                const canvas = await html2canvas(element, {
+                    width: 1200,
+                    height: 630,
+                    scale: 1,
+                    backgroundColor: null,
+                    useCORS: true,
+                    allowTaint: true
+                });
+                
+                // Create download link
+                const link = document.createElement('a');
+                link.download = 'shaba-portfolio-og-image.png';
+                link.href = canvas.toDataURL('image/png');
+                
+                // Trigger download
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                
+                console.log('OG画像がダウンロードされました！');
+            } catch (error) {
+                console.error('画像生成エラー:', error);
+                alert('画像生成に失敗しました。ブラウザのコンソールを確認してください。');
+            }
+        }
+        
+        // Auto-generate on load for testing
+        window.addEventListener('load', () => {
+            console.log('OG画像プレビューが準備できました。「OG画像をダウンロード」ボタンをクリックしてください。');
+        });
+    </script>
+</body>
+</html>

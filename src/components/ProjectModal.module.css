@@ -1,0 +1,320 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 2rem;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modalContent {
+  background: var(--content-bg-color);
+  border-radius: 16px;
+  max-width: 1000px;
+  width: 100%;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.closeButton {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text-color);
+  opacity: 0.7;
+  transition: all 0.3s ease;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.closeButton:hover {
+  opacity: 1;
+  background: var(--sidebar-bg-color);
+}
+
+.modalHeader {
+  padding: 2rem 2rem 1rem;
+  border-bottom: 1px solid var(--sidebar-bg-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.projectTitle {
+  font-family: var(--ui-font-family);
+  font-size: 1.8rem;
+  color: var(--heading-color);
+  margin: 0;
+  font-weight: 600;
+}
+
+.status {
+  background: var(--accent-color);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-family: var(--ui-font-family);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.modalBody {
+  padding: 2rem;
+}
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.imageSection {
+  position: sticky;
+  top: 0;
+}
+
+.screenshotContainer {
+  position: relative;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  background: var(--sidebar-bg-color);
+}
+
+.screenshot {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+}
+
+.screenshotFallback {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  color: var(--text-color);
+  opacity: 0.6;
+  font-family: var(--ui-font-family);
+  font-size: 0.9rem;
+}
+
+.infoSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.fullDescription {
+  color: var(--text-color);
+  line-height: 1.8;
+  margin: 0;
+  font-size: 1rem;
+}
+
+.section {
+  margin: 0;
+}
+
+.section h3 {
+  color: var(--accent-color);
+  font-family: var(--ui-font-family);
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.featureList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.featureList li {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(241, 231, 214, 0.5);
+  color: var(--text-color);
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.featureList li:last-child {
+  border-bottom: none;
+}
+
+.featureList li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--accent-color);
+  font-weight: bold;
+}
+
+.techTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.techTag {
+  background: var(--sidebar-bg-color);
+  color: var(--accent-color);
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  font-family: var(--ui-font-family);
+  font-weight: 500;
+}
+
+.actions {
+  margin: 0;
+  text-align: left;
+}
+
+.visitButton {
+  display: inline-block;
+  background: var(--accent-color);
+  color: white;
+  text-decoration: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-family: var(--ui-font-family);
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(123, 94, 87, 0.3);
+}
+
+.visitButton:hover {
+  background: var(--link-hover-color);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(123, 94, 87, 0.4);
+}
+
+/* モバイル対応 */
+@media (max-width: 768px) {
+  .modalOverlay {
+    padding: 1rem;
+  }
+
+  .modalContent {
+    max-height: 90vh;
+    border-radius: 12px;
+  }
+
+  .modalHeader {
+    padding: 1.5rem 1.5rem 1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .projectTitle {
+    font-size: 1.5rem;
+  }
+
+  .modalBody {
+    padding: 1.5rem;
+  }
+
+  .contentGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .imageSection {
+    position: static;
+    order: -1;
+  }
+
+  .screenshotFallback {
+    min-height: 200px;
+  }
+
+  .fullDescription {
+    font-size: 0.95rem;
+  }
+
+  .techTags {
+    gap: 0.375rem;
+  }
+
+  .techTag {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .visitButton {
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+    width: 100%;
+    text-align: center;
+  }
+
+  .actions {
+    text-align: center;
+  }
+}
+
+/* カスタムスクロールバー */
+.modalContent::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modalContent::-webkit-scrollbar-track {
+  background: var(--sidebar-bg-color);
+  border-radius: 3px;
+}
+
+.modalContent::-webkit-scrollbar-thumb {
+  background: var(--accent-color);
+  border-radius: 3px;
+}
+
+.modalContent::-webkit-scrollbar-thumb:hover {
+  background: var(--link-hover-color);
+}
