@@ -11,7 +11,7 @@
     "generate-og-shell": "bash ./scripts/generate-og-images.sh",
     "build": "node scripts/fetch-github-profile.js && npm run generate-og && next build && echo 'Build completed'",
     "start": "npx serve@latest out",
-    "postbuild": "echo 'Skipping next-sitemap'",
+    "postbuild": "next-sitemap",
     "analyze": "ANALYZE=true next build",
     "test": "jest",
     "test:watch": "jest --watch"
