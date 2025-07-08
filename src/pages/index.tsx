@@ -167,13 +167,13 @@ const HomePage: React.FC = () => {
   return (
     <>
       <NextSeo
-        title="Shaba - Portfolio & Blog"
-        description="Web Developer & Solopreneur - Portfolio and Blog by Shaba"
+        title="Shaba - Portfolio"
+        description="Shaba's Portfolio - Works, About, and Contact"
         canonical="https://shaba.dev/"
         openGraph={{
           url: 'https://shaba.dev/',
-          title: 'Shaba - Portfolio & Blog',
-          description: 'Web Developer & Solopreneur - Portfolio and Blog by Shaba',
+          title: 'Shaba - Web Developer & Solopreneur',
+          description: 'Portfolio showcasing works, career journey, and projects by Shaba - Web Developer & Solopreneur',
           images: [
             {
               url: 'https://shaba.dev/og-images/default.png',
