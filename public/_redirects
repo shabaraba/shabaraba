@@ -1,6 +1,6 @@
-# Redirect legacy post URLs to new blog structure
+# Portfolio site redirects
 /posts/* /blog/posts/:splat 301!
 
-# Legacy redirects
-https://blog.from-garage.com/* https://shaba.dev/blog/:splat 301!
-https://shaba.com/* https://shaba.dev/blog/:splat 302!
+# Legacy domain redirects - redirect to main portfolio
+https://blog.from-garage.com/* https://shaba.dev/ 301!
+https://shaba.com/* https://shaba.dev/ 302!
