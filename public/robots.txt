@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://shaba.dev
+
+# Sitemaps
+Sitemap: https://shaba.dev/sitemap.xml
