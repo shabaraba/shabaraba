@@ -1,2 +1,6 @@
-https://blog.from-garage.com/* https://blog.shaba.dev/:splat 301!
-https://shaba.com/* https://blog.shaba.dev/:splat 302!
+# Redirect blog.shaba.dev to shaba.dev/blog for AdSense compliance
+/* https://shaba.dev/blog/:splat 301!
+
+# Legacy redirects
+https://blog.from-garage.com/* https://shaba.dev/blog/:splat 301!
+https://shaba.com/* https://shaba.dev/blog/:splat 302!
