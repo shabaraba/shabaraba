@@ -3,6 +3,9 @@ import { NextSeo } from 'next-seo';
 import PortfolioLayout from '../components/PortfolioLayout';
 import OGPImage from '../components/OGPImage';
 import ProjectModal from '../components/ProjectModal';
+import ArticlesSection from '../components/ArticlesSection';
+import { CommonDataService } from '../services/CommonDataService';
+import { IPageHead } from '../core/types/NotionPageApiResponses';
 import styles from '../styles/Home.module.css';
 
 interface Project {
@@ -27,6 +30,10 @@ interface Job {
     name: string;
     url: string;
   }>;
+}
+
+interface HomePageProps {
+  latestArticles: IPageHead[];
 }
 
 const projects: Project[] = [
@@ -133,7 +140,7 @@ const jobs: Job[] = [
   },
 ];
 
-const HomePage: React.FC = () => {
+const HomePage: React.FC<HomePageProps> = ({ latestArticles }) => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showScrollIndicator, setShowScrollIndicator] = useState(true);
@@ -359,6 +366,9 @@ const HomePage: React.FC = () => {
           </div>
         </section>
 
+        {/* Articles Section */}
+        <ArticlesSection articles={latestArticles} />
+
         {/* Contact Section */}
         <section id="contact" className={styles.section}>
           <div className={styles.sectionContent}>
@@ -459,5 +469,29 @@ const HomePage: React.FC = () => {
     </>
   );
 };
+
+export async function getStaticProps() {
+  try {
+    console.log('HomePage getStaticProps: Fetching latest articles');
+    
+    // 最新記事5件を取得
+    const latestArticles = await CommonDataService.getLatestArticles(5);
+    
+    console.log(`HomePage getStaticProps: Fetched ${latestArticles.length} articles`);
+    
+    return {
+      props: {
+        latestArticles,
+      },
+    };
+  } catch (error) {
+    console.error('Error in HomePage getStaticProps:', error);
+    return {
+      props: {
+        latestArticles: [],
+      },
+    };
+  }
+}
 
 export default HomePage;
