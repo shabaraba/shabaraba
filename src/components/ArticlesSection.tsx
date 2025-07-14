@@ -35,7 +35,6 @@ const ArticlesSection: React.FC<ArticlesSectionProps> = ({ articles }) => {
         <div className={styles.timeline}>
           {articles.map((article) => (
             <div key={article.id} className={styles.articleCard}>
-              <div className={styles.timelineDot} />
               <div className={styles.articleContent}>
                 <a 
                   href={`/posts/${article.slug}`}

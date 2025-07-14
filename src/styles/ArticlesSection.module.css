@@ -41,35 +41,11 @@
 }
 
 .timeline {
-  position: relative;
   margin: 3rem 0;
 }
 
-.timeline::before {
-  content: '';
-  position: absolute;
-  left: 1.5rem;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: var(--sidebar-bg-color);
-}
-
 .articleCard {
-  position: relative;
   margin-bottom: 3rem;
-  padding-left: 4rem;
-}
-
-.timelineDot {
-  position: absolute;
-  left: -2.25rem;
-  top: 0.5rem;
-  width: 12px;
-  height: 12px;
-  background: var(--accent-color);
-  border-radius: 50%;
-  border: 3px solid var(--main-bg-color);
 }
 
 .articleContent {
@@ -214,17 +190,6 @@
     margin-bottom: 2rem;
   }
   
-  .timeline::before {
-    left: 1rem;
-  }
-  
-  .articleCard {
-    padding-left: 3rem;
-  }
-  
-  .timelineDot {
-    left: -1.75rem;
-  }
   
   .articleContent {
     padding: 1.5rem;
@@ -262,15 +227,6 @@
     font-size: 1.75rem;
   }
   
-  .articleCard {
-    padding-left: 2.5rem;
-  }
-  
-  .timelineDot {
-    left: -1.5rem;
-    width: 10px;
-    height: 10px;
-  }
   
   .articleContent {
     padding: 1rem;
