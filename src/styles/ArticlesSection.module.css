@@ -1,6 +1,6 @@
 .section {
   padding: 5rem 0;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: var(--main-bg-color);
 }
 
 .sectionContent {
@@ -14,7 +14,7 @@
   font-weight: 700;
   text-align: center;
   margin-bottom: 1rem;
-  color: #2c3e50;
+  color: var(--heading-color);
   position: relative;
 }
 
@@ -26,13 +26,13 @@
   transform: translateX(-50%);
   width: 60px;
   height: 4px;
-  background: linear-gradient(90deg, #3498db, #9b59b6);
+  background: var(--accent-color);
   border-radius: 2px;
 }
 
 .sectionDescription {
   text-align: center;
-  color: #666;
+  color: var(--text-color);
   font-size: 1.1rem;
   margin-bottom: 3rem;
   max-width: 600px;
@@ -40,11 +40,124 @@
   margin-right: auto;
 }
 
-.articlesGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 2rem;
+.timeline {
+  position: relative;
+  margin: 3rem 0;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 1.5rem;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--sidebar-bg-color);
+}
+
+.articleCard {
+  position: relative;
   margin-bottom: 3rem;
+  padding-left: 4rem;
+}
+
+.timelineDot {
+  position: absolute;
+  left: -2.25rem;
+  top: 0.5rem;
+  width: 12px;
+  height: 12px;
+  background: var(--accent-color);
+  border-radius: 50%;
+  border: 3px solid var(--main-bg-color);
+}
+
+.articleContent {
+  background: var(--content-bg-color);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.articleContent:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.articleLink {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.articleInfo {
+  flex: 1;
+}
+
+.articleHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.articleTitle {
+  font-size: 1.5rem;
+  color: var(--heading-color);
+  margin: 0;
+  font-family: var(--ui-font-family);
+  line-height: 1.3;
+}
+
+.articleDate {
+  font-size: 0.9rem;
+  color: var(--text-color);
+  opacity: 0.7;
+  white-space: nowrap;
+  margin-top: 0.2rem;
+}
+
+.articleExcerpt {
+  color: var(--text-color);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.articleTags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.tag {
+  background: var(--sidebar-bg-color);
+  color: var(--accent-color);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-family: var(--ui-font-family);
+}
+
+.articleImageContainer {
+  flex-shrink: 0;
+  width: 120px;
+  height: 80px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--sidebar-bg-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.articleImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .readMoreContainer {
@@ -58,20 +171,20 @@
   align-items: center;
   gap: 0.5rem;
   padding: 1rem 2rem;
-  background: linear-gradient(135deg, #3498db, #2980b9);
+  background: var(--accent-color);
   color: white;
   text-decoration: none;
   border-radius: 50px;
   font-weight: 600;
   font-size: 1rem;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+  box-shadow: 0 4px 15px rgba(123, 94, 87, 0.3);
 }
 
 .readMoreButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
-  background: linear-gradient(135deg, #2980b9, #3498db);
+  box-shadow: 0 6px 20px rgba(123, 94, 87, 0.4);
+  background: var(--link-hover-color);
 }
 
 .arrow {
@@ -101,10 +214,41 @@
     margin-bottom: 2rem;
   }
   
-  .articlesGrid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
+  .timeline::before {
+    left: 1rem;
+  }
+  
+  .articleCard {
+    padding-left: 3rem;
+  }
+  
+  .timelineDot {
+    left: -1.75rem;
+  }
+  
+  .articleContent {
+    padding: 1.5rem;
+  }
+  
+  .articleLink {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .articleHeader {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+  
+  .articleTitle {
+    font-size: 1.3rem;
+  }
+  
+  .articleImageContainer {
+    width: 100%;
+    height: 120px;
+    align-self: center;
   }
   
   .readMoreButton {
@@ -118,8 +262,21 @@
     font-size: 1.75rem;
   }
   
-  .articlesGrid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+  .articleCard {
+    padding-left: 2.5rem;
+  }
+  
+  .timelineDot {
+    left: -1.5rem;
+    width: 10px;
+    height: 10px;
+  }
+  
+  .articleContent {
+    padding: 1rem;
+  }
+  
+  .articleTitle {
+    font-size: 1.2rem;
   }
 }
