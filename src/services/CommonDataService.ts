@@ -264,4 +264,14 @@ export class CommonDataService {
       sidebarData
     };
   }
+
+  /**
+   * 最新記事を指定件数取得（ポートフォリオサイト用）
+   * @param limit 取得件数（デフォルト5件）
+   * @returns 最新記事の配列
+   */
+  public static async getLatestArticles(limit: number = 5) {
+    const data = await this.getAllData();
+    return data.posts.slice(0, limit);
+  }
 }
