@@ -367,8 +367,11 @@ const HomePage: React.FC<HomePageProps> = ({ latestArticles }) => {
         </section>
 
         {/* Articles Section */}
-        <section id="articles">
-          <ArticlesSection articles={latestArticles} />
+        <section id="articles" className={styles.section}>
+          <div className={styles.sectionContent}>
+            <h2 className={styles.sectionTitle}>Latest Articles</h2>
+            <ArticlesSection articles={latestArticles} />
+          </div>
         </section>
 
         {/* Contact Section */}

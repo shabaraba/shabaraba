@@ -26,62 +26,59 @@ const ArticlesSection: React.FC<ArticlesSectionProps> = ({ articles }) => {
   };
 
   return (
-    <section className={styles.section}>
-      <div className={styles.sectionContent}>
-        <h2 className={styles.sectionTitle}>Latest Articles</h2>
-        <p className={styles.sectionDescription}>
-          最新のブログ記事をご紹介します。技術的な知見や日々の学びを共有しています。
-        </p>
-        <div className={styles.timeline}>
-          {articles.map((article) => (
-            <div key={article.id} className={styles.articleCard}>
-              <div className={styles.articleContent}>
-                <a 
-                  href={`/posts/${article.slug}`}
-                  className={styles.articleLink}
-                >
-                  <div className={styles.articleInfo}>
-                    <div className={styles.articleHeader}>
-                      <h3 className={styles.articleTitle}>{article.title}</h3>
-                      <time className={styles.articleDate}>
-                        {formatDate(article.publishedAt)}
-                      </time>
-                    </div>
-                    <p className={styles.articleExcerpt}>
-                      {getExcerpt(article.description)}
-                    </p>
-                    {article.tags && article.tags.length > 0 && (
-                      <div className={styles.articleTags}>
-                        {article.tags.slice(0, 3).map((tag) => (
-                          <span key={tag.id} className={styles.tag}>
-                            {tag.name}
-                          </span>
-                        ))}
-                      </div>
-                    )}
+    <>
+      <p className={styles.sectionDescription}>
+        最新のブログ記事をご紹介します。技術的な知見や日々の学びを共有しています。
+      </p>
+      <div className={styles.timeline}>
+        {articles.map((article) => (
+          <div key={article.id} className={styles.articleCard}>
+            <div className={styles.articleContent}>
+              <a 
+                href={`/posts/${article.slug}`}
+                className={styles.articleLink}
+              >
+                <div className={styles.articleInfo}>
+                  <div className={styles.articleHeader}>
+                    <h3 className={styles.articleTitle}>{article.title}</h3>
+                    <time className={styles.articleDate}>
+                      {formatDate(article.publishedAt)}
+                    </time>
                   </div>
-                  {article.coverImage && (
-                    <div className={styles.articleImageContainer}>
-                      <img 
-                        src={article.coverImage} 
-                        alt={article.title}
-                        className={styles.articleImage}
-                      />
+                  <p className={styles.articleExcerpt}>
+                    {getExcerpt(article.description)}
+                  </p>
+                  {article.tags && article.tags.length > 0 && (
+                    <div className={styles.articleTags}>
+                      {article.tags.slice(0, 3).map((tag) => (
+                        <span key={tag.id} className={styles.tag}>
+                          {tag.name}
+                        </span>
+                      ))}
                     </div>
                   )}
-                </a>
-              </div>
+                </div>
+                {article.coverImage && (
+                  <div className={styles.articleImageContainer}>
+                    <img 
+                      src={article.coverImage} 
+                      alt={article.title}
+                      className={styles.articleImage}
+                    />
+                  </div>
+                )}
+              </a>
             </div>
-          ))}
-        </div>
-        <div className={styles.readMoreContainer}>
-          <a href="/blog" className={styles.readMoreButton}>
-            すべての記事を見る
-            <span className={styles.arrow}>→</span>
-          </a>
-        </div>
+          </div>
+        ))}
       </div>
-    </section>
+      <div className={styles.readMoreContainer}>
+        <a href="/blog" className={styles.readMoreButton}>
+          すべての記事を見る
+          <span className={styles.arrow}>→</span>
+        </a>
+      </div>
+    </>
   );
 };
 
