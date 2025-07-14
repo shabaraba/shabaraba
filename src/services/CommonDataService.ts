@@ -27,6 +27,10 @@ export interface PaginatedData {
 // キャッシュ有効期間（ビルド中は長く保持）
 const CACHE_TTL = process.env.NODE_ENV === 'production' ? 60 * 60 * 1000 : 24 * 60 * 60 * 1000;
 
+// API呼び出し制限のため、同期実行を制御
+let isCurrentlyFetching = false;
+let pendingPromise: Promise<any> | null = null;
+
 export class CommonDataService {
   /**
    * 全記事データとメタデータを取得（キャッシュ付き）
@@ -38,8 +42,20 @@ export class CommonDataService {
       return cachedPostsData;
     }
 
-    console.log('[CommonDataService] Fetching fresh data');
-    const postLogic = new PostLogicNotionImpl();
+    // 既に他の処理でAPIを呼び出し中の場合は、その結果を待つ
+    if (isCurrentlyFetching && pendingPromise) {
+      console.log('[CommonDataService] Waiting for ongoing API call');
+      return await pendingPromise;
+    }
+
+    // API呼び出し開始
+    isCurrentlyFetching = true;
+    
+    // Promiseを作成して他の呼び出し元が待機できるようにする
+    pendingPromise = (async () => {
+      try {
+        console.log('[CommonDataService] Fetching fresh data');
+        const postLogic = new PostLogicNotionImpl();
     
     // 全記事データの取得
     const posts = await postLogic.getList();
@@ -146,16 +162,38 @@ export class CommonDataService {
       .map(([name, count]) => ({ name, count }))
       .sort((a, b) => b.count - a.count);
     
-    // キャッシュの更新
-    cachedPostsData = {
-      posts: processedPosts,
-      trendingPosts: processedTrendingPosts,
-      tags,
-      series,
-      lastFetched: Date.now()
-    };
+        // キャッシュの更新
+        cachedPostsData = {
+          posts: processedPosts,
+          trendingPosts: processedTrendingPosts,
+          tags,
+          series,
+          lastFetched: Date.now()
+        };
+        
+        return cachedPostsData;
+      } catch (error) {
+        console.error('[CommonDataService] Error fetching data:', error);
+        // エラーが発生した場合でも、古いキャッシュがあれば返す
+        if (cachedPostsData) {
+          console.log('[CommonDataService] Returning stale cached data due to error');
+          return cachedPostsData;
+        }
+        // キャッシュもない場合は空データを返す
+        return {
+          posts: [],
+          trendingPosts: [],
+          tags: [],
+          series: [],
+          lastFetched: Date.now()
+        };
+      } finally {
+        isCurrentlyFetching = false;
+        pendingPromise = null;
+      }
+    })();
     
-    return cachedPostsData;
+    return await pendingPromise;
   }
   
   /**
