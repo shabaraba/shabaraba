@@ -1,6 +1,5 @@
 import React from 'react';
 import { IPageHead } from '../core/types/NotionPageApiResponses';
-import ArticleCard from './ArticleCard';
 import styles from '../styles/ArticlesSection.module.css';
 
 interface ArticlesSectionProps {
@@ -8,25 +7,75 @@ interface ArticlesSectionProps {
 }
 
 const ArticlesSection: React.FC<ArticlesSectionProps> = ({ articles }) => {
+  const formatDate = (dateString: string) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return '';
+    return date.toLocaleDateString('ja-JP', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
+  const getExcerpt = (description?: string) => {
+    if (!description) return '';
+    return description.length > 100 
+      ? description.substring(0, 100) + '...' 
+      : description;
+  };
+
   return (
-    <section id="articles" className={styles.section}>
+    <section className={styles.section}>
       <div className={styles.sectionContent}>
         <h2 className={styles.sectionTitle}>Latest Articles</h2>
         <p className={styles.sectionDescription}>
-          技術や開発について書いた記事をご紹介します
+          最新のブログ記事をご紹介します。技術的な知見や日々の学びを共有しています。
         </p>
-        
-        <div className={styles.articlesGrid}>
+        <div className={styles.timeline}>
           {articles.map((article) => (
-            <ArticleCard key={article.id} article={article} />
+            <div key={article.id} className={styles.articleCard}>
+              <div className={styles.articleContent}>
+                <a 
+                  href={`/posts/${article.slug}`}
+                  className={styles.articleLink}
+                >
+                  <div className={styles.articleInfo}>
+                    <div className={styles.articleHeader}>
+                      <h3 className={styles.articleTitle}>{article.title}</h3>
+                      <time className={styles.articleDate}>
+                        {formatDate(article.publishedAt)}
+                      </time>
+                    </div>
+                    <p className={styles.articleExcerpt}>
+                      {getExcerpt(article.description)}
+                    </p>
+                    {article.tags && article.tags.length > 0 && (
+                      <div className={styles.articleTags}>
+                        {article.tags.slice(0, 3).map((tag) => (
+                          <span key={tag.id} className={styles.tag}>
+                            {tag.name}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  {article.coverImage && (
+                    <div className={styles.articleImageContainer}>
+                      <img 
+                        src={article.coverImage} 
+                        alt={article.title}
+                        className={styles.articleImage}
+                      />
+                    </div>
+                  )}
+                </a>
+              </div>
+            </div>
           ))}
         </div>
-        
         <div className={styles.readMoreContainer}>
-          <a 
-            href="/blog" 
-            className={styles.readMoreButton}
-          >
+          <a href="/blog" className={styles.readMoreButton}>
             すべての記事を見る
             <span className={styles.arrow}>→</span>
           </a>
