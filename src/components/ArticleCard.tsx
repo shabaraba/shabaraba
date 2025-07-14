@@ -8,7 +8,9 @@ interface ArticleCardProps {
 
 const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
   const formatDate = (dateString: string) => {
+    if (!dateString) return '';
     const date = new Date(dateString);
+    if (isNaN(date.getTime())) return '';
     return date.toLocaleDateString('ja-JP', {
       year: 'numeric',
       month: 'long',
@@ -45,7 +47,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
           </p>
           <div className={styles.meta}>
             <time className={styles.date}>
-              {formatDate(article.published)}
+              {formatDate(article.publishedAt)}
             </time>
             {article.tags && article.tags.length > 0 && (
               <div className={styles.tags}>

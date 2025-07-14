@@ -18,13 +18,14 @@ const HeaderNavigation: React.FC = () => {
     { label: 'About', href: '/#about' },
     { label: 'Jobs', href: '/#jobs' },
     { label: 'Works', href: '/#works' },
+    { label: 'Articles', href: '/#articles' },
     { label: 'Contact', href: '/#contact' },
     { label: 'Blog', href: '/blog' },
   ];
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['about', 'jobs', 'works', 'contact'];
+      const sections = ['about', 'jobs', 'works', 'articles', 'contact'];
       const scrollPosition = window.scrollY + 100; // ヘッダー高さ分のオフセット
 
       for (let i = sections.length - 1; i >= 0; i--) {
