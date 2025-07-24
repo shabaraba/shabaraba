@@ -18,6 +18,7 @@ import Sticky from "react-sticky-el";
 import { siteTitle } from "../../../../pages/_app";
 import styles from "./layout.module.css";
 import Link from "next/link";
+import Head from "next/head";
 
 const SiteLogo: React.FC = () => {
   return (
@@ -60,6 +61,10 @@ export default function Layout({
   // background: '#e8cfc1'
   return (
     <>
+      <Head>
+        {/* Google AdSense */}
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1981741527756003" crossOrigin="anonymous"></script>
+      </Head>
       <Box maxW="100vw" bg="#FFF5F3">
         <main>
           <Grid templateColumns={{ lg: "repeat(12, 1fr)", base: "1fr" }} gap={25} w="100%" >
