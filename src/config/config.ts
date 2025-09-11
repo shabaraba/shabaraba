@@ -45,7 +45,7 @@ const defaultConfig: SiteConfig = {
   site: {
     title: 'Coffee Break Point',
     description: 'コーヒー休憩にちょうどよい技術よみものを目指して',
-    url: 'https://blog.shaba.dev',
+    url: 'https://shaba.dev/blog',
   },
   home: {
     title: 'Coffee Break Point',

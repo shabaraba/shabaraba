@@ -27,7 +27,7 @@ export default function ListLayout({
   }
 
   // OGP画像のURL生成
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://blog.shaba.dev';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://shaba.dev/blog';
   const ogImageUrl = slug 
     ? `${baseUrl}/og-images/${slug}.png` 
     : `${baseUrl}/og-images/default.png`;
