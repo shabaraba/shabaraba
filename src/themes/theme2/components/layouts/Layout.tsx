@@ -25,19 +25,17 @@ export default function Layout({
   slug,
 }: LayoutProps) {
   // OGP画像のURL生成
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://blog.shaba.dev';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://shaba.dev/blog';
   
-  // タイムスタンプをビルド時に固定して生成（キャッシュバスティング用）
-  const timestamp = process.env.BUILD_TIME || Date.now();
-  
-  // OGP画像URL - タイムスタンプをクエリパラメータとして追加
+  // OGP画像URL - タイムスタンプ付きファイル名またはデフォルト画像
   let ogImageUrl;
   if (!slug) {
     // デフォルト画像の場合
     ogImageUrl = `${baseUrl}/og-images/default.png`;
   } else {
-    // 記事OGP画像の場合はクエリパラメータでタイムスタンプを付与
-    ogImageUrl = `${baseUrl}/og-images/${slug}.png?v=${timestamp}`;
+    // 記事OGP画像の場合はタイムスタンプ付きファイル名を優先
+    // まずタイムスタンプ付きファイルが存在するかチェックして、なければ通常のファイル名
+    ogImageUrl = `${baseUrl}/og-images/${slug}.png`;
   }
   
   // 現在のページのURL
