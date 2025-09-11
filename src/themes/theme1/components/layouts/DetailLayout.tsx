@@ -27,15 +27,17 @@ export default function ListLayout({
   }
 
   // OGP画像のURL生成
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://shaba.dev/blog';
+  const siteBaseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://shaba.dev/blog';
+  // OG画像は静的ファイルなので、ルートドメインから直接配信される
+  const ogImageBaseUrl = 'https://shaba.dev';
   const ogImageUrl = slug 
-    ? `${baseUrl}/og-images/${slug}.png` 
-    : `${baseUrl}/og-images/default.png`;
+    ? `${ogImageBaseUrl}/og-images/${slug}.png` 
+    : `${ogImageBaseUrl}/og-images/default.png`;
   
   // 現在のページのURL
   const pageUrl = slug 
-    ? `${baseUrl}/posts/${slug}` 
-    : baseUrl;
+    ? `${siteBaseUrl}/posts/${slug}` 
+    : siteBaseUrl;
   
   // 設定されていない場合のデフォルト値
   const pageTitle = title || 'Coffee Break Point';

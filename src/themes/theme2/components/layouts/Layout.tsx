@@ -25,23 +25,25 @@ export default function Layout({
   slug,
 }: LayoutProps) {
   // OGP画像のURL生成
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://shaba.dev/blog';
+  const siteBaseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://shaba.dev/blog';
+  // OG画像は静的ファイルなので、ルートドメインから直接配信される
+  const ogImageBaseUrl = 'https://shaba.dev';
   
   // OGP画像URL - タイムスタンプ付きファイル名またはデフォルト画像
   let ogImageUrl;
   if (!slug) {
     // デフォルト画像の場合
-    ogImageUrl = `${baseUrl}/og-images/default.png`;
+    ogImageUrl = `${ogImageBaseUrl}/og-images/default.png`;
   } else {
     // 記事OGP画像の場合はタイムスタンプ付きファイル名を優先
     // まずタイムスタンプ付きファイルが存在するかチェックして、なければ通常のファイル名
-    ogImageUrl = `${baseUrl}/og-images/${slug}.png`;
+    ogImageUrl = `${ogImageBaseUrl}/og-images/${slug}.png`;
   }
   
   // 現在のページのURL
   const pageUrl = slug 
-    ? `${baseUrl}/posts/${slug}` 
-    : baseUrl;
+    ? `${siteBaseUrl}/posts/${slug}` 
+    : siteBaseUrl;
 
   return (
     <>
