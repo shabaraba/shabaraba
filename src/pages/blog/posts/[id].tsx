@@ -7,7 +7,7 @@ const ArticlePage = dynamic(() =>
   import(`../../../themes/${ACTIVE_THEME}/pages/ArticlePage`).then(mod => mod.default),
   {
     loading: () => null,
-    ssr: false,
+    ssr: true,  // OGPメタタグの適切な出力にはSSRが必要
   }
 );
 
