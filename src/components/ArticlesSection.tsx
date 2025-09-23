@@ -35,7 +35,7 @@ const ArticlesSection: React.FC<ArticlesSectionProps> = ({ articles }) => {
           <div key={article.id} className={styles.articleCard}>
             <div className={styles.articleContent}>
               <a 
-                href={`/posts/${article.slug}`}
+                href={`/blog/posts/${article.slug}`}
                 className={styles.articleLink}
               >
                 <div className={styles.articleInfo}>

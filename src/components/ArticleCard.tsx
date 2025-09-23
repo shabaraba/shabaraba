@@ -28,7 +28,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
   return (
     <article className={styles.card}>
       <a 
-        href={`/posts/${article.slug}`}
+        href={`/blog/posts/${article.slug}`}
         className={styles.cardLink}
       >
         {article.coverImage && (
