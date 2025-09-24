@@ -1,5 +1,6 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 import { GetStaticPropsContext, GetStaticPathsResult } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import { ACTIVE_THEME } from '../../config/themeSelector';
@@ -34,27 +35,43 @@ interface TagPageProps {
     tags: any[];
     series: any[];
   };
-  pagination?: {
-    totalItems: number;
-    itemsPerPage: number;
-    currentPage: number;
-    totalPages: number;
-  };
 }
 
 /**
  * タグページコンポーネント
  * 特定のタグに関連する記事一覧を表示します
- * ページネーション対応
+ * クライアントサイドページネーション対応
  */
-export default function TagPage({ articles, tag, sidebarData, pagination }: TagPageProps) {
+function TagPageWrapper(props: TagPageProps) {
+  const router = useRouter();
+  const { tag, articles, sidebarData } = props;
+
+  // URLからページ番号を取得（デフォルトは1ページ目）
+  const page = router.query.page ? parseInt(router.query.page as string, 10) : 1;
+
+  // 表示すべき記事を計算
+  const startIndex = (page - 1) * POSTS_PER_PAGE;
+  const endIndex = startIndex + POSTS_PER_PAGE;
+  const paginatedArticles = articles.slice(startIndex, endIndex);
+
+  // 総ページ数を計算
+  const totalPages = Math.ceil(articles.length / POSTS_PER_PAGE);
+
   // タイトルをタグ名に合わせて表示
   const title = `${tag} の記事一覧 | Coffee Break Point`;
   const description = `「${tag}」タグに関連する記事一覧ページです`;
 
+  // ページネーション情報を追加
+  const pagination = {
+    totalItems: articles.length,
+    itemsPerPage: POSTS_PER_PAGE,
+    currentPage: page,
+    totalPages: totalPages
+  };
+
   return (
     <HomePage
-      articles={articles}
+      articles={paginatedArticles}
       sidebarData={sidebarData}
       customTitle={title}
       customDescription={description}
@@ -64,9 +81,11 @@ export default function TagPage({ articles, tag, sidebarData, pagination }: TagP
   );
 }
 
+export default TagPageWrapper;
+
 /**
  * 静的パスを生成するための関数
- * タグごとに複数のページパスを生成
+ * タグごとに1つのページパスを生成（クライアントサイドページネーション対応）
  */
 export async function getStaticPaths(): Promise<GetStaticPathsResult<TagPageParams>> {
   try {
@@ -77,40 +96,23 @@ export async function getStaticPaths(): Promise<GetStaticPathsResult<TagPagePara
     const paths = [];
 
     // すべてのタグを収集
-    const tagMap: { [tagName: string]: IPageHead[] } = {};
+    const tagSet = new Set<string>();
     commonData.posts.forEach(post => {
       if (post.tags) {
         post.tags.forEach(tag => {
           // tagがオブジェクトであることを確認
           if (tag && typeof tag === 'object' && tag.name) {
-            const tagName = tag.name.toLowerCase();
-            if (!tagMap[tagName]) {
-              tagMap[tagName] = [];
-            }
-            tagMap[tagName].push(post);
+            tagSet.add(tag.name.toLowerCase());
           }
         });
       }
     });
 
-    // 各タグに対してページパスを生成
-    Object.entries(tagMap).forEach(([tagName, tagPosts]) => {
-      const totalPages = Math.ceil(tagPosts.length / POSTS_PER_PAGE);
-
-      // タグのページ1（例: /tags/javascript）
+    // 各タグに対してベースパスを生成
+    tagSet.forEach(tagName => {
       paths.push({
         params: { tag: tagName }
       });
-
-      // タグの2ページ目以降（例: /tags/javascript?page=2）
-      for (let page = 2; page <= totalPages; page++) {
-        paths.push({
-          params: {
-            tag: tagName,
-            page: page.toString()
-          }
-        });
-      }
     });
 
     console.log(`Generated ${paths.length} tag page paths for SSG`);
@@ -130,26 +132,34 @@ export async function getStaticPaths(): Promise<GetStaticPathsResult<TagPagePara
 
 /**
  * タグページの静的生成のためのデータ取得関数
- * ページネーション対応
+ * クライアントサイドページネーション対応
  */
 export async function getStaticProps(context: GetStaticPropsContext<TagPageParams>) {
-  // URLパラメータからタグ名とページ番号を取得
+  // URLパラメータからタグ名を取得
   const tagName = context.params?.tag ?? '';
-  const page = context.params?.page ? parseInt(context.params.page) : 1;
 
   try {
-    console.log(`tags/[tag].tsx - getStaticProps: Fetching data for tag "${tagName}", page ${page}`);
+    console.log(`tags/[tag].tsx - getStaticProps: Fetching data for tag "${tagName}"`);
 
-    // ページネーション対応のデータ取得メソッドを使用
-    const paginatedData = await CommonDataService.getPaginatedArticlesByTag(tagName, page, POSTS_PER_PAGE);
+    // 全データを取得
+    const commonData = await CommonDataService.getAllData();
 
-    console.log(`tags/[tag].tsx - getStaticProps: Data fetched successfully for tag "${tagName}", page ${page}`);
-    console.log(`- Page articles: ${paginatedData.items.length}`);
-    console.log(`- Total articles: ${paginatedData.totalItems}`);
-    console.log(`- Total pages: ${paginatedData.totalPages}`);
+    // 指定されたタグの記事をフィルタリング
+    const taggedArticles = commonData.posts.filter(post => {
+      if (!post.tags) return false;
+      return post.tags.some(tag => {
+        if (tag && typeof tag === 'object' && tag.name) {
+          return tag.name.toLowerCase() === tagName;
+        }
+        return false;
+      });
+    });
+
+    console.log(`tags/[tag].tsx - getStaticProps: Data fetched successfully for tag "${tagName}"`);
+    console.log(`- Total articles: ${taggedArticles.length}`);
 
     // 記事がない場合は404を返す
-    if (paginatedData.totalItems === 0) {
+    if (taggedArticles.length === 0) {
       return {
         notFound: true,
       };
@@ -157,14 +167,12 @@ export async function getStaticProps(context: GetStaticPropsContext<TagPageParam
 
     return {
       props: {
-        articles: paginatedData.items,
+        articles: taggedArticles,
         tag: tagName,
-        sidebarData: paginatedData.sidebarData!,
-        pagination: {
-          totalItems: paginatedData.totalItems,
-          itemsPerPage: paginatedData.pageSize,
-          currentPage: paginatedData.currentPage,
-          totalPages: paginatedData.totalPages
+        sidebarData: {
+          trendingPosts: commonData.trendingPosts,
+          tags: commonData.tags,
+          series: commonData.series
         }
       }
     };

@@ -95,7 +95,7 @@ export default function ArticleDetail({ article }: ArticleDetailProps) {
             </a>
           </div>
         </div>
-        <Link href="/" className={styles.backLink}>
+        <Link href="/blog" className={styles.backLink}>
           ← ホームへ戻る
         </Link>
       </footer>

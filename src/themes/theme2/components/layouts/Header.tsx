@@ -15,7 +15,7 @@ export default function Header() {
   return (
     <header className={styles.header}>
       <div className={styles.logoContainer}>
-        <Link href="/" className={styles.logo}>
+        <Link href="/blog" className={styles.logo}>
           <span className={styles.logoText}>
             Coffee Break Point
           </span>
@@ -24,7 +24,7 @@ export default function Header() {
       <nav className={styles.nav}>
         <ul className={styles.navList}>
           <li className={styles.navItem}>
-            <Link href="/" className={styles.navLink}>
+            <Link href="/blog" className={styles.navLink}>
               { homeText }
             </Link>
           </li>
