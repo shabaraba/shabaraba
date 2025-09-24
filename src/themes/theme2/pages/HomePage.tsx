@@ -91,7 +91,7 @@ const HomePage = React.memo(function HomePage({
         totalItems={paginationSettings.totalItems}
         itemsPerPage={paginationSettings.itemsPerPage}
         currentPage={paginationSettings.currentPage}
-        baseUrl={tagName ? `/tags/${tagName.toLowerCase()}` : '/'}
+        baseUrl={tagName ? `/tags/${tagName.toLowerCase()}` : '/blog'}
         queryParams={queryParams}
       />
     </Layout>

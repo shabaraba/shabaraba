@@ -67,7 +67,7 @@ export default function ArticleDetail({ article }: ArticleDetailProps) {
           <span className={styles.shareLabel}>この記事をシェアする:</span>
           <div className={styles.shareButtons}>
             <a 
-              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent(`https://blog.shaba.dev/posts/${article.slug}`)}`} 
+              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent(`https://blog.shaba.dev/blog/posts/${article.slug}`)}`} 
               target="_blank" 
               rel="noopener noreferrer" 
               className={styles.shareButton}
@@ -76,7 +76,7 @@ export default function ArticleDetail({ article }: ArticleDetailProps) {
               <FaXTwitter size={20} />
             </a>
             <a 
-              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://blog.shaba.dev/posts/${article.slug}`)}`} 
+              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://blog.shaba.dev/blog/posts/${article.slug}`)}`} 
               target="_blank" 
               rel="noopener noreferrer" 
               className={styles.shareButton}
@@ -85,7 +85,7 @@ export default function ArticleDetail({ article }: ArticleDetailProps) {
               <FaFacebook size={20} />
             </a>
             <a 
-              href={`https://b.hatena.ne.jp/entry/s/${encodeURIComponent(`blog.shaba.dev/posts/${article.slug}`).replace(/^https?:\/\//, '')}`}
+              href={`https://b.hatena.ne.jp/entry/s/${encodeURIComponent(`blog.shaba.dev/blog/posts/${article.slug}`).replace(/^https?:\/\//, '')}`}
               target="_blank" 
               rel="noopener noreferrer" 
               className={styles.shareButton}
@@ -95,7 +95,7 @@ export default function ArticleDetail({ article }: ArticleDetailProps) {
             </a>
           </div>
         </div>
-        <Link href="/" className={styles.backLink}>
+        <Link href="/blog" className={styles.backLink}>
           ← ホームへ戻る
         </Link>
       </footer>

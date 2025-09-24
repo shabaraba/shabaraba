@@ -24,7 +24,7 @@ export default function RelatedArticles({ articles }: RelatedArticlesProps) {
         {articles.map((article) => (
           <Link 
             key={article.id} 
-            href={`/posts/${article.slug}`} 
+            href={`/blog/posts/${article.slug}`} 
             className={styles.relatedItem}
           >
             <div className={styles.relatedThumbnail}>

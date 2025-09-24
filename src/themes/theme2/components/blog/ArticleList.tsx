@@ -18,7 +18,7 @@ export default function ArticleList({ articles }: ArticleListProps) {
         <article key={article.id} className={styles.articleCard}>
           {article.coverImage && (
             <div className={styles.articleImage}>
-              <Link href={`/posts/${article.slug}`}>
+              <Link href={`/blog/posts/${article.slug}`}>
                 <Image 
                   src={article.coverImage} 
                   alt={article.title} 
@@ -31,7 +31,7 @@ export default function ArticleList({ articles }: ArticleListProps) {
           )}
           <div className={styles.articleContent}>
             <h2 className={styles.articleTitle}>
-              <Link href={`/posts/${article.slug}`} className={styles.titleLink}>
+              <Link href={`/blog/posts/${article.slug}`} className={styles.titleLink}>
                 {article.title}
               </Link>
             </h2>
@@ -60,7 +60,7 @@ export default function ArticleList({ articles }: ArticleListProps) {
             {article.excerpt && (
               <p className={styles.articleExcerpt}>{article.excerpt}</p>
             )}
-            <Link href={`/posts/${article.slug}`} className={styles.readMore}>
+            <Link href={`/blog/posts/${article.slug}`} className={styles.readMore}>
               続きを読む →
             </Link>
           </div>
