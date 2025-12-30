@@ -13,7 +13,7 @@ const HomePage = dynamic(() =>
   {
     // loading: () => <Loading />, // 読み込み中に表示されるコンポーネント
     loading: () => null,
-    ssr: false, // 必要に応じて
+    ssr: true,
   }
 
 );

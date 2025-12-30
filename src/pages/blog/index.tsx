@@ -11,7 +11,7 @@ const HomePage = dynamic(
     ),
   {
     loading: () => null,
-    ssr: false,
+    ssr: true,
   }
 );
 
