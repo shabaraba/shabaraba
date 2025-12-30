@@ -1,5 +1,4 @@
 import { InferGetStaticPropsType } from "next";
-import { useRouter } from "next/router";
 import Head from "next/head";
 import { siteTitle } from "../../../next-seo.config";
 import { MyLinkListPageUsecase } from "application/usecases/MyLinkListPageUsecase";
@@ -36,70 +35,67 @@ const MyLinkPage = dynamic(() =>
 
 );
 
-// クライアントサイドでページネーションを行うラッパーコンポーネント
-export default function MyLinkIndex({ allData }: Props) {
-  const router = useRouter();
-
-  // URLからページ番号を取得（デフォルトは1ページ目）
-  const page = router.query.page ? parseInt(router.query.page as string, 10) : 1;
-
-  // エンティティ変換
-  const allMyLinks: MyLinkEntity[] = allData.map(
-    (mylink: MyLinkType) => new MyLinkEntity(mylink)
-  );
-
-  // 表示すべきリンクを計算
-  const startIndex = (page - 1) * LINKS_PER_PAGE;
-  const endIndex = startIndex + LINKS_PER_PAGE;
-  const paginatedLinks = allMyLinks.slice(startIndex, endIndex);
-
-  // 総ページ数を計算
-  const totalPages = Math.ceil(allMyLinks.length / LINKS_PER_PAGE);
-
-  // ページネーション情報の作成
-  const pagination = {
-    totalItems: allMyLinks.length,
-    itemsPerPage: LINKS_PER_PAGE,
-    currentPage: page,
-    totalPages: totalPages
-  };
-
-  // テーマに応じたページをレンダリング
+/**
+ * マイリンクトップページ（1ページ目）
+ * サーバーサイドレンダリング対応
+ */
+export default function MyLinkIndex({ mylinks, pagination }: Props) {
   return (
     <>
       <Head>
         <title>{siteTitle} - Links</title>
       </Head>
-      <MyLinkPage mylinks={paginatedLinks} pagination={pagination} />
+      <MyLinkPage mylinks={mylinks} pagination={pagination} />
     </>
   );
-};
+}
 
 
 /**
- * 全マイリンクデータを一度に取得する関数
- * クライアントサイドでのページネーションのため、全データを取得
+ * 1ページ目のデータを取得する関数
+ * サーバーサイドレンダリング対応のページネーション
  */
 export async function getStaticProps() {
   try {
-    console.log('mylink/index.tsx - getStaticProps: Fetching all data for client-side pagination');
+    console.log('mylink/index.tsx - getStaticProps: Fetching data for page 1');
 
-    // 全データを一度に取得
+    // 全データを取得
     const result = await MyLinkListPageUsecase.getStaticProps();
+    const allMyLinks: MyLinkEntity[] = result.props.allData.map(
+      (mylink: MyLinkType) => new MyLinkEntity(mylink)
+    );
+
+    // 1ページ目のデータを計算
+    const paginatedLinks = allMyLinks.slice(0, LINKS_PER_PAGE);
+    const totalPages = Math.ceil(allMyLinks.length / LINKS_PER_PAGE);
 
     console.log('mylink/index.tsx - getStaticProps: Data fetched successfully');
-    console.log(`- Total mylinks: ${result.props.allData.length}`);
+    console.log(`- Total mylinks: ${allMyLinks.length}`);
+    console.log(`- Page 1 links: ${paginatedLinks.length}`);
+    console.log(`- Total pages: ${totalPages}`);
 
     return {
       props: {
-        allData: result.props.allData
+        mylinks: paginatedLinks,
+        pagination: {
+          totalItems: allMyLinks.length,
+          itemsPerPage: LINKS_PER_PAGE,
+          currentPage: 1,
+          totalPages: totalPages
+        }
       }
     };
   } catch (error) {
     console.error('Error in getStaticProps:', error);
     return {
       props: {
-        allData: []
+        mylinks: [],
+        pagination: {
+          totalItems: 0,
+          itemsPerPage: LINKS_PER_PAGE,
+          currentPage: 1,
+          totalPages: 0
+        }
       }
     };
   }

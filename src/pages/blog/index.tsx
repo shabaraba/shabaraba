@@ -1,5 +1,4 @@
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/router';
 import { ACTIVE_THEME } from '../../config/themeSelector';
 import { CommonDataService } from '../../services/CommonDataService';
 
@@ -18,58 +17,49 @@ const HomePage = dynamic(
 // 1ページあたりの記事数
 const POSTS_PER_PAGE = 10;
 
-// クライアントサイドでページネーションを行うラッパーコンポーネント
-function BlogPageWrapper(props) {
-  const router = useRouter();
-  
-  // URLからページ番号を取得（デフォルトは1ページ目）
-  const page = router.query.page ? parseInt(router.query.page as string, 10) : 1;
-  
-  // 表示すべき記事を計算
-  const startIndex = (page - 1) * POSTS_PER_PAGE;
-  const endIndex = startIndex + POSTS_PER_PAGE;
-  const paginatedArticles = props.articles.slice(startIndex, endIndex);
-  
-  // 総ページ数を計算
-  const totalPages = Math.ceil(props.articles.length / POSTS_PER_PAGE);
-  
-  // ページネーション情報を追加
-  const enhancedProps = {
-    ...props,
-    articles: paginatedArticles,
-    pagination: {
-      totalItems: props.articles.length,
-      itemsPerPage: POSTS_PER_PAGE,
-      currentPage: page,
-      totalPages: totalPages
-    }
-  };
-  return <HomePage {...enhancedProps} />;
+/**
+ * ブログトップページ（1ページ目）
+ * サーバーサイドレンダリング対応
+ */
+function BlogIndexPage({ articles, sidebarData, pagination }) {
+  return <HomePage articles={articles} sidebarData={sidebarData} pagination={pagination} />;
 }
 
-export default BlogPageWrapper;
+export default BlogIndexPage;
 
 /**
- * 全記事データを一度に取得する関数
- * クライアントサイドでのページネーションのため、全データを取得
+ * 1ページ目のデータを取得する関数
+ * サーバーサイドレンダリング対応のページネーション
  */
 export async function getStaticProps() {
   try {
-    console.log('blog/index.tsx - getStaticProps: Fetching all data for client-side pagination');
-    
-    // 全データを一度に取得
+    console.log('blog/index.tsx - getStaticProps: Fetching data for page 1');
+
+    // 全データを取得
     const commonData = await CommonDataService.getAllData();
-    
+
+    // 1ページ目のデータを計算
+    const paginatedArticles = commonData.posts.slice(0, POSTS_PER_PAGE);
+    const totalPages = Math.ceil(commonData.posts.length / POSTS_PER_PAGE);
+
     console.log('blog/index.tsx - getStaticProps: Data fetched successfully');
     console.log(`- Total articles: ${commonData.posts.length}`);
-    
+    console.log(`- Page 1 articles: ${paginatedArticles.length}`);
+    console.log(`- Total pages: ${totalPages}`);
+
     return {
       props: {
-        articles: commonData.posts,
+        articles: paginatedArticles,
         sidebarData: {
           trendingPosts: commonData.trendingPosts,
           tags: commonData.tags,
           series: commonData.series
+        },
+        pagination: {
+          totalItems: commonData.posts.length,
+          itemsPerPage: POSTS_PER_PAGE,
+          currentPage: 1,
+          totalPages: totalPages
         }
       }
     };
@@ -82,6 +72,12 @@ export async function getStaticProps() {
           trendingPosts: [],
           tags: [],
           series: []
+        },
+        pagination: {
+          totalItems: 0,
+          itemsPerPage: POSTS_PER_PAGE,
+          currentPage: 1,
+          totalPages: 0
         }
       }
     };

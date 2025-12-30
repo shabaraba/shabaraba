@@ -52,27 +52,15 @@ export default function Pagination({
     return pageRange;
   };
   
-  // ページリンクのURL生成（SSG対応：ルートページと追加ページでパスを分ける）
+  // ページリンクのURL生成（SSG対応：パスベースのページネーション）
   const getPageUrl = (page: number): string => {
-    // クエリパラメータをコピー
-    const params = { ...queryParams };
-    
     // ページに応じてパスを生成
     if (page === 1) {
       // 1ページ目はベースURLのみ
       return baseUrl;
     } else {
-      // 2ページ目以降はページパラメータ付き
-      let pageParam = `page=${page}`;
-      
-      // 他のクエリパラメータがあれば追加
-      if (Object.keys(params).length > 0) {
-        pageParam += '&' + Object.entries(params)
-          .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
-          .join('&');
-      }
-      
-      return `${baseUrl}?${pageParam}`;
+      // 2ページ目以降はパス形式: /blog/page/2
+      return `${baseUrl}/page/${page}`;
     }
   };
   
