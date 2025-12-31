@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { NextSeo } from 'next-seo';
+import { generateNextSeo } from 'next-seo/pages';
 import PortfolioLayout from '../components/PortfolioLayout';
 import OGPImage from '../components/OGPImage';
 import ProjectModal from '../components/ProjectModal';
@@ -173,11 +173,11 @@ const HomePage: React.FC<HomePageProps> = ({ latestArticles }) => {
 
   return (
     <>
-      <NextSeo
-        title="Shaba - Portfolio"
-        description="Shaba's Portfolio - Works, About, and Contact"
-        canonical="https://shaba.dev/"
-        openGraph={{
+      {generateNextSeo({
+        title: "Shaba - Portfolio",
+        description: "Shaba's Portfolio - Works, About, and Contact",
+        canonical: "https://shaba.dev/",
+        openGraph: {
           url: 'https://shaba.dev/',
           title: 'Shaba - Web Developer & Solopreneur',
           description: 'Portfolio showcasing works, career journey, and projects by Shaba - Web Developer & Solopreneur',
@@ -189,9 +189,9 @@ const HomePage: React.FC<HomePageProps> = ({ latestArticles }) => {
               alt: 'Shaba Portfolio',
             },
           ],
-        }}
-      />
-      
+        },
+      })}
+
       <PortfolioLayout>
         {/* Hero Section */}
         <section className={styles.hero}>

@@ -4,34 +4,12 @@ import { siteTitle } from "../../../next-seo.config";
 import { MyLinkListPageUsecase } from "application/usecases/MyLinkListPageUsecase";
 import { MyLinkEntity } from "core/entities/MyLinkEntity";
 import { MyLinkType } from "core/types/MyLinkType";
-import dynamic from "next/dynamic";
-import { ACTIVE_THEME } from '../../config/themeSelector';
+import MyLinkPage from '../../themes/theme2/pages/MyLinkPage';
 
 // 1ページあたりのマイリンク数（全件表示でタイムアウト回避）
 const LINKS_PER_PAGE = 1000;
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
-
-// テーマに応じたMyLinkPageをインポート（ページネーション情報も受け取れるように型を更新）
-// const MyLinkPage = getThemePage<React.ComponentType<{ 
-//   mylinks: MyLinkEntity[],
-//   pagination?: {
-//     totalItems: number;
-//     itemsPerPage: number;
-//     currentPage: number;
-//     totalPages: number;
-//   }
-// }>>("MyLinkPage");
-
-const MyLinkPage = dynamic(() =>
-  import(`../../themes/${ACTIVE_THEME}/pages/MyLinkPage`).then(mod => mod.default),
-  {
-    // loading: () => <Loading />, // 読み込み中に表示されるコンポーネント
-    loading: () => null,
-    ssr: true,
-  }
-
-);
 
 /**
  * マイリンクトップページ（1ページ目）

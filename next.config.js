@@ -9,9 +9,11 @@ const nextConfig = {
     ARTICLE_SOURCE: process.env.ARTICLE_SOURCE || 'notion',
     BUILD_TIME: Date.now().toString(), // OGP画像のキャッシュバスティング用タイムスタンプ
   },
+  // Turbopack configuration (empty config to silence the warning)
+  turbopack: {},
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     config.resolve.alias.jsdom = false;
-    
+
     if (isServer) {
       config.plugins.push(new webpack.IgnorePlugin({
         resourceRegExp: /canvas/,
@@ -26,16 +28,21 @@ const nextConfig = {
     // Remove this when dependencies are properly updated
     ignoreBuildErrors: true,
   },
-  eslint: {
-    // Temporary solution - disabling eslint at build time
-    ignoreDuringBuilds: true,
-  },
   images: {
     unoptimized: true,
-    domains: [
-      's3.us-west-2.amazonaws.com',
-      'www.notion.so',
-      'images.unsplash.com',
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 's3.us-west-2.amazonaws.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.notion.so',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+      },
     ]
   },
   output: 'export',

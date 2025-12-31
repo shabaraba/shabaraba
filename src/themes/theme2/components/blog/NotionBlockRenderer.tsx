@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { tomorrow } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import styles from './NotionBlockRenderer.module.css';
-import { OgpFetchStatus, getFaviconUrl } from '../../../../lib/ogp';
+import { OgpFetchStatus, getFaviconUrl } from '../../../../lib/ogp-shared';
 import dynamic from 'next/dynamic';
 
 // Notionブロックの型定義（実際はより複雑です）

@@ -1,5 +1,4 @@
-import { isNull } from 'lodash';
-import { NextSeo } from 'next-seo';
+import { generateNextSeo } from 'next-seo/pages';
 import { FC } from 'react';
 
 type Props = {
@@ -15,13 +14,11 @@ type Props = {
 export const Seo: FC<Props> = ({ title, slug, coverImageUrl }) => {
   // Layoutコンポーネントと競合しないように、OGP画像の設定は行わない
   // SEO関連の設定のみを担当する
-  return (
-    <NextSeo
-      title={title}
-      openGraph={{
-        title: title,
-        // OGP画像設定はLayoutコンポーネントで行うため除外
-      }}
-    />
-  );
+  return generateNextSeo({
+    title: title,
+    openGraph: {
+      title: title,
+      // OGP画像設定はLayoutコンポーネントで行うため除外
+    },
+  });
 }

@@ -1,5 +1,4 @@
-import { isNull } from 'lodash';
-import { NextSeo } from 'next-seo';
+import { generateNextSeo } from 'next-seo/pages';
 import { FC } from 'react';
 
 type Props = {
@@ -12,17 +11,14 @@ export const Seo: FC<Props> = ({ title, coverImageUrl }) => {
   if (coverImageUrl != null && coverImageUrl != undefined) {
     imageUrl += '&bg=' + encodeURI(coverImageUrl);
   }
-  // console.log(imageUrl);
-  return (
-    <NextSeo
-      openGraph={{
-        title: title,
-        images: [
-          {
-            url: imageUrl
-          },
-        ],
-      }}
-    />
-  );
+  return generateNextSeo({
+    openGraph: {
+      title: title,
+      images: [
+        {
+          url: imageUrl
+        },
+      ],
+    },
+  });
 }

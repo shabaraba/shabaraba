@@ -5,8 +5,7 @@ import { siteTitle } from "../../../../next-seo.config";
 import { MyLinkListPageUsecase } from "application/usecases/MyLinkListPageUsecase";
 import { MyLinkEntity } from "core/entities/MyLinkEntity";
 import { MyLinkType } from "core/types/MyLinkType";
-import dynamic from "next/dynamic";
-import { ACTIVE_THEME } from '../../../config/themeSelector';
+import MyLinkPage from '../../../themes/theme2/pages/MyLinkPage';
 
 // 1ページあたりのマイリンク数（全件表示でタイムアウト回避）
 const LINKS_PER_PAGE = 1000;
@@ -17,15 +16,6 @@ interface PageParams extends ParsedUrlQuery {
 }
 
 type Props = InferGetStaticPropsType<typeof getStaticProps>;
-
-// テーマに応じたMyLinkPageをインポート
-const MyLinkPage = dynamic(() =>
-  import(`../../../themes/${ACTIVE_THEME}/pages/MyLinkPage`).then(mod => mod.default),
-  {
-    loading: () => null,
-    ssr: true,
-  }
-);
 
 /**
  * マイリンクページ（2ページ目以降）

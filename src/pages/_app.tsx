@@ -2,7 +2,7 @@ import React, { useEffect } from "react"
 import Head from "next/head"
 import { AppProps } from "next/app"
 import { useRouter } from "next/router"
-import { DefaultSeo } from "next-seo"
+import { generateDefaultSeo } from "next-seo/pages"
 import * as gtag from "../lib/gtag"
 import SEO from "../../next-seo.config"
 import { ACTIVE_THEME } from "../config/themeSelector"
@@ -57,7 +57,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="description" content={siteDescription} />
       </Head>
-      <DefaultSeo {...SEO} />
+      {generateDefaultSeo(SEO)}
       <SidebarProvider 
         trendingPosts={memoizedSidebarData.trendingPosts}
         tags={memoizedSidebarData.tags}

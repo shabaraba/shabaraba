@@ -1,20 +1,7 @@
-import dynamic from 'next/dynamic';
 import { InferGetStaticPropsType } from 'next';
-import { ACTIVE_THEME } from '../../config/themeSelector';
 import { CommonDataService } from '../../services/CommonDataService';
 import { IPageHead } from '../../core/types/NotionPageApiResponses';
-
-// 動的にテーマのホームページコンポーネントをインポート
-const HomePage = dynamic(
-  () =>
-    import(`../../themes/${ACTIVE_THEME}/pages/HomePage`).then(
-      (mod) => mod.default
-    ),
-  {
-    loading: () => null,
-    ssr: true,
-  }
-);
+import HomePage from '../../themes/theme2/pages/HomePage';
 
 // 1ページあたりの記事数
 const POSTS_PER_PAGE = 10;

@@ -1,17 +1,5 @@
-import { ACTIVE_THEME } from '../../config/themeSelector';
 import { ArticlePageUsecase } from 'application/usecases/ArticlePageUsecase';
-import dynamic from 'next/dynamic';
-
-// 動的にテーマの記事詳細ページコンポーネントをインポート
-const ArticlePage = dynamic(() =>
-  import(`../../themes/${ACTIVE_THEME}/pages/ArticlePage`).then(mod => mod.default),
-  {
-    // loading: () => <Loading />, // 読み込み中に表示されるコンポーネント
-    loading: () => null,
-    ssr: true, // OGPメタタグの適切な出力にはSSRが必要
-  }
-
-);
+import ArticlePage from '../../themes/theme2/pages/ArticlePage';
 
 // ページコンポーネントをエクスポート
 export default ArticlePage;
