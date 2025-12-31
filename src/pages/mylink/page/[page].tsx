@@ -8,8 +8,8 @@ import { MyLinkType } from "core/types/MyLinkType";
 import dynamic from "next/dynamic";
 import { ACTIVE_THEME } from '../../../config/themeSelector';
 
-// 1ページあたりのマイリンク数
-const LINKS_PER_PAGE = 10;
+// 1ページあたりのマイリンク数（全件表示でタイムアウト回避）
+const LINKS_PER_PAGE = 1000;
 
 // ページパラメータの型定義
 interface PageParams extends ParsedUrlQuery {
