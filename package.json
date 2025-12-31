@@ -5,7 +5,11 @@
     "node": ">=18"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["skia-canvas", "esbuild", "sharp"]
+    "onlyBuiltDependencies": [
+      "skia-canvas",
+      "esbuild",
+      "sharp"
+    ]
   },
   "scripts": {
     "predev": "node scripts/convert-toml-to-json.js",
@@ -34,7 +38,7 @@
     "@netlify/functions": "^5.1.2",
     "@netlify/plugin-nextjs": "^5.15.3",
     "@next/bundle-analyzer": "^16.1.1",
-    "@notionhq/client": "^5.6.0",
+    "@notionhq/client": "^2.2.15",
     "@types/jsdom": "^27.0.0",
     "@types/react-sticky-el": "^2.1.0",
     "@types/react-syntax-highlighter": "^15.5.13",
