@@ -64,8 +64,17 @@ export async function getStaticProps() {
     };
   } catch (error) {
     console.error('Error in getStaticProps:', error);
+    // 静的エクスポートではnotFoundは使用不可、空データを返す
     return {
-      notFound: true,
+      props: {
+        mylinks: [],
+        pagination: {
+          totalItems: 0,
+          itemsPerPage: LINKS_PER_PAGE,
+          currentPage: 1,
+          totalPages: 0
+        }
+      }
     };
   }
 }
