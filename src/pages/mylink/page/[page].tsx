@@ -32,12 +32,15 @@ const MyLinkPage = dynamic(() =>
  * サーバーサイドレンダリング対応のページネーション
  */
 export default function MyLinkPageIndex({ mylinks, pagination }: Props) {
+  // プレーンオブジェクトをMyLinkEntityインスタンスに変換
+  const mylinkEntities = mylinks.map((mylink: MyLinkType) => new MyLinkEntity(mylink));
+
   return (
     <>
       <Head>
         <title>{siteTitle} - Links (Page {pagination.currentPage})</title>
       </Head>
-      <MyLinkPage mylinks={mylinks} pagination={pagination} />
+      <MyLinkPage mylinks={mylinkEntities} pagination={pagination} />
     </>
   );
 }
@@ -86,11 +89,9 @@ export async function getStaticProps(context: GetStaticPropsContext<PageParams>)
   try {
     console.log(`mylink/page/[page].tsx - getStaticProps: Fetching data for page ${pageNumber}`);
 
-    // 全データを取得
+    // 全データを取得（プレーンオブジェクトとして）
     const result = await MyLinkListPageUsecase.getStaticProps();
-    const allMyLinks: MyLinkEntity[] = result.props.allData.map(
-      (mylink: MyLinkType) => new MyLinkEntity(mylink)
-    );
+    const allMyLinks = result.props.allData;
 
     // ページネーション計算
     const startIndex = (pageNumber - 1) * LINKS_PER_PAGE;

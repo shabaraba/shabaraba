@@ -4,9 +4,7 @@ import { siteTitle } from "../../../next-seo.config";
 import { MyLinkListPageUsecase } from "application/usecases/MyLinkListPageUsecase";
 import { MyLinkEntity } from "core/entities/MyLinkEntity";
 import { MyLinkType } from "core/types/MyLinkType";
-import { getThemePage } from "../../config/themeSelector";
 import dynamic from "next/dynamic";
-
 import { ACTIVE_THEME } from '../../config/themeSelector';
 
 // 1ページあたりのマイリンク数
@@ -40,12 +38,15 @@ const MyLinkPage = dynamic(() =>
  * サーバーサイドレンダリング対応
  */
 export default function MyLinkIndex({ mylinks, pagination }: Props) {
+  // プレーンオブジェクトをMyLinkEntityインスタンスに変換
+  const mylinkEntities = mylinks.map((mylink: MyLinkType) => new MyLinkEntity(mylink));
+
   return (
     <>
       <Head>
         <title>{siteTitle} - Links</title>
       </Head>
-      <MyLinkPage mylinks={mylinks} pagination={pagination} />
+      <MyLinkPage mylinks={mylinkEntities} pagination={pagination} />
     </>
   );
 }
@@ -59,11 +60,9 @@ export async function getStaticProps() {
   try {
     console.log('mylink/index.tsx - getStaticProps: Fetching data for page 1');
 
-    // 全データを取得
+    // 全データを取得（プレーンオブジェクトとして）
     const result = await MyLinkListPageUsecase.getStaticProps();
-    const allMyLinks: MyLinkEntity[] = result.props.allData.map(
-      (mylink: MyLinkType) => new MyLinkEntity(mylink)
-    );
+    const allMyLinks = result.props.allData;
 
     // 1ページ目のデータを計算
     const paginatedLinks = allMyLinks.slice(0, LINKS_PER_PAGE);
