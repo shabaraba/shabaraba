@@ -122,15 +122,7 @@ export async function getStaticProps(context: GetStaticPropsContext<PageParams>)
   } catch (error) {
     console.error(`Error in getStaticProps for page ${pageNumber}:`, error);
     return {
-      props: {
-        mylinks: [],
-        pagination: {
-          totalItems: 0,
-          itemsPerPage: LINKS_PER_PAGE,
-          currentPage: pageNumber,
-          totalPages: 0
-        }
-      }
+      notFound: true,
     };
   }
 }

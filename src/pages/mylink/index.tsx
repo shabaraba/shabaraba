@@ -87,15 +87,7 @@ export async function getStaticProps() {
   } catch (error) {
     console.error('Error in getStaticProps:', error);
     return {
-      props: {
-        mylinks: [],
-        pagination: {
-          totalItems: 0,
-          itemsPerPage: LINKS_PER_PAGE,
-          currentPage: 1,
-          totalPages: 0
-        }
-      }
+      notFound: true,
     };
   }
 }

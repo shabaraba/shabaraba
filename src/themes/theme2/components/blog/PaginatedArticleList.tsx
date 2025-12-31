@@ -11,7 +11,6 @@ interface PaginatedArticleListProps {
   currentPage: number;
   totalPages?: number;
   baseUrl: string;
-  queryParams?: Record<string, string>;
 }
 
 /**
@@ -24,8 +23,7 @@ export default function PaginatedArticleList({
   itemsPerPage,
   currentPage,
   totalPages = Math.ceil(totalItems / itemsPerPage),
-  baseUrl,
-  queryParams = {}
+  baseUrl
 }: PaginatedArticleListProps) {
   return (
     <div className={styles.container}>
@@ -36,7 +34,6 @@ export default function PaginatedArticleList({
           itemsPerPage={itemsPerPage}
           currentPage={currentPage}
           baseUrl={baseUrl}
-          queryParams={queryParams}
         />
       )}
     </div>

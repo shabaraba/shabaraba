@@ -3,6 +3,7 @@ import { GetStaticPropsContext, GetStaticPathsResult } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 import { ACTIVE_THEME } from '../../../config/themeSelector';
 import { CommonDataService } from '../../../services/CommonDataService';
+import { IPageHead } from '../../../core/types/NotionPageApiResponses';
 
 // 動的にテーマのホームページコンポーネントをインポート
 const HomePage = dynamic(
@@ -26,9 +27,9 @@ interface PageParams extends ParsedUrlQuery {
 
 // ページプロップスの型定義
 interface BlogPageProps {
-  articles: any[];
+  articles: IPageHead[];
   sidebarData: {
-    trendingPosts: any[];
+    trendingPosts: IPageHead[];
     tags: any[];
     series: any[];
   };
@@ -131,20 +132,7 @@ export async function getStaticProps(context: GetStaticPropsContext<PageParams>)
   } catch (error) {
     console.error(`Error in getStaticProps for page ${pageNumber}:`, error);
     return {
-      props: {
-        articles: [],
-        sidebarData: {
-          trendingPosts: [],
-          tags: [],
-          series: []
-        },
-        pagination: {
-          totalItems: 0,
-          itemsPerPage: POSTS_PER_PAGE,
-          currentPage: pageNumber,
-          totalPages: 0
-        }
-      }
+      notFound: true,
     };
   }
 }

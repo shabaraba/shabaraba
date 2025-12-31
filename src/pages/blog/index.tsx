@@ -1,6 +1,8 @@
 import dynamic from 'next/dynamic';
+import { InferGetStaticPropsType } from 'next';
 import { ACTIVE_THEME } from '../../config/themeSelector';
 import { CommonDataService } from '../../services/CommonDataService';
+import { IPageHead } from '../../core/types/NotionPageApiResponses';
 
 // 動的にテーマのホームページコンポーネントをインポート
 const HomePage = dynamic(
@@ -17,11 +19,13 @@ const HomePage = dynamic(
 // 1ページあたりの記事数
 const POSTS_PER_PAGE = 10;
 
+type Props = InferGetStaticPropsType<typeof getStaticProps>;
+
 /**
  * ブログトップページ（1ページ目）
  * サーバーサイドレンダリング対応
  */
-function BlogIndexPage({ articles, sidebarData, pagination }) {
+function BlogIndexPage({ articles, sidebarData, pagination }: Props) {
   return <HomePage articles={articles} sidebarData={sidebarData} pagination={pagination} />;
 }
 
@@ -66,20 +70,7 @@ export async function getStaticProps() {
   } catch (error) {
     console.error('Error in getStaticProps:', error);
     return {
-      props: {
-        articles: [],
-        sidebarData: {
-          trendingPosts: [],
-          tags: [],
-          series: []
-        },
-        pagination: {
-          totalItems: 0,
-          itemsPerPage: POSTS_PER_PAGE,
-          currentPage: 1,
-          totalPages: 0
-        }
-      }
+      notFound: true,
     };
   }
 }

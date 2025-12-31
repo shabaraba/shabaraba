@@ -7,7 +7,6 @@ interface PaginationProps {
   itemsPerPage: number;
   currentPage: number;
   baseUrl: string;
-  queryParams?: Record<string, string>;
 }
 
 /**
@@ -15,12 +14,11 @@ interface PaginationProps {
  * カフェ風デザインに合わせたスタイリング
  * 静的サイト生成（SSG）に対応
  */
-export default function Pagination({ 
-  totalItems, 
-  itemsPerPage, 
-  currentPage, 
-  baseUrl,
-  queryParams = {} 
+export default function Pagination({
+  totalItems,
+  itemsPerPage,
+  currentPage,
+  baseUrl
 }: PaginationProps) {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   

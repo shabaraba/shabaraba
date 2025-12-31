@@ -4,12 +4,13 @@ import PaginatedArticleList from '../components/blog/PaginatedArticleList';
 import styles from './HomePage.module.css';
 import { useConfig } from '../../../config/useConfig';
 import { Seo } from '../../../components/units/common/Seo';
+import { IPageHead } from '../../../core/types/NotionPageApiResponses';
 
 // getStaticProps関数でデータを取得する場合の型定義
 interface HomePageProps {
-  articles: any[];
+  articles: IPageHead[];
   sidebarData?: {
-    trendingPosts: any[];
+    trendingPosts: IPageHead[];
     tags: any[];
     series: any[];
   };
@@ -56,15 +57,11 @@ const HomePage = React.memo(function HomePage({
 
   // 実際のページネーション設定
   const paginationSettings = pagination || paginationDefaults;
-  
-  // クエリパラメータ（タグページの場合はタグ名を含める）
-  const queryParams = tagName ? { tag: tagName } : {};
 
-  // LayoutにsidebarDataを直接渡す
   // タグページのテキスト
   const tagTitlePrefix = getSetting('tag.title_prefix', 'タグ: ');
   const tagSubtitleTemplate = getSetting('tag.subtitle_template', '「%s」に関連する記事一覧');
-  
+
   return (
     <Layout title={title} description={description}>
       <Seo title={title} slug="default" />
@@ -85,14 +82,13 @@ const HomePage = React.memo(function HomePage({
           </>
         )}
       </div>
-      
-      <PaginatedArticleList 
+
+      <PaginatedArticleList
         articles={articles}
         totalItems={paginationSettings.totalItems}
         itemsPerPage={paginationSettings.itemsPerPage}
         currentPage={paginationSettings.currentPage}
         baseUrl={tagName ? `/tags/${tagName.toLowerCase()}` : '/blog'}
-        queryParams={queryParams}
       />
     </Layout>
   );
