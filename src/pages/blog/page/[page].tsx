@@ -91,10 +91,14 @@ export async function getStaticProps(context: GetStaticPropsContext<PageParams>)
     const paginatedArticles = commonData.posts.slice(startIndex, endIndex);
     const totalPages = Math.ceil(commonData.posts.length / POSTS_PER_PAGE);
 
-    // ページ番号の妥当性チェック
+    // ページ番号の妥当性チェック（静的エクスポートではnotFoundは使用不可）
     if (pageNumber < 1 || pageNumber > totalPages) {
       return {
-        notFound: true,
+        props: {
+          articles: [],
+          sidebarData: { trendingPosts: [], tags: [], series: [] },
+          pagination: { totalItems: 0, itemsPerPage: POSTS_PER_PAGE, currentPage: pageNumber, totalPages: 0 }
+        }
       };
     }
 
@@ -118,8 +122,13 @@ export async function getStaticProps(context: GetStaticPropsContext<PageParams>)
     };
   } catch (error) {
     console.error(`Error in getStaticProps for page ${pageNumber}:`, error);
+    // 静的エクスポートではnotFoundは使用不可、空データを返す
     return {
-      notFound: true,
+      props: {
+        articles: [],
+        sidebarData: { trendingPosts: [], tags: [], series: [] },
+        pagination: { totalItems: 0, itemsPerPage: POSTS_PER_PAGE, currentPage: pageNumber, totalPages: 0 }
+      }
     };
   }
 }

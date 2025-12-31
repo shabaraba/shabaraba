@@ -73,8 +73,16 @@ export class ArticlePageUsecase {
       }
     } catch (error) {
       console.error(`Error fetching article with slug "${slug}":`, error);
+      // 静的エクスポートではnotFoundは使用不可、空データを返す
       return {
-        notFound: true,
+        props: {
+          article: null,
+          sidebarData: {
+            trendingPosts: [],
+            tags: [],
+            series: []
+          }
+        }
       };
     }
   }

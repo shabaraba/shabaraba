@@ -56,8 +56,13 @@ export async function getStaticProps() {
     };
   } catch (error) {
     console.error('Error in getStaticProps:', error);
+    // 静的エクスポートではnotFoundは使用不可、空データを返す
     return {
-      notFound: true,
+      props: {
+        articles: [],
+        sidebarData: { trendingPosts: [], tags: [], series: [] },
+        pagination: { totalItems: 0, itemsPerPage: POSTS_PER_PAGE, currentPage: 1, totalPages: 0 }
+      }
     };
   }
 }

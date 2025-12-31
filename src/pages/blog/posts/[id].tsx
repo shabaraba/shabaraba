@@ -12,8 +12,12 @@ export async function getStaticPaths() {
 // 静的ページ生成のためのデータ取得関数
 export async function getStaticProps({ params }) {
   if (!params?.id) {
+    // 静的エクスポートではnotFoundは使用不可
     return {
-      notFound: true,
+      props: {
+        article: null,
+        sidebarData: { trendingPosts: [], tags: [], series: [] }
+      }
     };
   }
   return ArticlePageUsecase.getStaticProps({ params });
