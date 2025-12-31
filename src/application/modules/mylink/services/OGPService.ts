@@ -5,7 +5,12 @@ import { OGPEntity } from '../objects/entities/OGPEntity';
 
 export const getOGP = async (url: string): Promise<OGPEntity> => {
   try {
-    const response = await axios.get(url)
+    const response = await axios.get(url, {
+      timeout: 5000, // 5秒でタイムアウト
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (compatible; BlogOGPFetcher/1.0)'
+      }
+    })
     const data = response.data
     // Configure JSDOM to ignore CSS parsing errors
     const dom = new JSDOM(data, {
