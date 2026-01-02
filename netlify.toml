@@ -1,9 +1,10 @@
 [build]
     publish = "out"
-    command = "npm run build"
+    command = "pnpm run build"
 
 [build.environment]
     NETLIFY_NEXT_PLUGIN_SKIP = "true"
+    NODE_VERSION = "22"
     NODE_OPTIONS = "--max-old-space-size=4096"
     PYTHON_VERSION = "3.9"
     
