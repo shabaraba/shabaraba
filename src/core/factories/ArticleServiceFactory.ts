@@ -1,5 +1,6 @@
 import { ArticleService } from '../interfaces/article/ArticleService';
 import { NotionArticleService } from '../implementations/notion/NotionArticleService';
+import { MarkdownArticleService } from '../implementations/markdown/MarkdownArticleService';
 import { PostHeadService } from 'application/modules/post/services/PostHeadService';
 
 /**
@@ -14,11 +15,10 @@ export class ArticleServiceFactory {
   static createArticleService(): ArticleService {
     // 環境変数からソースタイプを取得（未設定の場合はnotionをデフォルトとする）
     const sourceType = process.env.ARTICLE_SOURCE || 'notion';
-    
+
     switch (sourceType) {
       case 'markdown':
-        // 将来的に追加予定のMarkdown実装
-        throw new Error('Markdown source is not implemented yet');
+        return new MarkdownArticleService(process.env.MARKDOWN_CONTENT_DIR);
       case 'notion':
       default:
         return new NotionArticleService();
