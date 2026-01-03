@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from './ArticleList.module.css';
@@ -6,6 +6,55 @@ import { ArticleListItem } from '../../core/interfaces/article/ArticleRepository
 
 interface ArticleListProps {
   articles: ArticleListItem[];
+}
+
+const DEFAULT_IMAGE = '/og-images/default.png';
+
+/**
+ * 記事一覧の各記事カードコンポーネント
+ */
+function ArticleThumbnail({ article }: { article: ArticleListItem }) {
+  const [imgSrc, setImgSrc] = useState(article.coverImage);
+  const [hasError, setHasError] = useState(false);
+
+  const handleImageError = () => {
+    if (!hasError) {
+      setImgSrc(DEFAULT_IMAGE);
+      setHasError(true);
+    }
+  };
+
+  // coverImageがある場合は画像を表示
+  if (article.coverImage) {
+    return (
+      <div className={styles.articleImage}>
+        <Link href={`/blog/posts/${article.slug}`}>
+          <Image
+            src={imgSrc || DEFAULT_IMAGE}
+            alt={article.title}
+            width={800}
+            height={420}
+            className={styles.image}
+            onError={handleImageError}
+          />
+        </Link>
+      </div>
+    );
+  }
+
+  // coverImageがなくiconがある場合はアイコンを表示
+  if (article.icon) {
+    return (
+      <div className={styles.articleIcon}>
+        <Link href={`/blog/posts/${article.slug}`}>
+          <span className={styles.iconText}>{article.icon}</span>
+        </Link>
+      </div>
+    );
+  }
+
+  // どちらもない場合は何も表示しない
+  return null;
 }
 
 /**
@@ -16,19 +65,7 @@ export default function ArticleList({ articles }: ArticleListProps) {
     <div className={styles.articleList}>
       {articles.map((article) => (
         <article key={article.id} className={styles.articleCard}>
-          {article.coverImage && (
-            <div className={styles.articleImage}>
-              <Link href={`/blog/posts/${article.slug}`}>
-                <Image 
-                  src={article.coverImage} 
-                  alt={article.title} 
-                  width={800} 
-                  height={420} 
-                  className={styles.image}
-                />
-              </Link>
-            </div>
-          )}
+          <ArticleThumbnail article={article} />
           <div className={styles.articleContent}>
             <h2 className={styles.articleTitle}>
               <Link href={`/blog/posts/${article.slug}`} className={styles.titleLink}>

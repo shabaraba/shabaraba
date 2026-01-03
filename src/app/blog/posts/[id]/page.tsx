@@ -32,6 +32,9 @@ export async function generateMetadata({
     const articleService = ArticleServiceFactory.createArticleService();
     const article = await articleService.getArticleBySlug(id);
 
+    // OG画像のパスを生成（/og-images/{slug}.pngの規則）
+    const ogImageUrl = `/og-images/${id}.png`;
+
     return {
       title: article.title || 'Article',
       description: article.summary || 'Blog article',
@@ -39,6 +42,20 @@ export async function generateMetadata({
         title: article.title,
         description: article.summary,
         type: 'article',
+        images: [
+          {
+            url: ogImageUrl,
+            width: 1200,
+            height: 630,
+            alt: article.title,
+          },
+        ],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: article.title,
+        description: article.summary,
+        images: [ogImageUrl],
       },
     };
   } catch (error) {

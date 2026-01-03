@@ -29,6 +29,28 @@
   position: relative;
 }
 
+.articleIcon {
+  width: 280px; /* アイコン幅を固定 */
+  min-width: 280px; /* アイコンの最小幅を固定 */
+  height: 180px; /* アイコン高さを固定 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--sidebar-bg-color) 0%, var(--content-bg-color) 100%);
+  border-radius: 8px 0 0 8px;
+  overflow: hidden;
+}
+
+.iconText {
+  font-size: 4rem; /* アイコンサイズ */
+  line-height: 1;
+  transition: transform 0.4s ease;
+}
+
+.articleCard:hover .iconText {
+  transform: scale(1.1);
+}
+
 .image {
   width: 100%;
   height: 100%;
@@ -151,11 +173,22 @@
     border-left: none;
     border-top: 3px solid var(--accent-color); /* ボーダーを薄く (4px → 3px) */
   }
-  
+
   .articleImage {
     width: 100%; /* 幅を100%に */
     min-width: auto; /* 最小幅を解除 */
     height: 160px; /* 高さを小さく (200px → 160px) */
+  }
+
+  .articleIcon {
+    width: 100%; /* 幅を100%に */
+    min-width: auto; /* 最小幅を解除 */
+    height: 160px; /* 高さを小さく (200px → 160px) */
+    border-radius: 8px 8px 0 0; /* 上部のみ角丸 */
+  }
+
+  .iconText {
+    font-size: 3rem; /* モバイルではアイコンを小さく */
   }
   
   .articleContent {

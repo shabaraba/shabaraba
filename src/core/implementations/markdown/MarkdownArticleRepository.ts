@@ -213,6 +213,7 @@ export class MarkdownArticleRepository implements ArticleRepository {
       publishedAt: publishedDate.toISOString() as any, // ISO文字列に変換
       updatedAt: updatedDate?.toISOString() as any,
       coverImage: this.resolveCoverImagePath(frontmatter.coverImage, filePath),
+      icon: frontmatter.icon,
       tags: frontmatter.tags || [],
     };
   }

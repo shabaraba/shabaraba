@@ -10,6 +10,7 @@ export interface ArticleListItem {
   publishedAt: Date;
   updatedAt?: Date;
   coverImage?: string;
+  icon?: string;
   tags?: string[];
 }
 

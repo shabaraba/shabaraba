@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Article } from '../../core/interfaces/article/ArticleRepository';
@@ -14,10 +14,22 @@ interface ArticleDetailProps {
   article: Article;
 }
 
+const DEFAULT_IMAGE = '/og-images/default.png';
+
 /**
  * 記事詳細コンポーネント
  */
 export default function ArticleDetail({ article }: ArticleDetailProps) {
+  const [coverImageSrc, setCoverImageSrc] = useState(article.coverImage);
+  const [hasError, setHasError] = useState(false);
+
+  const handleImageError = () => {
+    if (!hasError) {
+      setCoverImageSrc(DEFAULT_IMAGE);
+      setHasError(true);
+    }
+  };
+
   return (
     <article className={styles.article}>
       <header className={styles.header}>
@@ -42,13 +54,14 @@ export default function ArticleDetail({ article }: ArticleDetailProps) {
         </div>
         {article.coverImage && (
           <div className={styles.coverImage}>
-            <Image 
-              src={article.coverImage} 
-              alt={article.title} 
-              width={1200} 
-              height={630} 
+            <Image
+              src={coverImageSrc || DEFAULT_IMAGE}
+              alt={article.title}
+              width={1200}
+              height={630}
               priority
               className={styles.image}
+              onError={handleImageError}
             />
           </div>
         )}

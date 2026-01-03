@@ -42,3 +42,6 @@ yarn-error.log*
 *.bak
 
 **/.claude/settings.local.json
+
+# vibing.nvim
+.vibing/

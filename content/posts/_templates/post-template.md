@@ -6,7 +6,7 @@ updatedAt: "2024-01-01T00:00:00+09:00"
 tags:
   - TypeScript
   - React
-coverImage: "./images/cover.jpg"
+coverImage: "/images/articles/cover.jpg"
 icon: "📝"
 excerpt: "記事の要約を2-3行で記述"
 series: ""

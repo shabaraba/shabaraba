@@ -9,7 +9,7 @@ tags:
   - 技術ブログ
 icon: "🚀"
 excerpt: "Markdownベースの新しい記事管理システムのテスト記事です。"
-coverImage: "/images/og/markdown-test-article.png"
+coverImage: "/images/articles/markdown-test-cover.jpg"
 series: ""
 trend: false
 relatedArticles: []
