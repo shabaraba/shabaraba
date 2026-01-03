@@ -1,6 +1,7 @@
+
 import { ArticleService } from '../interfaces/article/ArticleService';
-import { NotionArticleService } from '../implementations/notion/NotionArticleService';
 import { MarkdownArticleService } from '../implementations/markdown/MarkdownArticleService';
+import { NotionArticleService } from '../implementations/notion/NotionArticleService';
 import { PostHeadService } from 'application/modules/post/services/PostHeadService';
 
 /**
@@ -25,7 +26,7 @@ export class ArticleServiceFactory {
     }
   }
 
-  static createArticleHeadService(): PostHeadService {
+  static createArticleHeadService() {
     return new PostHeadService();
   }
 }

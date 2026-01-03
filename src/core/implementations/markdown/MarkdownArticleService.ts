@@ -1,9 +1,11 @@
+
 import { ArticleService } from '../../interfaces/article/ArticleService';
 import { Article, ArticleListItem } from '../../interfaces/article/ArticleRepository';
 import { MarkdownArticleRepository } from './MarkdownArticleRepository';
 
 /**
  * Markdownファイルを利用した記事サービスの実装
+ * 注意: このクラスはサーバーサイドでのみ使用可能
  */
 export class MarkdownArticleService implements ArticleService {
   private repository: MarkdownArticleRepository;

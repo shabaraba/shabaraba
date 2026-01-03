@@ -38,18 +38,22 @@ export interface SiteConfig {
     page_title: string;
     page_description: string;
   };
+  header: {
+    homelink: string;
+    mylink: string;
+  };
 }
 
-// デフォルト値（設定ファイルが読み込めない場合のフォールバック）
+// デフォルト値（site.tomlと一致させてSSR/CSR不整合を防ぐ）
 const defaultConfig: SiteConfig = {
   site: {
     title: 'Coffee Break Point',
-    description: 'コーヒー休憩にちょうどよい技術よみものを目指して',
-    url: 'https://shaba.dev/blog',
+    description: '育児・仕事・開発——全部やるエンジニアの記録です。',
+    url: 'https://blog.shaba.dev',
   },
   home: {
     title: 'Coffee Break Point',
-    subtitle: 'プログラミングやデザイン、日々の気づきをお届けするブログです',
+    subtitle: 'コーヒー休憩にちょうどよい技術よみものを目指して',
   },
   tag: {
     title_prefix: 'タグ: ',
@@ -57,9 +61,9 @@ const defaultConfig: SiteConfig = {
   },
   author: {
     name: 'しゃば',
-    bio: 'プログラミングとデザインが好きなエンジニア。日々の発見や気づきをこのブログで共有しています。',
+    bio: '2児の父でエンジニア。自分の開発環境を整えるのが好き。最近はClaudeに首ったけ。',
     detail: {
-      info: 'ロボット好きのPHPエンジニア\\n自分でイジれるおもちゃを欲しがち\\n時間がなく3年ほど中断している工作機械自作の完成が夢\\n\\n休憩の傍らななめ読みできそうな技術ブログを目指す',
+      info: 'ロボット好きのPHPエンジニア\n自分でイジれるおもちゃを欲しがち\n時間がなく3年ほど中断している工作機械自作の完成が夢\n\n休憩の傍らななめ読みできそうな技術ブログを目指す',
     },
   },
   footer: {
@@ -68,7 +72,7 @@ const defaultConfig: SiteConfig = {
   },
   layout: {
     default_title: 'Coffee Break Point',
-    default_description: '日々の気付きやメモを書いていくブログです',
+    default_description: '育児・仕事・開発——全部やるエンジニアの記録です。',
   },
   sidebar: {
     author_title: 'Author',
@@ -77,13 +81,17 @@ const defaultConfig: SiteConfig = {
     tags_title: 'タグ',
   },
   mylink: {
-    page_title: 'Links',
+    page_title: 'MyLinks',
     page_description: '筆者の興味関心のある外部ページはこちらに',
+  },
+  header: {
+    homelink: '記事一覧',
+    mylink: 'MyLinks',
   },
 };
 
-// 設定保存用の変数
-let config: SiteConfig = null;
+// 設定保存用の変数（デフォルト値で初期化してSSR/CSR不一致を防ぐ）
+let config: SiteConfig = defaultConfig;
 
 // クライアントサイドの設定読み込みリクエストを追跡する変数
 let configPromise: Promise<SiteConfig> | null = null;

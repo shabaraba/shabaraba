@@ -1,36 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { JSDOM, VirtualConsole } from 'jsdom';
+import { OgpData, OgpFetchStatus, getFaviconUrl } from './ogp-utils';
 
-// OGPデータの型定義
-export interface OgpData {
-  title: string;
-  description: string;
-  url: string;
-  imageUrl: string;
-  faviconUrl: string;
-}
-
-// OGPフェッチ中の状態
-export enum OgpFetchStatus {
-  IDLE = 'idle',
-  LOADING = 'loading',
-  SUCCESS = 'success',
-  ERROR = 'error'
-}
+// Re-export for backward compatibility
+export { OgpData, OgpFetchStatus, getFaviconUrl };
 
 // OGPデータをキャッシュする単純なMap
 const ogpCache = new Map<string, OgpData>();
-
-// 指定URLのfaviconを取得するためのURL生成関数
-export const getFaviconUrl = (url: string): string => {
-  try {
-    const { hostname } = new URL(url);
-    return `https://www.google.com/s2/favicons?domain=${hostname}&sz=32`;
-  } catch {
-    return '';
-  }
-};
 
 // OGPデータを取得するAPI関数
 export const fetchOgpData = async (url: string): Promise<OgpData> => {

@@ -1,6 +1,8 @@
+'use client';
+
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation';
 import styles from './HeaderNavigation.module.css';
 
 interface NavItem {
@@ -9,7 +11,7 @@ interface NavItem {
 }
 
 const HeaderNavigation: React.FC = () => {
-  const router = useRouter();
+  const pathname = usePathname();
   const [activeSection, setActiveSection] = useState<string>('');
   const [indicatorStyle, setIndicatorStyle] = useState<React.CSSProperties>({});
   const navRef = useRef<HTMLElement>(null);
@@ -26,7 +28,7 @@ const HeaderNavigation: React.FC = () => {
   useEffect(() => {
     const handleScroll = () => {
       const sections = ['about', 'jobs', 'works', 'articles', 'contact'];
-      const scrollPosition = window.scrollY + 100; // ヘッダー高さ分のオフセット
+      const scrollPosition = window.scrollY + 100;
 
       for (let i = sections.length - 1; i >= 0; i--) {
         const section = document.getElementById(sections[i]);
@@ -36,14 +38,13 @@ const HeaderNavigation: React.FC = () => {
         }
       }
 
-      // 一番上にいる場合はアクティブセクションをクリア
       if (window.scrollY < 50) {
         setActiveSection('');
       }
     };
 
     window.addEventListener('scroll', handleScroll);
-    handleScroll(); // 初期状態をチェック
+    handleScroll();
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -55,11 +56,11 @@ const HeaderNavigation: React.FC = () => {
       if (!navRef.current) return;
 
       const activeItem = navRef.current.querySelector(`.${styles.active}`) as HTMLElement;
-      
+
       if (activeItem) {
         const navRect = navRef.current.getBoundingClientRect();
         const itemRect = activeItem.getBoundingClientRect();
-        
+
         setIndicatorStyle({
           width: itemRect.width,
           height: itemRect.height,
@@ -70,18 +71,16 @@ const HeaderNavigation: React.FC = () => {
     };
 
     updateIndicator();
-    
-    // リサイズ時にも更新
     window.addEventListener('resize', updateIndicator);
-    
+
     return () => {
       window.removeEventListener('resize', updateIndicator);
     };
-  }, [activeSection, router.pathname]);
+  }, [activeSection, pathname]);
 
   const isActive = (href: string) => {
     if (href === '/blog') {
-      return router.pathname.startsWith('/blog');
+      return pathname?.startsWith('/blog') ?? false;
     }
     if (href.startsWith('/#')) {
       const section = href.substring(2);
@@ -107,10 +106,10 @@ const HeaderNavigation: React.FC = () => {
         <Link href="/" className={styles.logo}>
           <span className={styles.logoText}>Shaba</span>
         </Link>
-        
+
         <nav className={styles.navigation} ref={navRef}>
-          <div 
-            className={`${styles.activeIndicator} ${activeSection || router.pathname.startsWith('/blog') ? styles.visible : ''}`}
+          <div
+            className={`${styles.activeIndicator} ${activeSection || pathname?.startsWith('/blog') ? styles.visible : ''}`}
             style={indicatorStyle}
           />
           {navItems.map((item) => (

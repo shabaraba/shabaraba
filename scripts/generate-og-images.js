@@ -470,6 +470,58 @@ function slugify(str) {
 }
 
 /**
+ * Markdownファイルから記事情報を取得する
+ * @returns {Promise<Array<Object>>} - 記事情報の配列
+ */
+async function getMarkdownArticles() {
+  try {
+    const contentDir = path.join(process.cwd(), 'content', 'posts');
+
+    if (!fs.existsSync(contentDir)) {
+      console.log('Markdown content directory not found:', contentDir);
+      return [];
+    }
+
+    const files = await readdir(contentDir);
+    const mdFiles = files.filter(f => f.endsWith('.md'));
+    const articles = [];
+
+    for (const file of mdFiles) {
+      const filePath = path.join(contentDir, file);
+      const content = fs.readFileSync(filePath, 'utf-8');
+
+      // frontmatterを解析
+      const frontmatterMatch = content.match(/^---\s*\n([\s\S]*?)\n---/);
+      if (!frontmatterMatch) continue;
+
+      const frontmatter = frontmatterMatch[1];
+
+      // 各フィールドを抽出
+      const titleMatch = frontmatter.match(/title:\s*["']?([^"'\n]+)["']?/);
+      const slugMatch = frontmatter.match(/slug:\s*["']?([^"'\n]+)["']?/);
+      const draftMatch = frontmatter.match(/draft:\s*(true|false)/);
+
+      // draftがtrueの場合はスキップ
+      if (draftMatch && draftMatch[1] === 'true') continue;
+
+      const title = titleMatch ? titleMatch[1].trim() : path.basename(file, '.md');
+      const slug = slugMatch ? slugMatch[1].trim() : path.basename(file, '.md');
+
+      articles.push({
+        title,
+        slug,
+        filePath
+      });
+    }
+
+    return articles;
+  } catch (error) {
+    console.error('Error reading markdown articles:', error);
+    return [];
+  }
+}
+
+/**
  * Notionからブログのページリストを取得する
  * @returns {Promise<Array<Object>>} - ブログページオブジェクトの配列
  */
@@ -654,20 +706,38 @@ async function main() {
       canvasAvailable = false;
     }
     
+    // 記事ソース設定を取得
+    const articleSource = process.env.ARTICLE_SOURCE || 'notion';
+    console.log(`Article source: ${articleSource}`);
+
     if (canvasAvailable) {
       try {
         // デフォルトOGP画像を生成
         console.log('Generating default OG image...');
         copyDefaultOgImage();
         await generateOgImage('Coffee Break Point', 'default');
-        
-        // Notionから記事情報を取得
+
+        // Markdown記事のOGP画像を生成
+        console.log('Fetching posts from Markdown files...');
+        const mdArticles = await getMarkdownArticles();
+        if (mdArticles.length > 0) {
+          console.log(`Found ${mdArticles.length} published posts in Markdown files.`);
+          for (const article of mdArticles) {
+            const { title, slug } = article;
+            // サムネイル画像を探す
+            const thumbnailPath = await findThumbnailImage(slug);
+            console.log(`Generating OG image for: ${title} (${slug})`);
+            await generateOgImage(title, slug, thumbnailPath);
+          }
+        }
+
+        // Notionから記事情報を取得（常にNotion記事も生成）
         console.log('Fetching posts from Notion...');
         const notionMappings = await getNotionPageMappings();
-        
+
         if (notionMappings.length > 0) {
           console.log(`Found ${notionMappings.length} published posts in Notion.`);
-          
+
           // 各記事のOGP画像を生成
           for (const mapping of notionMappings) {
             const { id, title, slug, headerImagePath } = mapping;
@@ -676,31 +746,19 @@ async function main() {
           }
         } else {
           console.log('No published posts found in Notion.');
-          
+
           // Notionから取得できない場合は、従来のサムネイル方式を試す
           console.log('Trying to find existing thumbnail images as fallback...');
-          const findThumbnailImage = async (slug) => {
-            if (!fs.existsSync(THUMBNAIL_DIR)) return null;
-            const files = await readdir(THUMBNAIL_DIR);
-            for (const file of files) {
-              const filename = path.basename(file, path.extname(file));
-              const fileSlug = slugify(filename);
-              if (fileSlug === slug || filename === slug) {
-                return path.join(THUMBNAIL_DIR, file);
-              }
-            }
-            return null;
-          };
-          
+
           // 既存のOGP画像ディレクトリから記事IDを推測
           if (fs.existsSync(OUTPUT_DIR)) {
             const ogFiles = await readdir(OUTPUT_DIR);
             for (const file of ogFiles) {
               if (file === 'default.png') continue;
-              
+
               const slug = path.basename(file, path.extname(file));
               const thumbnailPath = await findThumbnailImage(slug);
-              
+
               if (thumbnailPath) {
                 console.log(`Found thumbnail for ${slug}, regenerating OG image...`);
                 await generateOgImage(slug, slug, thumbnailPath);

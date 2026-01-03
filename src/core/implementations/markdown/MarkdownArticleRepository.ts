@@ -32,9 +32,9 @@ export class MarkdownArticleRepository implements ArticleRepository {
         articles.push(this.convertToArticleListItem(frontmatter, file));
       }
 
-      // 公開日降順でソート
+      // 公開日降順でソート（ISO文字列として比較）
       return articles.sort((a, b) =>
-        b.publishedAt.getTime() - a.publishedAt.getTime()
+        new Date(b.publishedAt as any).getTime() - new Date(a.publishedAt as any).getTime()
       );
     } catch (error) {
       console.error('Error fetching article list from Markdown:', error);
@@ -201,13 +201,17 @@ export class MarkdownArticleRepository implements ArticleRepository {
     frontmatter: ArticleFrontmatter,
     filePath: string
   ): ArticleListItem {
+    // 日付をISO文字列に変換（JSONシリアライズ可能にするため）
+    const publishedDate = new Date(frontmatter.publishedAt);
+    const updatedDate = frontmatter.updatedAt ? new Date(frontmatter.updatedAt) : undefined;
+
     return {
       id: frontmatter.slug,
       slug: frontmatter.slug,
       title: frontmatter.title,
       excerpt: frontmatter.excerpt || '',
-      publishedAt: new Date(frontmatter.publishedAt),
-      updatedAt: frontmatter.updatedAt ? new Date(frontmatter.updatedAt) : undefined,
+      publishedAt: publishedDate.toISOString() as any, // ISO文字列に変換
+      updatedAt: updatedDate?.toISOString() as any,
       coverImage: this.resolveCoverImagePath(frontmatter.coverImage, filePath),
       tags: frontmatter.tags || [],
     };

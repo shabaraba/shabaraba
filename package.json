@@ -70,6 +70,7 @@
     "remark-gfm": "^3.0.1",
     "remark-html": "^15.0.0",
     "remark-parse": "^10.0.2",
+    "server-only": "^0.0.1",
     "skia-canvas": "^2.0.2",
     "swr": "^1.2.1",
     "tls": "^0.0.1",

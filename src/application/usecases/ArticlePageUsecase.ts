@@ -12,8 +12,10 @@ import { CommonDataService } from "../../services/CommonDataService";
 export class ArticlePageUsecase {
   public static async getStaticPaths() {
     try {
+      console.log('[ArticlePageUsecase.getStaticPaths] ARTICLE_SOURCE:', process.env.ARTICLE_SOURCE);
       const postHeadService = ArticleServiceFactory.createArticleHeadService();
       const pathParams = await postHeadService.getPathParams();
+      console.log('[ArticlePageUsecase.getStaticPaths] Generated paths:', JSON.stringify(pathParams, null, 2));
       return {
         paths: pathParams,
         fallback: false,
