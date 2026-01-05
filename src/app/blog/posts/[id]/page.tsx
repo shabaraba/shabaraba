@@ -34,8 +34,9 @@ export async function generateMetadata({
     const articleService = ArticleServiceFactory.createArticleService();
     const article = await articleService.getArticleBySlug(id);
 
-    // OG画像のパスを生成（/og-images/{slug}.pngの規則）
-    const ogImageUrl = `/og-images/${id}.png`;
+    // OG画像のURLを生成（絶対URLが必要）
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://blog.shaba.dev';
+    const ogImageUrl = `${siteUrl}/og-images/${id}.png`;
 
     return {
       title: article.title || 'Article',
