@@ -315,7 +315,6 @@ const BookmarkCard: React.FC<{ url: string; ogpData?: BookmarkData }> = ({
             src={image}
             alt=""
             className={styles.bookmarkThumbnail}
-            style={{ width: '150px', height: '120px' }}
           />
         )}
       </a>
