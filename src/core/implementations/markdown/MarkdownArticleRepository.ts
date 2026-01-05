@@ -20,8 +20,8 @@ export class MarkdownArticleRepository implements ArticleRepository {
       const articles: ArticleListItem[] = [];
 
       for (const file of files) {
-        const content = await fs.readFile(file, 'utf-8');
-        const { data } = matter(content);
+        const fileContent = await fs.readFile(file, 'utf-8');
+        const { data, content } = matter(fileContent);
         const frontmatter = data as ArticleFrontmatter;
 
         // 下書きは除外
@@ -29,7 +29,7 @@ export class MarkdownArticleRepository implements ArticleRepository {
           continue;
         }
 
-        articles.push(this.convertToArticleListItem(frontmatter, file));
+        articles.push(this.convertToArticleListItem(frontmatter, file, content));
       }
 
       // 公開日降順でソート（ISO文字列として比較）
@@ -178,14 +178,14 @@ export class MarkdownArticleRepository implements ArticleRepository {
         const filePath = await this.findFileBySlug(slug);
         if (!filePath) continue;
 
-        const content = await fs.readFile(filePath, 'utf-8');
-        const { data } = matter(content);
+        const fileContent = await fs.readFile(filePath, 'utf-8');
+        const { data, content } = matter(fileContent);
         const frontmatter = data as ArticleFrontmatter;
 
         // 下書きは除外
         if (frontmatter.draft) continue;
 
-        relatedArticles.push(this.convertToArticleListItem(frontmatter, filePath));
+        relatedArticles.push(this.convertToArticleListItem(frontmatter, filePath, content));
       } catch (error) {
         console.error(`Error fetching related article ${slug}:`, error);
       }
@@ -199,23 +199,77 @@ export class MarkdownArticleRepository implements ArticleRepository {
    */
   private convertToArticleListItem(
     frontmatter: ArticleFrontmatter,
-    filePath: string
+    filePath: string,
+    markdownContent?: string
   ): ArticleListItem {
     // 日付をISO文字列に変換（JSONシリアライズ可能にするため）
     const publishedDate = new Date(frontmatter.publishedAt);
     const updatedDate = frontmatter.updatedAt ? new Date(frontmatter.updatedAt) : undefined;
 
+    // excerptがない場合は本文から自動生成
+    const excerpt = frontmatter.excerpt ||
+      (markdownContent ? this.extractExcerptFromContent(markdownContent) : '');
+
     return {
       id: frontmatter.slug,
       slug: frontmatter.slug,
       title: frontmatter.title,
-      excerpt: frontmatter.excerpt || '',
+      excerpt,
       publishedAt: publishedDate.toISOString() as any, // ISO文字列に変換
       updatedAt: updatedDate?.toISOString() as any,
       coverImage: this.resolveCoverImagePath(frontmatter.coverImage, filePath),
       icon: frontmatter.icon,
       tags: frontmatter.tags || [],
     };
+  }
+
+  /**
+   * Markdown本文からexcerptを抽出（150文字 + "..."）
+   */
+  private extractExcerptFromContent(markdown: string, maxLength: number = 150): string {
+    // Markdownの記法を除去してプレーンテキスト化
+    let text = markdown
+      // 見出し記号を削除
+      .replace(/^#{1,6}\s+/gm, '')
+      // リンク記法を削除（テキスト部分のみ残す）
+      .replace(/\[([^\]]+)\]\([^\)]+\)/g, '$1')
+      // 画像記法を削除
+      .replace(/!\[([^\]]*)\]\([^\)]+\)/g, '')
+      // コードブロックを削除
+      .replace(/```[\s\S]*?```/g, '')
+      // インラインコードを削除
+      .replace(/`([^`]+)`/g, '$1')
+      // 太字・斜体記号を削除
+      .replace(/\*\*([^\*]+)\*\*/g, '$1')
+      .replace(/\*([^\*]+)\*/g, '$1')
+      .replace(/__([^_]+)__/g, '$1')
+      .replace(/_([^_]+)_/g, '$1')
+      // 引用記号を削除
+      .replace(/^>\s+/gm, '')
+      // 箇条書き記号を削除
+      .replace(/^[\*\-\+]\s+/gm, '')
+      .replace(/^\d+\.\s+/gm, '')
+      // カスタムディレクティブを削除
+      .replace(/:::[a-z]+(\{[^\}]*\})?[\s\S]*?:::/g, '')
+      // 水平線を削除
+      .replace(/^[\-\*_]{3,}$/gm, '')
+      // 複数の空白行を1つに
+      .replace(/\n{3,}/g, '\n\n')
+      // 前後の空白を削除
+      .trim();
+
+    // 改行を空白に変換
+    text = text.replace(/\n/g, ' ');
+
+    // 複数の空白を1つに
+    text = text.replace(/\s{2,}/g, ' ');
+
+    // 指定文字数で切り取り
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength) + '...';
+    }
+
+    return text;
   }
 
   /**
