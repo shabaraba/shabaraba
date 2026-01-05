@@ -301,6 +301,10 @@
   border-radius: 6px;
 }
 
+.toggleBlock[open] {
+  background-color: var(--sidebar-bg-color);
+}
+
 .toggleHeader {
   padding: 0.75rem 1rem;
   background-color: var(--sidebar-bg-color);
@@ -310,19 +314,25 @@
   align-items: center;
   user-select: none;
   transition: background-color 0.2s;
+  list-style: none;
+}
+
+.toggleHeader::-webkit-details-marker {
+  display: none;
 }
 
 .toggleHeader:hover {
-  background-color: rgba(123, 94, 87, 0.1);
+  background-color: rgba(123, 94, 87, 0.15);
 }
 
 .toggleIcon {
   margin-right: 0.75rem;
   transition: transform 0.2s;
   font-size: 0.9rem;
+  display: inline-block;
 }
 
-.toggleIconOpen {
+.toggleBlock[open] .toggleIcon {
   transform: rotate(90deg);
 }
 
@@ -337,4 +347,43 @@
   font-style: italic;
   font-size: 0.9rem;
   color: #666;
+}
+
+/* Table スタイル */
+.table {
+  width: 100%;
+  margin: 1.5rem 0;
+  border-collapse: collapse;
+  overflow: hidden;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.table thead {
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.table th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(123, 94, 87, 0.1);
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: rgba(123, 94, 87, 0.03);
+}
+
+.table tbody tr:hover {
+  background-color: rgba(123, 94, 87, 0.08);
+}
+
+.table tbody tr:last-child td {
+  border-bottom: none;
 }

@@ -124,6 +124,11 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
       <em className={styles.italic}>{children}</em>
     ),
 
+    // テーブル
+    table: ({ children }: any) => (
+      <table className={styles.table}>{children}</table>
+    ),
+
     // カスタムディレクティブのレンダリング
     div: ({ node, children, ...props }: any) => {
       const directive = props['data-directive'];
