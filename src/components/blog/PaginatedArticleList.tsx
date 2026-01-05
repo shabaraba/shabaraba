@@ -27,9 +27,14 @@ export default function PaginatedArticleList({
   baseUrl,
   queryParams = {}
 }: PaginatedArticleListProps) {
+  // 現在のページに表示する記事を抽出
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const displayedArticles = articles.slice(startIndex, endIndex);
+
   return (
     <div className={styles.container}>
-      <ArticleList articles={articles} />
+      <ArticleList articles={displayedArticles} />
       {totalPages > 1 && (
         <Pagination
           totalItems={totalItems}
