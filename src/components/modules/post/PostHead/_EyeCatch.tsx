@@ -7,7 +7,7 @@ type Props = {
   iconText?: string;
 };
 
-const DEFAULT_IMAGE = '/og-images/default.png';
+const DEFAULT_IMAGE = '/images/covers/default.jpg';
 
 export const EyeChatch: FC<Props> = ({ eyeCatchUrl, iconText }) => {
   const [imgSrc, setImgSrc] = useState(eyeCatchUrl || DEFAULT_IMAGE);

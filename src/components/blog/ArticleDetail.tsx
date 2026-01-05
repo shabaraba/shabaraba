@@ -20,7 +20,7 @@ interface ArticleDetailProps {
   }>;
 }
 
-const DEFAULT_IMAGE = '/og-images/default.png';
+const DEFAULT_IMAGE = '/images/covers/default.jpg';
 
 /**
  * 記事詳細コンポーネント
