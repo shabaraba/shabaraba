@@ -19,7 +19,7 @@ export default function PopularArticles({ trendingPosts = [] }: PopularArticlesP
       <ul className={styles.articleList}>
         {trendingPosts.map((article) => (
           <li key={article.id} className={styles.articleItem}>
-            <Link href={`/blog/posts/${article.slug}`} className={styles.articleLink}>
+            <Link href={`/blog/posts/${article.slug}`} prefetch={false} className={styles.articleLink}>
               {article.title}
             </Link>
           </li>

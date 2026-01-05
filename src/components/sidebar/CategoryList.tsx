@@ -21,7 +21,7 @@ export default function CategoryList() {
       <ul className={styles.list}>
         {categories.map((category) => (
           <li key={category.id} className={styles.item}>
-            <Link href={`/category/${category.name.toLowerCase()}`} className={styles.link}>
+            <Link href={`/category/${category.name.toLowerCase()}`} prefetch={false} className={styles.link}>
               <span className={styles.name}>{category.name}</span>
               <span className={styles.count}>{category.count}</span>
             </Link>
