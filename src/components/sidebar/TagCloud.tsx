@@ -20,7 +20,7 @@ export default function TagCloud({ tags = [] }: TagCloudProps) {
       {tags.map((tag) => (
         <Link 
           key={uuidv4()} 
-          href={`/tags/${tag.name.toLowerCase()}`} 
+          href={`/tags/${tag.name.toLowerCase()}`} prefetch={false} 
           className={`${styles.tag} ${styles[tag.size]}`}
           style={{ backgroundColor: tag.color === 'default' ? undefined : `var(--notion-${tag.color})` }}
         >

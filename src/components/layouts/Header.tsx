@@ -29,7 +29,7 @@ export default function Header() {
             </Link>
           </li>
           <li className={styles.navItem}>
-            <Link href="/mylink" className={styles.navLink}>
+            <Link href="/mylink" className={styles.navLink} prefetch={false}>
               { mylinkText }
             </Link>
           </li>
