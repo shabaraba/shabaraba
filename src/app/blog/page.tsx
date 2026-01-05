@@ -9,11 +9,22 @@ export const metadata: Metadata = {
 
 const POSTS_PER_PAGE = 10;
 
-export default async function BlogPage() {
+interface BlogPageProps {
+  searchParams: { [key: string]: string | string[] | undefined };
+}
+
+export default async function BlogPage({ searchParams }: BlogPageProps) {
   // 全データを一度に取得
   const commonData = await CommonDataService.getAllData();
 
-  // 最初のページのデータを返し、ページネーションはクライアントサイドで処理
+  // URLクエリパラメータからページ番号を取得
+  const pageParam = searchParams.page;
+  const currentPage = pageParam ? parseInt(Array.isArray(pageParam) ? pageParam[0] : pageParam, 10) : 1;
+
+  // ページ番号のバリデーション
+  const totalPages = Math.ceil(commonData.posts.length / POSTS_PER_PAGE);
+  const validatedPage = Math.max(1, Math.min(currentPage, totalPages));
+
   const enhancedProps = {
     articles: commonData.posts,
     sidebarData: {
@@ -24,8 +35,8 @@ export default async function BlogPage() {
     pagination: {
       totalItems: commonData.posts.length,
       itemsPerPage: POSTS_PER_PAGE,
-      currentPage: 1,
-      totalPages: Math.ceil(commonData.posts.length / POSTS_PER_PAGE),
+      currentPage: validatedPage,
+      totalPages,
     },
   };
 
