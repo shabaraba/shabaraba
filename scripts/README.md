@@ -2,6 +2,33 @@
 
 このディレクトリには、Notionとの連携やMarkdown変換に関するユーティリティスクリプトが含まれています。
 
+## 🖼️ ビルド関連スクリプト
+
+### generate-og-images.js
+
+OG画像とカバー画像を自動生成するスクリプト。ビルド時に自動実行されます。
+
+```bash
+pnpm run generate-og
+```
+
+**機能:**
+- 各記事のOG画像を`public/og-images/`に生成（PNG形式）
+- 各記事のカバー画像を`public/images/covers/`に生成（JPG形式）
+- 記事タイトルと背景画像を組み合わせた美しいデザイン
+- カフェ風のカラースキームを採用
+
+**生成される画像:**
+- OG画像: `public/og-images/{slug}.png` (1200x630px)
+- カバー画像: `public/images/covers/{slug}.jpg` (1200x630px)
+
+**注意:**
+- ビルドプロセス（`pnpm run build`）に自動的に組み込まれています
+- 生成された画像はgitignoreされており、コミットされません
+- 各デプロイ時に最新の記事情報で再生成されます
+
+---
+
 ## 📝 Notion関連スクリプト
 
 ### test-notion-api.js

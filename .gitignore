@@ -37,6 +37,8 @@ yarn-error.log*
 !/public/header-images/.gitkeep
 /public/og-images/*
 !/public/og-images/.gitkeep
+/public/images/covers/*
+!/public/images/covers/.gitkeep
 
 # backup files
 *.bak

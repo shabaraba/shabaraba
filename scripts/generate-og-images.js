@@ -26,6 +26,7 @@ const WIDTH = 1200;
 const HEIGHT = 630;
 const OUTPUT_DIR = path.join(process.cwd(), 'public', 'og-images');
 const THUMBNAIL_DIR = path.join(process.cwd(), 'public', 'thumbnailImage');
+const COVERS_DIR = path.join(process.cwd(), 'public', 'images', 'covers');
 
 // Notion API設定
 const NOTION_TOKEN = process.env.NOTION_TOKEN;
@@ -418,11 +419,22 @@ async function generateOgImage(title, id, thumbnailPath = null) {
     if (!fs.existsSync(OUTPUT_DIR)) {
       fs.mkdirSync(OUTPUT_DIR, { recursive: true });
     }
-    
+    if (!fs.existsSync(COVERS_DIR)) {
+      fs.mkdirSync(COVERS_DIR, { recursive: true });
+    }
+
     // 元のファイル名をそのまま使用
     const fileName = id === 'default' ? 'default.png' : `${id}.png`;
+    const jpgFileName = id === 'default' ? 'default.jpg' : `${id}.jpg`;
+
+    // OG画像として保存（PNG形式）
     fs.writeFileSync(path.join(OUTPUT_DIR, fileName), buffer);
-    
+
+    // カバー画像としても保存（JPG形式）
+    const jpgBufferPromise = canvas.toBuffer('image/jpeg', { quality: 0.9 });
+    const jpgBuffer = jpgBufferPromise instanceof Promise ? await jpgBufferPromise : jpgBufferPromise;
+    fs.writeFileSync(path.join(COVERS_DIR, jpgFileName), jpgBuffer);
+
     // タイムスタンプ情報を記録（デバッグとキャッシュバスティング用）
     console.log(`Generated OG image for: ${title} (${fileName}) with timestamp: ${BUILD_TIMESTAMP}`);
     return true;
@@ -439,10 +451,16 @@ async function generateOgImage(title, id, thumbnailPath = null) {
 function copyDefaultOgImage() {
   try {
     const sourceImage = path.join(process.cwd(), 'public', 'images', 'CoffeeBreakPoint.png');
-    const targetPath = path.join(OUTPUT_DIR, 'default.png');
-    
+    const targetOgPath = path.join(OUTPUT_DIR, 'default.png');
+    const targetCoverPath = path.join(COVERS_DIR, 'default.jpg');
+
+    if (!fs.existsSync(COVERS_DIR)) {
+      fs.mkdirSync(COVERS_DIR, { recursive: true });
+    }
+
     if (fs.existsSync(sourceImage)) {
-      fs.copyFileSync(sourceImage, targetPath);
+      fs.copyFileSync(sourceImage, targetOgPath);
+      fs.copyFileSync(sourceImage, targetCoverPath);
       console.log('Copied default OG image successfully');
       return true;
     } else {
