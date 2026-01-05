@@ -10,7 +10,6 @@ export default function Header() {
 
   const { getSetting } = useConfig();
   const homeText = getSetting('header.homelink', 'ホーム');
-  const mylinkText = getSetting('header.mylink', 'マイリンク');
 
   return (
     <header className={styles.header}>
@@ -26,11 +25,6 @@ export default function Header() {
           <li className={styles.navItem}>
             <Link href="/blog" className={styles.navLink}>
               { homeText }
-            </Link>
-          </li>
-          <li className={styles.navItem}>
-            <Link href="/mylink" className={styles.navLink} prefetch={false}>
-              { mylinkText }
             </Link>
           </li>
         </ul>

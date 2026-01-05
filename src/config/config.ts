@@ -34,13 +34,8 @@ export interface SiteConfig {
     series_title: string;
     tags_title: string;
   };
-  mylink: {
-    page_title: string;
-    page_description: string;
-  };
   header: {
     homelink: string;
-    mylink: string;
   };
 }
 
@@ -80,13 +75,8 @@ const defaultConfig: SiteConfig = {
     series_title: 'シリーズ',
     tags_title: 'タグ',
   },
-  mylink: {
-    page_title: 'MyLinks',
-    page_description: '筆者の興味関心のある外部ページはこちらに',
-  },
   header: {
     homelink: '記事一覧',
-    mylink: 'MyLinks',
   },
 };
 

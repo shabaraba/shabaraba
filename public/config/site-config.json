@@ -20,8 +20,7 @@
     }
   },
   "header": {
-    "homelink": "記事一覧",
-    "mylink": "MyLinks"
+    "homelink": "記事一覧"
   },
   "footer": {
     "copyright": "©from-garage 2022 All Rights Reserved.",
@@ -36,9 +35,5 @@
     "popular_articles_title": "人気記事",
     "series_title": "シリーズ",
     "tags_title": "タグ"
-  },
-  "mylink": {
-    "page_title": "MyLinks",
-    "page_description": "筆者の興味関心のある外部ページはこちらに"
   }
 }
