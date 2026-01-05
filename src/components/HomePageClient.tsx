@@ -364,8 +364,8 @@ const HomePageClient: React.FC<HomePageProps> = ({ latestArticles }) => {
                 
                 <div className={styles.contactItem}>
                   <h4>Email</h4>
-                  <a href="mailto:shaba.from-garage@gmail.com" className={styles.contactLink}>
-                    shaba.from-garage@gmail.com
+                  <a href="mailto:work.shaba.dev@gmail.com" className={styles.contactLink}>
+                    work.shaba.dev@gmail.com
                   </a>
                 </div>
 
