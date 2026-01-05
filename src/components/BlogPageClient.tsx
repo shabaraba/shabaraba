@@ -1,5 +1,7 @@
 'use client';
 
+import { Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import HomePage from './pages/HomePage';
 
 interface BlogPageClientProps {
@@ -17,6 +19,21 @@ interface BlogPageClientProps {
   };
 }
 
+function BlogPageContent(props: BlogPageClientProps) {
+  const searchParams = useSearchParams();
+  const pageParam = searchParams.get('page');
+  const currentPage = pageParam ? parseInt(pageParam, 10) : 1;
+
+  // ページ番号のバリデーション
+  const validatedPage = Math.max(1, Math.min(currentPage, props.pagination.totalPages));
+
+  return <HomePage {...props} pagination={{ ...props.pagination, currentPage: validatedPage }} />;
+}
+
 export default function BlogPageClient(props: BlogPageClientProps) {
-  return <HomePage {...props} />;
+  return (
+    <Suspense fallback={<HomePage {...props} />}>
+      <BlogPageContent {...props} />
+    </Suspense>
+  );
 }
