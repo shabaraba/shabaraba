@@ -45,3 +45,6 @@ yarn-error.log*
 
 # vibing.nvim
 .vibing/
+
+# OGP cache
+.ogp-cache.json

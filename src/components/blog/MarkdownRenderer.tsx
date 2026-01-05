@@ -8,9 +8,16 @@ import { tomorrow } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 import styles from './NotionBlockRenderer.module.css';
 import { getFaviconUrl } from '../../lib/ogp-utils';
 import type { Node } from 'unist';
+import { remarkAutoBookmark } from '../../lib/markdown/plugins/remarkAutoBookmark';
 
 interface MarkdownRendererProps {
   content: string;
+  ogpData?: Map<string, {
+    title?: string;
+    description?: string;
+    image?: string;
+    siteName?: string;
+  }>;
 }
 
 /**
@@ -43,6 +50,7 @@ function remarkCustomDirectives() {
 
 export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
   content,
+  ogpData,
 }) => {
   const components: Partial<Components> = {
     // コードブロック
@@ -132,6 +140,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
     // カスタムディレクティブのレンダリング
     div: ({ node, children, ...props }: any) => {
       const directive = props['data-directive'];
+      const className = props.className;
 
       // Callout
       if (directive === 'callout') {
@@ -153,7 +162,7 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
         );
       }
 
-      // Bookmark
+      // Bookmark (カスタムディレクティブ)
       if (directive === 'bookmark') {
         const url = props['data-url'] || '';
         const title = props['data-title'];
@@ -177,6 +186,26 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
         }
       }
 
+      // Auto Bookmark (リンクのみの段落)
+      if (className?.includes('bookmark-auto')) {
+        const url = props['data-url'] || '';
+        if (url) {
+          const ogp = ogpData?.get(url);
+          return (
+            <BookmarkCard
+              url={url}
+              ogpData={ogp ? {
+                url,
+                title: ogp.title,
+                description: ogp.description,
+                image: ogp.image,
+                siteName: ogp.siteName,
+              } : undefined}
+            />
+          );
+        }
+      }
+
       return <div {...props}>{children}</div>;
     },
   };
@@ -184,7 +213,12 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
   return (
     <div className={styles.notionContent}>
       <ReactMarkdown
-        remarkPlugins={[remarkGfm, remarkDirective, remarkCustomDirectives]}
+        remarkPlugins={[
+          remarkGfm,
+          remarkDirective,
+          remarkCustomDirectives,
+          remarkAutoBookmark,
+        ]}
         components={components}
       >
         {content}

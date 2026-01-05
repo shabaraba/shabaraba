@@ -2,6 +2,8 @@ import { Metadata } from 'next';
 import { ArticleServiceFactory } from '../../../../core/factories/ArticleServiceFactory';
 import { CommonDataService } from '../../../../services/CommonDataService';
 import ArticlePageClient from '../../../../components/ArticlePageClient';
+import { extractBookmarkUrls } from '../../../../lib/markdown/extract-urls';
+import { getOGPBatch } from '../../../../lib/markdown/ogp-cache';
 
 // 静的パスを生成（App Routerでは generateStaticParams）
 export async function generateStaticParams() {
@@ -78,7 +80,16 @@ export default async function ArticlePage({
     // サイドバーデータを取得
     const sidebarData = await CommonDataService.getSidebarData();
 
-    return <ArticlePageClient article={article} sidebarData={sidebarData} />;
+    // Markdown記事の場合、OGPデータを取得
+    let ogpData: Map<string, any> | undefined;
+    if (typeof article.content === 'string') {
+      const urls = extractBookmarkUrls(article.content);
+      if (urls.length > 0) {
+        ogpData = await getOGPBatch(urls);
+      }
+    }
+
+    return <ArticlePageClient article={article} sidebarData={sidebarData} ogpData={ogpData} />;
   } catch (error) {
     console.error(`Error fetching article with slug "${id}":`, error);
     // notFound()を呼び出してNext.jsの404ページを表示

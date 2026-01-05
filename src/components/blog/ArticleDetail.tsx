@@ -12,6 +12,12 @@ import { SiHatenabookmark } from 'react-icons/si';
 
 interface ArticleDetailProps {
   article: Article;
+  ogpData?: Map<string, {
+    title?: string;
+    description?: string;
+    image?: string;
+    siteName?: string;
+  }>;
 }
 
 const DEFAULT_IMAGE = '/og-images/default.png';
@@ -19,7 +25,7 @@ const DEFAULT_IMAGE = '/og-images/default.png';
 /**
  * 記事詳細コンポーネント
  */
-export default function ArticleDetail({ article }: ArticleDetailProps) {
+export default function ArticleDetail({ article, ogpData }: ArticleDetailProps) {
   const [coverImageSrc, setCoverImageSrc] = useState(article.coverImage);
   const [hasError, setHasError] = useState(false);
 
@@ -69,7 +75,7 @@ export default function ArticleDetail({ article }: ArticleDetailProps) {
       
       <div className={styles.content}>
         {typeof article.content === 'string' ? (
-          <MarkdownRenderer content={article.content} />
+          <MarkdownRenderer content={article.content} ogpData={ogpData} />
         ) : (
           <NotionBlockRenderer blocks={article.content} />
         )}

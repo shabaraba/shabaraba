@@ -109,12 +109,19 @@ console.log(getUserById(1));
 
 ## ブックマーク（OGPカード）
 
-外部リンクをOGPカード形式で表示できます：
+### 自動Bookmark（URLのみ）
 
-:::bookmark{url="https://zenn.dev" title="Zenn" description="エンジニアのための情報共有コミュニティ" site="zenn.dev" image="https://zenn.dev/images/logo-only-dark.png"}
-:::
+独立した行にURLを記載すると、自動的にBookmarkカードとして表示されます：
 
-:::bookmark{url="https://github.com" title="GitHub" description="世界最大の開発プラットフォーム。GitHubはソフトウェア開発を効率化する場所です。" site="github.com"}
+https://zenn.dev/
+
+https://github.com/
+
+### カスタムディレクティブBookmark
+
+OGP情報を手動で指定する場合：
+
+:::bookmark{url="https://qiita.com/" title="Qiita" description="プログラミングに関する知識を記録・共有するためのサービス" site="qiita.com"}
 :::
 
 ## カスタムディレクティブ
