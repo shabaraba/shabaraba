@@ -38,10 +38,6 @@ const nextConfig = {
     ]
   },
   output: 'export',
-  // 静的エクスポートではプリフェッチが不要（全ページ既に生成済み）
-  experimental: {
-    disableOptimizedLoading: true,
-  },
 };
 
 module.exports = withBundleAnalyzer(nextConfig);

@@ -19,7 +19,7 @@ export default function SeriesList({ series = [] }: SeriesListProps) {
       <ul className={styles.list}>
         {series.map((item) => (
           <li key={item.name} className={styles.item}>
-            <Link href={`/series/${encodeURIComponent(item.name.toLowerCase())}`} prefetch={false} className={styles.link}>
+            <Link href={`/series/${encodeURIComponent(item.name.toLowerCase())}`} className={styles.link}>
               <span className={styles.name}>{item.name}</span>
               <span className={styles.count}>{item.count}</span>
             </Link>
