@@ -109,20 +109,11 @@ console.log(getUserById(1));
 
 ## ブックマーク（OGPカード）
 
-### 自動Bookmark（URLのみ）
-
 独立した行にURLを記載すると、自動的にBookmarkカードとして表示されます：
 
 https://zenn.dev/
 
 https://github.com/
-
-### カスタムディレクティブBookmark
-
-OGP情報を手動で指定する場合：
-
-:::bookmark{url="https://qiita.com/" title="Qiita" description="プログラミングに関する知識を記録・共有するためのサービス" site="qiita.com"}
-:::
 
 ## カスタムディレクティブ
 

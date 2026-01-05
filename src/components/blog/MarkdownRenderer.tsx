@@ -21,7 +21,7 @@ interface MarkdownRendererProps {
 }
 
 /**
- * カスタムディレクティブ（:::callout, :::toggle, :::bookmark）を処理するremarkプラグイン
+ * カスタムディレクティブ（:::callout, :::toggle）を処理するremarkプラグイン
  */
 function remarkCustomDirectives() {
   return (tree: Node) => {
@@ -160,30 +160,6 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({
             {children}
           </ToggleComponent>
         );
-      }
-
-      // Bookmark (カスタムディレクティブ)
-      if (directive === 'bookmark') {
-        const url = props['data-url'] || '';
-        const title = props['data-title'];
-        const description = props['data-description'];
-        const image = props['data-image'];
-        const site = props['data-site'];
-
-        if (url) {
-          return (
-            <BookmarkCard
-              url={url}
-              ogpData={{
-                url,
-                title,
-                description,
-                image,
-                siteName: site,
-              }}
-            />
-          );
-        }
       }
 
       // Auto Bookmark (リンクのみの段落)
