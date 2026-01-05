@@ -1,5 +1,6 @@
-import { PostLogicNotionImpl } from 'application/modules/post/logic/PostLogicNotionImpl';
+
 import { IPageHead, IPageTag } from 'core/types/NotionPageApiResponses';
+import { ArticleServiceFactory } from 'core/factories/ArticleServiceFactory';
 
 // メモリ内キャッシュ
 let cachedPostsData: {
@@ -55,26 +56,25 @@ export class CommonDataService {
     pendingPromise = (async () => {
       try {
         console.log('[CommonDataService] Fetching fresh data');
-    const postLogic = new PostLogicNotionImpl();
-    
+    const articleService = ArticleServiceFactory.createArticleService();
+
     // 全記事データの取得
-    const posts = await postLogic.getList();
+    const posts = await articleService.getArticleList();
     
     // 記事データにcoverImageプロパティを追加
     const processedPosts = posts.map(post => {
-      // コンソールにカバー情報をログ
-      console.log(`Processing post ${post.title}, cover:`, post.cover);
-      
-      // post.coverからcoverImageプロパティを生成
-      let coverImage = null;
-      if (post.cover) {
+      // coverImageの取得（Markdownソースの場合は既にcoverImageフィールドがある）
+      let coverImage = (post as any).coverImage || null;
+
+      // Notionソースの場合はpost.coverから取得
+      if (!coverImage && post.cover) {
         if (post.cover.type === 'external') {
           coverImage = post.cover.external.url;
         } else if (post.cover.type === 'file') {
           coverImage = post.cover.file.url;
         }
       }
-      
+
       // 元のポストにcoverImageプロパティを追加（タイプ互換性のため）
       return {
         ...post,
@@ -82,10 +82,10 @@ export class CommonDataService {
       };
     });
     
-    // 人気記事の取得
-    let trendingPosts = await postLogic.getTrendingPosts();
-    console.log(`[CommonDataService] Fetched ${trendingPosts.length} trending posts from Notion`);
-    
+    // 人気記事の取得（trend: true でフィルター）
+    let trendingPosts = processedPosts.filter(post => (post as any).trend === true);
+    console.log(`[CommonDataService] Found ${trendingPosts.length} trending posts`);
+
     // もしトレンド記事が0件の場合、代替として最新の記事を表示する
     if (trendingPosts.length === 0) {
       console.log('[CommonDataService] No trending posts found, using recent posts as fallback');
@@ -93,17 +93,20 @@ export class CommonDataService {
       trendingPosts = processedPosts.slice(0, 5);
     }
     
-    // 人気記事にもcoverImageプロパティを追加
+    // 人気記事にもcoverImageプロパティを追加（既にprocessedPostsで変換済みなのでこの処理は不要だが念のため保持）
     const processedTrendingPosts = trendingPosts.map(post => {
-      let coverImage = null;
-      if (post.cover) {
+      // 既にcoverImageが設定されている場合はそれを使用
+      let coverImage = (post as any).coverImage || null;
+
+      // Notionソースの場合はpost.coverから取得
+      if (!coverImage && post.cover) {
         if (post.cover.type === 'external') {
           coverImage = post.cover.external.url;
         } else if (post.cover.type === 'file') {
           coverImage = post.cover.file.url;
         }
       }
-      
+
       return {
         ...post,
         coverImage: coverImage || null
@@ -111,15 +114,18 @@ export class CommonDataService {
     });
     
     // タグの集計処理
-    const tagCounts: { [key: string]: { count: number, tag: IPageTag } } = {};
-    
+    const tagCounts: { [key: string]: { count: number, tag: IPageTag | string } } = {};
+
     posts.forEach(post => {
       if (post.tags) {
         post.tags.forEach(tag => {
-          if (!tagCounts[tag.name]) {
-            tagCounts[tag.name] = { count: 0, tag };
+          // タグが文字列の場合（Markdownソース）とオブジェクトの場合（Notionソース）の両方に対応
+          const tagName = typeof tag === 'string' ? tag : tag.name;
+
+          if (!tagCounts[tagName]) {
+            tagCounts[tagName] = { count: 0, tag };
           }
-          tagCounts[tag.name].count += 1;
+          tagCounts[tagName].count += 1;
         });
       }
     });
@@ -138,13 +144,18 @@ export class CommonDataService {
       } else if (count >= SIZE_THRESHOLDS.medium) {
         size = 'medium';
       }
-      
+
+      // Markdownソース（文字列）とNotionソース（オブジェクト）の両方に対応
+      const tagName = typeof tag === 'string' ? tag : tag.name;
+      const tagId = typeof tag === 'string' ? null : (tag.id ?? null);
+      const tagColor = typeof tag === 'string' ? null : (tag.color ?? null);
+
       return {
-        id: tag.id,
-        name: tag.name,
+        id: tagId,
+        name: tagName,
         count,
         size,
-        color: tag.color
+        color: tagColor
       };
     }).sort((a, b) => b.count - a.count);
     

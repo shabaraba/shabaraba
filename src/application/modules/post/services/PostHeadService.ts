@@ -1,13 +1,22 @@
+
 import { PostLogic } from "../logic/PostLogic";
-import { PostLogicNotionImpl } from "../logic/PostLogicNotionImpl";
 import { PostHeadDto } from "../objects/dtos/PostHeadDto";
 import { IPageHeadDxo } from "../objects/dxos/IPageHeadDxo";
+import { PostLogicMarkdownImpl } from "../logic/PostLogicMarkdownImpl";
+import { PostLogicNotionImpl } from "../logic/PostLogicNotionImpl";
 
 export class PostHeadService {
   private _postLogic: PostLogic;
 
   public constructor() {
-    this._postLogic = new PostLogicNotionImpl();
+    // 環境変数に応じて適切な実装を選択
+    const sourceType = process.env.ARTICLE_SOURCE || 'notion';
+
+    if (sourceType === 'markdown' || sourceType === 'github') {
+      this._postLogic = new PostLogicMarkdownImpl();
+    } else {
+      this._postLogic = new PostLogicNotionImpl();
+    }
   }
 
   public async getBySlug(id: string): Promise<PostHeadDto> {

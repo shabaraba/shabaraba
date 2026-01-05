@@ -1,36 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { JSDOM, VirtualConsole } from 'jsdom';
+import { OgpData, OgpFetchStatus, getFaviconUrl } from './ogp-utils';
 
-// OGPデータの型定義
-export interface OgpData {
-  title: string;
-  description: string;
-  url: string;
-  imageUrl: string;
-  faviconUrl: string;
-}
-
-// OGPフェッチ中の状態
-export enum OgpFetchStatus {
-  IDLE = 'idle',
-  LOADING = 'loading',
-  SUCCESS = 'success',
-  ERROR = 'error'
-}
+// Re-export for backward compatibility
+export { OgpData, OgpFetchStatus, getFaviconUrl };
 
 // OGPデータをキャッシュする単純なMap
 const ogpCache = new Map<string, OgpData>();
-
-// 指定URLのfaviconを取得するためのURL生成関数
-export const getFaviconUrl = (url: string): string => {
-  try {
-    const { hostname } = new URL(url);
-    return `https://www.google.com/s2/favicons?domain=${hostname}&sz=32`;
-  } catch {
-    return '';
-  }
-};
 
 // OGPデータを取得するAPI関数
 export const fetchOgpData = async (url: string): Promise<OgpData> => {
@@ -41,16 +17,23 @@ export const fetchOgpData = async (url: string): Promise<OgpData> => {
 
   try {
     // サーバーサイド（ビルド時）でURLにアクセスしてOGPデータを取得
-    const response = await axios.get(url, {
-      // タイムアウト設定
-      timeout: 10000,
-      // ユーザーエージェント設定（一部サイトでのブロック回避）
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+    const response = await fetch(url, {
+      signal: controller.signal,
       headers: {
         'User-Agent': 'Mozilla/5.0 (compatible; Notiography/1.0; +https://github.com/shabaraba/Notiography)'
       }
     });
 
-    const data = response.data;
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.text();
     
     // JSDOMでHTMLをパース
     const virtualConsole = new VirtualConsole();

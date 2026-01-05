@@ -1,4 +1,4 @@
-import { FC } from "react"
+import { FC, useState } from "react"
 import Image from 'next/image'
 import { Text, Box } from '@chakra-ui/react'
 
@@ -7,7 +7,11 @@ type Props = {
   iconText?: string;
 };
 
+const DEFAULT_IMAGE = '/images/covers/default.jpg';
+
 export const EyeChatch: FC<Props> = ({ eyeCatchUrl, iconText }) => {
+  const [imgSrc, setImgSrc] = useState(eyeCatchUrl || DEFAULT_IMAGE);
+
   const style = {
       flexShrink: 0,
       width: { base: '100%', md: 200 },
@@ -18,8 +22,23 @@ export const EyeChatch: FC<Props> = ({ eyeCatchUrl, iconText }) => {
       justifyContent: 'center',
   }
 
+  const handleError = () => {
+    setImgSrc(DEFAULT_IMAGE);
+  };
+
   const _EyeChatch: FC = () => {
-    if (eyeCatchUrl) return <Image src={eyeCatchUrl} width={300} height={200} alt={''} style={{objectFit: 'cover'}}/>;
+    if (eyeCatchUrl || imgSrc) {
+      return (
+        <Image
+          src={imgSrc}
+          width={300}
+          height={200}
+          alt={''}
+          style={{objectFit: 'cover'}}
+          onError={handleError}
+        />
+      );
+    }
     if (iconText) return <Text fontSize={72} fontWeight='bold'> {iconText} </Text>;
     return <></>;
   };

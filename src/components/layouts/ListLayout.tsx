@@ -7,18 +7,16 @@ export default function ListLayout({
   children,
   leftside,
   home,
-  mylink,
 }: {
   children: React.ReactNode;
   leftside?: React.ReactNode;
   home?: boolean;
-  mylink?: boolean;
 }) {
   // background: '#e8cfc1'
   return (
     <Layout leftside={leftside}>
       <Container maxW="container.lg">
-        <ListSwitchBox home={home} mylink={mylink} />
+        <ListSwitchBox home={home} />
         {children}
       </Container>
     </Layout>

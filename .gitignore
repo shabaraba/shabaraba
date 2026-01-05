@@ -37,8 +37,16 @@ yarn-error.log*
 !/public/header-images/.gitkeep
 /public/og-images/*
 !/public/og-images/.gitkeep
+/public/images/covers/*
+!/public/images/covers/.gitkeep
 
 # backup files
 *.bak
 
 **/.claude/settings.local.json
+
+# vibing.nvim
+.vibing/
+
+# OGP cache
+.ogp-cache.json

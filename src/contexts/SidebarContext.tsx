@@ -1,3 +1,5 @@
+'use client';
+
 import React, { createContext, useContext, ReactNode } from 'react';
 import { IPageHead, IPageTag } from 'core/types/NotionPageApiResponses';
 

@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 
 interface OGPImageProps {
@@ -31,11 +33,11 @@ const knownOGImages: Record<string, string> = {
   'https://www.brother.co.jp': 'https://www.brother.co.jp/-/media/cojp/common/img/sns/sns_brotherlogoicon.ashx',
 };
 
-const OGPImage: React.FC<OGPImageProps> = ({ 
-  url, 
-  alt, 
-  className, 
-  fallbackSrc = '/og-images/default.png' 
+const OGPImage: React.FC<OGPImageProps> = ({
+  url,
+  alt,
+  className,
+  fallbackSrc = '/images/covers/default.jpg'
 }) => {
   const [imageSrc, setImageSrc] = useState<string>(fallbackSrc);
   const [loading, setLoading] = useState(true);

@@ -1,0 +1,83 @@
+.privacyContainer {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  line-height: 1.8;
+  color: #333;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #7B5E57;
+}
+
+.lastUpdated {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #7B5E57;
+  border-bottom: 2px solid #7B5E57;
+  padding-bottom: 0.5rem;
+}
+
+.section p {
+  margin-bottom: 1rem;
+}
+
+.section ul {
+  margin-left: 2rem;
+  margin-bottom: 1rem;
+}
+
+.section li {
+  margin-bottom: 0.5rem;
+}
+
+.link {
+  color: #7B5E57;
+  text-decoration: underline;
+}
+
+.link:hover {
+  opacity: 0.7;
+}
+
+.contact {
+  font-weight: bold;
+}
+
+.emailLink {
+  color: #7B5E57;
+  text-decoration: none;
+  margin-left: 0.5rem;
+}
+
+.emailLink:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .privacyContainer {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .section h2 {
+    font-size: 1.3rem;
+  }
+}

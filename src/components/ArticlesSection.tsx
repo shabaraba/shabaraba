@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { IPageHead } from '../core/types/NotionPageApiResponses';
 import styles from '../styles/ArticlesSection.module.css';
@@ -50,8 +52,8 @@ const ArticlesSection: React.FC<ArticlesSectionProps> = ({ articles }) => {
                   </p>
                   {article.tags && article.tags.length > 0 && (
                     <div className={styles.articleTags}>
-                      {article.tags.slice(0, 3).map((tag) => (
-                        <span key={tag.id} className={styles.tag}>
+                      {article.tags.slice(0, 3).map((tag, index) => (
+                        <span key={tag.id || `${article.id}-tag-${index}`} className={styles.tag}>
                           {tag.name}
                         </span>
                       ))}

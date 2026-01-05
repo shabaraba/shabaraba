@@ -7,5 +7,3 @@ Host: https://shaba.dev
 
 # Sitemaps
 Sitemap: https://shaba.dev/sitemap.xml
-
-# Updated to trigger cache clear for OG images - 2025/09/11
