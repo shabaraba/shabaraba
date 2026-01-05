@@ -43,6 +43,27 @@ node scripts/fetch-cover-images.js
 
 ---
 
+### fetch-article-og-images.js
+
+GitHubリポジトリ（shabaraba/Articles）から記事のOG画像をダウンロードするスクリプト。
+
+```bash
+node scripts/fetch-article-og-images.js
+```
+
+**機能:**
+- GitHub Raw Content経由でOG画像をダウンロード（レート制限なし）
+- `shabaraba/Articles/og-images/` からダウンロード
+- `public/og-images/` に配置
+
+**特徴:**
+- レート制限なし（raw.githubusercontent.com使用）
+- 既存ファイルはスキップして高速化
+- ビルド時に自動実行（generate-og-images.jsより先に実行）
+- Articlesリポジトリで事前生成されたOG画像を再利用
+
+---
+
 ### generate-og-images.js
 
 SNSシェア用のOG画像を自動生成するスクリプト。ビルド時に自動実行されます。
@@ -61,6 +82,7 @@ pnpm run generate-og
 
 **注意:**
 - ビルドプロセス（`pnpm run build`）に自動的に組み込まれています
+- `fetch-article-og-images.js`で取得した画像がある場合は上書きしない
 - 生成された画像はgitignoreされており、コミットされません
 - 各デプロイ時に最新の記事情報で再生成されます
 
