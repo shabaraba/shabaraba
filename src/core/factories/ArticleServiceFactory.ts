@@ -2,6 +2,7 @@
 import { ArticleService } from '../interfaces/article/ArticleService';
 import { MarkdownArticleService } from '../implementations/markdown/MarkdownArticleService';
 import { NotionArticleService } from '../implementations/notion/NotionArticleService';
+import { GitHubArticleService } from '../implementations/github/GitHubArticleService';
 import { PostHeadService } from 'application/modules/post/services/PostHeadService';
 
 /**
@@ -20,6 +21,8 @@ export class ArticleServiceFactory {
     switch (sourceType) {
       case 'markdown':
         return new MarkdownArticleService(process.env.MARKDOWN_CONTENT_DIR);
+      case 'github':
+        return new GitHubArticleService();
       case 'notion':
       default:
         return new NotionArticleService();

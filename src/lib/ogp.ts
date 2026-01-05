@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { JSDOM, VirtualConsole } from 'jsdom';
 import { OgpData, OgpFetchStatus, getFaviconUrl } from './ogp-utils';
 
@@ -18,16 +17,23 @@ export const fetchOgpData = async (url: string): Promise<OgpData> => {
 
   try {
     // サーバーサイド（ビルド時）でURLにアクセスしてOGPデータを取得
-    const response = await axios.get(url, {
-      // タイムアウト設定
-      timeout: 10000,
-      // ユーザーエージェント設定（一部サイトでのブロック回避）
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+    const response = await fetch(url, {
+      signal: controller.signal,
       headers: {
         'User-Agent': 'Mozilla/5.0 (compatible; Notiography/1.0; +https://github.com/shabaraba/Notiography)'
       }
     });
 
-    const data = response.data;
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.text();
     
     // JSDOMでHTMLをパース
     const virtualConsole = new VirtualConsole();

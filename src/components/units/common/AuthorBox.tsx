@@ -1,15 +1,17 @@
 import React from 'react'
-import axios from 'axios'
 import useSWRImmutable from 'swr/immutable'
 import {Link, Skeleton, Container, Box, Image, VStack, Tooltip, Icon, Text} from '@chakra-ui/react'
 import {SiGithub, SiTwitter, SiQiita} from 'react-icons/si'
 
 export default () => {
-  const fetcher = async (url:string) => {
+  const fetcher = async (url: string) => {
+    const response = await fetch(url);
 
-    const result = await axios.get(url)
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
 
-    return result.data
+    return response.json();
   }
 
   const { data: fetchedData } = useSWRImmutable('https://api.github.com/users/shabaraba', fetcher)

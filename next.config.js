@@ -1,6 +1,3 @@
-// Load .env file explicitly before Next.js config
-require('dotenv').config();
-
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
@@ -11,6 +8,10 @@ const nextConfig = {
     NEXT_PUBLIC_ACTIVE_THEME: process.env.NEXT_PUBLIC_ACTIVE_THEME || 'theme2',
     ARTICLE_SOURCE: process.env.ARTICLE_SOURCE || 'notion',
     BUILD_TIME: Date.now().toString(),
+    GITHUB_TOKEN: process.env.GITHUB_TOKEN,
+    GITHUB_OWNER: process.env.GITHUB_OWNER,
+    GITHUB_REPO: process.env.GITHUB_REPO,
+    GITHUB_BRANCH: process.env.GITHUB_BRANCH,
   },
   typescript: {
     // !! WARN !!

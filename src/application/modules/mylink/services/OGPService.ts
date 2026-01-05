@@ -1,12 +1,20 @@
-import axios from 'axios';
 import { IOgp } from 'core/types/NotionApiResponses';
 import { JSDOM, VirtualConsole } from "jsdom";
 import { OGPEntity } from '../objects/entities/OGPEntity';
 
 export const getOGP = async (url: string): Promise<OGPEntity> => {
   try {
-    const response = await axios.get(url)
-    const data = response.data
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (compatible; OGPBot/1.0)',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.text();
     // Configure JSDOM to ignore CSS parsing errors
     const dom = new JSDOM(data, {
       virtualConsole: new VirtualConsole().on("error", () => {

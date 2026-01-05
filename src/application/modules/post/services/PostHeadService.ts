@@ -12,7 +12,7 @@ export class PostHeadService {
     // 環境変数に応じて適切な実装を選択
     const sourceType = process.env.ARTICLE_SOURCE || 'notion';
 
-    if (sourceType === 'markdown') {
+    if (sourceType === 'markdown' || sourceType === 'github') {
       this._postLogic = new PostLogicMarkdownImpl();
     } else {
       this._postLogic = new PostLogicNotionImpl();

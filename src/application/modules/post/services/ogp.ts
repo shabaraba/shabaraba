@@ -1,4 +1,3 @@
-import axios from "axios";
 import { JSDOM, VirtualConsole } from "jsdom";
 
 import {
@@ -8,8 +7,17 @@ import {
 
 export const getOGP = async (url: string, id: string): Promise<IOgp> => {
   try {
-    const response = await axios.get(url);
-    const data = response.data;
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (compatible; OGPBot/1.0)',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.text();
     // Configure JSDOM to ignore CSS parsing errors
     const dom = new JSDOM(data, {
       virtualConsole: (new VirtualConsole()).on("error", () => { /* No-op to skip console errors.*/ }),

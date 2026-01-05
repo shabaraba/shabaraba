@@ -63,10 +63,14 @@ export class MarkdownArticleRepository implements ArticleRepository {
 
       const articleListItem = this.convertToArticleListItem(frontmatter, filePath);
 
-      // 関連記事を取得
-      const relatedArticles = frontmatter.relatedArticles
-        ? await this.getRelatedArticles(frontmatter.relatedArticles)
-        : [];
+      // 関連記事を取得（手動設定がある場合はそれを使用、なければ自動推薦）
+      let relatedArticles: ArticleListItem[] = [];
+      if (frontmatter.relatedArticles && frontmatter.relatedArticles.length > 0) {
+        relatedArticles = await this.getRelatedArticles(frontmatter.relatedArticles);
+      } else {
+        // 自動推薦: 同じタグを持つ最新記事を最大3件取得
+        relatedArticles = await this.getRecommendedArticles(slug, frontmatter.tags || []);
+      }
 
       return {
         ...articleListItem,
@@ -192,6 +196,42 @@ export class MarkdownArticleRepository implements ArticleRepository {
     }
 
     return relatedArticles;
+  }
+
+  /**
+   * 関連記事を自動推薦（同じタグを持つ記事から最大3件）
+   */
+  private async getRecommendedArticles(currentSlug: string, tags: string[]): Promise<ArticleListItem[]> {
+    if (!tags || tags.length === 0) {
+      return [];
+    }
+
+    const allArticles = await this.getArticleList();
+
+    // 現在の記事を除外し、タグが一致する記事をスコアリング
+    const scoredArticles = allArticles
+      .filter(article => article.slug !== currentSlug)
+      .map(article => {
+        const matchingTags = article.tags?.filter(tag =>
+          tags.includes(tag)
+        ) || [];
+
+        return {
+          article,
+          score: matchingTags.length, // マッチしたタグの数をスコアとする
+        };
+      })
+      .filter(item => item.score > 0)
+      .sort((a, b) => {
+        // スコアが同じ場合は公開日が新しい順
+        if (a.score === b.score) {
+          return new Date(b.article.publishedAt).getTime() - new Date(a.article.publishedAt).getTime();
+        }
+        return b.score - a.score;
+      });
+
+    // 上位3件を返す
+    return scoredArticles.slice(0, 3).map(item => item.article);
   }
 
   /**

@@ -7,11 +7,11 @@
   "packageManager": "pnpm@9.15.4",
   "scripts": {
     "predev": "node scripts/convert-toml-to-json.js",
-    "dev": "next dev",
+    "dev": "./scripts/load-env.sh next dev",
     "prebuild": "node scripts/convert-toml-to-json.js && node scripts/build-article-index.js",
     "generate-og": "node scripts/generate-og-images.js || ./scripts/generate-og-images.sh",
     "generate-og-shell": "bash ./scripts/generate-og-images.sh",
-    "build": "node scripts/fetch-github-profile.js && pnpm run generate-og && next build && echo 'Build completed'",
+    "build": "./scripts/load-env.sh sh -c 'node scripts/fetch-github-profile.js && pnpm run generate-og && next build && echo Build completed'",
     "build:incremental": "node scripts/build-article-index.js && next build",
     "start": "pnpm dlx serve@latest out",
     "postbuild": "next-sitemap",
