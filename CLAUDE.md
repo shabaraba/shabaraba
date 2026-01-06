@@ -65,7 +65,6 @@ src/
 ├── services/            # 外部サービス連携
 ├── styles/              # スタイル定義
 ├── tests/               # テストファイル
-└── themes/              # テーマ設定
 ```
 
 ### 重要な設計パターン
@@ -113,7 +112,6 @@ src/
 - `/posts/*` から `/blog/posts/*` へのリダイレクト設定あり
 
 ### 環境変数
-- `NEXT_PUBLIC_ACTIVE_THEME`: アクティブテーマ設定（デフォルト: theme2）
 - `ARTICLE_SOURCE`: 記事ソース設定（デフォルト: notion）
 - `BUILD_TIME`: OG画像のキャッシュバスティング用
 
