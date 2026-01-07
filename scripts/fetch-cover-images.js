@@ -11,9 +11,21 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 
+// INCOMING_HOOK_BODYからarticlesブランチを取得
+let articlesBranch = 'main';
+if (process.env.INCOMING_HOOK_BODY) {
+  try {
+    const hookBody = JSON.parse(process.env.INCOMING_HOOK_BODY);
+    articlesBranch = hookBody.articles_branch || 'main';
+    console.log(`📌 Using articles branch: ${articlesBranch}`);
+  } catch (e) {
+    console.log('⚠️  Failed to parse INCOMING_HOOK_BODY, using main branch');
+  }
+}
+
 const GITHUB_OWNER = process.env.GITHUB_OWNER || 'shabaraba';
-const GITHUB_REPO = process.env.GITHUB_REPO || 'Articles'; // 正しいリポジトリ名
-const GITHUB_BRANCH = process.env.GITHUB_BRANCH || 'main';
+const GITHUB_REPO = process.env.GITHUB_REPO || 'Articles';
+const GITHUB_BRANCH = process.env.GITHUB_BRANCH || articlesBranch;
 
 const COVERS_DIR = path.join(process.cwd(), 'public', 'images', 'covers');
 
