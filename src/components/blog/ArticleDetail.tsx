@@ -90,26 +90,26 @@ export default function ArticleDetail({ article, ogpData }: ArticleDetailProps) 
         <div className={styles.share}>
           <span className={styles.shareLabel}>この記事をシェアする:</span>
           <div className={styles.shareButtons}>
-            <a 
-              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent(`https://blog.shaba.dev/blog/posts/${article.slug}`)}`} 
-              target="_blank" 
-              rel="noopener noreferrer" 
+            <a
+              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent(`https://shaba.dev/blog/posts/${article.slug}`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
               className={styles.shareButton}
               aria-label="X (旧Twitter) でシェア"
             >
               <FaXTwitter size={20} />
             </a>
-            <a 
-              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://blog.shaba.dev/blog/posts/${article.slug}`)}`} 
-              target="_blank" 
-              rel="noopener noreferrer" 
+            <a
+              href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`https://shaba.dev/blog/posts/${article.slug}`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
               className={styles.shareButton}
               aria-label="Facebook でシェア"
             >
               <FaFacebook size={20} />
             </a>
-            <a 
-              href={`https://b.hatena.ne.jp/entry/s/${encodeURIComponent(`blog.shaba.dev/blog/posts/${article.slug}`).replace(/^https?:\/\//, '')}`}
+            <a
+              href={`https://b.hatena.ne.jp/entry/s/${encodeURIComponent(`shaba.dev/blog/posts/${article.slug}`).replace(/^https?:\/\//, '')}`}
               target="_blank" 
               rel="noopener noreferrer" 
               className={styles.shareButton}
