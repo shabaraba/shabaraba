@@ -35,17 +35,12 @@ const OG_IMAGES_DIR = path.join(process.cwd(), 'public', 'og-images');
 async function fetchOGImagesList() {
   const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/images/og-images?ref=${GITHUB_BRANCH}`;
 
-  const headers = {
-    'User-Agent': 'Notiography-Build-Script',
-    'Accept': 'application/vnd.github.v3+json',
-  };
-
-  // プライベートリポジトリの場合は認証トークンが必要
-  if (process.env.GITHUB_TOKEN) {
-    headers['Authorization'] = `token ${process.env.GITHUB_TOKEN}`;
-  }
-
-  const response = await fetch(url, { headers });
+  const response = await fetch(url, {
+    headers: {
+      'User-Agent': 'Notiography-Build-Script',
+      'Accept': 'application/vnd.github.v3+json',
+    },
+  });
 
   if (!response.ok) {
     if (response.status === 404) {
