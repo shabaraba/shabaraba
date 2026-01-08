@@ -1,6 +1,9 @@
 # Portfolio site redirects
 /posts/* /blog/posts/:splat 301!
 
+# Subdomain redirects - redirect blog.shaba.dev to main domain
+https://blog.shaba.dev/* https://shaba.dev/:splat 301!
+
 # Legacy domain redirects - redirect to main portfolio
 https://blog.from-garage.com/* https://shaba.dev/ 301!
 https://shaba.com/* https://shaba.dev/ 302!

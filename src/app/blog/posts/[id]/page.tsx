@@ -35,7 +35,7 @@ export async function generateMetadata({
     const article = await articleService.getArticleBySlug(id);
 
     // OG画像のURLを生成（絶対URLが必要）
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://blog.shaba.dev';
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://shaba.dev';
     const ogImageUrl = `${siteUrl}/og-images/${id}.png`;
 
     return {

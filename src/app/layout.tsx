@@ -10,11 +10,11 @@ export const metadata: Metadata = {
     template: '%s | Coffee Break Point',
   },
   description: 'コーヒー休憩にちょうどよい技術よみものを目指して',
-  metadataBase: new URL('https://blog.shaba.dev'),
+  metadataBase: new URL('https://shaba.dev'),
   openGraph: {
     type: 'website',
     locale: 'ja_JP',
-    url: 'https://blog.shaba.dev',
+    url: 'https://shaba.dev',
     title: 'Coffee Break Point',
     description: 'コーヒー休憩にちょうどよい技術よみものを目指して',
     siteName: 'Coffee Break Point',
