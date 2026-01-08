@@ -44,7 +44,7 @@ const defaultConfig: SiteConfig = {
   site: {
     title: 'Coffee Break Point',
     description: '育児・仕事・開発——全部やるエンジニアの記録です。',
-    url: 'https://blog.shaba.dev',
+    url: 'https://shaba.dev',
   },
   home: {
     title: 'Coffee Break Point',
