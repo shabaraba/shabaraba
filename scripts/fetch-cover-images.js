@@ -34,7 +34,7 @@ const COVERS_DIR = path.join(process.cwd(), 'public', 'images', 'covers');
  * Note: raw.githubusercontent.comはレート制限なし
  */
 async function fetchCoverImagesList() {
-  const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/covers?ref=${GITHUB_BRANCH}`;
+  const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/images/covers?ref=${GITHUB_BRANCH}`;
 
   const response = await fetch(url, {
     headers: {
@@ -45,7 +45,7 @@ async function fetchCoverImagesList() {
 
   if (!response.ok) {
     if (response.status === 404) {
-      console.log('⚠️  covers ディレクトリが見つかりません');
+      console.log('⚠️  images/covers ディレクトリが見つかりません');
       return [];
     }
     throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
