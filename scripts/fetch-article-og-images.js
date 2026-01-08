@@ -10,9 +10,21 @@
 const fs = require('fs');
 const path = require('path');
 
+// INCOMING_HOOK_BODYからarticlesブランチを取得
+let articlesBranch = 'main';
+if (process.env.INCOMING_HOOK_BODY) {
+  try {
+    const hookBody = JSON.parse(process.env.INCOMING_HOOK_BODY);
+    articlesBranch = hookBody.articles_branch || 'main';
+    console.log(`📌 Using articles branch: ${articlesBranch}`);
+  } catch (e) {
+    console.log('⚠️  Failed to parse INCOMING_HOOK_BODY, using main branch');
+  }
+}
+
 const GITHUB_OWNER = process.env.GITHUB_OWNER || 'shabaraba';
 const GITHUB_REPO = process.env.GITHUB_REPO || 'Articles';
-const GITHUB_BRANCH = process.env.GITHUB_BRANCH || 'main';
+const GITHUB_BRANCH = process.env.GITHUB_BRANCH || articlesBranch;
 
 const OG_IMAGES_DIR = path.join(process.cwd(), 'public', 'og-images');
 
@@ -21,7 +33,7 @@ const OG_IMAGES_DIR = path.join(process.cwd(), 'public', 'og-images');
  * Note: raw.githubusercontent.comはレート制限なし
  */
 async function fetchOGImagesList() {
-  const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/og-images?ref=${GITHUB_BRANCH}`;
+  const url = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/images/og-images?ref=${GITHUB_BRANCH}`;
 
   const response = await fetch(url, {
     headers: {
@@ -32,7 +44,7 @@ async function fetchOGImagesList() {
 
   if (!response.ok) {
     if (response.status === 404) {
-      console.log('⚠️  og-images ディレクトリが見つかりません');
+      console.log('⚠️  images/og-images ディレクトリが見つかりません');
       return [];
     }
     throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);

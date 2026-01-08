@@ -18,10 +18,22 @@ export class GitHubArticleRepository implements ArticleRepository {
   private articlesCache: Map<string, any> = new Map();
 
   constructor() {
+    // INCOMING_HOOK_BODYからarticlesブランチを取得
+    let articlesBranch = 'main';
+    if (process.env.INCOMING_HOOK_BODY) {
+      try {
+        const hookBody = JSON.parse(process.env.INCOMING_HOOK_BODY);
+        articlesBranch = hookBody.articles_branch || 'main';
+        console.log(`[GitHubArticleRepository] Using articles branch: ${articlesBranch}`);
+      } catch (e) {
+        console.log('[GitHubArticleRepository] Failed to parse INCOMING_HOOK_BODY, using main branch');
+      }
+    }
+
     this.client = new GitHubClient({
       owner: process.env.GITHUB_OWNER || 'shabaraba',
       repo: process.env.GITHUB_REPO || 'articles',
-      branch: process.env.GITHUB_BRANCH || 'main',
+      branch: process.env.GITHUB_BRANCH || articlesBranch,
       token: process.env.GITHUB_TOKEN,
     });
   }

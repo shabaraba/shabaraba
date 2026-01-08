@@ -719,51 +719,44 @@ async function main() {
         copyDefaultOgImage();
         await generateOgImage('Coffee Break Point', 'default');
 
-        // Markdown記事のOGP画像を生成
-        console.log('Fetching posts from Markdown files...');
-        const mdArticles = await getMarkdownArticles();
-        if (mdArticles.length > 0) {
-          console.log(`Found ${mdArticles.length} published posts in Markdown files.`);
-          for (const article of mdArticles) {
-            const { title, slug } = article;
-            // サムネイル画像を探す
-            const thumbnailPath = await findThumbnailImage(slug);
-            console.log(`Generating OG image for: ${title} (${slug})`);
-            await generateOgImage(title, slug, thumbnailPath);
-          }
-        }
+        // 記事ソースに応じてOGP画像を生成
+        if (articleSource === 'github' || articleSource === 'markdown') {
+          // GitHub/Markdown記事の場合、OG画像はArticlesリポジトリで事前生成済み
+          // fetch-article-og-images.jsで取得するため、ここでは生成しない
+          console.log('Skipping OG image generation for GitHub/Markdown source (using pre-generated images from Articles repo)');
+        } else if (articleSource === 'notion') {
+          // Notionから記事情報を取得
+          console.log('Fetching posts from Notion...');
+          const notionMappings = await getNotionPageMappings();
 
-        // Notionから記事情報を取得（常にNotion記事も生成）
-        console.log('Fetching posts from Notion...');
-        const notionMappings = await getNotionPageMappings();
+          if (notionMappings.length > 0) {
+            console.log(`Found ${notionMappings.length} published posts in Notion.`);
 
-        if (notionMappings.length > 0) {
-          console.log(`Found ${notionMappings.length} published posts in Notion.`);
+            // 各記事のOGP画像を生成
+            for (const mapping of notionMappings) {
+              const { id, title, slug, headerImagePath } = mapping;
+              console.log(`Generating OG image for: ${title} (${slug})`);
+              await generateOgImage(title, slug, headerImagePath);
+            }
+          } else {
+            console.log('No published posts found in Notion.');
 
-          // 各記事のOGP画像を生成
-          for (const mapping of notionMappings) {
-            const { id, title, slug, headerImagePath } = mapping;
-            console.log(`Generating OG image for: ${title} (${slug})`);
-            await generateOgImage(title, slug, headerImagePath);
-          }
-        } else {
-          console.log('No published posts found in Notion.');
+            // Notionから取得できない場合は、従来のサムネイル方式を試す
+            console.log('Trying to find existing thumbnail images as fallback...');
 
-          // Notionから取得できない場合は、従来のサムネイル方式を試す
-          console.log('Trying to find existing thumbnail images as fallback...');
+            // 既存のOGP画像ディレクトリから記事IDを推測
+            if (fs.existsSync(OUTPUT_DIR)) {
+              const ogFiles = await readdir(OUTPUT_DIR);
+              for (const file of ogFiles) {
+                if (file === 'default.png') continue;
 
-          // 既存のOGP画像ディレクトリから記事IDを推測
-          if (fs.existsSync(OUTPUT_DIR)) {
-            const ogFiles = await readdir(OUTPUT_DIR);
-            for (const file of ogFiles) {
-              if (file === 'default.png') continue;
+                const slug = path.basename(file, path.extname(file));
+                const thumbnailPath = await findThumbnailImage(slug);
 
-              const slug = path.basename(file, path.extname(file));
-              const thumbnailPath = await findThumbnailImage(slug);
-
-              if (thumbnailPath) {
-                console.log(`Found thumbnail for ${slug}, regenerating OG image...`);
-                await generateOgImage(slug, slug, thumbnailPath);
+                if (thumbnailPath) {
+                  console.log(`Found thumbnail for ${slug}, regenerating OG image...`);
+                  await generateOgImage(slug, slug, thumbnailPath);
+                }
               }
             }
           }
