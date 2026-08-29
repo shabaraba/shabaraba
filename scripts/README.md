@@ -43,6 +43,27 @@ node scripts/fetch-cover-images.js
 
 ---
 
+### fetch-article-images.js
+
+GitHubリポジトリ（shabaraba/Articles）から記事本文用の画像をダウンロードするスクリプト。
+
+```bash
+node scripts/fetch-article-images.js
+```
+
+**機能:**
+- GitHub Raw Content経由で記事本文の画像をダウンロード（レート制限なし）
+- `shabaraba/Articles/images/articles/<slug>/` からダウンロード
+- `public/images/articles/<slug>/` に配置
+
+**特徴:**
+- 記事slugごとのサブディレクトリを再帰的に辿る
+- 既存ファイルはスキップして高速化
+- ビルド時に自動実行
+- 記事本文からは `![alt](/images/articles/<slug>/foo.png)` で参照する
+
+---
+
 ### fetch-article-og-images.js
 
 GitHubリポジトリ（shabaraba/Articles）から記事のOG画像をダウンロードするスクリプト。
