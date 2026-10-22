@@ -18,7 +18,7 @@ export const CodeComponent: React.FC<Props> = ({entity}: Props) => {
     showLineNumbers: true, 
     theme: ocean, 
     customStyle: { 
-      borderRadius: 5, 
+      borderRadius: '5px',
       width: '100%', 
       maxWidth: '90vw', 
       overflow: 'auto'
