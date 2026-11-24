@@ -7,7 +7,6 @@ interface PaginationProps {
   itemsPerPage: number;
   currentPage: number;
   baseUrl: string;
-  queryParams?: Record<string, string>;
 }
 
 /**
@@ -19,8 +18,7 @@ export default function Pagination({
   totalItems, 
   itemsPerPage, 
   currentPage, 
-  baseUrl,
-  queryParams = {} 
+  baseUrl
 }: PaginationProps) {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
   
@@ -52,28 +50,12 @@ export default function Pagination({
     return pageRange;
   };
   
-  // ページリンクのURL生成（SSG対応：ルートページと追加ページでパスを分ける）
+  // ページリンクのURL生成（SSG対応：1ページ目はベースURL、2ページ目以降はパスを分ける）
   const getPageUrl = (page: number): string => {
-    // クエリパラメータをコピー
-    const params = { ...queryParams };
-    
-    // ページに応じてパスを生成
     if (page === 1) {
-      // 1ページ目はベースURLのみ
       return baseUrl;
-    } else {
-      // 2ページ目以降はページパラメータ付き
-      let pageParam = `page=${page}`;
-      
-      // 他のクエリパラメータがあれば追加
-      if (Object.keys(params).length > 0) {
-        pageParam += '&' + Object.entries(params)
-          .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
-          .join('&');
-      }
-      
-      return `${baseUrl}?${pageParam}`;
     }
+    return `${baseUrl}/page/${page}`;
   };
   
   // ページ数が1以下の場合はページネーションを表示しない

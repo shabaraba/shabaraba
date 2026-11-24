@@ -38,7 +38,6 @@ const HomePage = React.memo(function HomePage({
     currentPage: 1
   };
   const paginationSettings = pagination || paginationDefaults;
-  const queryParams = tagName ? { tag: tagName } : {};
   const tagTitlePrefix = getSetting('tag.title_prefix', 'タグ: ');
   const tagSubtitleTemplate = getSetting('tag.subtitle_template', '「%s」に関連する記事一覧');
 
@@ -67,8 +66,7 @@ const HomePage = React.memo(function HomePage({
         totalItems={paginationSettings.totalItems}
         itemsPerPage={paginationSettings.itemsPerPage}
         currentPage={paginationSettings.currentPage}
-        baseUrl={tagName ? `/tags/${tagName.toLowerCase()}` : '/blog'}
-        queryParams={queryParams}
+        baseUrl={tagName ? `/tags/${encodeURIComponent(tagName.toLowerCase())}` : '/blog'}
       />
     </Layout>
   );

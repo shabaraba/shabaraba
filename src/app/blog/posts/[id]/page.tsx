@@ -37,13 +37,17 @@ export async function generateMetadata({
     // OG画像のURLを生成（絶対URLが必要）
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://shaba.dev';
     const ogImageUrl = `${siteUrl}/og-images/${id}.png`;
+    const description = article.excerpt || (article as any).summary || 'Blog article';
 
     return {
       title: article.title || 'Article',
-      description: article.summary || 'Blog article',
+      description,
+      alternates: {
+        canonical: `/blog/posts/${id}`,
+      },
       openGraph: {
         title: article.title,
-        description: article.summary,
+        description,
         type: 'article',
         images: [
           {
@@ -57,7 +61,7 @@ export async function generateMetadata({
       twitter: {
         card: 'summary_large_image',
         title: article.title,
-        description: article.summary,
+        description,
         images: [ogImageUrl],
       },
     };

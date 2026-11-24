@@ -104,9 +104,6 @@ importers:
       next-seo:
         specifier: ^5.15.0
         version: 5.15.0(next@16.4.2(@babel/core@7.29.7)(@opentelemetry/api@1.8.0)(@types/node@26.6.5)(babel-plugin-macros@3.1.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
-      next-sitemap:
-        specifier: ^3.1.55
-        version: 3.1.55(@next/env@16.4.2)(next@16.4.2(@babel/core@7.29.7)(@opentelemetry/api@1.8.0)(@types/node@26.6.5)(babel-plugin-macros@3.1.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1))
       node-loader:
         specifier: ^2.1.0
         version: 2.1.0(webpack@5.104.1)
@@ -511,9 +508,6 @@ packages:
     resolution: {integrity: sha512-xTnQaHHAplUsQb87/0aZt85fFECqee7B35Ib3RNHKvHSNHS2Kz7YkQiof8xYSBQqKCdrsEFeg+ngS2ViCXiK7w==}
     peerDependencies:
       react: '>=16.8.0'
-
-  '@corex/deepmerge@4.0.43':
-    resolution: {integrity: sha512-N8uEMrMPL0cu/bdboEWpQYb/0i2K5Qn8eCsxzOmxSggJbbQte7ljMRoXm917AbntqTGOzdTu+vP3KOOzoC70HQ==}
 
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -3280,14 +3274,6 @@ packages:
       react: '>=16.0.0'
       react-dom: '>=16.0.0'
 
-  next-sitemap@3.1.55:
-    resolution: {integrity: sha512-ZjkRfkqoSLbU+e8W9TWWe0zfOGNA47lpvm35kNcUCmj73gpLX2PIn51gwHT/B6bgGVAFYY0OXixJDrxIIwcEHw==}
-    engines: {node: '>=14.18'}
-    hasBin: true
-    peerDependencies:
-      '@next/env': '*'
-      next: '*'
-
   next@16.4.2:
     resolution: {integrity: sha512-r+oBJojfefUjOiWkBhXgLS+igxX/7BWyK59uHnyOyplMSLtBZ+QLP3okrdYTbrfrbrmNTVWLBPaHDX9KRaIt3w==}
     engines: {node: '>=20.9.0'}
@@ -4872,8 +4858,6 @@ snapshots:
       '@types/lodash.mergewith': 4.6.9
       lodash.mergewith: 4.6.2
       react: 19.3.1
-
-  '@corex/deepmerge@4.0.43': {}
 
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
@@ -8489,13 +8473,6 @@ snapshots:
       next: 16.4.2(@babel/core@7.29.7)(@opentelemetry/api@1.8.0)(@types/node@26.6.5)(babel-plugin-macros@3.1.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       react: 19.3.1
       react-dom: 19.3.1(react@19.3.1)
-
-  next-sitemap@3.1.55(@next/env@16.4.2)(next@16.4.2(@babel/core@7.29.7)(@opentelemetry/api@1.8.0)(@types/node@26.6.5)(babel-plugin-macros@3.1.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)):
-    dependencies:
-      '@corex/deepmerge': 4.0.43
-      '@next/env': 16.4.2
-      minimist: 1.2.8
-      next: 16.4.2(@babel/core@7.29.7)(@opentelemetry/api@1.8.0)(@types/node@26.6.5)(babel-plugin-macros@3.1.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
 
   next@16.4.2(@babel/core@7.29.7)(@opentelemetry/api@1.8.0)(@types/node@26.6.5)(babel-plugin-macros@3.1.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1):
     dependencies:

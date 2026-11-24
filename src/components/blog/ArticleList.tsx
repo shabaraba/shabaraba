@@ -84,9 +84,9 @@ export default function ArticleList({ articles }: ArticleListProps) {
                 <div className={styles.articleTags}>
                   {article.tags.map((tag, index) => {
                     // タグがオブジェクトか文字列かをチェック
-                    const tagName = typeof tag === 'string' ? tag : (tag.name || '');
+                    const tagName = typeof tag === 'string' ? tag : ((tag as any)?.name || '');
                     return (
-                      <Link href={`/tags/${tagName.toLowerCase()}`} key={index} className={styles.tagLink}>
+                      <Link href={`/tags/${encodeURIComponent(tagName.toLowerCase())}`} key={index} className={styles.tagLink}>
                         {tagName}
                       </Link>
                     );
