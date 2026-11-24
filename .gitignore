@@ -28,8 +28,6 @@ yarn-error.log*
 /.netlify
 
 # site-map
-/public/robots.txt
-/public/sitemap*.xml
 /public/rss/*
 
 # image caches

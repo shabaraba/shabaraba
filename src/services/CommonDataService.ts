@@ -217,11 +217,8 @@ export class CommonDataService {
     return data.posts.filter(post => {
       if (!post.tags) return false;
       return post.tags.some(tag => {
-        // tagがオブジェクトであることを確認
-        if (tag && typeof tag === 'object' && tag.name) {
-          return tag.name.toLowerCase() === tagName.toLowerCase();
-        }
-        return false;
+        const name = typeof tag === 'string' ? tag : tag?.name;
+        return typeof name === 'string' && name.toLowerCase() === tagName.toLowerCase();
       });
     });
   }

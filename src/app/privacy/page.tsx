@@ -5,6 +5,9 @@ import styles from './privacy.module.css';
 export const metadata: Metadata = {
   title: 'プライバシーポリシー - Coffee Break Point',
   description: '当サイトにおける個人情報の取り扱いについて',
+  alternates: {
+    canonical: '/privacy',
+  },
 };
 
 export default function PrivacyPage() {

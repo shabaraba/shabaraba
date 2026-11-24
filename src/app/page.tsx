@@ -5,6 +5,9 @@ import PortfolioPageClient from '../components/PortfolioPageClient';
 export const metadata: Metadata = {
   title: 'Coffee Break Point',
   description: 'Web Developer & Solopreneur - コーヒー休憩にちょうどよい技術よみものを目指して',
+  alternates: {
+    canonical: '/',
+  },
 };
 
 export default async function HomePage() {
