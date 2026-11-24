@@ -1,7 +1,11 @@
-# Portfolio site redirects
+# Legacy post URLs
+https://blog.shaba.dev/posts/* https://shaba.dev/blog/posts/:splat 301!
 /posts/* /blog/posts/:splat 301!
 
-# Subdomain redirects - redirect blog.shaba.dev to main domain
+# Subdomain redirects - blog.shaba.dev -> shaba.dev (single hop)
+https://blog.shaba.dev/ https://shaba.dev/blog 301!
+https://blog.shaba.dev/sitemap.xml https://shaba.dev/sitemap.xml 301!
+https://blog.shaba.dev/sitemap-0.xml https://shaba.dev/sitemap.xml 301!
 https://blog.shaba.dev/* https://shaba.dev/:splat 301!
 
 # Legacy domain redirects - redirect to main portfolio

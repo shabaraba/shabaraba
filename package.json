@@ -14,7 +14,6 @@
     "build": "./scripts/load-env.sh sh -c 'node scripts/fetch-github-profile.js && node scripts/fetch-cover-images.js && node scripts/fetch-article-images.js && node scripts/fetch-article-og-images.js && pnpm run generate-og && next build && echo Build completed'",
     "build:incremental": "node scripts/build-article-index.js && next build",
     "start": "pnpm dlx serve@latest out",
-    "postbuild": "next-sitemap",
     "analyze": "ANALYZE=true next build",
     "test": "jest",
     "test:watch": "jest --watch"
@@ -52,7 +51,6 @@
     "next": "^16.4.2",
     "next-absolute-url": "^1.2.2",
     "next-seo": "^5.15.0",
-    "next-sitemap": "^3.1.55",
     "node-loader": "^2.1.0",
     "react": "^19.3.1",
     "react-code-blocks": "0.1.6",

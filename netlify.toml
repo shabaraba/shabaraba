@@ -14,3 +14,7 @@
     compress = true
 [functions]
   directory = "src/netlify/functions"
+
+[[edge_functions]]
+  function = "legacy-pagination"
+  pattern = "^/(blog|tags/[^/]+)/?$"

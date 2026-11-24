@@ -51,7 +51,7 @@ export default function ArticleDetail({ article, ogpData }: ArticleDetailProps) 
           {article.tags && article.tags.length > 0 && (
             <div className={styles.tags}>
               {article.tags.map((tag, index) => (
-                <Link href={`/tags/${tag.toLowerCase()}`} key={index} className={styles.tag}>
+                <Link href={`/tags/${encodeURIComponent(tag.toLowerCase())}`} key={index} className={styles.tag}>
                   {tag}
                 </Link>
               ))}
